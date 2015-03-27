@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{7A509191-9A9F-7C61-0B93-9F123DAA2D73}</ProjectGuid>
+	<ProjectGuid>{98438550-7427-66A0-6B78-615AD541B9EE}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -47,7 +47,19 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraBehavior.cs" />
+     <Compile Include="Assets\Scripts\EventHandling\Events.cs" />
+     <Compile Include="Assets\Scripts\EventHandling\Events\ClickEvent.cs" />
+     <Compile Include="Assets\Scripts\EventHandling\Events\ReleaseEvent.cs" />
+     <Compile Include="Assets\Scripts\Extensions\ExtensionMethods.cs" />
+     <Compile Include="Assets\Scripts\Extensions\MB.cs" />
+     <Compile Include="Assets\Scripts\Input\IClickable.cs" />
+     <Compile Include="Assets\Scripts\Input\IDraggable.cs" />
+     <Compile Include="Assets\Scripts\Input\IReleasable.cs" />
+     <Compile Include="Assets\Scripts\Input\MouseController.cs" />
+     <Compile Include="Assets\Scripts\Input\ScreenPositionHandler.cs" />
      <Compile Include="Assets\Scripts\MovingLayer.cs" />
+     <Compile Include="Assets\Scripts\Parallax\DepthLayer.cs" />
+     <Compile Include="Assets\Scripts\Parallax\MainCamera.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
