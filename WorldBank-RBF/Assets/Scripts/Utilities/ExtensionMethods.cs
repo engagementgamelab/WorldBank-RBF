@@ -154,6 +154,10 @@ public static class ExtensionMethods {
 		transform.localScale = p;
 	}
 
+	public static void SetLocalScale (this Transform transform, Vector3 scale) {
+		transform.localScale = scale;
+	}
+
 	public static void SetLocalScale (this Transform transform, float scale) {
 		transform.localScale = new Vector3 (scale, scale, scale);
 	}
@@ -172,5 +176,33 @@ public static class ExtensionMethods {
 		Vector3 colliderSize = collider.size;
 		colliderSize.y = size;
 		collider.size = colliderSize;
+	}
+
+	/**
+	 *	Textures
+	 */
+
+	public static bool HasAlpha (this TextureFormat format) {
+		return (
+			format == TextureFormat.Alpha8 ||
+			format == TextureFormat.RGBA4444 ||
+			format == TextureFormat.ARGB4444 ||
+			format == TextureFormat.RGBA32 ||
+			format == TextureFormat.ARGB32 ||
+			format == TextureFormat.BGRA32 ||
+			format == TextureFormat.RGBAHalf ||
+			format == TextureFormat.RGBAFloat ||
+			format == TextureFormat.PVRTC_RGBA2 ||
+			format == TextureFormat.PVRTC_RGBA2 ||
+			format == TextureFormat.PVRTC_RGBA4 ||
+			format == TextureFormat.ETC2_RGBA1 ||
+			format == TextureFormat.ETC2_RGBA8 ||
+			format == TextureFormat.ASTC_RGBA_4x4 ||
+			format == TextureFormat.ASTC_RGBA_5x5 ||
+			format == TextureFormat.ASTC_RGBA_6x6 ||
+			format == TextureFormat.ASTC_RGBA_8x8 ||
+			format == TextureFormat.ASTC_RGBA_10x10 ||
+			format == TextureFormat.ASTC_RGBA_12x12
+		);
 	}
 }

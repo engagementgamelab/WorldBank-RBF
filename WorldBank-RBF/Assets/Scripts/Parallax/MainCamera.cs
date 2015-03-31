@@ -33,6 +33,18 @@ public class MainCamera : MB {
 		}
 	}
 
+	float zoom = 0;
+	float Zoom {
+		get { return zoom; }
+		set {
+			zoom = Mathf.Clamp (value, 0, 5);
+			float y = -Mathf.Tan (FOV / 2f * Mathf.Deg2Rad) * zoom;
+			Transform.SetPosition (new Vector3 (Position.x, y, zoom));
+			xMin = y * Aspect;
+			Transform.SetPositionX (Mathf.Max (xMin, Position.x));
+		}
+	}
+
 	float speed = 10;
 	float xMin = 0;
 	Vector3 startDragPosition;
@@ -43,6 +55,19 @@ public class MainCamera : MB {
 		Events.instance.AddListener<ReleaseEvent> (OnReleaseEvent);
 		Events.instance.AddListener<DragDownEvent> (OnDragDownEvent);
 		Events.instance.AddListener<DragUpEvent> (OnDragUpEvent);
+	}
+
+	void Start () {
+		Zoom = 2;
+	}
+
+	void Update () {
+		if (Input.GetKey (KeyCode.UpArrow)) {
+			Zoom += 0.1f;
+		}
+		if (Input.GetKey (KeyCode.DownArrow)) {
+			Zoom -= 0.1f;
+		}
 	}
 
 	public Vector3 WorldToViewportPoint (Vector3 worldPoint) {

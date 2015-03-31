@@ -14,8 +14,24 @@ public class QuadImage : MB, IPoolable {
 		set { meshRenderer = value; }
 	}
 
-	public void Init (Material material) {
+	BoxCollider boxCollider = null;
+	BoxCollider BoxCollider {
+		get {
+			if (boxCollider == null) {
+				boxCollider = GetComponent<BoxCollider> ();
+			}
+			return boxCollider;
+		}
+	}
+
+	bool ColliderEnabled {
+		get { return BoxCollider.enabled; }
+		set { BoxCollider.enabled = value; }
+	}
+
+	public void Init (Material material, bool colliderEnabled=false) {
 		MeshRenderer.material = material;
+		ColliderEnabled = colliderEnabled;
 	}
 
 	public void OnCreate () {}
