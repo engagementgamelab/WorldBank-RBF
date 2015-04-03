@@ -1,5 +1,4 @@
-﻿#define DEBUG
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,28 +7,22 @@ using System.Collections.Generic;
 // All pool objects must implement the IPoolable interface
 public class ObjectPool : MonoBehaviour {
 
-	private static readonly Dictionary<string, ObjectPool> _poolsByName = new Dictionary<string, ObjectPool> ();
+	static readonly Dictionary<string, ObjectPool> _poolsByName = new Dictionary<string, ObjectPool> ();
 	
 	public static ObjectPool GetPool(string name) {
+		Debug.Log (_poolsByName.Count);
 		if (_poolsByName.ContainsKey (name)) {
 			return _poolsByName[name];
 		}
 		return null;
 	}
 	
-	[SerializeField]
-	private string _poolName = string.Empty;
-	
-	[SerializeField]
-	private Transform _prefab = null;
-	
-	[SerializeField]
-	private int _initialCount = 0;
-	
-	[SerializeField]
-	private bool _parentInstances = false;
-	
-	private readonly Stack<Transform> _instances = new Stack<Transform> ();
+	[SerializeField] string _poolName = string.Empty;
+	[SerializeField] Transform _prefab = null;
+	[SerializeField] int _initialCount = 0;
+	[SerializeField] bool _parentInstances = false;
+
+	readonly Stack<Transform> _instances = new Stack<Transform> ();
 	
 	public void Init (string poolName, Transform prefab) {
 		_poolName = poolName;
@@ -61,38 +54,34 @@ public class ObjectPool : MonoBehaviour {
 	}
 	
 	private void InitializeInstance (Transform instance) {
-
 		if (_parentInstances) {
 			instance.parent = transform;
 		}
-		
 		instance.gameObject.SetActive (true);
-	}
-	
-	public void ReleaseInstance (Transform instance) {
-
-		instance.gameObject.SetActive (false);
-		_instances.Push (instance);
-	}
-
-	public static Transform Instantiate (string poolName, Vector3 position) {
-		Transform t = ObjectPool.GetPool (poolName).GetInstance (position);
-		#if UNITY_EDITOR && DEBUG
-		if (t.GetScript<IPoolable> () == null) {
-			Debug.LogError (string.Format ("The object {0} must implement the IPoolable interface", t));
-		}
-		#endif
-		t.GetScript<IPoolable> ().OnCreate ();
-		return t;
-	}
-
-	public static void Destroy (string poolName, Transform instance) {
 		#if UNITY_EDITOR && DEBUG
 		if (instance.GetScript<IPoolable> () == null) {
 			Debug.LogError (string.Format ("The object {0} must implement the IPoolable interface", instance));
 		}
 		#endif
-		instance.GetScript<IPoolable>().OnDestroy ();
+		instance.GetScript<IPoolable> ().OnCreate ();
+	}
+	
+	public void ReleaseInstance (Transform instance) {
+		#if UNITY_EDITOR && DEBUG
+		if (instance.GetScript<IPoolable> () == null) {
+			Debug.LogError (string.Format ("The object {0} must implement the IPoolable interface", instance));
+		}
+		#endif
+		instance.GetScript<IPoolable> ().OnDestroy ();
+		instance.gameObject.SetActive (false);
+		_instances.Push (instance);
+	}
+
+	public static Transform Instantiate (string poolName, Vector3 position) {
+		return ObjectPool.GetPool (poolName).GetInstance (position);
+	}
+
+	public static void Destroy (string poolName, Transform instance) {
 		ObjectPool.GetPool (poolName).ReleaseInstance (instance);
 	}
 }

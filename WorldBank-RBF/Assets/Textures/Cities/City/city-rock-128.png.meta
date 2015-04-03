@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 151ae8b019300478a89a3aa072eeaa43
-timeCreated: 1427821975
+guid: c28f8d4f247b94c80bc08b931d66d169
+timeCreated: 1428074441
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -26,13 +26,13 @@ TextureImporter:
   cubemapConvolutionSteps: 8
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
-  textureFormat: -3
-  maxTextureSize: 128
+  textureFormat: -1
+  maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
-    aniso: 16
+    filterMode: 2
+    aniso: 0
     mipBias: -1
-    wrapMode: 1
+    wrapMode: -1
   nPOTScale: 1
   lightmap: 0
   rGBM: 0
@@ -45,8 +45,28 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaIsTransparency: 0
-  textureType: 0
-  buildTargetSettings: []
+  textureType: -1
+  buildTargetSettings:
+  - buildTarget: iPhone
+    maxTextureSize: 4096
+    textureFormat: 32
+    compressionQuality: 100
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: 32
+    compressionQuality: 100
+  - buildTarget: Standalone
+    maxTextureSize: 4096
+    textureFormat: 32
+    compressionQuality: 100
+  - buildTarget: WebPlayer
+    maxTextureSize: 1024
+    textureFormat: 32
+    compressionQuality: 100
+  - buildTarget: WebGL
+    maxTextureSize: 1024
+    textureFormat: 32
+    compressionQuality: 100
   spriteSheet:
     sprites: []
   spritePackingTag: 

@@ -18,6 +18,11 @@ public class MB : MonoBehaviour {
 		set { Transform.position = value; }
 	}
 
+	public Vector3 LocalPosition {
+		get { return Transform.localPosition; }
+		set { Transform.localPosition = value; }
+	}
+
 	public Vector3 LocalScale {
 		get { return Transform.localScale; }
 		set { Transform.localScale = value; }

@@ -5,6 +5,6 @@ public class LayerImage : LayerTexture {
 
 	protected override void Awake () {
 		base.Awake ();
-		CreateImage (0, true).gameObject.layer = Layer;
+		//CreateImage (0, true).gameObject.layer = Layer;
 	}
 }

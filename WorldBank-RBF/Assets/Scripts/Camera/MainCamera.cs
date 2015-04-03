@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class MainCamera : MB {
@@ -45,6 +45,16 @@ public class MainCamera : MB {
 		}
 	}
 
+	float altitude = 0;
+	float Altitude {
+		get { return altitude; }
+		set {
+			// rotating on x set the altitude 
+			// (which affects y and z positions)
+			altitude = value;
+		}
+	}
+
 	float speed = 10;
 	float xMin = 0;
 	Vector3 startDragPosition;
@@ -62,22 +72,12 @@ public class MainCamera : MB {
 	}
 
 	void Update () {
-		if (Input.GetKey (KeyCode.UpArrow)) {
-			Zoom += 0.1f;
-		}
-		if (Input.GetKey (KeyCode.DownArrow)) {
-			Zoom -= 0.1f;
+		float delta = Input.GetAxis ("Mouse ScrollWheel");
+		if (delta != 0) {
+			Zoom += delta;
 		}
 	}
-
-	public Vector3 WorldToViewportPoint (Vector3 worldPoint) {
-		return Camera.WorldToViewportPoint (worldPoint);
-	}
-
-	public Vector3 ViewportToWorldPoint (Vector3 viewportPoint) {
-		return Camera.ViewportToWorldPoint (viewportPoint);
-	}
-
+	
 	void Move (float target) {
 		StartCoroutine (CoMove (Position.x, Mathf.Max (0, target)));
 	}
@@ -98,8 +98,8 @@ public class MainCamera : MB {
 	IEnumerator CoDrag () {
 		
 		while (dragging) {
-			Vector3 w1 = ViewportToWorldPoint (startDrag);
-			Vector3 w2 = ViewportToWorldPoint (MouseController.ViewportMousePosition);
+			Vector3 w1 = ScreenPositionHandler.ViewportToWorld (startDrag);
+			Vector3 w2 = ScreenPositionHandler.ViewportToWorld (MouseController.ViewportMousePosition);
 			float deltaX = (w1.x - w2.x);
 			Transform.SetPositionX (Mathf.Max (xMin, startDragPosition.x + deltaX));
 			yield return null;
@@ -111,7 +111,9 @@ public class MainCamera : MB {
 	 */
 
 	void OnReleaseEvent (ReleaseEvent e) {
-		//Move (MouseController.MousePosition.x);
+		if (!e.releaseSettings.left) {
+			Move (MouseController.MousePosition.x);
+		}
 	}
 
 	void OnDragDownEvent (DragDownEvent e) {
