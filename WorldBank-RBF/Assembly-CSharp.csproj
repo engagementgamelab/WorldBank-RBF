@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{FCAA13C9-9491-12C8-91B9-124DBC458ED4}</ProjectGuid>
+	<ProjectGuid>{98438550-7427-66A0-6B78-615AD541B9EE}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -53,6 +53,7 @@
      <Compile Include="Assets\Scripts\EventHandling\Events\DragDownEvent.cs" />
      <Compile Include="Assets\Scripts\EventHandling\Events\DragUpEvent.cs" />
      <Compile Include="Assets\Scripts\EventHandling\Events\ReleaseEvent.cs" />
+     <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\Parallax\Layers\DepthLayer.cs" />
      <Compile Include="Assets\Scripts\Parallax\Layers\LayerBackground.cs" />
      <Compile Include="Assets\Scripts\Parallax\Layers\LayerComponent.cs" />
@@ -69,6 +70,8 @@
      <Compile Include="Assets\Scripts\Utilities\Input\ScreenPositionHandler.cs" />
      <Compile Include="Assets\Scripts\Utilities\MB.cs" />
      <Compile Include="Assets\Scripts\Utilities\MaterialsManager.cs" />
+     <Compile Include="Assets\Scripts\Utilities\Network\GetHandler.cs" />
+     <Compile Include="Assets\Scripts\Utilities\Network\NetworkManager.cs" />
      <Compile Include="Assets\Scripts\Utilities\Pooling\IPoolable.cs" />
      <Compile Include="Assets\Scripts\Utilities\Pooling\ObjectBank.cs" />
      <Compile Include="Assets\Scripts\Utilities\Pooling\ObjectManager.cs" />
@@ -79,12 +82,12 @@
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>/Users/egl_admin/Documents/Unity Projects/WorldBank-RBF/WorldBank-RBF2/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+ <HintPath>/Users/johnny/Documents/Projects/WorldBank-RBF/WorldBank-RBF/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{02407AE0-A1E7-F683-20F9-5BB112873631}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{2EEBCDF7-2C62-0A3B-1FFB-036F7FD7AD9B}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
