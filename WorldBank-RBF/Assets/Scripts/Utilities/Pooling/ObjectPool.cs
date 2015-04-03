@@ -5,12 +5,12 @@ using System.Collections.Generic;
 //https://gist.github.com/nickgravelyn/4385548
 
 // All pool objects must implement the IPoolable interface
+[ExecuteInEditMode]
 public class ObjectPool : MonoBehaviour {
 
 	static readonly Dictionary<string, ObjectPool> _poolsByName = new Dictionary<string, ObjectPool> ();
 	
 	public static ObjectPool GetPool(string name) {
-		Debug.Log (_poolsByName.Count);
 		if (_poolsByName.ContainsKey (name)) {
 			return _poolsByName[name];
 		}
@@ -19,22 +19,34 @@ public class ObjectPool : MonoBehaviour {
 	
 	[SerializeField] string _poolName = string.Empty;
 	[SerializeField] Transform _prefab = null;
-	[SerializeField] int _initialCount = 0;
 	[SerializeField] bool _parentInstances = false;
 
 	readonly Stack<Transform> _instances = new Stack<Transform> ();
 	
+	/*void Awake () {
+		System.Diagnostics.Debug.Assert(_prefab);
+		_poolsByName[_poolName] = this;
+	}*/
+#if UNITY_EDITOR
+	void OnEnable () {
+		System.Diagnostics.Debug.Assert(_prefab);
+		_poolsByName[_poolName] = this;
+		Debug.Log (_instances.Count);
+	}
+
+	void OnDisable () {
+		foreach (Transform instance in _instances) {
+			ReleaseInstance (instance);
+		}
+	}
+#endif
+
 	public void Init (string poolName, Transform prefab) {
+		Debug.Log ("init");
 		_poolName = poolName;
 		_prefab = prefab;
 		System.Diagnostics.Debug.Assert(_prefab);
 		_poolsByName[_poolName] = this;
-		
-		for (int i = 0; i < _initialCount; i++) {
-			var t = Instantiate(_prefab) as Transform;
-			InitializeInstance(t);
-			ReleaseInstance(t);
-		}
 	}
 	
 	public Transform GetInstance (Vector3 position = new Vector3()) {
@@ -84,4 +96,11 @@ public class ObjectPool : MonoBehaviour {
 	public static void Destroy (string poolName, Transform instance) {
 		ObjectPool.GetPool (poolName).ReleaseInstance (instance);
 	}
+
+	/*static void CreatePool<T> () where T : class {
+		string prefabName = typeof (T).Name;
+		GameObject go = new GameObject (prefabName);
+		DontDestroyOnLoad (go);
+		go.AddComponent<ObjectPool> ().Init (prefabName, ObjectBank.Instance.GetObject (prefabName).transform);
+	}*/
 }

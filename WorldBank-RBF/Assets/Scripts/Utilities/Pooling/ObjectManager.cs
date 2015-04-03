@@ -38,7 +38,7 @@ public class ObjectManager : MonoBehaviour {
 		string prefabName = typeof (T).Name;
 		GameObject go = new GameObject (prefabName);
 		DontDestroyOnLoad (go);
-		go.AddComponent<ObjectPool> ().Init (prefabName, ObjectBank.Instance.GetObject (prefabName).transform);
+		//go.AddComponent<ObjectPool> ().Init (prefabName, ObjectBank.Instance.GetObject (prefabName).transform);
 	}
 
 	string GetName<T> () where T : class {

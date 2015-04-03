@@ -18,17 +18,19 @@ public class LayerBackground : LayerTexture {
 	void CreateBackgrounds () {
 		if (texture == null)
 			return;
-		for (int i = 0; i < tileCount; i ++) {
-			QuadImage image = CreateImage (i);
+		//for (int i = 0; i < tileCount; i ++) {
+			/*QuadImage image = CreateImage (i);
 			image.gameObject.layer = Layer;
-			images.Add (image);
-		}
+			images.Add (image);*/
+			//testImage = ObjectPool.Instantiate ("QuadImage", new Vector3 (0, 0, 0));
+
+		//}
 	}
 
 	void DestroyBackgrounds () {
 		if (images.Count == 0) return;
 		foreach	(QuadImage image in images) {
-			ObjectManager.Instance.Destroy<QuadImage> (image.Transform);
+			//ObjectManager.Instance.Destroy<QuadImage> (image.Transform);
 		}
 		images.Clear ();
 	}
@@ -36,11 +38,14 @@ public class LayerBackground : LayerTexture {
 	void OnEnable () {
 		//CreateBackgrounds ();
 		//DestroyBackgrounds ();
-		if (name == "LayerBackground4")
+		if (name == "LayerBackground4") {
 			CreateBackgrounds ();
+		}
 	}
 
 	void OnDisable () {
+		/*if (testImage != null)
+			ObjectPool.Destroy ("QuadImage", testImage);*/
 		/*if (name == "LayerBackground4")
 			DestroyBackgrounds ();*/
 	}
