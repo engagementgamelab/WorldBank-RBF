@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Net;
 using System.IO;
-using SimpleJSON;
  
 // TODO: This needs lots of cleanup
 public class NetworkManager : MonoBehaviour {
@@ -65,8 +64,7 @@ public class NetworkManager : MonoBehaviour {
          // check for errors
          if (www.error == null)
          {
-             JSONNode response = JSON.Parse(www.text)["content"]["phase_one"];
-             string strRes = response.Value;
+             string strRes = www.text;
 
              Debug.Log("WWW Ok!: " + strRes);
          } else {
