@@ -15,7 +15,9 @@ public class GameManager : MonoBehaviour {
 		Debug.Log(node[0]["city"]);
 
 		// create file in Assets/Config/
-		File.WriteAllText(Application.dataPath + "/Config/data.json", gameData); 
+		#if !UNITY_WEBPLAYER
+			File.WriteAllText(Application.dataPath + "/Config/data.json", gameData); 
+		#endif
 	
 	}
 	
