@@ -36,4 +36,11 @@ public class QuadImage : MB, IPoolable {
 
 	public void OnCreate () {}
 	public void OnDestroy () {}
+
+	void Awake () {
+		/*Component[] components = GetComponents<Component> ();
+		for (int i = 0; i < components.Length; i ++) {
+			Debug.Log (components[i]);
+		}*/
+	}
 }

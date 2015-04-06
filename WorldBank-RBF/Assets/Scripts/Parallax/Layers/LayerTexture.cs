@@ -23,7 +23,8 @@ public class LayerTexture : LayerComponent {
 	}
 
 	protected QuadImage CreateImage (float xPosition, bool colliderEnabled=false) {
-		QuadImage quadImage = ObjectManager.Instance.Create<QuadImage> ();
+		//QuadImage quadImage = ObjectManager.Instance.Create<QuadImage> ();
+		QuadImage quadImage = null;
 		quadImage.Transform.SetParent (Transform);
 		quadImage.Init (Material, colliderEnabled);
 
