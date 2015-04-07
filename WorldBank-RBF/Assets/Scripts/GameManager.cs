@@ -1,18 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using SimpleJSON;
+using System.Linq;
 
 public class GameManager : MonoBehaviour {
+
+	void Awake () {
+
+		LoadGameConfig();
+
+	}
 
 	// Use this for initialization
 	void Start () {
 
-		// This should live in a static global dictionary somewhere
-		string gameData = NetworkManager.Instance.DownloadDataFromURL("http://localhost:3000/api/gameData");
-		var node = JSON.Parse(gameData)["content"][0]["phase_one"];
+		string gameData = null;
 
-		Debug.Log(node[0]["city"]);
+		// This should live in a static global dictionary somewhere
+		// Try to get data from API remote
+		try {
+
+			gameData = NetworkManager.Instance.DownloadDataFromURL("/gameData");
+
+		}
+		// Fallback: load game data from local config
+		catch {
+ 
+	        StreamReader reader = new StreamReader(Application.dataPath + "/Config/data.json");
+	        
+			gameData = reader.ReadToEnd();
+		
+		}
+
+		DataManager.SetGameData(gameData);
+
+		Debug.Log( DataManager.GetDataForPhase("phase_one") );
 
 		// create file in Assets/Config/
 		#if !UNITY_WEBPLAYER
@@ -21,8 +44,11 @@ public class GameManager : MonoBehaviour {
 	
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
+	private void LoadGameConfig()
+	{
+		StreamReader reader = new StreamReader(Application.dataPath + "/Config/api.json");
+		string strConfigData = reader.ReadToEnd();
+
+		DataManager.SetGameConfig(strConfigData);
 	}
 }
