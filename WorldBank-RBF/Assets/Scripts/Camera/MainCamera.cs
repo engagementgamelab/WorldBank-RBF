@@ -24,7 +24,7 @@ public class MainCamera : MB {
 	}
 
 	new Camera camera;
-	Camera Camera {
+	public Camera Camera {
 		get {
 			if (camera == null) {
 				camera = GetComponent<Camera> ();

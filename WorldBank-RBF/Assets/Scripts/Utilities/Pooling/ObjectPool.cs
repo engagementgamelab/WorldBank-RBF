@@ -3,24 +3,87 @@ using System.Collections;
 using System.Collections.Generic;
 
 [ExecuteInEditMode]
-public class ObjectPool : MonoBehaviour, IPoolable {
+public class ObjectPool : MonoBehaviour {
 
 	public static Dictionary<string, ObjectPool> pools = new Dictionary<string, ObjectPool> ();
+	public static bool Loaded { get { return LoadChecker.Instance.Loaded; } }
+	
 	List<Transform> activeInstances = new List<Transform> ();
 	Stack<Transform> inactiveInstances = new Stack<Transform> ();
-
 	[SerializeField] Transform prefab;
 
+	/*bool playing = false;
+	bool Playing {
+		get { return playing; }
+		set { playing = value; }
+	}*/
+
 #if UNITY_EDITOR
-	void OnEnable () {
-		if (name != "" && prefab != null)
-			Init (name, prefab);
+	/*void OnEnable () {
+		if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode) {
+			Playing = true;
+		} 
+		if (!Playing) {
+			Debug.Log ("enable");
+		}
 	}
 
 	void OnDisable () {
+		if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode) {
+			Playing = true;
+		}
+
+		if (!Playing) {
+			Debug.Log ("disable");
+		}
+	}*/
+	void OnEnable () {
+		if (!Loaded) return;
+		if (name != "" && prefab != null) {
+			Init (name, prefab);
+		}
+	}
+
+	void OnDisable () {
+		if (!Loaded) return;
 		pools.Remove (name);
 	}
 #endif
+
+	public static bool StartupLoad () {
+		if (LoadChecker.Instance.Loaded)
+			return true;
+
+		ObjectPool[] pools = Object.FindObjectsOfType (typeof (ObjectPool)) as ObjectPool[];
+		if (pools.Length == 0)
+			return false;
+
+		for (int i = 0; i < pools.Length; i ++) {
+			pools[i].LoadInstances ();
+		}
+		LoadChecker.Instance.Loaded = true;
+		return true;
+	}
+
+	public void LoadInstances () {
+		if (activeInstances.Count > 0 || inactiveInstances.Count > 0) {
+			return;
+		}
+		System.Type type = System.Type.GetType (name.Substring (0, name.Length-4));
+		MonoBehaviour[] instances = Resources.FindObjectsOfTypeAll (type) as MonoBehaviour[];
+		for (int i = 0; i < instances.Length; i ++) {
+			Transform t = instances[i].transform;
+			if (!t.name.Contains ("(Clone)")) {
+				continue;
+			}
+			if (t.gameObject.activeSelf) {
+				activeInstances.Add (t);
+			} else {
+				inactiveInstances.Push (t);
+			}
+		}
+		pools[name] = this;
+	}
 
 	public void Init (string name, Transform prefab) {
 		this.name = name;
@@ -28,21 +91,6 @@ public class ObjectPool : MonoBehaviour, IPoolable {
 		InitializeInstance (prefab);
 		ReleaseInstance (prefab);
 		pools[name] = this;
-	}
-
-	public void LoadInstances () {
-		// TODO: after this gets called objects stop pooling correctly
-		System.Type type = System.Type.GetType (name.Substring (0, name.Length-4));
-		Object[] instances = Object.FindObjectsOfTypeAll (type) as Object[];
-		for (int i = 0; i < instances.Length; i ++) {
-			MonoBehaviour mb = instances[i] as MonoBehaviour;
-			Transform t = mb.transform;
-			if (t.gameObject.activeSelf) {
-				activeInstances.Add (t);
-			} else {
-				inactiveInstances.Push (t);
-			}
-		}
 	}
 
 	static ObjectPool GetPool<T> () where T : MonoBehaviour {
@@ -58,12 +106,12 @@ public class ObjectPool : MonoBehaviour, IPoolable {
 		string poolName = GetPoolName<T> ();
 		GameObject go = new GameObject (poolName);
 		DontDestroyOnLoad (go);
-		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab<T> (prefabName).transform);
+		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (prefabName).transform);
 	}
 
-	static T CreatePrefab<T> (string createPrefab) where T : MonoBehaviour {
-		GameObject go = new GameObject (createPrefab);
-		return go.AddComponent<T> ();
+	static Transform CreatePrefab (string prefabName) {
+		GameObject go = Instantiate (Resources.Load ("Prefabs/" + prefabName)) as GameObject;
+		return go.transform;
 	}
 
 	static string GetPrefabName<T> () where T : MonoBehaviour {
@@ -89,23 +137,22 @@ public class ObjectPool : MonoBehaviour, IPoolable {
 	void InitializeInstance (Transform instance) {
 		activeInstances.Add (instance);
 		instance.gameObject.SetActive (true);
-#if UNITY_EDITOR && DEBUG
+		#if UNITY_EDITOR && DEBUG
 		if (instance.GetScript<IPoolable> () == null) {
 			Debug.LogError (string.Format ("The object {0} must implement the IPoolable interface", instance));
 		}
-#endif	
+		#endif	
 		instance.GetScript<IPoolable> ().OnCreate ();
 	}
 
 	void ReleaseInstance (Transform instance, bool remove=true) {
-#if UNITY_EDITOR && DEBUG
+		#if UNITY_EDITOR && DEBUG
 		if (instance.GetScript<IPoolable> () == null) {
 			Debug.LogError (string.Format ("The object {0} must implement the IPoolable interface", instance));
 		}
-#endif
+		#endif
 		instance.GetScript<IPoolable> ().OnDestroy ();
 		instance.gameObject.SetActive (false);
-		instance.transform.SetParent (transform);
 		if (remove) activeInstances.Remove (instance);
 		inactiveInstances.Push (instance);
 	}
@@ -125,13 +172,12 @@ public class ObjectPool : MonoBehaviour, IPoolable {
 	}
 
 	public static void Destroy<T> (Transform instance) where T : MonoBehaviour {
+		if (!Loaded) return;
 		GetPool<T> ().ReleaseInstance (instance);
 	}
 
 	public static void DestroyAll<T> () where T : MonoBehaviour {
+		if (!Loaded) return;
 		GetPool<T> ().ReleaseAllInstances ();
 	}
-
-	public void OnCreate () {}
-	public void OnDestroy () {}
 }

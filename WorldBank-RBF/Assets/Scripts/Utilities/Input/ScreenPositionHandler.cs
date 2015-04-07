@@ -3,8 +3,18 @@ using System.Collections;
 
 public class ScreenPositionHandler {
 
+	Camera camera;
+	Camera Camera {
+		get {
+			if (camera == null) {
+				camera = Camera.main;
+			}
+			return camera;
+		}
+	}
+
 	public static float PointDirection (Vector3 a, Vector3 b) {
-		return PointDirection (WorldToScreen(a), WorldToScreen (b));
+		return PointDirection (WorldToScreen (a), WorldToScreen (b));
 	}
 
 	public static float PointDirection (Vector2 a, Vector2 b) {
@@ -13,19 +23,19 @@ public class ScreenPositionHandler {
 	}
 
 	public static Vector2 WorldToScreen (Vector3 a) {
-		return Camera.main.WorldToScreenPoint (a);
+		return Camera.WorldToScreenPoint (a);
 	}
 
 	public static Vector3 ScreenToWorld (Vector2 a) {
-		return Camera.main.ScreenToWorldPoint (new Vector3 (a.x, a.y, 10));
+		return Camera.ScreenToWorldPoint (new Vector3 (a.x, a.y, 10));
 	}
 
 	public static Vector3 ScreenToViewport (Vector2 a) {
-		return Camera.main.ScreenToViewportPoint (new Vector3 (a.x, a.y, 10));
+		return Camera.ScreenToViewportPoint (new Vector3 (a.x, a.y, 10));
 	}
 
 	public static Vector3 ViewportToWorld (Vector3 a) {
-		return Camera.main.ViewportToWorldPoint (a);
+		return Camera.ViewportToWorldPoint (a);
 	}
 
 	public static float AngleDifference (float a, float b) {

@@ -45,7 +45,7 @@ public class DepthLayer : MB {
 	void Init () {
 		if (MainCamera != null) {
 			SetScale ();
-			SetPosition ();
+			//SetPosition ();
 		}
 	}
 
