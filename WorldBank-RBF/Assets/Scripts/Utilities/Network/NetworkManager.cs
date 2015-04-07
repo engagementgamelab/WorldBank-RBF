@@ -33,7 +33,8 @@ public class NetworkManager : MonoBehaviour {
     public string DownloadDataFromURL(string url) {
         WebClient client = new WebClient();
 
-        Stream data = client.OpenRead(url);
+        Stream data = client.OpenRead(DataManager.serverRoot + url);
+
         StreamReader reader = new StreamReader(data);
         
         return reader.ReadToEnd();
