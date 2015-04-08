@@ -80,6 +80,7 @@ namespace SimpleJSON
         public virtual JSONNode Remove(JSONNode aNode) { return aNode; }
  
         public virtual IEnumerable<JSONNode> Childs { get { yield break;} }
+        public virtual IEnumerable<string> Keys { get { yield break; } }
         public IEnumerable<JSONNode> DeepChilds
         {
             get
@@ -203,9 +204,7 @@ namespace SimpleJSON
         public override int GetHashCode ()
         {
             return base.GetHashCode();
-        }
- 
- 
+        } 
         #endregion operators
  
         internal static string Escape(string aText)
@@ -807,6 +806,15 @@ namespace SimpleJSON
                 aWriter.Write(K);
                 m_Dict[K].Serialize(aWriter);
             }
+        }
+ 
+        public override IEnumerable<string> Keys
+        {
+         get 
+         {
+             foreach(var key in m_Dict.Keys)
+                 yield return key;
+         }
         }
     } // End of JSONClass
  
