@@ -12,44 +12,6 @@ public class ObjectPool : MonoBehaviour {
 	Stack<Transform> inactiveInstances = new Stack<Transform> ();
 	[SerializeField] Transform prefab;
 
-	/*bool playing = false;
-	bool Playing {
-		get { return playing; }
-		set { playing = value; }
-	}*/
-
-#if UNITY_EDITOR
-	/*void OnEnable () {
-		if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode) {
-			Playing = true;
-		} 
-		if (!Playing) {
-			Debug.Log ("enable");
-		}
-	}
-
-	void OnDisable () {
-		if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode) {
-			Playing = true;
-		}
-
-		if (!Playing) {
-			Debug.Log ("disable");
-		}
-	}*/
-	void OnEnable () {
-		if (!Loaded) return;
-		if (name != "" && prefab != null) {
-			Init (name, prefab);
-		}
-	}
-
-	void OnDisable () {
-		if (!Loaded) return;
-		pools.Remove (name);
-	}
-#endif
-
 	public static bool StartupLoad () {
 		if (LoadChecker.Instance.Loaded)
 			return true;
@@ -137,21 +99,9 @@ public class ObjectPool : MonoBehaviour {
 	void InitializeInstance (Transform instance) {
 		activeInstances.Add (instance);
 		instance.gameObject.SetActive (true);
-		#if UNITY_EDITOR && DEBUG
-		if (instance.GetScript<IPoolable> () == null) {
-			Debug.LogError (string.Format ("The object {0} must implement the IPoolable interface", instance));
-		}
-		#endif	
-		instance.GetScript<IPoolable> ().OnCreate ();
 	}
 
 	void ReleaseInstance (Transform instance, bool remove=true) {
-		#if UNITY_EDITOR && DEBUG
-		if (instance.GetScript<IPoolable> () == null) {
-			Debug.LogError (string.Format ("The object {0} must implement the IPoolable interface", instance));
-		}
-		#endif
-		instance.GetScript<IPoolable> ().OnDestroy ();
 		instance.gameObject.SetActive (false);
 		if (remove) activeInstances.Remove (instance);
 		inactiveInstances.Push (instance);
@@ -172,12 +122,23 @@ public class ObjectPool : MonoBehaviour {
 	}
 
 	public static void Destroy<T> (Transform instance) where T : MonoBehaviour {
-		if (!Loaded) return;
+		#if UNITY_EDITOR
+		StartupLoad ();
+		#endif
+		if (instance == null) return;
 		GetPool<T> ().ReleaseInstance (instance);
 	}
 
 	public static void DestroyAll<T> () where T : MonoBehaviour {
-		if (!Loaded) return;
+		#if UNITY_EDITOR
+		StartupLoad ();
+		#endif
 		GetPool<T> ().ReleaseAllInstances ();
+	}
+
+	void OnDestroy () {
+		if (EditorState.InEditMode) {
+			pools.Remove (name);
+		}
 	}
 }

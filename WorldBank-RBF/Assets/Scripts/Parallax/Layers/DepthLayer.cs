@@ -14,39 +14,27 @@ public class DepthLayer : MB {
 		}
 	}
 
-	float scale = -1;
 	public float Scale {
-		get { 
-			if (scale == -1) {
-				scale = Mathf.Tan (MainCamera.FOV / 2 * Mathf.Deg2Rad) * Position.z * 2;
-			}
-			return scale; 
-		}
+		get { return Mathf.Tan (Camera.main.fieldOfView / 2 * Mathf.Deg2Rad) * Position.z * 2;}
 	}
 
-	float z = 0;
-
-#if UNITY_EDITOR
-	void OnEnable () {
-		z = Position.z;
-		Init ();
+	int index = 0;
+	public int Index {
+		get { return index; }
 	}
 
-	void OnDisable () {
-		Reset ();
-		Transform.SetPositionZ (z);
-	}
-#else
-	void Awake () {
-		Init ();
-	}
-#endif
+	public LayerBackground background;
 
-	void Init () {
-		if (MainCamera != null) {
-			SetScale ();
-			//SetPosition ();
-		}
+	public void Init (int index, float distanceBetweenLayers) {
+		background.Init ();
+		this.index = index;
+		UpdatePosition (distanceBetweenLayers);
+	}
+
+	public void UpdatePosition (float distanceBetweenLayers) {
+		Transform.SetPositionZ ((index+1) * distanceBetweenLayers);
+		SetScale ();
+		SetPosition ();
 	}
 
 	void Reset () {

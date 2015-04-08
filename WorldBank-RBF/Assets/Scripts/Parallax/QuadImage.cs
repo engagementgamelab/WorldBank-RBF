@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class QuadImage : MB, IPoolable {
+public class QuadImage : MB {
 
 	MeshRenderer meshRenderer = null;
 	MeshRenderer MeshRenderer {
@@ -33,9 +33,6 @@ public class QuadImage : MB, IPoolable {
 		MeshRenderer.material = material;
 		ColliderEnabled = colliderEnabled;
 	}
-
-	public void OnCreate () {}
-	public void OnDestroy () {}
 
 	void Awake () {
 		/*Component[] components = GetComponents<Component> ();
