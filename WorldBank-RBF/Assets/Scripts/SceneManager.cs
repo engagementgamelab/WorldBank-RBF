@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-public class GameManager : MonoBehaviour {
+public class SceneManager : MonoBehaviour {
+
+	public string currentCity = "city";
 
 	void Awake () {
 
@@ -33,9 +35,22 @@ public class GameManager : MonoBehaviour {
 		
 		}
 
+		// Set global game data
 		DataManager.SetGameData(gameData);
 
-		Debug.Log( DataManager.GetDataForPhase("phase_one") );
+		// Data tests
+		Dictionary<string, IEnumerator> itr = DataManager.GetDataForCity(currentCity);
+
+        foreach(IEnumerator npcEnum in itr.Values) {
+        	while(npcEnum.MoveNext()) {
+
+        		Debug.Log(DataManager.GetKVP(npcEnum.Current).Value);
+        		Debug.Log(DataManager.GetKVP(npcEnum.Current).Value.GetType());
+
+        	}
+        }
+        
+        // Debug.Log(itr["dialogue"].GetType());
 
 		// create file in Assets/Config/
 		#if !UNITY_WEBPLAYER
@@ -43,7 +58,7 @@ public class GameManager : MonoBehaviour {
 		#endif
 	
 	}
-	
+
 	private void LoadGameConfig()
 	{
 		StreamReader reader = new StreamReader(Application.dataPath + "/Config/api.json");
