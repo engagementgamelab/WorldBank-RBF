@@ -32,17 +32,9 @@ public class LayerManager : MB {
 	List<DepthLayer> layers = new List<DepthLayer> ();
 	float distanceBetweenLayers = 20;
 
-	public List<DepthLayer> SetLayerCount (int newCount, List<DepthLayer> oldLayers) {
-		
-		// TODO: LayerManager doesn't rememer DepthLayers between playmodes
-		if (oldLayers != null) {
-			layers = oldLayers;
-		}
+	public List<DepthLayer> SetLayerCount (int newCount) {
 
-		for (int i = 0; i < layers.Count; i ++) {
-			if (layers[i] == null) continue;
-			ObjectPool.Destroy<DepthLayer> (layers[i].Transform);
-		}
+		ObjectPool.DestroyAll<DepthLayer> ();
 		layers.Clear ();
 
 		for (int i = 0; i < newCount; i ++) {
@@ -52,16 +44,16 @@ public class LayerManager : MB {
 	}
 
 	public void SetDistanceBetweenLayers (float distance) {
-		distanceBetweenLayers = distance;
+		/*distanceBetweenLayers = distance;
 		for (int i = 0; i < layers.Count; i ++) {
 			layers[i].UpdatePosition (distanceBetweenLayers);
-		}
+		}*/
 	}
 
 	void CreateDepthLayer (int index) {
-		DepthLayer depthLayer = ObjectPool.Instantiate<DepthLayer> ();
+		/*DepthLayer depthLayer = ObjectPool.Instantiate<DepthLayer> ();
 		layers.Add (depthLayer);
 		depthLayer.Transform.SetParent (Transform);
-		depthLayer.Init (index, distanceBetweenLayers);
+		depthLayer.Init (index, distanceBetweenLayers);*/
 	}
 }

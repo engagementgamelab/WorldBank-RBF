@@ -1,8 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-[ExecuteInEditMode]
-public class DepthLayer : MB {
+public class DepthLayer : MB, IEditorPoolable {
+
+	public int index;
+	public int Index { 
+		get { return index; }
+		set { index = value; }
+	}
+
+	static float layerSeparation = 20;
+	public static float LayerSeparation {
+		get { return layerSeparation; }
+		set { layerSeparation = value; }
+	}
 
 	MainCamera mainCamera;
 	public MainCamera MainCamera {
@@ -18,21 +30,29 @@ public class DepthLayer : MB {
 		get { return Mathf.Tan (Camera.main.fieldOfView / 2 * Mathf.Deg2Rad) * Position.z * 2;}
 	}
 
-	int index = 0;
-	public int Index {
-		get { return index; }
+	float localSeparation = 0;
+	public float LocalSeparation {
+		get { return localSeparation; }
+		set {
+			float separationConstraint = DepthLayer.LayerSeparation - 1;
+			localSeparation = Mathf.Clamp (value, -separationConstraint, separationConstraint);
+			UpdatePosition ();
+		}
 	}
 
 	public LayerBackground background;
-
-	public void Init (int index, float distanceBetweenLayers) {
-		background.Init ();
-		this.index = index;
-		UpdatePosition (distanceBetweenLayers);
+	public Texture2D BackgroundTexture {
+		get { return background.Texture; }
+		set { background.Texture = value; }
 	}
 
-	public void UpdatePosition (float distanceBetweenLayers) {
-		Transform.SetPositionZ ((index+1) * distanceBetweenLayers);
+	public void Init () {
+		background.Init ();
+		UpdatePosition ();
+	}
+
+	public void UpdatePosition () {
+		Transform.SetPositionZ ((Index+1) * LayerSeparation + LocalSeparation);
 		SetScale ();
 		SetPosition ();
 	}

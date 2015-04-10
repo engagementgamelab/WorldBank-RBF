@@ -6,16 +6,15 @@ using System.Collections.Generic;
 public class ObjectPool : MonoBehaviour {
 
 	public static Dictionary<string, ObjectPool> pools = new Dictionary<string, ObjectPool> ();
-	public static bool Loaded { get { return LoadChecker.Instance.Loaded; } }
 	
-	List<Transform> activeInstances = new List<Transform> ();
 	Stack<Transform> inactiveInstances = new Stack<Transform> ();
+	List<Transform> activeInstances = new List<Transform> ();
+	public List<Transform> ActiveInstances {
+		get { return activeInstances; }
+	}
 	[SerializeField] Transform prefab;
 
 	public static bool StartupLoad () {
-		if (LoadChecker.Instance.Loaded)
-			return true;
-
 		ObjectPool[] pools = Object.FindObjectsOfType (typeof (ObjectPool)) as ObjectPool[];
 		if (pools.Length == 0)
 			return false;
@@ -23,14 +22,16 @@ public class ObjectPool : MonoBehaviour {
 		for (int i = 0; i < pools.Length; i ++) {
 			pools[i].LoadInstances ();
 		}
-		LoadChecker.Instance.Loaded = true;
 		return true;
 	}
 
 	public void LoadInstances () {
+		
+		pools[name] = this;
 		if (activeInstances.Count > 0 || inactiveInstances.Count > 0) {
 			return;
 		}
+
 		System.Type type = System.Type.GetType (name.Substring (0, name.Length-4));
 		MonoBehaviour[] instances = Resources.FindObjectsOfTypeAll (type) as MonoBehaviour[];
 		for (int i = 0; i < instances.Length; i ++) {
@@ -44,7 +45,6 @@ public class ObjectPool : MonoBehaviour {
 				inactiveInstances.Push (t);
 			}
 		}
-		pools[name] = this;
 	}
 
 	public void Init (string name, Transform prefab) {
@@ -122,10 +122,10 @@ public class ObjectPool : MonoBehaviour {
 	}
 
 	public static void Destroy<T> (Transform instance) where T : MonoBehaviour {
+		if (instance == null) return;
 		#if UNITY_EDITOR
 		StartupLoad ();
 		#endif
-		if (instance == null) return;
 		GetPool<T> ().ReleaseInstance (instance);
 	}
 
@@ -134,6 +134,10 @@ public class ObjectPool : MonoBehaviour {
 		StartupLoad ();
 		#endif
 		GetPool<T> ().ReleaseAllInstances ();
+	}
+
+	public static List<Transform> GetInstances<T> () where T : MonoBehaviour {
+		return GetPool<T> ().ActiveInstances;
 	}
 
 	void OnDestroy () {

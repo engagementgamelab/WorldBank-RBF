@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class QuadImage : MB {
+public class QuadImage : MB, IEditorPoolable {
+
+	public int Index { get; set; }
 
 	MeshRenderer meshRenderer = null;
 	MeshRenderer MeshRenderer {
@@ -12,6 +14,11 @@ public class QuadImage : MB {
 			return meshRenderer;
 		}
 		set { meshRenderer = value; }
+	}
+
+	public Material Material {
+		get { return MeshRenderer.material; }
+		set { MeshRenderer.material = value; }
 	}
 
 	BoxCollider boxCollider = null;
@@ -29,15 +36,10 @@ public class QuadImage : MB {
 		set { BoxCollider.enabled = value; }
 	}
 
+	public void Init () {}
+
 	public void Init (Material material, bool colliderEnabled=false) {
 		MeshRenderer.material = material;
 		ColliderEnabled = colliderEnabled;
-	}
-
-	void Awake () {
-		/*Component[] components = GetComponents<Component> ();
-		for (int i = 0; i < components.Length; i ++) {
-			Debug.Log (components[i]);
-		}*/
 	}
 }

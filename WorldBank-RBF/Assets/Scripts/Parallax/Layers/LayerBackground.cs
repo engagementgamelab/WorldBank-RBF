@@ -15,23 +15,31 @@ public class LayerBackground : LayerTexture {
 			tileCount = value; 
 		}
 	}
+
+	public virtual Texture2D Texture {
+		get { return texture; }
+		set {
+			texture = value;
+			for (int i = 0; i < images.Count; i ++) {
+				images[i].Material = Material;
+			}
+		}
+	}
+
 	List<QuadImage> images = new List<QuadImage> ();
 
-	/*protected override void Awake () {
-		base.Awake ();
-		CreateBackgrounds ();
-		DestroyBackgrounds ();
-		CreateBackgrounds ();
-	}*/
-
 	public void Init () {
-		CreateBackgrounds ();
+		DestroyBackgrounds ();
+		QuadImage image = CreateImage (0);
+		images.Add (image);
+		//DestroyBackgrounds ();
+		//CreateBackgrounds ();
 	}
 
 	void CreateBackgrounds () {
 		if (texture == null)
 			return;
-		for (int i = 0; i < tileCount; i ++) {
+		for (int i = 0; i < tileCount+1; i ++) {
 			QuadImage image = CreateImage (i);
 			image.gameObject.layer = Layer;
 			images.Add (image);

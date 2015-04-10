@@ -7,7 +7,7 @@ public class SceneGenerator : EditorWindow {
  
     [MenuItem ("Window/SceneGenerator")]
     static void Init () {
-        GetWindow <SceneGenerator>();
+        GetWindow<SceneGenerator> ();
     }
  
     void OnEnable () {

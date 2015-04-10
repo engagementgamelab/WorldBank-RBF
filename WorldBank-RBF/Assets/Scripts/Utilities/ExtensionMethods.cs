@@ -202,7 +202,8 @@ public static class ExtensionMethods {
 			format == TextureFormat.ASTC_RGBA_6x6 ||
 			format == TextureFormat.ASTC_RGBA_8x8 ||
 			format == TextureFormat.ASTC_RGBA_10x10 ||
-			format == TextureFormat.ASTC_RGBA_12x12
+			format == TextureFormat.ASTC_RGBA_12x12 ||
+			format == TextureFormat.DXT5
 		);
 	}
 }

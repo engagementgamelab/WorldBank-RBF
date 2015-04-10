@@ -12,12 +12,13 @@ public class SceneGeneratorOptions : ScriptableObject {
     int layerCount = 4;
     int prevLayerCount = 4;
 
-    [Range (5, 100)]
-    float distanceBetweenLayers = 20;
-    float prevDistanceBetweenLayers = 20;
+    [Range (2, 20)]
+    int width = 2;
+    int prevWidth = 2;
 
-    List<DepthLayer> layers;// = new List<DepthLayer> ();
+    List<DepthLayer> layers;
     LayerOptions layerOptions;
+    int selectedLayer = -1;
 
     public void OnEnable () {
         hideFlags = HideFlags.HideAndDontSave;
@@ -31,16 +32,22 @@ public class SceneGeneratorOptions : ScriptableObject {
  
     public void OnGUI () {
 
+        if (GUILayout.Button ("Refresh")) {
+            layers = EditorObjectPool.Create<DepthLayer> (layerCount).ConvertAll (x => x.GetScript<DepthLayer> ());
+        }
+
         layerCount = EditorGUILayout.IntSlider ("Layer Count", layerCount, 1, 6);
         if (layerCount != prevLayerCount) {
-            layers = LayerManager.Instance.SetLayerCount (layerCount, layers);
+            layers = EditorObjectPool.Create<DepthLayer> (layerCount).ConvertAll (x => x.GetScript<DepthLayer> ());
             prevLayerCount = layerCount;
         }
 
-        distanceBetweenLayers = EditorGUILayout.Slider ("Distance Between Layers", distanceBetweenLayers, 5, 100);
-        if (distanceBetweenLayers != prevDistanceBetweenLayers) {
-            LayerManager.Instance.SetDistanceBetweenLayers (distanceBetweenLayers);
-            prevDistanceBetweenLayers = distanceBetweenLayers;
+        width = EditorGUILayout.IntSlider ("Width", width, 2, 20);
+        if (width != prevWidth) {
+            foreach (DepthLayer layer in layers) {
+                layer.background.TileCount = width;
+            }
+            prevWidth = width;
         }
 
         GUILayout.Space (space);
@@ -50,8 +57,14 @@ public class SceneGeneratorOptions : ScriptableObject {
             DepthLayer layer = layers[i];
             if (layer == null) continue;
             int layerIndex = layer.Index + 1;
+            if (selectedLayer == i) {
+                GUI.color = Color.green;
+            } else {
+                GUI.color = Color.white;
+            }
             if (GUILayout.Button ("Layer " + layerIndex)) {
                 layerOptions.SetLayer (layer);
+                selectedLayer = i;
             }
         }
         EditorGUILayout.EndHorizontal ();

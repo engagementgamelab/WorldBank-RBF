@@ -6,25 +6,34 @@ using System.Collections;
 public class LayerTexture : LayerComponent {
 
 	public Texture2D texture;
+	public virtual Texture2D Texture {
+		get { return texture; }
+		set {
+			texture = value;
+			if (quadImage != null) {
+				quadImage.Material = Material;
+			}
+		}
+	}
 
 	Material material = null;
 	protected Material Material {
 		get {
-			if (material == null) {
-				#if UNITY_EDITOR
-				if (texture == null) {
-					Debug.LogError (string.Format ("{0} is missing a texture reference", name));
-				}
-				#endif
-				material = MaterialsManager.CreateMaterialFromTexture (texture, texture.format.HasAlpha ());
+			#if UNITY_EDITOR
+			if (texture == null) {
+				Debug.LogError (string.Format ("{0} is missing a texture reference", name));
 			}
+			#endif
+			material = MaterialsManager.CreateMaterialFromTexture (texture, texture.format.HasAlpha ());
 			return material;
 		}
 	}
 
+	QuadImage quadImage;
+
 	protected QuadImage CreateImage (float xPosition, bool colliderEnabled=false) {
 		
-		QuadImage quadImage = ObjectPool.Instantiate<QuadImage> ();
+		quadImage = EditorObjectPool.Create<QuadImage> ();
 		quadImage.Transform.SetParent (Transform);
 		quadImage.Init (Material, colliderEnabled);
 
