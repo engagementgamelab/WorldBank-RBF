@@ -47,7 +47,7 @@ done
 
 wait
 
-git commit --dry-run -am "Dev Server auto-commit for successful Jenkins build $1";
+git commit -am "Dev Server auto-commit for successful Jenkins build $1";
 
 # Logging
 echo "DONE" | tee -a automate.log;

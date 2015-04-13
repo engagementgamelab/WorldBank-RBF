@@ -12,6 +12,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using SimpleJSON;
 
 // TODO: Cleanup!!
@@ -34,6 +35,11 @@ class DataManager {
     {
 
         nodes = JSON.Parse(data);
+
+        // create file in Assets/Config/
+        #if !UNITY_WEBPLAYER
+            File.WriteAllText(Application.dataPath + "/Config/data.json", data); 
+        #endif
 
     }
 
