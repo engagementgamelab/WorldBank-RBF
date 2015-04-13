@@ -9,12 +9,15 @@
 #  Created by Johnny Richardson on 3/30/15.
 # ==============
 
-EXTERNAL_ASSET_DIR="Content/Art/"
-UNITY_ASSET_DIR="WorldBank-RBF/Assets/Textures/"
+EXTERNAL_ASSET_DIR=$2"/Content/Art/"
+UNITY_ASSET_DIR=$2"/WorldBank-RBF/Assets/Textures/"
 
 # Logging
 echo "   " | tee -a automate.log;
 echo "============== Started automation from git commit head ($(git rev-parse HEAD)):" | tee -a automate.log;
+
+# Checkout master branch since we're going to modify it
+git checkout master
 
 # Find all .png files in external dir
 for f in $(find $EXTERNAL_ASSET_DIR -name "*.png")
@@ -30,18 +33,21 @@ do
 	file_no_ext=${file_no_ext##*/};
 
 	# Create path to move file to
-	base_new_path=$UNITY_ASSET_DIR$dir
+	base_new_path="$UNITY_ASSET_DIR$dir";
 	new_path="$base_new_path/$file_no_ext.png";
-
-	echo "Moved $f to $new_path" | tee -a automate.log;
 
 	# Create desination dir if missing
 	mkdir -p $base_new_path;
 
 	# Move file
-	mv $f $new_path;
+	mv $f $new_path && git add -N $new_path;
+	echo "Moved $f to $new_path" | tee -a automate.log;
 
-done
+done  
+
+wait
+
+git commit --dry-run -am "Dev Server auto-commit for successful Jenkins build $1";
 
 # Logging
 echo "DONE" | tee -a automate.log;
