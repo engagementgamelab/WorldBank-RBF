@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// Handles positioning and scaling of QuadImages on a DepthLayer
-// (Must be a child of DepthLayer)
+// Handles positioning and scaling of a QuadImage on a DepthLayer (must be a child of DepthLayer)
+// get rid of this shit !!!
 public class LayerTexture : LayerComponent {
 
 	public Texture2D texture;
@@ -10,9 +10,9 @@ public class LayerTexture : LayerComponent {
 		get { return texture; }
 		set {
 			texture = value;
-			if (quadImage != null) {
+			/*if (quadImage != null) {
 				quadImage.Material = Material;
-			}
+			}*/
 		}
 	}
 
@@ -21,7 +21,8 @@ public class LayerTexture : LayerComponent {
 		get {
 			#if UNITY_EDITOR
 			if (texture == null) {
-				Debug.LogError (string.Format ("{0} is missing a texture reference", name));
+				Debug.LogWarning (string.Format ("{0} is missing a texture reference", name));
+				return null;
 			}
 			#endif
 			material = MaterialsManager.CreateMaterialFromTexture (texture, texture.format.HasAlpha ());
@@ -30,10 +31,17 @@ public class LayerTexture : LayerComponent {
 	}
 
 	QuadImage quadImage;
+	float xPosition;
+	bool colliderEnabled;
 
-	protected QuadImage CreateImage (float xPosition, bool colliderEnabled=false) {
+	/*protected QuadImage CreateImage (float xPosition, bool colliderEnabled=false) {
+		//quadImage = EditorObjectPool.Create<QuadImage> ();
+		quadImage = ObjectPool.Instantiate<QuadImage> ();
+		return RefreshImage ();
+	}
+
+	protected QuadImage RefreshImage () {
 		
-		quadImage = EditorObjectPool.Create<QuadImage> ();
 		quadImage.Transform.SetParent (Transform);
 		quadImage.Init (Material, colliderEnabled);
 
@@ -43,5 +51,5 @@ public class LayerTexture : LayerComponent {
 		quadImage.Transform.SetLocalPosition (new Vector3 (xPosition, bottom, 0));
 
 		return quadImage;
-	}
+	}*/
 }

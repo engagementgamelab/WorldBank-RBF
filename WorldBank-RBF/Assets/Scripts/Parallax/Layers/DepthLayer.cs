@@ -47,6 +47,7 @@ public class DepthLayer : MB, IEditorPoolable {
 	}
 
 	public void Init () {
+		background = CreateChildIfNoneExists<LayerBackground> ();
 		background.Init ();
 		UpdatePosition ();
 	}

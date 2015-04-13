@@ -7,7 +7,6 @@ using UnityEditor;
 public class LayerOptions : ScriptableObject {
 
 	DepthLayer layer = null;
-	int layerIndex = 0;
 
 	float localSeparation = 0;
 	float prevLocalSeparation = 0;
@@ -19,7 +18,6 @@ public class LayerOptions : ScriptableObject {
 
 	public void SetLayer (DepthLayer layer) {
 		this.layer = layer;
-		layerIndex = layer.Index + 1;
 		localSeparation = layer.LocalSeparation;
 		texture = layer.BackgroundTexture;
 		textureField.texture = texture;
@@ -46,9 +44,9 @@ public class LayerOptions : ScriptableObject {
     	}
 
     	GUI.color = Color.white;
-    	/*EditorGUILayout.PropertyField (serializedTextureField.FindProperty ("texture"), new GUIContent("Background Texture"));
+    	EditorGUILayout.PropertyField (serializedTextureField.FindProperty ("texture"), new GUIContent("Background Texture"));
     	serializedTextureField.ApplyModifiedProperties ();
-    	layer.BackgroundTexture = textureField.texture;*/
+    	layer.BackgroundTexture = textureField.texture;
 
     	localSeparation = EditorGUILayout.Slider ("Relative Distance", localSeparation, -distanceConstraint, distanceConstraint);
     	if (localSeparation != prevLocalSeparation) {

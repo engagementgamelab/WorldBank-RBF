@@ -12,9 +12,9 @@ public class SceneGeneratorOptions : ScriptableObject {
     int layerCount = 4;
     int prevLayerCount = 4;
 
-    [Range (2, 20)]
-    int width = 2;
-    int prevWidth = 2;
+    [Range (1, 20)]
+    int width = 1;
+    int prevWidth = 1;
 
     List<DepthLayer> layers;
     LayerOptions layerOptions;
@@ -32,17 +32,31 @@ public class SceneGeneratorOptions : ScriptableObject {
  
     public void OnGUI () {
 
+        EditorGUILayout.BeginHorizontal ();
+        GUI.color = Color.green;
         if (GUILayout.Button ("Refresh")) {
             layers = EditorObjectPool.Create<DepthLayer> (layerCount).ConvertAll (x => x.GetScript<DepthLayer> ());
         }
 
+        GUI.color = Color.yellow;
+        if (GUILayout.Button ("Clean up")) {
+            EditorObjectPool.CleanUp ();
+        }
+
+        GUI.color = Color.red;
+        if (GUILayout.Button ("Clear")) {
+            EditorObjectPool.Clear ();
+        }
+        EditorGUILayout.EndHorizontal ();
+
+        GUI.color = Color.white;
         layerCount = EditorGUILayout.IntSlider ("Layer Count", layerCount, 1, 6);
         if (layerCount != prevLayerCount) {
             layers = EditorObjectPool.Create<DepthLayer> (layerCount).ConvertAll (x => x.GetScript<DepthLayer> ());
             prevLayerCount = layerCount;
         }
 
-        width = EditorGUILayout.IntSlider ("Width", width, 2, 20);
+        width = EditorGUILayout.IntSlider ("Width", width, 1, 20);
         if (width != prevWidth) {
             foreach (DepthLayer layer in layers) {
                 layer.background.TileCount = width;
