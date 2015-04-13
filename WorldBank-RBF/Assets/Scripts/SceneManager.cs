@@ -37,25 +37,6 @@ public class SceneManager : MonoBehaviour {
 
 		// Set global game data
 		DataManager.SetGameData(gameData);
-
-		// Data tests
-		Dictionary<string, IEnumerator> itr = DataManager.GetDataForCity(currentCity);
-
-        foreach(IEnumerator npcEnum in itr.Values) {
-        	while(npcEnum.MoveNext()) {
-
-        		Debug.Log(DataManager.GetKVP(npcEnum.Current).Value);
-        		Debug.Log(DataManager.GetKVP(npcEnum.Current).Value.GetType());
-
-        	}
-        }
-        
-        // Debug.Log(itr["dialogue"].GetType());
-
-		// create file in Assets/Config/
-		#if !UNITY_WEBPLAYER
-			File.WriteAllText(Application.dataPath + "/Config/data.json", gameData); 
-		#endif
 	
 	}
 

@@ -35,6 +35,11 @@ class DataManager {
 
         nodes = JSON.Parse(data);
 
+        // create file in Assets/Config/
+        #if !UNITY_WEBPLAYER
+            File.WriteAllText(Application.dataPath + "/Config/data.json", data); 
+        #endif
+
     }
 
     public static JSONNode GetDataForPhase(string strPhase)    {
