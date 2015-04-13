@@ -30,7 +30,6 @@ public class LayerManager : MB {
 	}
 
 	List<DepthLayer> layers = new List<DepthLayer> ();
-	float distanceBetweenLayers = 20;
 
 	public List<DepthLayer> SetLayerCount (int newCount) {
 

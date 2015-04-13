@@ -69,6 +69,15 @@ public static class ExtensionMethods {
 		return parent;
 	}
 
+	public static T GetChildOfType<T> (this Transform transform) where T : class {
+		foreach (Transform child in transform) {
+			T scr = child.GetScript<T> ();
+			if (scr != null)
+				return scr;
+		}
+		return null;
+	}
+
 	public static void Reset (this Transform transform) {
 		transform.localPosition = Vector3.zero;
 		transform.localEulerAngles = new Vector3 (0, 0, 0);

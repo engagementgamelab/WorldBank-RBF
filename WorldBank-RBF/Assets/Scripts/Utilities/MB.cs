@@ -27,4 +27,14 @@ public class MB : MonoBehaviour {
 		get { return Transform.localScale; }
 		set { Transform.localScale = value; }
 	}
+
+	// Is this the best place for this function?
+	protected T CreateChildIfNoneExists<T> () where T : MB, IEditorPoolable {
+		T t = Transform.GetChildOfType<T> ();
+		if (t == null) {
+			t = EditorObjectPool.Create<T> ();
+			t.Transform.SetParent (Transform);
+		}
+		return t;
+	}
 }

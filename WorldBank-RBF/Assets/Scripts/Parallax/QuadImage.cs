@@ -5,6 +5,22 @@ public class QuadImage : MB, IEditorPoolable {
 
 	public int Index { get; set; }
 
+	Texture2D texture;
+	public Texture2D Texture {
+		get { return texture; }
+		set { 
+			texture = value;
+			if (texture != null)
+				Material = MaterialsManager.CreateMaterialFromTexture (texture, texture.format.HasAlpha ());
+			OnSetTexture ();
+		}
+	}
+
+	protected Material Material {
+		get { return MeshRenderer.sharedMaterial; }
+		set { MeshRenderer.sharedMaterial = value; }
+	}
+
 	MeshRenderer meshRenderer = null;
 	MeshRenderer MeshRenderer {
 		get {
@@ -14,11 +30,6 @@ public class QuadImage : MB, IEditorPoolable {
 			return meshRenderer;
 		}
 		set { meshRenderer = value; }
-	}
-
-	public Material Material {
-		get { return MeshRenderer.material; }
-		set { MeshRenderer.material = value; }
 	}
 
 	BoxCollider boxCollider = null;
@@ -36,10 +47,6 @@ public class QuadImage : MB, IEditorPoolable {
 		set { BoxCollider.enabled = value; }
 	}
 
-	public void Init () {}
-
-	public void Init (Material material, bool colliderEnabled=false) {
-		MeshRenderer.material = material;
-		ColliderEnabled = colliderEnabled;
-	}
+	public virtual void Init () {}
+	protected virtual void OnSetTexture () {}
 }

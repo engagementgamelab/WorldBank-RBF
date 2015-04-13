@@ -42,6 +42,18 @@ public class EditorObjectPool : MonoBehaviour {
 		ObjectPool.Destroy<T> (LastInList<T> ());
 	}
 
+	public static void Destroy<T> (Transform transform) where T : MonoBehaviour, IEditorPoolable {
+		ObjectPool.Destroy<T> (transform);
+	}
+
+	public static void Clear () {
+		ObjectPool.Clear ();
+	}
+
+	public static void CleanUp () {
+		ObjectPool.CleanUp ();
+	}
+
 	static List<Transform> GetObjectsOfType<T> () where T : MonoBehaviour, IEditorPoolable {
 		return ObjectPool.GetInstances<T> ();
 	}

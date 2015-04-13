@@ -8,10 +8,15 @@ public class ObjectPool : MonoBehaviour {
 	public static Dictionary<string, ObjectPool> pools = new Dictionary<string, ObjectPool> ();
 	
 	Stack<Transform> inactiveInstances = new Stack<Transform> ();
+	public Stack<Transform> InactiveInstances {
+		get { return inactiveInstances; }
+	}
+
 	List<Transform> activeInstances = new List<Transform> ();
 	public List<Transform> ActiveInstances {
 		get { return activeInstances; }
 	}
+
 	[SerializeField] Transform prefab;
 
 	public static bool StartupLoad () {
@@ -73,6 +78,10 @@ public class ObjectPool : MonoBehaviour {
 
 	static Transform CreatePrefab (string prefabName) {
 		GameObject go = Instantiate (Resources.Load ("Prefabs/" + prefabName)) as GameObject;
+		#if UNITY_EDITOR
+		if (go == null)
+			Debug.Log (string.Format ("{0} was not found. Is it in the Resources/Prefabs directory?", prefabName));
+		#endif
 		return go.transform;
 	}
 
@@ -140,9 +149,65 @@ public class ObjectPool : MonoBehaviour {
 		return GetPool<T> ().ActiveInstances;
 	}
 
+	// Destroys all pooled objects and pools
+	public static void Clear () {
+		
+		List<GameObject> poolsToDestroy = new List<GameObject> ();
+
+		// Destroy instances in each pool first
+		foreach (var keyval in pools) {
+			ObjectPool pool = keyval.Value;
+			List<Transform> instances = pool.ActiveInstances;
+			for (int i = 0; i < pool.ActiveInstances.Count; i ++) {
+				if (instances[i] != null)
+					DestroyImmediate (instances[i].gameObject);
+			}
+			foreach (Transform t in pool.InactiveInstances) {
+				if (t != null)
+					DestroyImmediate (t.gameObject);
+			}
+			poolsToDestroy.Add (pool.gameObject);
+		}
+
+		// Then destroy all the pools
+		int poolCount = poolsToDestroy.Count;
+		for (int i = 0; i < poolCount; i ++) {
+			DestroyImmediate (poolsToDestroy[i]);
+		}
+		pools.Clear ();
+	}
+
+	// Destroys all inactive instances and empty pools
+	public static void CleanUp () {
+		
+		List<GameObject> poolsToDestroy = new List<GameObject> ();
+
+		// Destroy inactive instances in each pool first
+		foreach (var keyval in pools) {
+			ObjectPool pool = keyval.Value;
+			foreach (Transform t in pool.InactiveInstances) {
+				if (t != null)
+					DestroyImmediate (t.gameObject);
+			}
+			pool.InactiveInstances.Clear ();
+			if (pool.ActiveInstances.Count == 0) {
+				pools[keyval.Key] = null;
+				poolsToDestroy.Add (pool.gameObject);
+			}
+		}
+
+		// Then destroy any pools that are empty
+		int poolCount = poolsToDestroy.Count;
+		for (int i = 0; i < poolCount; i ++) {
+			DestroyImmediate (poolsToDestroy[i]);
+		}
+	}
+
+	#if UNITY_EDITOR
 	void OnDestroy () {
 		if (EditorState.InEditMode) {
 			pools.Remove (name);
 		}
 	}
+	#endif
 }
