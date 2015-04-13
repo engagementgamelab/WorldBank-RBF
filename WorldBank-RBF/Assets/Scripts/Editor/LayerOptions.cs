@@ -12,17 +12,20 @@ public class LayerOptions : ScriptableObject {
 	float prevLocalSeparation = 0;
 	float distanceConstraint = -1;
 
-	Texture2D texture;
-	TextureField textureField;
+    List<Texture2D> textures;
+    TextureField textureField;
     SerializedObject serializedTextureField;
+    SerializedProperty textureProp;
 
 	public void SetLayer (DepthLayer layer) {
 		this.layer = layer;
+		
+		textureField = CreateInstance ("TextureField") as TextureField;
+		serializedTextureField = new UnityEditor.SerializedObject (textureField);
+		textureProp = serializedTextureField.FindProperty ("textures");
+		
 		localSeparation = layer.LocalSeparation;
-		texture = layer.BackgroundTexture;
-		textureField.texture = texture;
-		/*serializedTextureField.FindProperty ("texture");
-		serializedTextureField.ApplyModifiedProperties ();*/
+		textureField.textures = layer.BackgroundTextures;
 	}
 
 	public void OnEnable () {
@@ -30,11 +33,12 @@ public class LayerOptions : ScriptableObject {
         if (distanceConstraint == -1)
         	distanceConstraint = DepthLayer.LayerSeparation-1;
         if (textureField == null) {
-            textureField = ScriptableObject.CreateInstance<TextureField> ();
+        	textureField = CreateInstance ("TextureField") as TextureField;
         }
         if (serializedTextureField == null) {
-            serializedTextureField = new UnityEditor.SerializedObject (textureField);
+        	serializedTextureField = new UnityEditor.SerializedObject (textureField);
         }
+        textureProp = serializedTextureField.FindProperty ("textures");
     }
 
     public void OnGUI () {
@@ -44,9 +48,12 @@ public class LayerOptions : ScriptableObject {
     	}
 
     	GUI.color = Color.white;
-    	EditorGUILayout.PropertyField (serializedTextureField.FindProperty ("texture"), new GUIContent("Background Texture"));
-    	serializedTextureField.ApplyModifiedProperties ();
-    	layer.BackgroundTexture = textureField.texture;
+
+		serializedTextureField.Update ();
+		//EditorGUILayout.PropertyField (serializedTextureField.FindProperty ("textures"), new GUIContent ("Textures"), true);
+		EditorGUILayout.PropertyField (textureProp, new GUIContent ("Textures"), true);
+		serializedTextureField.ApplyModifiedProperties ();
+		layer.BackgroundTextures = textureField.textures;
 
     	localSeparation = EditorGUILayout.Slider ("Relative Distance", localSeparation, -distanceConstraint, distanceConstraint);
     	if (localSeparation != prevLocalSeparation) {

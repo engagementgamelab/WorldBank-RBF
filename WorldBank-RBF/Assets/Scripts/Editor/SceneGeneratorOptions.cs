@@ -29,7 +29,7 @@ public class SceneGeneratorOptions : ScriptableObject {
             layers = new List<DepthLayer> ();
         }
     }
- 
+
     public void OnGUI () {
 
         EditorGUILayout.BeginHorizontal ();
@@ -56,6 +56,7 @@ public class SceneGeneratorOptions : ScriptableObject {
             prevLayerCount = layerCount;
         }
 
+        /*
         width = EditorGUILayout.IntSlider ("Width", width, 1, 20);
         if (width != prevWidth) {
             foreach (DepthLayer layer in layers) {
@@ -63,10 +64,14 @@ public class SceneGeneratorOptions : ScriptableObject {
             }
             prevWidth = width;
         }
+        */
 
         GUILayout.Space (space);
         GUILayout.Label ("Select a layer to edit", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal ();
+        if (layers.Count == 0 || layers.Count > 0 && layers[0] == null) {
+            layers = ObjectPool.GetInstances<DepthLayer> ().ConvertAll (x => x.GetScript<DepthLayer> ());
+        }
         for (int i = 0; i < layers.Count; i ++) {
             DepthLayer layer = layers[i];
             if (layer == null) continue;

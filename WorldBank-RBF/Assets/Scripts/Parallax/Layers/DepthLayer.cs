@@ -46,6 +46,11 @@ public class DepthLayer : MB, IEditorPoolable {
 		set { background.Texture = value; }
 	}
 
+	public List<Texture2D> BackgroundTextures {
+		get { return background.Textures; }
+		set { background.Textures = value; }
+	}
+
 	public void Init () {
 		background = CreateChildIfNoneExists<LayerBackground> ();
 		background.Init ();
