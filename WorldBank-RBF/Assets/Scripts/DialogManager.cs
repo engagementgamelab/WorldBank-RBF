@@ -11,20 +11,20 @@ public class DialogManager : MonoBehaviour {
 	public void LoadDialogForCity(string city)
 	{
 		// Data tests
-		Dictionary<string, IEnumerator> itr = DataManager.GetDataForCity(city);
+		// Dictionary<string, IEnumerator> itr = DataManager.GetDataForCity(city);
 
-        foreach(IEnumerator npcEnum in itr.Values) {
+  //       foreach(IEnumerator npcEnum in itr.Values) {
 
-        	GenerateNPC(npcEnum);
+  //       	GenerateNPC(npcEnum);
 
-        	while(npcEnum.MoveNext()) {
+  //       	while(npcEnum.MoveNext()) {
 
-        		Debug.Log(DataManager.GetKVP(npcEnum.Current));
-        		// Debug.Log(DataManager.GetKVP(npcEnum.Current).Value.GetType());
-        		// MyButton.onClick.AddListener(() => { MyFunction("string literal"); MyOtherFunction(MyButton.name); });
+  //       		Debug.Log(DataManager.GetKVP(npcEnum.Current));
+  //       		// Debug.Log(DataManager.GetKVP(npcEnum.Current).Value.GetType());
+  //       		// MyButton.onClick.AddListener(() => { MyFunction("string literal"); MyOtherFunction(MyButton.name); });
 
-        	}
-        }
+  //       	}
+        // }
 
 	}
 
