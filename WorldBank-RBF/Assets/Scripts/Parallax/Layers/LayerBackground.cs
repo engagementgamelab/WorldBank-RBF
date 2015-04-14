@@ -10,7 +10,7 @@ public class LayerBackground : MB, IEditorPoolable {
 	public int TileCount {
 		get { return tileCount; }
 		set { 
-			tileCount = value;
+			tileCount = Mathf.Max (1, value);
 			DestroyBackgrounds ();
 			CreateBackgrounds ();
 		}
@@ -29,8 +29,19 @@ public class LayerBackground : MB, IEditorPoolable {
 
 	List<LayerImage> images = new List<LayerImage> ();
 	List<Texture2D> textures = new List<Texture2D> ();
+	public List<Texture2D> Textures {
+		get { return textures; }
+		set { 
+			textures = value;
+			TileCount = textures.Count;
+			for (int i = 0; i < textures.Count; i ++) {
+				images[i].Texture = textures[i];
+			}
+		}
+	}
 	
 	public void Init () {
+		Debug.Log ("init");
 		LayerImage image = Transform.GetChildOfType<LayerImage> ();
 		if (image != null) {
 			image.SetParent (Transform);
@@ -62,5 +73,17 @@ public class LayerBackground : MB, IEditorPoolable {
 		image.SetParent (Transform, xPosition);
 		image.Texture = Texture;
 		images.Add (image);
+	}
+
+	void OnEnable () {
+		/*Debug.Log ("enable");
+		Debug.Log (images.Count);
+		if (images.Count == 0) {
+			foreach (Transform child in Transform) {
+				images.Add (child.GetScript<LayerImage> ());
+			}
+		}
+		Debug.Log (images.Count);
+		Debug.Log ("--------");*/
 	}
 }
