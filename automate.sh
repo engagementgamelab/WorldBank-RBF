@@ -21,6 +21,7 @@ echo "==============" | tee -a automate.log;
 echo "$(date +"%D %r")" | tee -a automate.log;
 echo "==============" | tee -a automate.log;
 echo "Started automation from git commit head ($(git rev-parse HEAD)):" | tee -a automate.log;
+echo "______________" | tee -a automate.log;
 
 # Checkout master branch since we're going to modify it
 git checkout master
