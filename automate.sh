@@ -54,7 +54,7 @@ done
 
 wait
 
-git commit -am "Dev Server auto-commit for successful Jenkins build $1";
+git commit -am "Dev Server auto-commit for successful build ($1); Please see automate.log for details.";
 
 # Logging
 echo "DONE" | tee -a automate.log;
