@@ -18,7 +18,7 @@ UNITY_ASSET_DIR=$2"/WorldBank-RBF/Assets/Textures/"
 # Logging
 echo "   " | tee -a automate.log;
 echo "==============" | tee -a automate.log;
-echo "$(date +"%D %H-%M")" | tee -a automate.log;
+echo "$(date +"%D %r")" | tee -a automate.log;
 echo "==============" | tee -a automate.log;
 echo "Started automation from git commit head ($(git rev-parse HEAD)):" | tee -a automate.log;
 
