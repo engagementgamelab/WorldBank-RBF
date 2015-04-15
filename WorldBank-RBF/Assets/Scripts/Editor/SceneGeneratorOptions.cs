@@ -20,6 +20,8 @@ public class SceneGeneratorOptions : ScriptableObject {
     LayerOptions layerOptions;
     int selectedLayer = -1;
 
+    List<LayerSettings> layerSettings = new List<LayerSettings> ();    
+
     public void OnEnable () {
         hideFlags = HideFlags.HideAndDontSave;
         if (layerOptions == null) {
@@ -35,7 +37,7 @@ public class SceneGeneratorOptions : ScriptableObject {
         EditorGUILayout.BeginHorizontal ();
         GUI.color = Color.green;
         if (GUILayout.Button ("Refresh")) {
-            layers = EditorObjectPool.Create<DepthLayer> (layerCount).ConvertAll (x => x.GetScript<DepthLayer> ());
+            Refresh ();
         }
 
         GUI.color = Color.yellow;
@@ -52,43 +54,78 @@ public class SceneGeneratorOptions : ScriptableObject {
         GUI.color = Color.white;
         layerCount = EditorGUILayout.IntSlider ("Layer Count", layerCount, 1, 6);
         if (layerCount != prevLayerCount) {
-            layers = EditorObjectPool.Create<DepthLayer> (layerCount).ConvertAll (x => x.GetScript<DepthLayer> ());
+            Refresh ();
             prevLayerCount = layerCount;
         }
-
-        /*
-        width = EditorGUILayout.IntSlider ("Width", width, 1, 20);
-        if (width != prevWidth) {
-            foreach (DepthLayer layer in layers) {
-                layer.background.TileCount = width;
-            }
-            prevWidth = width;
-        }
-        */
 
         GUILayout.Space (space);
         GUILayout.Label ("Select a layer to edit", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal ();
-        if (layers.Count == 0 || layers.Count > 0 && layers[0] == null) {
-            layers = ObjectPool.GetInstances<DepthLayer> ().ConvertAll (x => x.GetScript<DepthLayer> ());
-        }
-        for (int i = 0; i < layers.Count; i ++) {
-            DepthLayer layer = layers[i];
-            if (layer == null) continue;
-            int layerIndex = layer.Index + 1;
+        for (int i = 0; i < layerCount; i ++) {
+            LayerSettings settings = layerSettings[i];
+            if (settings == null) continue;
+            int layerIndex = settings.Index+1;
             if (selectedLayer == i) {
                 GUI.color = Color.green;
             } else {
                 GUI.color = Color.white;
             }
             if (GUILayout.Button ("Layer " + layerIndex)) {
-                layerOptions.SetLayer (layer);
+
+                // Unselect previously selected layer, then select this one
+                if (selectedLayer != -1) {
+                    layerSettings[selectedLayer].Selected = false;
+                }
+                settings.Selected = true;
                 selectedLayer = i;
+                layerOptions.SetLayerSettings (settings);
             }
         }
         EditorGUILayout.EndHorizontal ();
-        GUILayout.Space (space);
 
         layerOptions.OnGUI ();
+    }
+
+    public void Refresh () {
+        CreateLayerSettings ();
+        RefreshLayers ();
+        SetSelectedLayer ();
+    }
+
+    void CreateLayerSettings () {
+        layerSettings = ObjectPool.GetInstances<LayerSettings> ().ConvertAll (x => x.GetScript<LayerSettings> ());
+        layerSettings = OrderLayerSettings ();
+        while (layerSettings.Count < layerCount) {
+            LayerSettings settings = ObjectPool.Instantiate<LayerSettings> ();
+            layerSettings.Add (settings);
+            settings.Init (layerSettings.Count-1);
+        }
+    }
+
+    void RefreshLayers () {
+        layers = EditorObjectPool.Create<DepthLayer> (layerCount).ConvertAll (x => x.GetScript<DepthLayer> ());
+        for (int i = 0; i < layerCount; i ++) {
+            DepthLayer layer = layers[i];
+            layer.LayerSettings = layerSettings[layer.Index];
+        }        
+    }
+
+    void SetSelectedLayer () {
+        selectedLayer = -1;
+        for (int i = 0; i < layerCount; i ++) {
+            LayerSettings settings = layerSettings[i];
+            if (settings.Selected) {
+                selectedLayer = i;
+                layerOptions.SetLayerSettings (settings);
+            }
+        }
+    }
+
+    List<LayerSettings> OrderLayerSettings () {
+        List<LayerSettings> orderedSettings = new List<LayerSettings> (new LayerSettings[layerSettings.Count]);
+        for (int i = 0; i < layerSettings.Count; i ++) {
+            orderedSettings[layerSettings[i].Index] = layerSettings[i];
+        }
+        return orderedSettings;
     }
 }
