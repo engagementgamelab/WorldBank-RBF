@@ -27,8 +27,8 @@ public class LayerBackground : MB, IEditorPoolable {
 		}
 	}
 
-	List<LayerImage> images = new List<LayerImage> ();
-	List<Texture2D> textures = new List<Texture2D> ();
+	[SerializeField, HideInInspector] List<LayerImage> images = new List<LayerImage> ();
+	[SerializeField, HideInInspector] List<Texture2D> textures = new List<Texture2D> ();
 	public List<Texture2D> Textures {
 		get { return textures; }
 		set { 
@@ -41,7 +41,6 @@ public class LayerBackground : MB, IEditorPoolable {
 	}
 	
 	public void Init () {
-		Debug.Log ("init");
 		LayerImage image = Transform.GetChildOfType<LayerImage> ();
 		if (image != null) {
 			image.SetParent (Transform);
@@ -73,17 +72,5 @@ public class LayerBackground : MB, IEditorPoolable {
 		image.SetParent (Transform, xPosition);
 		image.Texture = Texture;
 		images.Add (image);
-	}
-
-	void OnEnable () {
-		/*Debug.Log ("enable");
-		Debug.Log (images.Count);
-		if (images.Count == 0) {
-			foreach (Transform child in Transform) {
-				images.Add (child.GetScript<LayerImage> ());
-			}
-		}
-		Debug.Log (images.Count);
-		Debug.Log ("--------");*/
 	}
 }
