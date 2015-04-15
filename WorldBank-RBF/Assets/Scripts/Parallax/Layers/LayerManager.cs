@@ -1,58 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using JsonFx.Json;
+using System.IO;
 
 public class LayerManager : MB {
 
-	static LayerManager instance = null;
-	public static LayerManager Instance {
-		get {
-			if (instance == null) {
-				instance = GameObject.FindObjectOfType (typeof (LayerManager)) as LayerManager;
-			}
-			return instance;
-		}
+	void Load () {
+		//JsonWriter writer = new JsonWriter (new DataWriterSettings ());
 	}
 
-	public float distance = -1;
-	public float Distance {
-		get {
-			if (distance == -1) {
-				float d = 0;
-				for (int i = 0; i < layers.Count; i ++) {
-					float z = layers[i].Scale;
-					if (d < z) d = z;
-				}
-				distance = d;
-			}
-			return distance;
-		}
+	void Save () {
+		List<LayerSettingsJson> layers = ObjectPool.GetInstances<LayerSettings> ().ConvertAll (x => x.GetScript<LayerSettings> ().Json);
+		PhaseOne phaseOne = new PhaseOne (layers);
+		string PATH = Application.dataPath + "/Config/";
+		string fileName = "phase_one.json";
+		string data = JsonWriter.Serialize(phaseOne);
+        if (!Directory.Exists(PATH)){
+            Directory.CreateDirectory(PATH);
+        }
+        var streamWriter = new StreamWriter(PATH + fileName);
+        streamWriter.Write(data);
+        streamWriter.Close();
 	}
 
-	List<DepthLayer> layers = new List<DepthLayer> ();
-
-	public List<DepthLayer> SetLayerCount (int newCount) {
-
-		ObjectPool.DestroyAll<DepthLayer> ();
-		layers.Clear ();
-
-		for (int i = 0; i < newCount; i ++) {
-			CreateDepthLayer (i);
-		}
-		return layers;
+	void OnGUI () {
+		if (GUILayout.Button("SAVE")){
+            Save ();
+        }
 	}
+}
 
-	public void SetDistanceBetweenLayers (float distance) {
-		/*distanceBetweenLayers = distance;
-		for (int i = 0; i < layers.Count; i ++) {
-			layers[i].UpdatePosition (distanceBetweenLayers);
-		}*/
-	}
+public class PhaseOne {
 
-	void CreateDepthLayer (int index) {
-		/*DepthLayer depthLayer = ObjectPool.Instantiate<DepthLayer> ();
-		layers.Add (depthLayer);
-		depthLayer.Transform.SetParent (Transform);
-		depthLayer.Init (index, distanceBetweenLayers);*/
+	List<LayerSettingsJson> layers;
+
+	public PhaseOne (List<LayerSettingsJson> layers) {
+		this.layers = layers;
 	}
 }

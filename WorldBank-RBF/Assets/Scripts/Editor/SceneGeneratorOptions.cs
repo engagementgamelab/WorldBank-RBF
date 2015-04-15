@@ -12,10 +12,6 @@ public class SceneGeneratorOptions : ScriptableObject {
     int layerCount = 4;
     int prevLayerCount = 4;
 
-    [Range (1, 20)]
-    int width = 1;
-    int prevWidth = 1;
-
     List<DepthLayer> layers;
     LayerOptions layerOptions;
     int selectedLayer = -1;

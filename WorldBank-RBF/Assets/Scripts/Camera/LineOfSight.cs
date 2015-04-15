@@ -39,7 +39,7 @@ public class LineOfSight : MB {
 			Mathf.Sin (angle * Mathf.Deg2Rad),
 			Mathf.Cos (angle * Mathf.Deg2Rad)
 		);
-		distance = LayerManager.Instance.Distance;
+		//distance = LayerManager.Instance.Distance;
 	}
 
 	void Update () {

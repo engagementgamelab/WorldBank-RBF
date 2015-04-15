@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using JsonFx.Json;
 
 public delegate void OnUpdateSettings ();
 
@@ -33,6 +36,10 @@ public class LayerSettings : MonoBehaviour {
 		}
 	}
 
+	public LayerSettingsJson Json {
+		get { return new LayerSettingsJson (Index, LocalSeparation, BackgroundTextures); }
+	}
+
 	public OnUpdateSettings onUpdateSettings;
 
 	void Awake () {
@@ -47,5 +54,18 @@ public class LayerSettings : MonoBehaviour {
 		if (onUpdateSettings != null) {
 			onUpdateSettings ();
 		}
+	}
+}
+
+public class LayerSettingsJson {
+
+	int index;
+	float localSeparation;
+	List<Texture2D> backgroundTextures;
+
+	public LayerSettingsJson (int index, float localSeparation, List<Texture2D> backgroundTextures) {
+		this.index = index;
+		this.localSeparation = localSeparation;
+		this.backgroundTextures = backgroundTextures;
 	}
 }
