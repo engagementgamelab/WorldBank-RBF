@@ -20,21 +20,25 @@ class DataManager {
 
     public static string serverRoot;
 
-    public class TestClass {
-
-        public string test { get; set; }
-        public string hi { get; set; }
-
-    }
-
+    private static JsonReaderSettings _readerSettings = new JsonReaderSettings();
+    private static GameData currentGameData;
+        
     public class GameData {
 
         public Character[] characters { get; set; }
-        public Dictionary<string, object> phase_one { get; set; }
+		public PhaseOne phase_one { get; set; }
         public Dictionary<string, object> phase_two { get; set; }
 
     }
 
+    [System.Serializable]
+    public class CityStruct {
+
+        public Dictionary<string, object> city = new Dictionary<string, object>();
+
+    }
+
+    [System.Serializable]
     public class City {
 
         public string symbol { get; set; }
@@ -46,7 +50,8 @@ class DataManager {
     public class NPC {
 
         public string symbol { get; set; }
-        public List<string> dialogue = new List<string>();
+        public string character { get; set; }
+        public List<Dictionary<string, object>> dialogue = new List<Dictionary<string, object>>();
 
     }
 
@@ -59,35 +64,38 @@ class DataManager {
 
     }
 
+    [System.Serializable]
+    public class PhaseOne {
+
+        public List<Dictionary<string, object>>[] city { get; set; }
+
+    }
+
     public class Characters {
-        public List<Character> chars = new List<Character>();
+        public List<Dictionary<string, object>> dialogue = new List<Dictionary<string, object>>();
     }
 
     public static void SetGameConfig(string data)
     {
-        // JSONNode configJson = JSON.Parse(data);
+        _readerSettings.TypeHintName = "__type";
 
-        // // Debug.Log(configJson);
-        
-        // serverRoot = configJson["server_root"];
+        JsonReader reader = new JsonReader(data, _readerSettings);
+        Dictionary<string, object> configDict = (Dictionary<string, object>)reader.Deserialize();
+
+        serverRoot = configDict["server_root"].ToString();
 
     }
 
     public static void SetGameData(string data)
     {
-
-        JsonReaderSettings readerSettings = new JsonReaderSettings();
-        readerSettings.TypeHintName = "__type";
         
-        JsonReader reader = new JsonReader(data, readerSettings);
+        JsonReader reader = new JsonReader(data, _readerSettings);
 
-        // nodes = JSON.Parse(data);
-        var deserialized = JsonReader.Deserialize<GameData>(data);
-        Dictionary<string, object> dict = (Dictionary<string, object>)reader.Deserialize();
+        currentGameData = JsonReader.Deserialize<GameData>(data);
 
-        Debug.Log(deserialized.characters[0].symbol);
-        Debug.Log(deserialized.phase_one);
-        Debug.Log(deserialized.phase_two);
+        Debug.Log(currentGameData.characters[0].symbol);
+        Debug.Log(currentGameData.phase_one);
+        Debug.Log(currentGameData.phase_two);
 
         // create file in Assets/Config/
         #if !UNITY_WEBPLAYER
@@ -97,12 +105,10 @@ class DataManager {
     }
 
 
-    public static Dictionary<string, string> GetDataForCity(string strCityName)    {
-
-        Dictionary<string, string> dictCityData = new Dictionary<string, string>();
-
+    // public static Dictionary<string, object> GetDataForCity(string strCityName)    {
         
-        return dictCityData;
-    }
+    //     return currentGameData.phase_one[strCityName];
+
+    // }
     
 }
