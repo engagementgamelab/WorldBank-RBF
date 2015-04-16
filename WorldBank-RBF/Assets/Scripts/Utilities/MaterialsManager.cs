@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 
 public class MaterialsManager {
 
+	static string PATH = "Assets/Materials/";
+
 	public static Material CreateMaterialFromTexture (Texture2D texture, bool transparent=true) {
+		Material material = AssetDatabase.LoadAssetAtPath (PATH + texture.name + ".mat", typeof (Material)) as Material;
+		if (material != null) {
+			return material;
+		}
 		Shader shader = Shader.Find ("Standard");
 		Material m = new Material (shader);
 		if (transparent) {
@@ -20,6 +27,7 @@ public class MaterialsManager {
 		}
 		m.SetFloat ("_Glossiness", 0);
 		m.mainTexture = texture;
+		AssetDatabase.CreateAsset (m, PATH + texture.name + ".mat");
 		return m;
 	}
 }

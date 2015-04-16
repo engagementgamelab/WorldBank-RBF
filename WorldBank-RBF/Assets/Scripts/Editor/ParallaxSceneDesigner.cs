@@ -1,30 +1,30 @@
 ﻿using UnityEngine;
 using UnityEditor;
  
-public class SceneGenerator : EditorWindow {
+public class ParallaxSceneDesigner : EditorWindow {
 
-    SceneGeneratorOptions options;
+    ParallaxSceneDesignerOptions options;
     bool refresh = false;
  
-    [MenuItem ("Window/SceneGenerator")]
+    [MenuItem ("Window/ParallaxSceneDesigner")]
     static void Init () {
-        GetWindow<SceneGenerator> ();
+        GetWindow<ParallaxSceneDesigner> ();
     }
  
     void OnEnable () {
         hideFlags = HideFlags.HideAndDontSave;
         if (options == null)
-            options = CreateInstance ("SceneGeneratorOptions") as SceneGeneratorOptions;
+            options = CreateInstance ("ParallaxSceneDesignerOptions") as ParallaxSceneDesignerOptions;
     }
 
     void OnGUI () {
         if (!EditorState.InEditMode) {
-            GUILayout.Label ("Window disabled in Play Mode");
+            GUILayout.Label ("Window disabled in Play Mode", EditorStyles.boldLabel);
             refresh = true;
             return;
         }
 
-        GUILayout.Label ("Options", EditorStyles.boldLabel);
+        GUILayout.Label ("Parallax Scene Designer", EditorStyles.largeLabel);
         if (refresh) {
             options.Refresh ();
             refresh = false;
