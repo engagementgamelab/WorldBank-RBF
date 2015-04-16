@@ -26,15 +26,17 @@ class DataManager {
     public class GameData {
 
         public Character[] characters { get; set; }
-		public PhaseOne phase_one { get; set; }
+		public Dictionary<string, NPC[]> phase_one { get; set; }
         public Dictionary<string, object> phase_two { get; set; }
 
     }
 
     [System.Serializable]
-    public class CityStruct {
+    public class Character {
 
-        public Dictionary<string, object> city = new Dictionary<string, object>();
+        public string symbol { get; set; }
+        public string display_name { get; set; }
+        public string description { get; set; }
 
     }
 
@@ -51,25 +53,21 @@ class DataManager {
 
         public string symbol { get; set; }
         public string character { get; set; }
-        public List<Dictionary<string, object>> dialogue = new List<Dictionary<string, object>>();
+		public Dictionary<string, Dictionary<string, string>> dialogue { get; set; }
 
     }
 
-    [System.Serializable]
-    public class Character {
+    public class Dialogue {
 
         public string symbol { get; set; }
-        public string display_name { get; set; }
-        public string description { get; set; }
+        public string character { get; set; }
+        public Dictionary<string, object> dialogue { get; set; }
 
     }
 
-    [System.Serializable]
-    public class PhaseOne {
-
-        public List<Dictionary<string, object>>[] city { get; set; }
-
-    }
+	public class PhaseOne {
+		public Dictionary<string, object>[] npcs { get; set; }
+	}
 
     public class Characters {
         public List<Dictionary<string, object>> dialogue = new List<Dictionary<string, object>>();
@@ -93,10 +91,6 @@ class DataManager {
 
         currentGameData = JsonReader.Deserialize<GameData>(data);
 
-        Debug.Log(currentGameData.characters[0].symbol);
-        Debug.Log(currentGameData.phase_one);
-        Debug.Log(currentGameData.phase_two);
-
         // create file in Assets/Config/
         #if !UNITY_WEBPLAYER
             File.WriteAllText(Application.dataPath + "/Config/data.json", data); 
@@ -105,10 +99,21 @@ class DataManager {
     }
 
 
-    // public static Dictionary<string, object> GetDataForCity(string strCityName)    {
+    public static NPC[] GetDataForCity(string strCityName)    {
         
-    //     return currentGameData.phase_one[strCityName];
+        return currentGameData.phase_one[strCityName];
 
-    // }
+    }
+
+    public static Character GetDataForCharacter(string strCharName)    {
+        
+        int characterIndex = Array.FindIndex(currentGameData.characters, row => row.symbol == strCharName);
+
+        if(characterIndex == -1)
+            throw new Exception("Unable to find Character with symbol '" + strCharName + "'");
+     
+        return currentGameData.characters[characterIndex];
+
+    }
     
 }

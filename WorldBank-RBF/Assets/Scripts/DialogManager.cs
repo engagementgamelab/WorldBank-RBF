@@ -1,34 +1,50 @@
-﻿using UnityEngine;
+﻿/* 
+World Bank RBF
+Created by Engagement Lab, 2015
+==============
+ DialogueManager.cs
+ Unity NPC dialog handler.
+
+ Created by Johnny Richardson on 4/14/15.
+==============
+*/
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Globalization;
+using System.Threading;
 
 public class DialogManager : MonoBehaviour {
 
 	public Button btnPrefab;
+	public Button btnGoBack;
+	
 	public GameObject panel;
+	public GameObject dialoguePanel;
+	public GameObject dialogueBtnPanel;
+	
+	public Text dialogueTxt;
+
 
 	public void LoadDialogForCity(string city)
 	{
 		// Data tests
-		// Dictionary<string, IEnumerator> itr = DataManager.GetDataForCity(city);
+		DataManager.NPC[] itr = DataManager.GetDataForCity(city);
 
-  //       foreach(IEnumerator npcEnum in itr.Values) {
+        foreach(DataManager.NPC npc in itr)
+        	GenerateNPC(npc);
+	}
 
-  //       	GenerateNPC(npcEnum);
+	public void HideCharacterDialog(string city) {
 
-  //       	while(npcEnum.MoveNext()) {
-
-  //       		Debug.Log(DataManager.GetKVP(npcEnum.Current));
-  //       		// Debug.Log(DataManager.GetKVP(npcEnum.Current).Value.GetType());
-  //       		// MyButton.onClick.AddListener(() => { MyFunction("string literal"); MyOtherFunction(MyButton.name); });
-
-  //       	}
-        // }
+		dialoguePanel.SetActive (false);
 
 	}
 
-	private void GenerateNPC(IEnumerator npcEnum) {
+	private void GenerateNPC(DataManager.NPC currNpc) {
 
 		Button go = (Button)Instantiate(btnPrefab);
 	  
@@ -36,15 +52,54 @@ public class DialogManager : MonoBehaviour {
 	    go.transform.localScale = new Vector3(1, 1, 1);
 
 	    Text label = go.transform.FindChild("Text").GetComponent<Text>();
-
-	    Debug.Log(npcEnum);
 		
-		// if (!npcEnum.TryGetValue("XML_File", out dialogueKey)) {
-		// 	    label.text = 
-		// }
+		label.text = currNpc.character;
 
-	    // Button b = go.GetComponent<Button>();
-	    // go.onClick.AddListener(() => MyMethod(a));
+	    go.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial"));
+
+	}
+
+	private void OpenCharacterDialog(DataManager.NPC currNpc, string strDialogueKey) {
+
+		foreach (Transform child in dialogueBtnPanel.transform) {
+		    GameObject.Destroy(child.gameObject);
+		}
+
+		string strInitial = currNpc.dialogue[strDialogueKey]["text"];
+		
+		// Match any characters in between [[ and ]]
+		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
+
+		if(currNpc.dialogue[strDialogueKey].ContainsKey("unlocks"))
+			strInitial += "\n\n<color=green>Unlocks</color>: " + currNpc.dialogue[strDialogueKey]["unlocks"];
+
+		// Search for "keywords" in between [[ and ]]
+		Regex regexKeywords = new Regex(strKeywordRegex, RegexOptions.IgnoreCase);
+		MatchCollection keyMatches = regexKeywords.Matches(strInitial);
+	
+		foreach(Match m in keyMatches) {
+		    if (m.Success)
+			{
+		        string strKeyword = m.Groups[3].ToString();
+
+				CultureInfo cultureInfo   = Thread.CurrentThread.CurrentCulture;
+				TextInfo textInfo = cultureInfo.TextInfo;
+
+				strKeyword = textInfo.ToTitleCase(strKeyword);
+
+				Button go = (Button)Instantiate(btnPrefab);
+			  
+			    go.transform.parent = dialogueBtnPanel.transform;
+			    go.transform.localScale = new Vector3(1, 1, 1);
+			    Text label = go.transform.FindChild("Text").GetComponent<Text>();
+				label.text = strKeyword;
+
+			    go.onClick.AddListener(() => OpenCharacterDialog(currNpc, strKeyword));
+			}
+		}
+
+		dialoguePanel.SetActive (true);
+		dialogueTxt.text = strInitial.Replace("[[", "<color=orange>").Replace("]]", "</color>");
 
 	}
 }
