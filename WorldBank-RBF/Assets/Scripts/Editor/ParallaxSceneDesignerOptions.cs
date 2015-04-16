@@ -1,10 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
  
 [Serializable]
-public class SceneGeneratorOptions : ScriptableObject {
+public class ParallaxSceneDesignerOptions : ScriptableObject {
 	
     float space = 10;
 
@@ -14,14 +15,21 @@ public class SceneGeneratorOptions : ScriptableObject {
 
     List<DepthLayer> layers;
     LayerOptions layerOptions;
+    SaveLoadOptions saveLoadOptions;
     int selectedLayer = -1;
 
     List<LayerSettings> layerSettings = new List<LayerSettings> ();    
+
+    GUILayoutOption largeButtonHeight = GUILayout.Height (30f);
 
     public void OnEnable () {
         hideFlags = HideFlags.HideAndDontSave;
         if (layerOptions == null) {
             layerOptions = CreateInstance<LayerOptions> () as LayerOptions;
+        }
+        if (saveLoadOptions == null) {
+            saveLoadOptions = CreateInstance<SaveLoadOptions> () as SaveLoadOptions;
+            saveLoadOptions.Init (this);
         }
         if (layers == null) {
             layers = new List<DepthLayer> ();
@@ -32,28 +40,34 @@ public class SceneGeneratorOptions : ScriptableObject {
 
         EditorGUILayout.BeginHorizontal ();
         GUI.color = Color.green;
-        if (GUILayout.Button ("Refresh")) {
+        if (GUILayout.Button ("Refresh", largeButtonHeight)) {
             Refresh ();
         }
 
         GUI.color = Color.yellow;
-        if (GUILayout.Button ("Clean up")) {
+        if (GUILayout.Button ("Clean up", largeButtonHeight)) {
             EditorObjectPool.CleanUp ();
         }
 
         GUI.color = Color.red;
-        if (GUILayout.Button ("Clear")) {
+        if (GUILayout.Button ("Clear", largeButtonHeight)) {
             EditorObjectPool.Clear ();
         }
         EditorGUILayout.EndHorizontal ();
 
-        GUI.color = Color.white;
+        EditorGUILayout.Separator ();
+
+        saveLoadOptions.OnGUI ();
+
+        EditorGUILayout.Separator ();
+
         layerCount = EditorGUILayout.IntSlider ("Layer Count", layerCount, 1, 6);
         if (layerCount != prevLayerCount) {
             Refresh ();
             prevLayerCount = layerCount;
         }
 
+        GUI.color = Color.white;
         GUILayout.Space (space);
         GUILayout.Label ("Select a layer to edit", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal ();
@@ -62,7 +76,7 @@ public class SceneGeneratorOptions : ScriptableObject {
             if (settings == null) continue;
             int layerIndex = settings.Index+1;
             if (selectedLayer == i) {
-                GUI.color = Color.green;
+                GUI.color = Color.gray;
             } else {
                 GUI.color = Color.white;
             }
@@ -75,6 +89,7 @@ public class SceneGeneratorOptions : ScriptableObject {
                 settings.Selected = true;
                 selectedLayer = i;
                 layerOptions.SetLayerSettings (settings);
+                Selection.activeGameObject = layers[i].gameObject;
             }
         }
         EditorGUILayout.EndHorizontal ();
@@ -82,10 +97,32 @@ public class SceneGeneratorOptions : ScriptableObject {
         layerOptions.OnGUI ();
     }
 
+    public void Load (List<LayerSettingsJson> layers, int layerCount) {
+        EditorObjectPool.Clear ();
+        this.layerCount = layerCount;
+        for (int i = 0; i < layers.Count; i ++) {
+            LayerSettingsJson layer = layers[i];
+            LayerSettings settings = ObjectPool.Instantiate<LayerSettings> ();
+            settings.Init (layer.GetIndex (), layer.GetLocalSeparation (), LoadTextures (layer.GetBackgroundTextures ()));
+        }
+        Refresh ();
+    }
+
+    List<Texture2D> LoadTextures (List<string> directories) {
+        List<Texture2D> textures = new List<Texture2D> ();
+        for (int i = 0; i < directories.Count; i ++) {
+            Texture2D texture = AssetDatabase.LoadAssetAtPath (directories[i], typeof (Texture2D)) as Texture2D;
+            textures.Add (texture);
+        }
+        return textures;
+    }
+
     public void Refresh () {
         CreateLayerSettings ();
         RefreshLayers ();
         SetSelectedLayer ();
+        saveLoadOptions.LayerSettings = layerSettings;
+        saveLoadOptions.LayerCount = layerCount;
     }
 
     void CreateLayerSettings () {
@@ -103,7 +140,7 @@ public class SceneGeneratorOptions : ScriptableObject {
         for (int i = 0; i < layerCount; i ++) {
             DepthLayer layer = layers[i];
             layer.LayerSettings = layerSettings[layer.Index];
-        }        
+        }  
     }
 
     void SetSelectedLayer () {

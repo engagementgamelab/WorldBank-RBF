@@ -30,6 +30,7 @@ public class LayerOptions : ScriptableObject {
 		GUI.color = Color.white;
 		layerSettings.LocalSeparation = EditorGUILayout.Slider ("Relative Distance", layerSettings.LocalSeparation, 0, 19);
 
+		if (serializedTextureField == null) return;
 		serializedTextureField.Update ();
 		EditorGUILayout.PropertyField (serializedTextureField.FindProperty ("textures"), new GUIContent ("Textures"), true);
 		serializedTextureField.ApplyModifiedProperties ();

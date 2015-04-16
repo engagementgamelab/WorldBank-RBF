@@ -17,6 +17,10 @@ public class ObjectPool : MonoBehaviour {
 		get { return activeInstances; }
 	}
 
+	public static int ActiveInstancesCount<T> () where T : MonoBehaviour {
+		return GetPool<T> ().ActiveInstances.Count;
+	}
+
 	[SerializeField] Transform prefab;
 
 	public static bool StartupLoad () {
