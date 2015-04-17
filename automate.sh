@@ -58,3 +58,6 @@ git commit -am "Dev Server auto-commit for successful Jenkins build $1";
 # Logging
 echo "DONE" | tee -a automate.log;
 echo "\\\==============" | tee -a automate.log;
+
+# Image tiling; for use later
+# -crop 256x256 -set filename:tile "%%[fx:page.x/256]_%%[fx:page.y/256]" +repage +adjoin convert/tile-%%[filename:tile].png
