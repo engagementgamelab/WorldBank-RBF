@@ -1,6 +1,7 @@
 ﻿#define DEBUG
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LineOfSight : MB {
 
@@ -39,7 +40,23 @@ public class LineOfSight : MB {
 			Mathf.Sin (angle * Mathf.Deg2Rad),
 			Mathf.Cos (angle * Mathf.Deg2Rad)
 		);
-		//distance = LayerManager.Instance.Distance;
+		StartCoroutine (GetDistance ());
+	}
+
+	IEnumerator GetDistance () {
+		
+		List<Transform> layers = ObjectPool.GetInstances<DepthLayer> ();
+		while (layers.Count == 0) {
+			layers = ObjectPool.GetInstances<DepthLayer> ();
+			yield return null;
+		}
+
+		float d = 0;
+		for (int i = 0; i < layers.Count; i ++) {
+			float z = layers[i].transform.localScale.x;
+			if (d < z) d = z;
+		}
+		distance = d;
 	}
 
 	void Update () {

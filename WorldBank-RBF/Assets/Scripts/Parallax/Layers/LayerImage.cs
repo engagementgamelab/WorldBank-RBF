@@ -1,9 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using JsonFx.Json;
 
 public class LayerImage : QuadImage {
 
 	float xPosition;
+
+	#if UNITY_EDITOR
+	public LayerImageSettings Json {
+		get {
+			LayerImageSettings json = new LayerImageSettings ();
+			json.SetTexture (Texture);
+			json.SetColliderWidth (ColliderWidth);
+			json.SetColliderCenter (ColliderCenter);
+			return json;
+		}
+	}
+	#endif
 
 	public void SetParent (Transform parent, float xPosition=0) {
 		this.xPosition = xPosition;

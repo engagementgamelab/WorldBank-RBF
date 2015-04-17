@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof (BoxCollider), typeof (MeshRenderer), typeof (MeshFilter))]
 public class QuadImage : MB, IEditorPoolable {
 
 	public int Index { get; set; }
@@ -39,6 +40,24 @@ public class QuadImage : MB, IEditorPoolable {
 				boxCollider = GetComponent<BoxCollider> ();
 			}
 			return boxCollider;
+		}
+	}
+
+	float colliderWidth = 1;
+	public float ColliderWidth {
+		get { return colliderWidth; }
+		set { 
+			colliderWidth = value;
+			BoxCollider.SetSizeX (colliderWidth);
+		}
+	}
+
+	float colliderCenter = 0;
+	public float ColliderCenter {
+		get { return colliderCenter; }
+		set {
+			colliderCenter = value;
+			BoxCollider.SetCenterX (colliderCenter);
 		}
 	}
 

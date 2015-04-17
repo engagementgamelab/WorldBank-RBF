@@ -175,10 +175,22 @@ public static class ExtensionMethods {
 	 *	Colliders
 	 */
 
-	public static void SetCenterY (this BoxCollider collider, float size) {
+	public static void SetCenterX (this BoxCollider collider, float center) {
 		Vector3 colliderCenter = collider.center;
-		colliderCenter.y = size;
+		colliderCenter.x = center;
 		collider.center = colliderCenter;
+	}
+
+	public static void SetCenterY (this BoxCollider collider, float center) {
+		Vector3 colliderCenter = collider.center;
+		colliderCenter.y = center;
+		collider.center = colliderCenter;
+	}
+
+	public static void SetSizeX (this BoxCollider collider, float size) {
+		Vector3 colliderSize = collider.size;
+		colliderSize.x = size;
+		collider.size = colliderSize;
 	}
 
 	public static void SetSizeY (this BoxCollider collider, float size) {

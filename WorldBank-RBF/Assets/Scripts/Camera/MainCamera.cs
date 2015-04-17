@@ -37,9 +37,10 @@ public class MainCamera : MB {
 	float Zoom {
 		get { return zoom; }
 		set {
-			zoom = Mathf.Clamp (value, 0, 5);
+			zoom = Mathf.Clamp (value, 0, 15);
 			float y = -Mathf.Tan (FOV / 2f * Mathf.Deg2Rad) * zoom;
-			Transform.SetPosition (new Vector3 (Position.x, y, zoom));
+			//Transform.SetPosition (new Vector3 (Position.x, y, zoom)); 		// Zoom to bottom
+			Transform.SetPosition (new Vector3 (Position.x, Position.y, zoom)); // Zoom to middle
 			xMin = y * Aspect;
 			Transform.SetPositionX (Mathf.Max (xMin, Position.x));
 		}

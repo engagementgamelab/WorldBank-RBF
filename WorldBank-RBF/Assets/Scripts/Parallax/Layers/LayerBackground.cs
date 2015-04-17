@@ -6,18 +6,18 @@ public class LayerBackground : MB, IEditorPoolable {
 
 	public int Index { get; set; }
 
-	int tileCount = 1;
+	int tileCount = 0;
 	public int TileCount {
 		get { return tileCount; }
 		set { 
-			tileCount = Mathf.Max (1, value);
+			tileCount = Mathf.Max (0, value);
 			DestroyBackgrounds ();
 			CreateBackgrounds ();
 		}
 	}
 
-	Texture2D texture;
-	new public virtual Texture2D Texture {
+	new Texture2D texture;
+	public virtual Texture2D Texture {
 		get { return texture; }
 		set {
 			texture = value;
@@ -28,33 +28,44 @@ public class LayerBackground : MB, IEditorPoolable {
 	}
 
 	[SerializeField, HideInInspector] List<LayerImage> images = new List<LayerImage> ();
-	[SerializeField, HideInInspector] List<Texture2D> textures = new List<Texture2D> ();
-	public List<Texture2D> Textures {
-		get { return textures; }
-		set { 
-			textures = value;
-			TileCount = textures.Count;
-			for (int i = 0; i < textures.Count; i ++) {
-				images[i].Texture = textures[i];
+	public List<LayerImage> Images {
+		get { return images; }
+		set { images = value; }
+	}
+
+	List<LayerImageSettings> imageSettings = new List<LayerImageSettings> ();
+	public List<LayerImageSettings> ImageSettings {
+		get { return imageSettings; }
+		set {
+			if (value == null) return;
+			imageSettings = value;
+			TileCount = imageSettings.Count;
+			Debug.Log (TileCount + "...." + gameObject.GetInstanceID ());
+			for (int i = 0; i < TileCount; i ++) {
+				images[i].Texture = imageSettings[i].GetTexture2D ();
+				images[i].ColliderWidth = imageSettings[i].GetColliderWidth ();
+				images[i].ColliderCenter = imageSettings[i].GetColliderCenter ();
 			}
 		}
 	}
-	
+
+	[SerializeField, HideInInspector] List<Texture2D> textures = new List<Texture2D> ();
+
 	public void Init () {
-		LayerImage image = Transform.GetChildOfType<LayerImage> ();
+		/*LayerImage image = Transform.GetChildOfType<LayerImage> ();
 		if (image != null) {
 			image.SetParent (Transform);
 			image.Texture = Texture;
 			images.Clear ();
 			images.Add (image);
 		} else {
-			CreateImage (0);
-		}
+			CreateImage ();
+		}*/
 	}
 
 	void CreateBackgrounds () {
 		for (int i = 0; i < tileCount; i ++) {
-			CreateImage (i);
+			CreateImage ();
 		}
 	}
 
@@ -67,9 +78,9 @@ public class LayerBackground : MB, IEditorPoolable {
 		images.Clear ();
 	}
 
-	void CreateImage (float xPosition=0) {
+	public void CreateImage () {
 		LayerImage image = EditorObjectPool.Create<LayerImage> ();
-		image.SetParent (Transform, xPosition);
+		image.SetParent (Transform, images.Count);
 		image.Texture = Texture;
 		images.Add (image);
 	}

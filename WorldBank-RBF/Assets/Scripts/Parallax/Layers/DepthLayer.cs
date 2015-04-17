@@ -10,6 +10,7 @@ public class DepthLayer : MB, IEditorPoolable {
 		set { 
 			layerSettings = value;
 			layerSettings.onUpdateSettings += OnUpdateSettings;
+			layerSettings.onAddImage += OnAddImage;
 			OnUpdateSettings ();
 		}
 	}
@@ -17,10 +18,11 @@ public class DepthLayer : MB, IEditorPoolable {
 	public int index;
 	public int Index { 
 		get { return index; }
-		set { index = value; }
+		set { 
+			index = value;
+			SetLayer ();
+		}
 	}
-
-	public static float layerSeparation = 20;
 
 	MainCamera mainCamera;
 	public MainCamera MainCamera {
@@ -36,6 +38,7 @@ public class DepthLayer : MB, IEditorPoolable {
 		get { return Mathf.Tan (Camera.main.fieldOfView / 2 * Mathf.Deg2Rad) * Position.z * 2;}
 	}
 
+	public static float layerSeparation = 20;
 	float localSeparation = 0;
 	public float LocalSeparation {
 		get { return localSeparation; }
@@ -47,9 +50,9 @@ public class DepthLayer : MB, IEditorPoolable {
 	}
 
 	public LayerBackground background;
-	public List<Texture2D> BackgroundTextures {
-		get { return background.Textures; }
-		set { background.Textures = value; }
+	List<LayerImage> Images {
+		get { return background.Images; }
+		set { background.Images = value; }
 	}
 
 	public void Init () {
@@ -62,6 +65,10 @@ public class DepthLayer : MB, IEditorPoolable {
 		Transform.SetPositionZ ((Index+1) * layerSeparation + LocalSeparation);
 		SetScale ();
 		SetPosition ();
+	}
+
+	void SetLayer () {
+		gameObject.layer = Index + 8;
 	}
 
 	void Reset () {
@@ -80,6 +87,11 @@ public class DepthLayer : MB, IEditorPoolable {
 
 	void OnUpdateSettings () {
 		LocalSeparation = layerSettings.LocalSeparation;
-		BackgroundTextures = layerSettings.BackgroundTextures;
+		background.ImageSettings = layerSettings.ImageSettings;
+		Images = layerSettings.Images;
+	}
+
+	void OnAddImage () {
+		background.CreateImage ();
 	}
 }

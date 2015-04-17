@@ -7,18 +7,24 @@ using UnityEditor;
 public class LayerOptions : ScriptableObject {
 
 	LayerSettings layerSettings = null;
-	TextureField textureField;
-    SerializedObject serializedTextureField;
+	LayerImageOptions layerImageOptions;
+	int selectedImage = -1;
+
+	// TextureField textureField;
+    // SerializedObject serializedTextureField;
 
 	public void SetLayerSettings (LayerSettings layerSettings) {
 		this.layerSettings = layerSettings;
-		textureField = CreateInstance ("TextureField") as TextureField;
-		serializedTextureField = new UnityEditor.SerializedObject (textureField);
-		textureField.textures = layerSettings.BackgroundTextures;
+		// textureField = CreateInstance ("TextureField") as TextureField;
+		// serializedTextureField = new UnityEditor.SerializedObject (textureField);
+		UnselectImage ();
 	}
 
 	public void OnEnable () {
         hideFlags = HideFlags.HideAndDontSave;
+        if (layerImageOptions == null) {
+        	layerImageOptions = CreateInstance<LayerImageOptions> () as LayerImageOptions;
+        }
     }
 
 	public void OnGUI () {
@@ -28,12 +34,34 @@ public class LayerOptions : ScriptableObject {
 		}
 
 		GUI.color = Color.white;
-		layerSettings.LocalSeparation = EditorGUILayout.Slider ("Relative Distance", layerSettings.LocalSeparation, 0, 19);
+		layerSettings.LocalSeparation = EditorGUILayout.Slider ("Relative Distance", layerSettings.LocalSeparation, 0, DepthLayer.layerSeparation-1);
 
-		if (serializedTextureField == null) return;
-		serializedTextureField.Update ();
-		EditorGUILayout.PropertyField (serializedTextureField.FindProperty ("textures"), new GUIContent ("Textures"), true);
-		serializedTextureField.ApplyModifiedProperties ();
-		layerSettings.BackgroundTextures = textureField.textures;
+		if (GUILayout.Button ("+")) {
+			layerSettings.AddImage ();
+		}
+		GUILayout.Label ("Select an image to edit", EditorStyles.boldLabel);
+        EditorGUILayout.BeginHorizontal ();
+		for (int i = 0; i < layerSettings.Images.Count; i ++) {
+			LayerImage image = layerSettings.Images[i];
+			if (image == null) continue;
+			if (selectedImage == i) {
+				GUI.color = Color.gray;
+			} else {
+				GUI.color = Color.white;
+			}
+			int imageIndex = i + 1;
+			if (GUILayout.Button ("Image " + imageIndex)) {
+				selectedImage = i;
+				layerImageOptions.SetLayerImage (image);
+				Selection.activeGameObject = image.gameObject;
+			}
+		}
+		EditorGUILayout.EndHorizontal ();
+		layerImageOptions.OnGUI ();
+	}
+
+	void UnselectImage () {
+		layerImageOptions.Unselect ();
+		selectedImage = -1;
 	}
 }
