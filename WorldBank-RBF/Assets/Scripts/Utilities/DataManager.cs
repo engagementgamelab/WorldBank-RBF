@@ -16,7 +16,7 @@ using System.IO;
 using JsonFx.Json;
 
 // TODO: Cleanup!!
-class DataManager {
+public class DataManager {
 
     public static string serverRoot;
 

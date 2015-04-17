@@ -17,15 +17,18 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Threading;
 
-public class DialogManager : MonoBehaviour {
+public class DialogManager : MonoBehaviour, INPC {
 
+	public Button btnLoadData;
 	public Button btnPrefab;
+	public NPCBehavior npcPrefab;
 	public Button btnGoBack;
 	
 	public GameObject panel;
 	public GameObject dialoguePanel;
 	public GameObject dialogueBtnPanel;
 	
+	public Canvas dialogueContainer;
 	public Text dialogueTxt;
 
 
@@ -34,41 +37,52 @@ public class DialogManager : MonoBehaviour {
 		// Data tests
 		DataManager.NPC[] itr = DataManager.GetDataForCity(city);
 
-        foreach(DataManager.NPC npc in itr)
-        	GenerateNPC(npc);
+		int index = 1;
+
+        foreach(DataManager.NPC npc in itr) {
+        	GenerateNPC(npc, index);
+        	index++;
+        }
+
+        btnLoadData.gameObject.SetActive(false);
 	}
 
-	public void HideCharacterDialog(string city) {
+	public void HideCharacterDialog() {
 
 		dialoguePanel.SetActive (false);
 
+		CameraBehavior.ZoomOut();
+
 	}
 
-	private void GenerateNPC(DataManager.NPC currNpc) {
+	private void GenerateNPC(DataManager.NPC currNpc, int index) {
 
-		Button go = (Button)Instantiate(btnPrefab);
+		NPCBehavior go = (NPCBehavior)Instantiate(npcPrefab);
 	  
-	    go.transform.parent = panel.transform;
+	    // go.transform.parent = panel.transform;/
 	    go.transform.localScale = new Vector3(1, 1, 1);
+	    go.transform.position = new Vector3(.1f + (index/2), 0, 3);
 
+	    go.npcRef = currNpc;
+		go.diagManager = gameObject;
+/*
 	    Text label = go.transform.FindChild("Text").GetComponent<Text>();
 		
 		label.text = currNpc.character;
 
-	    go.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial"));
+	    go.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial"));*/
 
 	}
 
-	private void OpenCharacterDialog(DataManager.NPC currNpc, string strDialogueKey) {
-
-		foreach (Transform child in dialogueBtnPanel.transform) {
-		    GameObject.Destroy(child.gameObject);
-		}
+	public void OpenCharacterDialog(DataManager.NPC currNpc, string strDialogueKey) {
 
 		string strInitial = currNpc.dialogue[strDialogueKey]["text"];
 		
 		// Match any characters in between [[ and ]]
 		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
+
+		foreach (Transform child in dialogueBtnPanel.transform)
+		    GameObject.Destroy(child.gameObject);
 
 		if(currNpc.dialogue[strDialogueKey].ContainsKey("unlocks"))
 			strInitial += "\n\n<color=green>Unlocks</color>: " + currNpc.dialogue[strDialogueKey]["unlocks"];
@@ -100,6 +114,12 @@ public class DialogManager : MonoBehaviour {
 
 		dialoguePanel.SetActive (true);
 		dialogueTxt.text = strInitial.Replace("[[", "<color=orange>").Replace("]]", "</color>");
+
+	}
+
+	void INPC.OnNPCSelected (DataManager.NPC currNpc) {
+
+		OpenCharacterDialog(currNpc, "Initial");
 
 	}
 }
