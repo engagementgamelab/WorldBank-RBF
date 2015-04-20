@@ -63,6 +63,7 @@ public class LayerBackground : MB, IEditorPoolable {
 		}
 		int imageCount = images.Count;*/
 		//Debug.Log (imageCount);
+		int imageCount = images.Count;
 		if (imageCount == 0)
 			return;
 		for (int i = 0; i < imageCount; i ++) {
