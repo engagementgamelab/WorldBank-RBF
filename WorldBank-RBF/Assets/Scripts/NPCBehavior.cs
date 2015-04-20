@@ -15,7 +15,7 @@ public class NPCBehavior : MB {
  	private float cameraStartTime = 0.7f;
  	private float cameraTime = 0.7f;
 
- 	public void Initialize(NPC npcData, GameObject manager) {
+ 	public void Initialize(DataManager.NPC npcData, GameObject manager) {
 
 
 
