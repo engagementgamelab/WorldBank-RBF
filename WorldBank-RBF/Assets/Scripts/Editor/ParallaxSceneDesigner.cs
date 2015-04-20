@@ -6,7 +6,7 @@ public class ParallaxSceneDesigner : EditorWindow {
     ParallaxSceneDesignerOptions options;
     bool refresh = false;
  
-    [MenuItem ("Window/ParallaxSceneDesigner")]
+    [MenuItem ("Window/Parallax Scene Designer")]
     static void Init () {
         GetWindow<ParallaxSceneDesigner> ();
     }

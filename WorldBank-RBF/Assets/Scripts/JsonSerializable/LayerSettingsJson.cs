@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿
+#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +9,7 @@ public class LayerSettingsJson {
 
 	int index;
 	float local_separation;
-	List<string> background_textures;
+	List<LayerImageSettings> images;
 
 	public void SetIndex (int index) {
 		this.index = index;
@@ -17,8 +19,8 @@ public class LayerSettingsJson {
 		this.local_separation = local_separation;
 	}
 
-	public void SetBackgroundTextures (List<Texture2D> background_textures) {
-		this.background_textures = background_textures.ConvertAll (x => AssetDatabase.GetAssetPath (x));
+	public void SetImages (List<LayerImageSettings> images) {
+		this.images = images;
 	}
 
 	public int GetIndex () {
@@ -29,7 +31,8 @@ public class LayerSettingsJson {
 		return local_separation;
 	}
 
-	public List<string> GetBackgroundTextures () {
-		return background_textures;
+	public List<LayerImageSettings> GetImages () {
+		return images;
 	}
 }
+#endif

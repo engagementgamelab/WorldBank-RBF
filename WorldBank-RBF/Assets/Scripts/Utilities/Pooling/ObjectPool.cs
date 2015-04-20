@@ -134,6 +134,10 @@ public class ObjectPool : MonoBehaviour {
 		return GetPool<T> ().CreateInstance (position).GetScript<T> () as T;
 	}
 
+	public static Transform InstantiateTransform<T> (Vector3 position = new Vector3 ()) where T : MonoBehaviour {
+		return GetPool<T> ().CreateInstance (position);
+	}
+
 	public static void Destroy<T> (Transform instance) where T : MonoBehaviour {
 		if (instance == null) return;
 		#if UNITY_EDITOR

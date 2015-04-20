@@ -2,10 +2,10 @@
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using JsonFx.Json;
 
 public delegate void OnUpdateSettings ();
+public delegate void OnAddImage ();
 
 public class LayerSettings : MonoBehaviour {
 
@@ -27,37 +27,48 @@ public class LayerSettings : MonoBehaviour {
 		}
 	}
 
-	[SerializeField, HideInInspector] List<Texture2D> backgroundTextures = new List<Texture2D> ();
-	public List<Texture2D> BackgroundTextures { 
-		get { return backgroundTextures; } 
-		set { 
-			backgroundTextures = value; 
+	[SerializeField, HideInInspector] List<LayerImage> images = new List<LayerImage> ();
+	public List<LayerImage> Images {
+		get { return images; }
+		set {
+			images = value;
 			SendUpdate ();
 		}
 	}
 
+	public List<LayerImageSettings> ImageSettings { get; set; }
+
+	#if UNITY_EDITOR
 	public LayerSettingsJson Json {
 		get { 
 			LayerSettingsJson json = new LayerSettingsJson ();
 			json.SetIndex (Index);
 			json.SetLocalSeparation (LocalSeparation);
-			json.SetBackgroundTextures (BackgroundTextures);
+			json.SetImages (Images.ConvertAll (x => x.Json));
 			return json;
 		}
 	}
+	#endif
 
 	public OnUpdateSettings onUpdateSettings;
+	public OnAddImage onAddImage;
 
 	void Start () {
 		// this isn't working and I'm not sure why?
 		hideFlags = HideFlags.HideInHierarchy;
 	}
 
-	public void Init (int index, float localSeparation=0, List<Texture2D> backgroundTextures=null) {
+	public void Init (int index, float localSeparation=0, List<LayerImageSettings> imageSettings=null/*, List<Texture2D> backgroundTextures=null*/) {
 		this.index = index;
 		this.localSeparation = localSeparation;
-		if (backgroundTextures != null) {
-			this.backgroundTextures = backgroundTextures;
+		if (imageSettings != null) {
+			ImageSettings = imageSettings;
+		}
+	}
+
+	public void AddImage () {
+		if (onAddImage != null) {
+			onAddImage ();
 		}
 	}
 

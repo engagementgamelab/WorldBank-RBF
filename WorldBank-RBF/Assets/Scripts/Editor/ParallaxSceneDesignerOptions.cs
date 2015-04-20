@@ -56,9 +56,7 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
         EditorGUILayout.EndHorizontal ();
 
         EditorGUILayout.Separator ();
-
         saveLoadOptions.OnGUI ();
-
         EditorGUILayout.Separator ();
 
         layerCount = EditorGUILayout.IntSlider ("Layer Count", layerCount, 1, 6);
@@ -103,7 +101,7 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
         for (int i = 0; i < layers.Count; i ++) {
             LayerSettingsJson layer = layers[i];
             LayerSettings settings = ObjectPool.Instantiate<LayerSettings> ();
-            settings.Init (layer.GetIndex (), layer.GetLocalSeparation (), LoadTextures (layer.GetBackgroundTextures ()));
+            settings.Init (layer.GetIndex (), layer.GetLocalSeparation (), layer.GetImages ());
         }
         Refresh ();
     }
@@ -136,7 +134,26 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
     }
 
     void RefreshLayers () {
-        layers = EditorObjectPool.Create<DepthLayer> (layerCount).ConvertAll (x => x.GetScript<DepthLayer> ());
+        
+        layers = EditorObjectPool.GetObjectsOfTypeInOrder<DepthLayer> ();
+
+        // Remove layers
+        if (layers.Count > layerCount) {
+            int remove = layers.Count - layerCount;
+            int removed = 0;
+            while (removed < remove) {
+                EditorObjectPool.Destroy<DepthLayer> ();
+                removed ++;
+            }
+            layers.RemoveRange (layerCount, remove);
+        }
+
+        // Add layers
+        while (layers.Count < layerCount) {
+            layers.Add (EditorObjectPool.Create<DepthLayer> () as DepthLayer);
+        }
+
+        // Apply settings
         for (int i = 0; i < layerCount; i ++) {
             DepthLayer layer = layers[i];
             layer.LayerSettings = layerSettings[layer.Index];
