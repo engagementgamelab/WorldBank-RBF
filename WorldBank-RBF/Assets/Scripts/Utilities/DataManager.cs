@@ -26,6 +26,7 @@ public class DataManager {
     public class GameData {
 
         public Character[] characters { get; set; }
+        public City[] cities { get; set; }
 		public Dictionary<string, NPC[]> phase_one { get; set; }
         public Dictionary<string, object> phase_two { get; set; }
 
@@ -98,10 +99,15 @@ public class DataManager {
 
     }
 
-
     public static NPC[] GetDataForCity(string strCityName)    {
         
         return currentGameData.phase_one[strCityName];
+
+    }
+
+    public static City[] GetCityData()    {
+        
+        return currentGameData.cities;
 
     }
 

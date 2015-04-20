@@ -17,20 +17,53 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Threading;
 
-public class DialogManager : MonoBehaviour, INPC {
+public class DialogManager : MonoBehaviour {
 
+	private static DialogManager _instance;
+
+	// Singleton Manager
+	public static DialogManager instance {
+
+		get {
+
+			if(_instance == null) {
+				_instance = GameObject.FindObjectOfType<DialogManager>();
+
+				// Do not destroy on new scene
+				DontDestroyOnLoad(_instance.gameObject);
+			}
+
+			return _instance;
+
+		}
+
+	}
+
+	// Variable Definitions
 	public Button btnLoadData;
 	public Button btnPrefab;
 	public NPCBehavior npcPrefab;
 	public Button btnGoBack;
 	
-	public GameObject panel;
 	public GameObject dialoguePanel;
 	public GameObject dialogueBtnPanel;
 	
-	public Canvas dialogueContainer;
 	public Text dialogueTxt;
 
+	void Awake() {
+
+		if(_instance == null) {
+			// This is the singleton
+			_instance = this;
+			DontDestroyOnLoad(this);
+		}
+		else {
+			// Ensure there is only one reference
+			if(this != _instance)
+				Destroy(this.gameObject);
+		}
+
+	}
 
 	public void LoadDialogForCity(string city)
 	{
@@ -55,15 +88,22 @@ public class DialogManager : MonoBehaviour, INPC {
 
 	}
 
+	/// <summary>
+	/// Generate an NPC
+	/// </summary>
+	/// <param name="npcData">Instance of DataManager.NPC for this NPC</param>
+	/// <param name="index">Index of this NPC</param>
 	private void GenerateNPC(DataManager.NPC npcData, int index) {
 
+		// Create NPC prefab instance
 		NPCBehavior currentNpc = (NPCBehavior)Instantiate(npcPrefab);
 	  
-	    currentNpc.transform.localScale = new Vector3(1, 1, 1);
+	    currentNpc.transform.localScale = Vector3.one;
 
 	    // Temporary: set NPC position automatically
-	    currentNpc.transform.position = new Vector3(.1f + (index/2), 0, 3);
+	    currentNpc.transform.position = new Vector3(.1f + (index/2), 0, 1.5f);
 
+	    // Initialize this NPC
 	    currentNpc.Initialize(npcData, gameObject);
 
 	}
@@ -90,7 +130,7 @@ public class DialogManager : MonoBehaviour, INPC {
 			{
 		        string strKeyword = m.Groups[3].ToString();
 
-				CultureInfo cultureInfo   = Thread.CurrentThread.CurrentCulture;
+				CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
 				TextInfo textInfo = cultureInfo.TextInfo;
 
 				strKeyword = textInfo.ToTitleCase(strKeyword);
@@ -111,9 +151,19 @@ public class DialogManager : MonoBehaviour, INPC {
 
 	}
 
-	void INPC.OnNPCSelected (DataManager.NPC currNpc) {
+/*	// Interface implementation for city selection
+	void INPC.OnCitySelected (string strCityName) {
 
-		OpenCharacterDialog(currNpc, "Initial");
+		// Load data for given city
+		LoadDialogForCity(strCityName);
 
 	}
+
+	// Interface implementation for NPC selection
+	void INPC.OnNPCSelected (DataManager.NPC currNpc) {
+
+		// Load "Initial" dialogue for this NPC
+		OpenCharacterDialog(currNpc, "Initial");
+
+	}*/
 }
