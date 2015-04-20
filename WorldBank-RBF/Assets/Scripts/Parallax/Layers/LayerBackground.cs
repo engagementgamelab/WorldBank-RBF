@@ -16,7 +16,7 @@ public class LayerBackground : MB, IEditorPoolable {
 		}
 	}
 
-	new Texture2D texture;
+	Texture2D texture;
 	public virtual Texture2D Texture {
 		get { return texture; }
 		set {
@@ -48,8 +48,6 @@ public class LayerBackground : MB, IEditorPoolable {
 			}
 		}
 	}
-
-	[SerializeField, HideInInspector] List<Texture2D> textures = new List<Texture2D> ();
 
 	public void Init () {
 		/*LayerImage image = Transform.GetChildOfType<LayerImage> ();
