@@ -7,23 +7,12 @@ public class LayerBackground : MB, IEditorPoolable {
 	public int Index { get; set; }
 
 	int tileCount = 0;
-	public int TileCount {
+	int TileCount {
 		get { return tileCount; }
 		set { 
 			tileCount = Mathf.Max (0, value);
 			DestroyBackgrounds ();
 			CreateBackgrounds ();
-		}
-	}
-
-	Texture2D texture;
-	public virtual Texture2D Texture {
-		get { return texture; }
-		set {
-			texture = value;
-			for (int i = 0; i < images.Count; i ++) {
-				images[i].Texture = texture;
-			}
 		}
 	}
 
@@ -40,7 +29,6 @@ public class LayerBackground : MB, IEditorPoolable {
 			if (value == null) return;
 			imageSettings = value;
 			TileCount = imageSettings.Count;
-			Debug.Log (TileCount + "...." + gameObject.GetInstanceID ());
 			for (int i = 0; i < TileCount; i ++) {
 				images[i].Texture = imageSettings[i].GetTexture2D ();
 				images[i].ColliderWidth = imageSettings[i].GetColliderWidth ();
@@ -68,8 +56,15 @@ public class LayerBackground : MB, IEditorPoolable {
 	}
 
 	void DestroyBackgrounds () {
-		int imageCount = images.Count;
-		if (imageCount == 0) return;
+		/*if (images.Count == 0) {
+			foreach (Transform child in Transform) {
+				images.Add (child.GetScript<LayerImage> ());
+			}
+		}
+		int imageCount = images.Count;*/
+		//Debug.Log (imageCount);
+		if (imageCount == 0)
+			return;
 		for (int i = 0; i < imageCount; i ++) {
 			EditorObjectPool.Destroy<LayerImage> (images[i].Transform);
 		}
@@ -79,7 +74,12 @@ public class LayerBackground : MB, IEditorPoolable {
 	public void CreateImage () {
 		LayerImage image = EditorObjectPool.Create<LayerImage> ();
 		image.SetParent (Transform, images.Count);
-		image.Texture = Texture;
+		image.Texture = null;
 		images.Add (image);
+	}
+
+	public void RemoveImage () {
+		EditorObjectPool.Destroy<LayerImage> (images[images.Count-1].Transform);
+		images.RemoveAt (images.Count-1);
 	}
 }

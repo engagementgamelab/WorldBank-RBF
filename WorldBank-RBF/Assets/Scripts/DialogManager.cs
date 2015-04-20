@@ -64,7 +64,7 @@ public class DialogManager : MonoBehaviour, INPC {
 	    // Temporary: set NPC position automatically
 	    currentNpc.transform.position = new Vector3(.1f + (index/2), 0, 3);
 
-	    currentNpc.Initialize(npcData, gameObject);
+	    //currentNpc.Initialize(npcData, gameObject);
 
 	}
 

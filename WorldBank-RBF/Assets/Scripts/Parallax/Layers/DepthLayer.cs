@@ -11,6 +11,7 @@ public class DepthLayer : MB, IEditorPoolable {
 			layerSettings = value;
 			layerSettings.onUpdateSettings += OnUpdateSettings;
 			layerSettings.onAddImage += OnAddImage;
+			layerSettings.onRemoveImage += OnRemoveImage;
 			OnUpdateSettings ();
 		}
 	}
@@ -93,5 +94,9 @@ public class DepthLayer : MB, IEditorPoolable {
 
 	void OnAddImage () {
 		background.CreateImage ();
+	}
+
+	void OnRemoveImage () {
+		background.RemoveImage ();
 	}
 }

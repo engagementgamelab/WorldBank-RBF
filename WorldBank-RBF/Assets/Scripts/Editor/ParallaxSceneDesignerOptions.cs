@@ -70,6 +70,7 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
         GUILayout.Label ("Select a layer to edit", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal ();
         for (int i = 0; i < layerCount; i ++) {
+            if (layerSettings.Count <= i) continue;
             LayerSettings settings = layerSettings[i];
             if (settings == null) continue;
             int layerIndex = settings.Index+1;
@@ -106,14 +107,14 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
         Refresh ();
     }
 
-    List<Texture2D> LoadTextures (List<string> directories) {
+    /*List<Texture2D> LoadTextures (List<string> directories) {
         List<Texture2D> textures = new List<Texture2D> ();
         for (int i = 0; i < directories.Count; i ++) {
             Texture2D texture = AssetDatabase.LoadAssetAtPath (directories[i], typeof (Texture2D)) as Texture2D;
             textures.Add (texture);
         }
         return textures;
-    }
+    }*/
 
     public void Refresh () {
         CreateLayerSettings ();
