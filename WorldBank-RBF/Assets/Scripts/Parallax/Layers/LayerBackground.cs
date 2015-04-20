@@ -30,9 +30,11 @@ public class LayerBackground : MB, IEditorPoolable {
 			imageSettings = value;
 			TileCount = imageSettings.Count;
 			for (int i = 0; i < TileCount; i ++) {
-				images[i].Texture = imageSettings[i].GetTexture2D ();
-				images[i].ColliderWidth = imageSettings[i].GetColliderWidth ();
-				images[i].ColliderCenter = imageSettings[i].GetColliderCenter ();
+				LayerImageSettings settings = imageSettings[i];
+				images[i].Index = settings.GetIndex ();
+				images[i].Texture = settings.GetTexture2D ();
+				images[i].ColliderWidth = settings.GetColliderWidth ();
+				images[i].ColliderCenter = settings.GetColliderCenter ();
 			}
 		}
 	}
@@ -56,13 +58,6 @@ public class LayerBackground : MB, IEditorPoolable {
 	}
 
 	void DestroyBackgrounds () {
-		/*if (images.Count == 0) {
-			foreach (Transform child in Transform) {
-				images.Add (child.GetScript<LayerImage> ());
-			}
-		}
-		int imageCount = images.Count;*/
-		//Debug.Log (imageCount);
 		int imageCount = images.Count;
 		if (imageCount == 0)
 			return;
@@ -80,7 +75,8 @@ public class LayerBackground : MB, IEditorPoolable {
 	}
 
 	public void RemoveImage () {
-		EditorObjectPool.Destroy<LayerImage> (images[images.Count-1].Transform);
-		images.RemoveAt (images.Count-1);
+		LayerImage removeImage = images[images.Count-1];
+		EditorObjectPool.Destroy<LayerImage> (removeImage.Transform);
+		images.Remove (removeImage);
 	}
 }

@@ -6,9 +6,14 @@ using System.Collections.Generic;
 
 public class LayerImageSettings {
 
+	int index;
 	string texture;
 	float collider_width;
 	float collider_center;
+
+	public void SetIndex (int index) {
+		this.index = index;
+	}
 
 	public void SetTexture (Texture2D texture) {
 		this.texture = AssetDatabase.GetAssetPath (texture);
@@ -20,6 +25,10 @@ public class LayerImageSettings {
 
 	public void SetColliderCenter (float center) {
 		collider_center = center;
+	}
+
+	public int GetIndex () {
+		return index;
 	}
 
 	public Texture2D GetTexture2D () {

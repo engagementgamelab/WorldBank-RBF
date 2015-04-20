@@ -10,6 +10,7 @@ public class LayerImage : QuadImage {
 	public LayerImageSettings Json {
 		get {
 			LayerImageSettings json = new LayerImageSettings ();
+			json.SetIndex (Index);
 			json.SetTexture (Texture);
 			json.SetColliderWidth (ColliderWidth);
 			json.SetColliderCenter (ColliderCenter);

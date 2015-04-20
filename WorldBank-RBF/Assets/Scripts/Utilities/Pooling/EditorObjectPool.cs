@@ -38,11 +38,12 @@ public class EditorObjectPool : MonoBehaviour {
 	}
 
 	public static void Destroy<T> () where T : MonoBehaviour, IEditorPoolable {
-		if (GetObjectsOfTypeInOrder<T> ().Count == 0) return;
+		if (GetObjectsOfType<T> ().Count == 0) return;
 		ObjectPool.Destroy<T> (LastInList<T> ().transform);
 	}
 
 	public static void Destroy<T> (Transform transform) where T : MonoBehaviour, IEditorPoolable {
+		Debug.Log ("destroy " + transform.GetScript<T> ().Index);
 		ObjectPool.Destroy<T> (transform);
 	}
 
@@ -56,6 +57,7 @@ public class EditorObjectPool : MonoBehaviour {
 
 	public static List<T> GetObjectsOfTypeInOrder<T> () where T : MonoBehaviour, IEditorPoolable {
 		List<T> objects = ObjectPool.GetInstances<T> ().ConvertAll (x => x.GetScript<T> ());
+		Debug.Log (typeof (T) + "" + objects.Count);
 		List<T> orderedObjects = new List<T> ();
 		string db = "";
 		for (int i = 0; i < objects.Count; i ++) {
