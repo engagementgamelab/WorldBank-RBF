@@ -55,22 +55,16 @@ public class DialogManager : MonoBehaviour, INPC {
 
 	}
 
-	private void GenerateNPC(DataManager.NPC currNpc, int index) {
+	private void GenerateNPC(DataManager.NPC npcData, int index) {
 
-		NPCBehavior go = (NPCBehavior)Instantiate(npcPrefab);
+		NPCBehavior currentNpc = (NPCBehavior)Instantiate(npcPrefab);
 	  
-	    // go.transform.parent = panel.transform;/
-	    go.transform.localScale = new Vector3(1, 1, 1);
-	    go.transform.position = new Vector3(.1f + (index/2), 0, 3);
+	    currentNpc.transform.localScale = new Vector3(1, 1, 1);
 
-	    go.npcRef = currNpc;
-		go.diagManager = gameObject;
-/*
-	    Text label = go.transform.FindChild("Text").GetComponent<Text>();
-		
-		label.text = currNpc.character;
+	    // Temporary: set NPC position automatically
+	    currentNpc.transform.position = new Vector3(.1f + (index/2), 0, 3);
 
-	    go.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial"));*/
+	    currentNpc.Initialize(npcData, gameObject);
 
 	}
 
@@ -101,14 +95,14 @@ public class DialogManager : MonoBehaviour, INPC {
 
 				strKeyword = textInfo.ToTitleCase(strKeyword);
 
-				Button go = (Button)Instantiate(btnPrefab);
+				Button currentNpc = (Button)Instantiate(btnPrefab);
 			  
-			    go.transform.parent = dialogueBtnPanel.transform;
-			    go.transform.localScale = new Vector3(1, 1, 1);
-			    Text label = go.transform.FindChild("Text").GetComponent<Text>();
+			    currentNpc.transform.parent = dialogueBtnPanel.transform;
+			    currentNpc.transform.localScale = new Vector3(1, 1, 1);
+			    Text label = currentNpc.transform.FindChild("Text").GetComponent<Text>();
 				label.text = strKeyword;
 
-			    go.onClick.AddListener(() => OpenCharacterDialog(currNpc, strKeyword));
+			    currentNpc.onClick.AddListener(() => OpenCharacterDialog(currNpc, strKeyword));
 			}
 		}
 
