@@ -5,8 +5,8 @@ using System.Timers;
 
 public class NPCBehavior : MB {
 
-	public DataManager.NPC npcRef;
-	public GameObject diagManager;
+	private DataManager.NPC npcRef;
+	private GameObject diagManager;
 
 	private Transform targetNPC;
  	private Timer aTimer;
@@ -15,9 +15,13 @@ public class NPCBehavior : MB {
  	private float cameraStartTime = 0.7f;
  	private float cameraTime = 0.7f;
 
- 	public void Initialize(NPC npcData, GameObject manager) {
+ 	public void Initialize(DataManager.NPC npcData, GameObject manager) {
 
+ 		npcRef = npcData;
+ 		diagManager = manager;
 
+		Texture2D npcTex = Resources.Load("Textures/NPC/" + npcData.character, typeof(Texture2D)) as Texture2D;
+ 		GetComponent<Renderer>().material.mainTexture = npcTex;
 
  	}
 
@@ -38,8 +42,9 @@ public class NPCBehavior : MB {
 		if(cameraStartTime < cameraTime)
 		    cameraStartTime += Time.deltaTime;
 		else {
-			ExecuteEvents.Execute<INPC>(diagManager, null, (x,y)=>x.OnNPCSelected(npcRef));	 
+			DialogManager.instance.OpenCharacterDialog(npcRef, "Initial");	 
 			startDialog = false;
 		}
+
 	}
 }
