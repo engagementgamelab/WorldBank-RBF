@@ -4,15 +4,20 @@ using System.Collections.Generic;
 
 public class DepthLayer : MB, IEditorPoolable {
 
+	[SerializeField, HideInInspector] bool selected;
+	public bool Selected { 
+		get { return selected; }
+		set { selected = value; }
+	}
+
 	LayerSettings layerSettings;
 	public LayerSettings LayerSettings {
 		get { return layerSettings; }
 		set { 
 			layerSettings = value;
-			layerSettings.onUpdateSettings += OnUpdateSettings;
-			layerSettings.onAddImage += OnAddImage;
-			layerSettings.onRemoveImage += OnRemoveImage;
-			OnUpdateSettings ();
+			Index = layerSettings.Index;
+			LocalSeparation = layerSettings.LocalSeparation;
+			background.ImageSettings = layerSettings.ImageSettings;
 		}
 	}
 
@@ -21,7 +26,7 @@ public class DepthLayer : MB, IEditorPoolable {
 		get { return index; }
 		set { 
 			index = value;
-			SetLayer ();
+			gameObject.layer = index + 8;
 		}
 	}
 
@@ -51,7 +56,7 @@ public class DepthLayer : MB, IEditorPoolable {
 	}
 
 	public LayerBackground background;
-	List<LayerImage> Images {
+	public List<LayerImage> Images {
 		get { return background.Images; }
 		set { background.Images = value; }
 	}
@@ -68,10 +73,6 @@ public class DepthLayer : MB, IEditorPoolable {
 		SetPosition ();
 	}
 
-	void SetLayer () {
-		gameObject.layer = Index + 8;
-	}
-
 	void Reset () {
 		Transform.Reset ();
 	}
@@ -86,17 +87,18 @@ public class DepthLayer : MB, IEditorPoolable {
 		Transform.SetPosition (target);
 	}
 
-	void OnUpdateSettings () {
-		LocalSeparation = layerSettings.LocalSeparation;
-		background.ImageSettings = layerSettings.ImageSettings;
-		Images = layerSettings.Images;
-	}
-
-	void OnAddImage () {
+	public void AddImage () {
 		background.CreateImage ();
 	}
 
-	void OnRemoveImage () {
+	public void RemoveImage () {
 		background.RemoveImage ();
+	}
+
+	void UpdateLayerSettings () {
+		if (LayerSettings == null) return;
+		LayerSettings.Index = Index;
+		LayerSettings.LocalSeparation = LocalSeparation;
+		LayerSettings.ImageSettings = background.ImageSettings;
 	}
 }
