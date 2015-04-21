@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using JsonFx.Json;
 
-public delegate void OnUpdateSettings ();
-public delegate void OnAddImage ();
-public delegate void OnRemoveImage ();
-
-public class LayerSettings : MonoBehaviour {
+public class LayerSettings : MB, IEditorPoolable {
 
 	[SerializeField, HideInInspector] int index;
-	public int Index { get { return index; } }
+	public int Index { 
+		get { return index; } 
+		set { index = value; }
+	}
 
 	[SerializeField, HideInInspector] bool selected;
 	public bool Selected { 
@@ -22,38 +21,33 @@ public class LayerSettings : MonoBehaviour {
 	[SerializeField, HideInInspector] float localSeparation = 0;
 	public float LocalSeparation { 
 		get { return localSeparation; }
-		set { 
-			localSeparation = value; 
-			SendUpdate ();
-		}
+		set { localSeparation = value; }
 	}
 
-	[SerializeField, HideInInspector] List<LayerImage> images = new List<LayerImage> ();
-	public List<LayerImage> Images {
-		get { return images; }
-		set {
-			images = value;
-			SendUpdate ();
-		}
+	[SerializeField, HideInInspector] List<LayerImageSettings> imageSettings;
+	public List<LayerImageSettings> ImageSettings { 
+		get { return imageSettings; }
+		set { imageSettings = value; }
 	}
-
-	public List<LayerImageSettings> ImageSettings { get; set; }
 
 	#if UNITY_EDITOR
 	public LayerSettingsJson Json {
 		get { 
+
+			// Update properties from accompanying DepthLayer
+			DepthLayer layer = EditorObjectPool.GetObjectAtIndex<DepthLayer> (Index);
+			LocalSeparation = layer.LocalSeparation;
+			ImageSettings = layer.Images.ConvertAll (x => x.Json);
+
+			// Create a json serializable object
 			LayerSettingsJson json = new LayerSettingsJson ();
 			json.SetIndex (Index);
 			json.SetLocalSeparation (LocalSeparation);
-			json.SetImages (Images.ConvertAll (x => x.Json));
+			json.SetImages (ImageSettings);
 			return json;
 		}
 	}
 	#endif
-
-	public OnUpdateSettings onUpdateSettings;
-	public OnAddImage onAddImage;
-	public OnRemoveImage onRemoveImage;
 
 	void Start () {
 		// this isn't working and I'm not sure why?
@@ -61,28 +55,10 @@ public class LayerSettings : MonoBehaviour {
 	}
 
 	public void Init (int index, float localSeparation=0, List<LayerImageSettings> imageSettings=null) {
+		this.imageSettings = imageSettings;
 		this.index = index;
 		this.localSeparation = localSeparation;
-		if (imageSettings != null) {
-			ImageSettings = imageSettings;
-		}
 	}
 
-	public void AddImage () {
-		if (onAddImage != null) {
-			onAddImage ();
-		}
-	}
-
-	public void RemoveImage () {
-		if (onRemoveImage != null) {
-			onRemoveImage ();
-		}
-	}
-
-	void SendUpdate () {
-		if (onUpdateSettings != null) {
-			onUpdateSettings ();
-		}
-	}
+	public void Init () {}
 }

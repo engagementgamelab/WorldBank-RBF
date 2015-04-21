@@ -13,6 +13,12 @@ public class MB : MonoBehaviour {
 		}
 	}
 
+	Transform parent;
+	public Transform Parent {
+		get { return Transform.parent; }
+		set { Transform.SetParent (value); }
+	}
+
 	public Vector3 Position {
 		get { return Transform.position; }
 		set { Transform.position = value; }

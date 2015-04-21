@@ -70,10 +70,9 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
         GUILayout.Label ("Select a layer to edit", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal ();
         for (int i = 0; i < layerCount; i ++) {
-            if (layerSettings.Count <= i) continue;
-            LayerSettings settings = layerSettings[i];
-            if (settings == null) continue;
-            int layerIndex = settings.Index+1;
+            DepthLayer layer = layers[i];
+            if (layer == null) continue;
+            int layerIndex = layer.Index+1;
             if (selectedLayer == i) {
                 GUI.color = Color.gray;
             } else {
@@ -83,12 +82,12 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
 
                 // Unselect previously selected layer, then select this one
                 if (selectedLayer != -1) {
-                    layerSettings[selectedLayer].Selected = false;
+                    layers[selectedLayer].Selected = false;
                 }
-                settings.Selected = true;
+                layer.Selected = true;
                 selectedLayer = i;
-                layerOptions.SetLayerSettings (settings);
-                Selection.activeGameObject = layers[i].gameObject;
+                layerOptions.SetDepthLayer (layer);
+                Selection.activeGameObject = layer.gameObject;
             }
         }
         EditorGUILayout.EndHorizontal ();
@@ -101,20 +100,11 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
         this.layerCount = layerCount;
         for (int i = 0; i < layers.Count; i ++) {
             LayerSettingsJson layer = layers[i];
-            LayerSettings settings = ObjectPool.Instantiate<LayerSettings> ();
+            LayerSettings settings = EditorObjectPool.Create<LayerSettings> ();
             settings.Init (layer.GetIndex (), layer.GetLocalSeparation (), layer.GetImages ());
         }
         Refresh ();
     }
-
-    /*List<Texture2D> LoadTextures (List<string> directories) {
-        List<Texture2D> textures = new List<Texture2D> ();
-        for (int i = 0; i < directories.Count; i ++) {
-            Texture2D texture = AssetDatabase.LoadAssetAtPath (directories[i], typeof (Texture2D)) as Texture2D;
-            textures.Add (texture);
-        }
-        return textures;
-    }*/
 
     public void Refresh () {
         CreateLayerSettings ();
@@ -125,10 +115,9 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
     }
 
     void CreateLayerSettings () {
-        layerSettings = ObjectPool.GetInstances<LayerSettings> ().ConvertAll (x => x.GetScript<LayerSettings> ());
-        layerSettings = OrderLayerSettings ();
+        layerSettings = EditorObjectPool.GetObjectsOfTypeInOrder<LayerSettings> ();
         while (layerSettings.Count < layerCount) {
-            LayerSettings settings = ObjectPool.Instantiate<LayerSettings> ();
+            LayerSettings settings = EditorObjectPool.Create<LayerSettings> ();
             layerSettings.Add (settings);
             settings.Init (layerSettings.Count-1);
         }
@@ -164,19 +153,11 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
     void SetSelectedLayer () {
         selectedLayer = -1;
         for (int i = 0; i < layerCount; i ++) {
-            LayerSettings settings = layerSettings[i];
-            if (settings.Selected) {
+            DepthLayer layer = layers[i];
+            if (layer.Selected) {
                 selectedLayer = i;
-                layerOptions.SetLayerSettings (settings);
+                layerOptions.SetDepthLayer (layer);
             }
         }
-    }
-
-    List<LayerSettings> OrderLayerSettings () {
-        List<LayerSettings> orderedSettings = new List<LayerSettings> (new LayerSettings[layerSettings.Count]);
-        for (int i = 0; i < layerSettings.Count; i ++) {
-            orderedSettings[layerSettings[i].Index] = layerSettings[i];
-        }
-        return orderedSettings;
     }
 }

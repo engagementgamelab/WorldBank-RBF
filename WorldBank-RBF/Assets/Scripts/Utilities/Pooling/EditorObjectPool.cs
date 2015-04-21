@@ -55,9 +55,13 @@ public class EditorObjectPool : MonoBehaviour {
 		ObjectPool.CleanUp ();
 	}
 
+	public static T GetObjectAtIndex<T> (int index) where T : MonoBehaviour, IEditorPoolable {
+		List<T> objects = GetObjectsOfTypeInOrder<T> ();
+		return objects[index];
+	}
+
 	public static List<T> GetObjectsOfTypeInOrder<T> () where T : MonoBehaviour, IEditorPoolable {
 		List<T> objects = ObjectPool.GetInstances<T> ().ConvertAll (x => x.GetScript<T> ());
-		Debug.Log (typeof (T) + "" + objects.Count);
 		List<T> orderedObjects = new List<T> ();
 		string db = "";
 		for (int i = 0; i < objects.Count; i ++) {
@@ -66,7 +70,6 @@ public class EditorObjectPool : MonoBehaviour {
 			orderedObjects.Add (obj);
 			db += " " + obj.Index;
 		}
-		Debug.Log (orderedObjects.Count + db);
 		return orderedObjects;
 	}
 

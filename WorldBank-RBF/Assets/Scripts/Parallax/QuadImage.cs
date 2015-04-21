@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent (typeof (BoxCollider), typeof (MeshRenderer), typeof (MeshFilter))]
 public class QuadImage : MB, IEditorPoolable {
 
-	public int index;
+	[SerializeField] public int index;
 	public int Index { 
 		get { return index; }
 		set { index = value; }
@@ -18,6 +18,24 @@ public class QuadImage : MB, IEditorPoolable {
 			if (texture != null)
 				Material = MaterialsManager.CreateMaterialFromTexture (texture, texture.format.HasAlpha ());
 			OnSetTexture ();
+		}
+	}
+
+	[SerializeField, HideInInspector] float colliderWidth = 1;
+	public float ColliderWidth {
+		get { return colliderWidth; }
+		set { 
+			colliderWidth = value;
+			BoxCollider.SetSizeX (colliderWidth);
+		}
+	}
+
+	[SerializeField, HideInInspector] float colliderCenter = 0;
+	public float ColliderCenter {
+		get { return colliderCenter; }
+		set {
+			colliderCenter = value;
+			BoxCollider.SetCenterX (colliderCenter);
 		}
 	}
 
@@ -44,24 +62,6 @@ public class QuadImage : MB, IEditorPoolable {
 				boxCollider = GetComponent<BoxCollider> ();
 			}
 			return boxCollider;
-		}
-	}
-
-	[SerializeField, HideInInspector] float colliderWidth = 1;
-	public float ColliderWidth {
-		get { return colliderWidth; }
-		set { 
-			colliderWidth = value;
-			BoxCollider.SetSizeX (colliderWidth);
-		}
-	}
-
-	[SerializeField, HideInInspector] float colliderCenter = 0;
-	public float ColliderCenter {
-		get { return colliderCenter; }
-		set {
-			colliderCenter = value;
-			BoxCollider.SetCenterX (colliderCenter);
 		}
 	}
 

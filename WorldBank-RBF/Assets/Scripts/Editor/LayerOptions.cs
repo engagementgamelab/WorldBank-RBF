@@ -6,17 +6,12 @@ using UnityEditor;
 [Serializable]
 public class LayerOptions : ScriptableObject {
 
-	LayerSettings layerSettings = null;
+	DepthLayer depthLayer = null;
 	LayerImageOptions layerImageOptions;
 	int selectedImage = -1;
 
-	// TextureField textureField;
-    // SerializedObject serializedTextureField;
-
-	public void SetLayerSettings (LayerSettings layerSettings) {
-		this.layerSettings = layerSettings;
-		// textureField = CreateInstance ("TextureField") as TextureField;
-		// serializedTextureField = new UnityEditor.SerializedObject (textureField);
+	public void SetDepthLayer (DepthLayer depthLayer) {
+		this.depthLayer = depthLayer;
 		UnselectImage ();
 	}
 
@@ -28,35 +23,35 @@ public class LayerOptions : ScriptableObject {
     }
 
 	public void OnGUI () {
-		if (layerSettings == null) {
+		if (depthLayer == null) {
 			GUILayout.Label ("No Layer Selected");
 			return;
 		}
 
 		GUI.color = Color.white;
-		layerSettings.LocalSeparation = EditorGUILayout.Slider ("Relative Distance", layerSettings.LocalSeparation, 0, DepthLayer.layerSeparation-1);
+		depthLayer.LocalSeparation = EditorGUILayout.Slider ("Relative Distance", depthLayer.LocalSeparation, 0, DepthLayer.layerSeparation-1);
 
 		GUILayout.Label ("Add or remove images", EditorStyles.boldLabel);
 		EditorGUILayout.BeginHorizontal ();
 		if (GUILayout.Button ("+")) {
-			layerSettings.AddImage ();
+			depthLayer.AddImage ();
 		}
 		if (GUILayout.Button ("-")) {
-			layerSettings.RemoveImage ();
+			depthLayer.RemoveImage ();
 		}
 		EditorGUILayout.EndHorizontal ();
 
 		GUILayout.Label ("Select an image to edit", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal ();
-		for (int i = 0; i < layerSettings.Images.Count; i ++) {
-			LayerImage image = layerSettings.Images[i];
+		for (int i = 0; i < depthLayer.Images.Count; i ++) {
+			LayerImage image = depthLayer.Images[i];
 			if (image == null) continue;
 			if (selectedImage == i) {
 				GUI.color = Color.gray;
 			} else {
 				GUI.color = Color.white;
 			}
-			int imageIndex = i + 1;
+			int imageIndex = i+1;
 			if (GUILayout.Button ("Image " + imageIndex)) {
 				selectedImage = i;
 				layerImageOptions.SetLayerImage (image);
