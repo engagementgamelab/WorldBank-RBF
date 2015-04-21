@@ -10,19 +10,22 @@ public class SaveLoadOptions : ScriptableObject {
 
 	ParallaxSceneDesignerOptions parallaxSceneDesignerOptions;
 	string cityName;
+    string prevCityName;
 	GUILayoutOption miniButtonWidth = GUILayout.Width (40f);
 
 	SaveState saveState = SaveState.Unsaved;
 	enum SaveState {
 		Unsaved,
-		Unsuccessful,
+        Overwrite,
+        EmptyName,
 		Successful
 	}
 
 	LoadState loadState = LoadState.Unloaded;
 	enum LoadState {
 		Unloaded,
-		Unsuccessful,
+        EmptyName,
+        FileDoesNotExist,
 		Successful
 	}
 
@@ -42,57 +45,79 @@ public class SaveLoadOptions : ScriptableObject {
 
 	public void OnGUI () {
 
+        if (cityName != prevCityName) {
+            saveState = SaveState.Unsaved;
+        }
+
 		GUI.color = Color.white;
         EditorGUILayout.BeginHorizontal ();
         cityName = EditorGUILayout.TextField ("City Name: ", cityName);
-        if (GUILayout.Button ("Save", EditorStyles.miniButtonLeft, miniButtonWidth)) {
-        	loadState = LoadState.Unloaded;
-            bool saveSuccessful = Save ();
-            if (saveSuccessful) {
-            	saveState = SaveState.Successful;
-            } else {
-            	saveState = SaveState.Unsuccessful;
+        if (LayerSettings == null || LayerSettings.Count > 0) {
+            if (GUILayout.Button ("Save", EditorStyles.miniButtonLeft, miniButtonWidth)) {
+            	loadState = LoadState.Unloaded;
+                saveState = Save ();
             }
         }
         if (GUILayout.Button ("Load", EditorStyles.miniButtonRight, miniButtonWidth)) {
         	saveState = SaveState.Unsaved;
-        	bool loadSuccesful = Load ();
-        	if (loadSuccesful) {
-        		loadState = LoadState.Successful;
-        	} else {
-        		loadState = LoadState.Unsuccessful;
-        	}
+            loadState = Load ();
         }
         EditorGUILayout.EndHorizontal ();
 
-        if (saveState == SaveState.Unsuccessful) {
+        if (saveState == SaveState.EmptyName) {
             EditorGUILayout.HelpBox ("Could not save. Please enter a city name!", MessageType.Error);
+        } else if (saveState == SaveState.Overwrite) {
+            DrawOverwriteOption ();
         } else if (saveState == SaveState.Successful) {
-        	EditorGUILayout.HelpBox ("City saved! :)", MessageType.Info);
-        }
+            EditorGUILayout.HelpBox ("City saved! :)", MessageType.Info);
+        } 
 
-        if (loadState == LoadState.Unsuccessful) {
-        	EditorGUILayout.HelpBox ("Could not load. Please enter a city name!", MessageType.Error);
+        if (loadState == LoadState.EmptyName) {
+            EditorGUILayout.HelpBox ("Could not load. Please enter a city name!", MessageType.Error);
+        } else if (loadState == LoadState.FileDoesNotExist) {
+            EditorGUILayout.HelpBox ("File does not exist :'(", MessageType.Error);
         } else if (loadState == LoadState.Successful) {
-        	EditorGUILayout.HelpBox ("City loaded! :P", MessageType.Info);
+            EditorGUILayout.HelpBox ("City loaded! :P", MessageType.Info);
         }
     }
 
-    bool Save () {
-    	if (cityName == "") return false;
-        SaveLayerSettings ();
-        return true;
+    void DrawOverwriteOption () {
+        EditorGUILayout.BeginHorizontal ();
+        GUILayout.Label (string.Format ("A file named \"{0}\" already exists. Overwrite?", cityName));
+        if (GUILayout.Button ("Yes", EditorStyles.miniButtonLeft, miniButtonWidth)) {
+            SaveLayerSettings (true);
+        }
+        if (GUILayout.Button ("Cancel", EditorStyles.miniButtonRight, miniButtonWidth)) {
+            saveState = SaveState.Unsaved;
+        }
+        EditorGUILayout.EndHorizontal ();
     }
 
-    bool Load () {
-    	if (cityName == "") return false;
-    	PhaseOneCity phaseOne = JsonReader.Deserialize<PhaseOneCity> (ReadJsonData (CITY_PATH));
-    	parallaxSceneDesignerOptions.Load (phaseOne.GetLayers (), phaseOne.GetLayerCount ());
-    	return true;
+    SaveState Save () {
+        if (cityName == "") return SaveState.EmptyName;
+        if (SaveLayerSettings ()) {
+            return SaveState.Successful;
+        } else {
+            return SaveState.Overwrite;
+        }
     }
 
-    void SaveLayerSettings () {
+    LoadState Load () {
+        if (cityName == "") return LoadState.EmptyName;
+        if (!File.Exists (CITY_PATH)) {
+            return LoadState.FileDoesNotExist;
+        }
+        PhaseOneCity phaseOne = JsonReader.Deserialize<PhaseOneCity> (ReadJsonData (CITY_PATH));
+        parallaxSceneDesignerOptions.Load (phaseOne.GetLayers (), phaseOne.GetLayerCount ());
+        return LoadState.Successful;
+    }
+
+    bool SaveLayerSettings (bool allowOverwrite=false) {
     	
+        if (!allowOverwrite && File.Exists (CITY_PATH)) {
+            return false;
+        }
+
     	List<LayerSettingsJson> layers = LayerSettings.ConvertAll (x => x.Json);
 		PhaseOneCity phaseOne = new PhaseOneCity ();
 		phaseOne.SetCityName (cityName);
@@ -103,6 +128,7 @@ public class SaveLoadOptions : ScriptableObject {
             Directory.CreateDirectory (PATH);
         }
         WriteJsonData (CITY_PATH, JsonWriter.Serialize(phaseOne));
+        return true;
     }
 
     // TODO: Move this to DataManager

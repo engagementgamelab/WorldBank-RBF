@@ -36,9 +36,16 @@ public class LayerOptions : ScriptableObject {
 		GUI.color = Color.white;
 		layerSettings.LocalSeparation = EditorGUILayout.Slider ("Relative Distance", layerSettings.LocalSeparation, 0, DepthLayer.layerSeparation-1);
 
+		GUILayout.Label ("Add or remove images", EditorStyles.boldLabel);
+		EditorGUILayout.BeginHorizontal ();
 		if (GUILayout.Button ("+")) {
 			layerSettings.AddImage ();
 		}
+		if (GUILayout.Button ("-")) {
+			layerSettings.RemoveImage ();
+		}
+		EditorGUILayout.EndHorizontal ();
+
 		GUILayout.Label ("Select an image to edit", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal ();
 		for (int i = 0; i < layerSettings.Images.Count; i ++) {

@@ -4,12 +4,13 @@ using JsonFx.Json;
 
 public class LayerImage : QuadImage {
 
-	float xPosition;
+	[SerializeField, HideInInspector] float xPosition;
 
 	#if UNITY_EDITOR
 	public LayerImageSettings Json {
 		get {
 			LayerImageSettings json = new LayerImageSettings ();
+			json.SetIndex (Index);
 			json.SetTexture (Texture);
 			json.SetColliderWidth (ColliderWidth);
 			json.SetColliderCenter (ColliderCenter);

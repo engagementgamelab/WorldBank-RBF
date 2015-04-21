@@ -4,9 +4,13 @@ using System.Collections;
 [RequireComponent (typeof (BoxCollider), typeof (MeshRenderer), typeof (MeshFilter))]
 public class QuadImage : MB, IEditorPoolable {
 
-	public int Index { get; set; }
+	public int index;
+	public int Index { 
+		get { return index; }
+		set { index = value; }
+	}
 
-	Texture2D texture;
+	[SerializeField, HideInInspector] Texture2D texture;
 	public Texture2D Texture {
 		get { return texture; }
 		set { 
@@ -43,7 +47,7 @@ public class QuadImage : MB, IEditorPoolable {
 		}
 	}
 
-	float colliderWidth = 1;
+	[SerializeField, HideInInspector] float colliderWidth = 1;
 	public float ColliderWidth {
 		get { return colliderWidth; }
 		set { 
@@ -52,7 +56,7 @@ public class QuadImage : MB, IEditorPoolable {
 		}
 	}
 
-	float colliderCenter = 0;
+	[SerializeField, HideInInspector] float colliderCenter = 0;
 	public float ColliderCenter {
 		get { return colliderCenter; }
 		set {

@@ -7,23 +7,12 @@ public class LayerBackground : MB, IEditorPoolable {
 	public int Index { get; set; }
 
 	int tileCount = 0;
-	public int TileCount {
+	int TileCount {
 		get { return tileCount; }
 		set { 
 			tileCount = Mathf.Max (0, value);
 			DestroyBackgrounds ();
 			CreateBackgrounds ();
-		}
-	}
-
-	new Texture2D texture;
-	public virtual Texture2D Texture {
-		get { return texture; }
-		set {
-			texture = value;
-			for (int i = 0; i < images.Count; i ++) {
-				images[i].Texture = texture;
-			}
 		}
 	}
 
@@ -40,16 +29,15 @@ public class LayerBackground : MB, IEditorPoolable {
 			if (value == null) return;
 			imageSettings = value;
 			TileCount = imageSettings.Count;
-			Debug.Log (TileCount + "...." + gameObject.GetInstanceID ());
 			for (int i = 0; i < TileCount; i ++) {
-				images[i].Texture = imageSettings[i].GetTexture2D ();
-				images[i].ColliderWidth = imageSettings[i].GetColliderWidth ();
-				images[i].ColliderCenter = imageSettings[i].GetColliderCenter ();
+				LayerImageSettings settings = imageSettings[i];
+				images[i].Index = settings.GetIndex ();
+				images[i].Texture = settings.GetTexture2D ();
+				images[i].ColliderWidth = settings.GetColliderWidth ();
+				images[i].ColliderCenter = settings.GetColliderCenter ();
 			}
 		}
 	}
-
-	[SerializeField, HideInInspector] List<Texture2D> textures = new List<Texture2D> ();
 
 	public void Init () {
 		/*LayerImage image = Transform.GetChildOfType<LayerImage> ();
@@ -71,7 +59,8 @@ public class LayerBackground : MB, IEditorPoolable {
 
 	void DestroyBackgrounds () {
 		int imageCount = images.Count;
-		if (imageCount == 0) return;
+		if (imageCount == 0)
+			return;
 		for (int i = 0; i < imageCount; i ++) {
 			EditorObjectPool.Destroy<LayerImage> (images[i].Transform);
 		}
@@ -81,7 +70,13 @@ public class LayerBackground : MB, IEditorPoolable {
 	public void CreateImage () {
 		LayerImage image = EditorObjectPool.Create<LayerImage> ();
 		image.SetParent (Transform, images.Count);
-		image.Texture = Texture;
+		image.Texture = null;
 		images.Add (image);
+	}
+
+	public void RemoveImage () {
+		LayerImage removeImage = images[images.Count-1];
+		EditorObjectPool.Destroy<LayerImage> (removeImage.Transform);
+		images.Remove (removeImage);
 	}
 }

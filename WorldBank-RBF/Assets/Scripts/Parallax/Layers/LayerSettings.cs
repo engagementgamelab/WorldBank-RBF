@@ -6,6 +6,7 @@ using JsonFx.Json;
 
 public delegate void OnUpdateSettings ();
 public delegate void OnAddImage ();
+public delegate void OnRemoveImage ();
 
 public class LayerSettings : MonoBehaviour {
 
@@ -52,13 +53,14 @@ public class LayerSettings : MonoBehaviour {
 
 	public OnUpdateSettings onUpdateSettings;
 	public OnAddImage onAddImage;
+	public OnRemoveImage onRemoveImage;
 
 	void Start () {
 		// this isn't working and I'm not sure why?
 		hideFlags = HideFlags.HideInHierarchy;
 	}
 
-	public void Init (int index, float localSeparation=0, List<LayerImageSettings> imageSettings=null/*, List<Texture2D> backgroundTextures=null*/) {
+	public void Init (int index, float localSeparation=0, List<LayerImageSettings> imageSettings=null) {
 		this.index = index;
 		this.localSeparation = localSeparation;
 		if (imageSettings != null) {
@@ -69,6 +71,12 @@ public class LayerSettings : MonoBehaviour {
 	public void AddImage () {
 		if (onAddImage != null) {
 			onAddImage ();
+		}
+	}
+
+	public void RemoveImage () {
+		if (onRemoveImage != null) {
+			onRemoveImage ();
 		}
 	}
 
