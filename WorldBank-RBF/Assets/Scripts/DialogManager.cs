@@ -9,10 +9,11 @@ Created by Engagement Lab, 2015
 ==============
 */
 
-/*using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Threading;
@@ -46,7 +47,14 @@ public class DialogManager : MonoBehaviour {
 	public NPCBehavior npcPrefab;
 	
 	public GameObject dialoguePanel;
-	public GameObject dialogueBtnPanel;
+
+	private StringBuilder builder = new StringBuilder();
+
+	private Text currentDialogLabel;
+	private int currentDialogIndex;
+	private double[] currentDialogueOpacity;
+	private List<string> currentDialogueText;
+	private List<string> currentDialogueChoices;
 
 	void Awake() {
 
@@ -63,6 +71,35 @@ public class DialogManager : MonoBehaviour {
 
 	}
 
+	void Update() {
+
+		if(currentDialogueText != null)
+		{
+
+			string[] arrTxt = new string[currentDialogueText.Count];
+		
+			for(int i = 0; i < currentDialogIndex-1; i++)
+			{
+				// if(currentDialogueOpacity[i] == null)
+				// 	currentDialogueOpacity[i] = 00;
+				// else
+					currentDialogueOpacity[i]++;
+
+				if(currentDialogueText[i].IndexOf("<color") == -1 && currentDialogueOpacity[i] < 100)
+					arrTxt[i] = "<color=#ffffff" + currentDialogueOpacity[i] + ">" + currentDialogueText[i] + "</color>";
+				else
+					arrTxt[i] = currentDialogueText[i];
+			}
+
+			// builder.Append();
+			currentDialogLabel.text = string.Join("", arrTxt);
+
+			currentDialogIndex++;
+
+		}
+
+	}
+
 	public void LoadDialogForCity(string city)
 	{
 		// Data tests
@@ -75,7 +112,7 @@ public class DialogManager : MonoBehaviour {
         	index++;
         }
 
-        btnLoadData.gameObject.SetActive(false);
+        // btnLoadData.gameObject.SetActive(false);
 	}
 
 	public CanvasRenderer CreateGenericDialog(Transform canvasParent, string strInitialTxt) {
@@ -132,41 +169,65 @@ public class DialogManager : MonoBehaviour {
 		// Match any characters in between [[ and ]]
 		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
 
-		CanvasRenderer diagRenderer = CreateGenericDialog(null, strInitial.Replace("[[", "<color=orange>").Replace("]]", "</color>"));
+		// Does this dialogue unlock something?
+		if(currNpc.dialogue[strDialogueKey].ContainsKey("unlocks"))
+			strInitial += "\n\n<color=yellow>Unlocks</color>: " + currNpc.dialogue[strDialogueKey]["unlocks"];
+
+		strInitial = strInitial.Replace("[[", "<color=orange>").Replace("]]", "</color>");
+
+		CanvasRenderer diagRenderer = CreateGenericDialog(null, strInitial);
+
+		currentDialogLabel = diagRenderer.transform.Find("Panel/Dialogue Text").GetComponent<Text>() as Text;
+		Transform dialogueBtnPanel = diagRenderer.transform.Find("Panel/Dialogue Buttons");
+
 
 		foreach (Transform child in dialogueBtnPanel.transform)
 		    GameObject.Destroy(child.gameObject);
 
-		if(currNpc.dialogue[strDialogueKey].ContainsKey("unlocks"))
-			strInitial += "\n\n<color=green>Unlocks</color>: " + currNpc.dialogue[strDialogueKey]["unlocks"];
+		currentDialogueText = new List<string>();
+		
+		foreach(char c in strInitial)
+			currentDialogueText.Add(c.ToString());
+
+		currentDialogueOpacity = new double[currentDialogueText.Count];
 
 		// Search for "keywords" in between [[ and ]]
 		Regex regexKeywords = new Regex(strKeywordRegex, RegexOptions.IgnoreCase);
 		MatchCollection keyMatches = regexKeywords.Matches(strInitial);
 	
-		foreach(Match m in keyMatches) {
-		    if (m.Success)
-			{
-		        string strKeyword = m.Groups[3].ToString();
+		if(strDialogueKey == "Initial")
+		{
+			currentDialogueChoices = new List<string>();
 
-				CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
-				TextInfo textInfo = cultureInfo.TextInfo;
+			foreach(Match m in keyMatches) {
+			    if (m.Success)
+				{
+			        string strKeyword = m.Groups[3].ToString();
 
-				strKeyword = textInfo.ToTitleCase(strKeyword);
-
-				Button currentNpc = (Button)Instantiate(btnPrefab);
-			  
-			    currentNpc.transform.parent = dialogueBtnPanel.transform;
-			    currentNpc.transform.localScale = new Vector3(1, 1, 1);
-			    Text label = currentNpc.transform.FindChild("Text").GetComponent<Text>();
-				label.text = strKeyword;
-
-			    currentNpc.onClick.AddListener(() => OpenCharacterDialog(currNpc, strKeyword));
+			        currentDialogueChoices.Add(strKeyword.ToLower());				
+				}
 			}
+		}
+
+		foreach(string choice in currentDialogueChoices) {
+			CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+			TextInfo textInfo = cultureInfo.TextInfo;
+
+			string choiceName = textInfo.ToTitleCase(choice);
+
+			Button btnChoice = (Button)Instantiate(btnPrefab);
+
+			btnChoice.transform.parent = dialogueBtnPanel;
+			btnChoice.transform.localScale = new Vector3(1, 1, 1);
+			
+			Text btnTxt = btnChoice.transform.FindChild("Text").GetComponent<Text>();
+			btnTxt.text = choiceName;
+			
+			btnChoice.onClick.AddListener(() => currentDialogueChoices.Remove(choice));
+			btnChoice.onClick.AddListener(() => OpenCharacterDialog(currNpc, choiceName));
 		}
 
 		dialoguePanel.SetActive (true);
 
 	}
 }
-*/

@@ -1,4 +1,15 @@
-﻿/*using UnityEngine;
+﻿/* 
+World Bank RBF
+Created by Engagement Lab, 2015
+==============
+ NPCBehavior.cs
+ Unity NPC behavior handler.
+
+ Created by Johnny Richardson on 4/20/15.
+==============
+*/
+
+using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.Timers;
@@ -58,4 +69,3 @@ public class NPCBehavior : MB {
 
 	}*/
 }
-*/
