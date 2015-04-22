@@ -24,14 +24,18 @@ public class ObjectPool : MonoBehaviour {
 	[SerializeField] Transform prefab;
 
 	public static bool StartupLoad () {
-		ObjectPool[] pools = Object.FindObjectsOfType (typeof (ObjectPool)) as ObjectPool[];
-		if (pools.Length == 0)
-			return false;
+		#if UNITY_EDITOR
+			ObjectPool[] pools = Object.FindObjectsOfType (typeof (ObjectPool)) as ObjectPool[];
+			if (pools.Length == 0)
+				return false;
 
-		for (int i = 0; i < pools.Length; i ++) {
-			pools[i].LoadInstances ();
-		}
-		return true;
+			for (int i = 0; i < pools.Length; i ++) {
+				pools[i].LoadInstances ();
+			}
+			return true;
+		#else
+			return true;
+		#endif
 	}
 
 	public void LoadInstances () {
@@ -140,16 +144,12 @@ public class ObjectPool : MonoBehaviour {
 
 	public static void Destroy<T> (Transform instance) where T : MonoBehaviour {
 		if (instance == null) return;
-		#if UNITY_EDITOR
 		StartupLoad ();
-		#endif
 		GetPool<T> ().ReleaseInstance (instance);
 	}
 
 	public static void DestroyAll<T> () where T : MonoBehaviour {
-		#if UNITY_EDITOR
 		StartupLoad ();
-		#endif
 		GetPool<T> ().ReleaseAllInstances ();
 	}
 
@@ -159,7 +159,7 @@ public class ObjectPool : MonoBehaviour {
 
 	// Destroys all pooled objects and pools
 	public static void Clear () {
-		
+		StartupLoad ();
 		List<GameObject> poolsToDestroy = new List<GameObject> ();
 
 		// Destroy instances in each pool first
@@ -187,7 +187,7 @@ public class ObjectPool : MonoBehaviour {
 
 	// Destroys all inactive instances and empty pools
 	public static void CleanUp () {
-		
+		StartupLoad ();
 		List<GameObject> poolsToDestroy = new List<GameObject> ();
 
 		// Destroy inactive instances in each pool first
