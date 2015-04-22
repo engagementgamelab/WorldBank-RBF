@@ -21,58 +21,7 @@ public class DataManager {
     public static string serverRoot;
 
     private static JsonReaderSettings _readerSettings = new JsonReaderSettings();
-    private static GameData currentGameData;
-        
-    public class GameData {
-
-        public Character[] characters { get; set; }
-        public City[] cities { get; set; }
-		public Dictionary<string, NPC[]> phase_one { get; set; }
-        public Dictionary<string, object> phase_two { get; set; }
-
-    }
-
-    [System.Serializable]
-    public class Character {
-
-        public string symbol { get; set; }
-        public string display_name { get; set; }
-        public string description { get; set; }
-
-    }
-
-    [System.Serializable]
-    public class City {
-
-        public string symbol { get; set; }
-        public string display_name { get; set; }
-        public string description { get; set; }
-
-    }
-
-    public class NPC {
-
-        public string symbol { get; set; }
-        public string character { get; set; }
-		public Dictionary<string, Dictionary<string, string>> dialogue { get; set; }
-
-    }
-
-    public class Dialogue {
-
-        public string symbol { get; set; }
-        public string character { get; set; }
-        public Dictionary<string, object> dialogue { get; set; }
-
-    }
-
-	public class PhaseOne {
-		public Dictionary<string, object>[] npcs { get; set; }
-	}
-
-    public class Characters {
-        public List<Dictionary<string, object>> dialogue = new List<Dictionary<string, object>>();
-    }
+    private static Models.GameData currentGameData;
 
     public static void SetGameConfig(string data)
     {
@@ -87,10 +36,7 @@ public class DataManager {
 
     public static void SetGameData(string data)
     {
-        
-        JsonReader reader = new JsonReader(data, _readerSettings);
-
-        currentGameData = JsonReader.Deserialize<GameData>(data);
+        currentGameData = JsonReader.Deserialize<Models.GameData>(data);
 
         // create file in Assets/Config/
         #if !UNITY_WEBPLAYER
@@ -99,19 +45,19 @@ public class DataManager {
 
     }
 
-    public static NPC[] GetDataForCity(string strCityName)    {
+    public static Models.NPC[] GetDataForCity(string strCityName)    {
         
         return currentGameData.phase_one[strCityName];
 
     }
 
-    public static City[] GetCityData()    {
+    public static Models.City[] GetCityData()    {
         
         return currentGameData.cities;
 
     }
 
-    public static Character GetDataForCharacter(string strCharName)    {
+    public static Models.Character GetDataForCharacter(string strCharName)    {
         
         int characterIndex = Array.FindIndex(currentGameData.characters, row => row.symbol == strCharName);
 
