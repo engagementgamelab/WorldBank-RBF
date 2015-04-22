@@ -18,8 +18,14 @@ public class NPCBehavior : MB {
 
  	public void Initialize(Models.NPC npcData) {
 
- 		// mainCam = Camera.main;
+ 		mainCam = Camera.main;
  		npcRef = npcData;
+	  
+	    transform.localScale = Vector3.one;
+
+	    // Temporary: set NPC position automatically
+	    // .1f + (index/2)
+	    transform.position = new Vector3(1, 0, mainCam.transform.position.z + 2);
 
 		Texture2D npcTex = Resources.Load("Textures/NPC/" + npcData.character, typeof(Texture2D)) as Texture2D;
  		GetComponent<Renderer>().material.mainTexture = npcTex;
@@ -28,13 +34,16 @@ public class NPCBehavior : MB {
 
  	// On Touch/Click NPC
 	void OnMouseDown() {
-		CameraBehavior.ZoomIn(transform);
+		/*CameraBehavior.ZoomIn(transform);
+		mainCam.Camera().Move(10f);
 		
 		startDialog = true;
-		cameraStartTime = 0;
+		cameraStartTime = 0;*/
+
+		DialogManager.instance.OpenCharacterDialog(npcRef, "Initial");
 	}
 
-	void Update()
+	/*void Update()
 	{
 
 		if(!startDialog) 
@@ -47,5 +56,5 @@ public class NPCBehavior : MB {
 			startDialog = false;
 		}
 
-	}
+	}*/
 }

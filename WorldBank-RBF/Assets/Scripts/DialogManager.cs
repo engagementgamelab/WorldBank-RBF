@@ -47,8 +47,6 @@ public class DialogManager : MonoBehaviour {
 	
 	public GameObject dialoguePanel;
 	public GameObject dialogueBtnPanel;
-	
-	public Text dialogueTxt;
 
 	void Awake() {
 
@@ -80,6 +78,25 @@ public class DialogManager : MonoBehaviour {
         btnLoadData.gameObject.SetActive(false);
 	}
 
+	public CanvasRenderer CreateGenericDialog(Transform canvasParent, string strInitialTxt) {
+
+		GameObject canvasObject = Instantiate(Resources.Load("Prefabs/DialogueBox", typeof(GameObject))) as GameObject;
+	    
+		if(canvasParent != null)
+		    canvasObject.transform.parent = canvasParent;
+
+		CanvasRenderer diagRenderer = canvasObject.transform.Find("Box").gameObject.GetComponent<CanvasRenderer>() as CanvasRenderer;
+		
+		// diagRenderer.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  
+		// diagRenderer.GetComponent<RectTransform>().pivot = new Vector2(-.5f, -.5f);
+
+	    Text diagText = diagRenderer.transform.Find("Panel/Dialogue Text").GetComponent<Text>() as Text;
+	    diagText.text = strInitialTxt;
+
+	    return diagRenderer;
+
+	}
+
 	public void HideCharacterDialog() {
 
 		dialoguePanel.SetActive (false);
@@ -97,23 +114,25 @@ public class DialogManager : MonoBehaviour {
 
 		// Create NPC prefab instance
 		NPCBehavior currentNpc = (NPCBehavior)Instantiate(npcPrefab);
-	  
-	    currentNpc.transform.localScale = Vector3.one;
-
-	    // Temporary: set NPC position automatically
-	    currentNpc.transform.position = new Vector3(.1f + (index/2), 0, 2.5f);
 
 	    // Initialize this NPC
 	    currentNpc.Initialize(npcData);
 
 	}
 
+	/// <summary>
+	/// Open specified dialog for a given character
+	/// </summary>
+	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
+	/// <param name="strDialogueKey">The key corresponding to the dialogue to show</param>
 	public void OpenCharacterDialog(Models.NPC currNpc, string strDialogueKey) {
 
 		string strInitial = currNpc.dialogue[strDialogueKey]["text"];
 		
 		// Match any characters in between [[ and ]]
 		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
+
+		CanvasRenderer diagRenderer = CreateGenericDialog(null, strInitial.Replace("[[", "<color=orange>").Replace("]]", "</color>"));
 
 		foreach (Transform child in dialogueBtnPanel.transform)
 		    GameObject.Destroy(child.gameObject);
@@ -147,7 +166,6 @@ public class DialogManager : MonoBehaviour {
 		}
 
 		dialoguePanel.SetActive (true);
-		dialogueTxt.text = strInitial.Replace("[[", "<color=orange>").Replace("]]", "</color>");
 
 	}
 }

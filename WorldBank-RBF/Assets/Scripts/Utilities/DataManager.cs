@@ -51,9 +51,21 @@ public class DataManager {
 
     }
 
-    public static Models.City[] GetCityData()    {
+    public static Models.City[] GetAllCities()    {
         
         return currentGameData.cities;
+
+    }
+
+    public static Models.City GetCityInfo(string strCityName)    {
+        
+        foreach(Models.City city in currentGameData.cities)
+        {
+            if(city.symbol == strCityName)
+                return city;
+        }
+
+        return null;
 
     }
 
