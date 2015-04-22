@@ -36,8 +36,10 @@ public class LayerSettings : MB, IEditorPoolable {
 
 			// Update properties from accompanying DepthLayer
 			DepthLayer layer = EditorObjectPool.GetObjectAtIndex<DepthLayer> (Index);
-			LocalSeparation = layer.LocalSeparation;
-			ImageSettings = layer.Images.ConvertAll (x => x.Json);
+			if (layer != null) {
+				LocalSeparation = layer.LocalSeparation;
+				ImageSettings = layer.Images.ConvertAll (x => x.Json);
+			}
 
 			// Create a json serializable object
 			LayerSettingsJson json = new LayerSettingsJson ();
