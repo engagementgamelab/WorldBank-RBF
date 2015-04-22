@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.Timers;
@@ -48,3 +48,4 @@ public class NPCBehavior : MB {
 
 	}
 }
+*/

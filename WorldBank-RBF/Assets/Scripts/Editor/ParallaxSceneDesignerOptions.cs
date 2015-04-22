@@ -51,7 +51,7 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
 
         GUI.color = Color.red;
         if (GUILayout.Button ("Clear", largeButtonHeight)) {
-            EditorObjectPool.Clear ();
+            Clear ();
         }
         EditorGUILayout.EndHorizontal ();
 
@@ -104,6 +104,12 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
             settings.Init (layer.GetIndex (), layer.GetLocalSeparation (), layer.GetImages ());
         }
         Refresh ();
+    }
+
+    void Clear () {
+        EditorObjectPool.Clear ();
+        saveLoadOptions.LayerSettings = null;
+        saveLoadOptions.LayerCount = 0;
     }
 
     public void Refresh () {

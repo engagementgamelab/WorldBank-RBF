@@ -9,7 +9,7 @@ Created by Engagement Lab, 2015
 ==============
 */
 
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -116,4 +116,4 @@ public class DialogManager : MonoBehaviour, INPC {
 		OpenCharacterDialog(currNpc, "Initial");
 
 	}
-}
+}*/

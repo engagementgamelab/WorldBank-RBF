@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,3 +38,4 @@ public class MapManager : MonoBehaviour {
 	    cityButton.onClick.AddListener(() => DialogManager.instance.LoadDialogForCity(city.symbol));
 	}
 }
+*/
