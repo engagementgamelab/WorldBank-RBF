@@ -36,8 +36,10 @@ public class LayerOptions : ScriptableObject {
 		if (GUILayout.Button ("+")) {
 			depthLayer.AddImage ();
 		}
-		if (GUILayout.Button ("-")) {
-			depthLayer.RemoveImage ();
+		if (depthLayer.Images.Count > 0) {
+			if (GUILayout.Button ("-")) {
+				depthLayer.RemoveImage ();
+			}
 		}
 		EditorGUILayout.EndHorizontal ();
 

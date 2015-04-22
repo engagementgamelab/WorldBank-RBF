@@ -100,7 +100,7 @@ public class MainCamera : MB {
 		
 		while (dragging) {
 			Vector3 w1 = ScreenPositionHandler.ViewportToWorld (startDrag);
-			Vector3 w2 = ScreenPositionHandler.ViewportToWorld (MouseController.ViewportMousePosition);
+			Vector3 w2 = ScreenPositionHandler.ViewportToWorld (MouseController.MousePositionViewport);
 			float deltaX = (w1.x - w2.x);
 			Transform.SetPositionX (Mathf.Max (xMin, startDragPosition.x + deltaX));
 			yield return null;
@@ -120,7 +120,7 @@ public class MainCamera : MB {
 	void OnDragDownEvent (DragDownEvent e) {
 		if (!dragging) {
 			startDragPosition = Position;
-			startDrag = MouseController.ViewportMousePosition;
+			startDrag = MouseController.MousePositionViewport;
 			dragging = true;
 			StartCoroutine (CoDrag ());
 		}

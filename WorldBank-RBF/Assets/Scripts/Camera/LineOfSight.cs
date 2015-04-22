@@ -51,6 +51,7 @@ public class LineOfSight : MB {
 			yield return null;
 		}
 
+		// Set distance to furthest layer
 		float d = 0;
 		for (int i = 0; i < layers.Count; i ++) {
 			float z = layers[i].transform.localScale.x;
@@ -60,15 +61,24 @@ public class LineOfSight : MB {
 	}
 
 	void Update () {
+		for (int i = 0; i < LayerManager.DepthLayers.Length; i ++) {
+			CastRaysOnLayer (LayerManager.DepthLayers[i]);
+		}
+	}
+
+	void CastRaysOnLayer (int layer) {
 		for (int i = 0; i < rayCount; i ++) {
+			RaycastHit hit;
 			Vector3 position = MainCamera.Position;
 			position.x += RayPositions[i];
 			position.y += 1;
-			#if DEBUG
-			Debug.DrawRay (position, Transform.TransformDirection (direction) * distance);
-			#endif
-			if (Physics.Raycast (position, Transform.TransformDirection (direction) * distance)) {
-				// raycast hit occurred
+			if (Physics.Raycast (position, Transform.TransformDirection (direction) * distance, out hit, 1 << layer)) {
+				// why isn't my layer mask working? :(
+				if (hit.transform.gameObject.layer == layer) {
+					#if DEBUG
+						Debug.DrawRay (position, Transform.TransformDirection (direction) * distance);
+					#endif
+				}
 			}
 		}
 	}

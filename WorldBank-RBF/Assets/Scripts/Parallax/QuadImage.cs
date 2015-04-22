@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// TODO: set render queue to prevent z fighting
+
 [RequireComponent (typeof (BoxCollider), typeof (MeshRenderer), typeof (MeshFilter))]
 public class QuadImage : MB, IEditorPoolable {
 
@@ -18,6 +20,15 @@ public class QuadImage : MB, IEditorPoolable {
 			if (texture != null)
 				Material = MaterialsManager.CreateMaterialFromTexture (texture, texture.format.HasAlpha ());
 			OnSetTexture ();
+		}
+	}
+
+	[SerializeField, HideInInspector] bool colliderEnabled = false;	
+	public bool ColliderEnabled {
+		get { return BoxCollider.enabled; }
+		set { 
+			colliderEnabled = value;
+			BoxCollider.enabled = value; 
 		}
 	}
 
@@ -56,18 +67,13 @@ public class QuadImage : MB, IEditorPoolable {
 	}
 
 	BoxCollider boxCollider = null;
-	BoxCollider BoxCollider {
+	protected BoxCollider BoxCollider {
 		get {
 			if (boxCollider == null) {
 				boxCollider = GetComponent<BoxCollider> ();
 			}
 			return boxCollider;
 		}
-	}
-
-	bool ColliderEnabled {
-		get { return BoxCollider.enabled; }
-		set { BoxCollider.enabled = value; }
 	}
 
 	public virtual void Init () {}

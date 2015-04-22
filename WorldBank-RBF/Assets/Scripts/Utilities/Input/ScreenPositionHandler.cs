@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class ScreenPositionHandler {
+public static class ScreenPositionHandler {
 
 	public static float PointDirection (Vector3 a, Vector3 b) {
-		return PointDirection (WorldToScreen (a), WorldToScreen (b));
+		return PointDirection (WorldToScreen(a), WorldToScreen (b));
 	}
 
 	public static float PointDirection (Vector2 a, Vector2 b) {
@@ -17,7 +17,7 @@ public class ScreenPositionHandler {
 	}
 
 	public static Vector3 ScreenToWorld (Vector2 a) {
-		return Camera.main.ScreenToWorldPoint (new Vector3 (a.x, a.y, 10));
+		return Camera.main.ScreenToWorldPoint (new Vector3 (a.x, a.y, Camera.main.nearClipPlane));
 	}
 
 	public static Vector3 ScreenToViewport (Vector2 a) {
