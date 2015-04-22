@@ -16,7 +16,7 @@ public class LayerBackground : MB, IEditorPoolable {
 		}
 	}
 
-	List<LayerImage> images;
+	[SerializeField, HideInInspector] List<LayerImage> images;
 	public List<LayerImage> Images {
 		get { 
 			if (images == null) {
@@ -27,6 +27,7 @@ public class LayerBackground : MB, IEditorPoolable {
 		set { images = value; }
 	}
 
+	#if UNITY_EDITOR
 	List<LayerImageSettings> imageSettings = new List<LayerImageSettings> ();
 	public List<LayerImageSettings> ImageSettings {
 		get { return imageSettings; }
@@ -43,6 +44,7 @@ public class LayerBackground : MB, IEditorPoolable {
 			}
 		}
 	}
+	#endif
 
 	public void Init () {}
 

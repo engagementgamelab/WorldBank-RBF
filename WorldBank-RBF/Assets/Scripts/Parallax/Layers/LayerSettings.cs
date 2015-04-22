@@ -24,13 +24,13 @@ public class LayerSettings : MB, IEditorPoolable {
 		set { localSeparation = value; }
 	}
 
+	#if UNITY_EDITOR
 	[SerializeField, HideInInspector] List<LayerImageSettings> imageSettings;
 	public List<LayerImageSettings> ImageSettings { 
 		get { return imageSettings; }
 		set { imageSettings = value; }
 	}
 
-	#if UNITY_EDITOR
 	public LayerSettingsJson Json {
 		get { 
 
@@ -49,18 +49,13 @@ public class LayerSettings : MB, IEditorPoolable {
 			return json;
 		}
 	}
-	#endif
-
-	void Start () {
-		// this isn't working and I'm not sure why?
-		hideFlags = HideFlags.HideInHierarchy;
-	}
 
 	public void Init (int index, float localSeparation=0, List<LayerImageSettings> imageSettings=null) {
 		this.imageSettings = imageSettings;
 		this.index = index;
 		this.localSeparation = localSeparation;
 	}
+	#endif
 
 	public void Init () {}
 }

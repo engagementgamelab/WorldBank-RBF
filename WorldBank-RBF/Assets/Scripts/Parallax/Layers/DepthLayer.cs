@@ -10,6 +10,7 @@ public class DepthLayer : MB, IEditorPoolable {
 		set { selected = value; }
 	}
 
+	#if UNITY_EDITOR
 	LayerSettings layerSettings;
 	public LayerSettings LayerSettings {
 		get { return layerSettings; }
@@ -20,6 +21,7 @@ public class DepthLayer : MB, IEditorPoolable {
 			background.ImageSettings = layerSettings.ImageSettings;
 		}
 	}
+	#endif
 
 	public int index;
 	public int Index { 
@@ -95,10 +97,12 @@ public class DepthLayer : MB, IEditorPoolable {
 		background.RemoveImage ();
 	}
 
+	#if UNITY_EDITOR
 	void UpdateLayerSettings () {
 		if (LayerSettings == null) return;
 		LayerSettings.Index = Index;
 		LayerSettings.LocalSeparation = LocalSeparation;
 		LayerSettings.ImageSettings = background.ImageSettings;
 	}
+	#endif
 }
