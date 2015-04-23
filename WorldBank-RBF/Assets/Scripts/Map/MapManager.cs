@@ -33,8 +33,8 @@ public class MapManager : MonoBehaviour {
 		cs.dynamicPixelsPerUnit = 100;
 		
 		g.AddComponent<GraphicRaycaster>();
-		g.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 3.0f);
-		g.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 3.0f);
+		// g.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 3.0f);
+		// g.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 3.0f);
  
  		return g;
 	}
@@ -42,7 +42,7 @@ public class MapManager : MonoBehaviour {
 	// Use this for initialization
 	public void LoadCities() {
 
-        foreach(Models.City city in DataManager.GetCityData())
+        foreach(Models.City city in DataManager.GetAllCities())
         	GenerateCityButton(city);
 	
 	}
@@ -59,22 +59,16 @@ public class MapManager : MonoBehaviour {
 		label.text = city.display_name;
  
 	    cityButton.onClick.AddListener(() => cityCanvas.gameObject.SetActive(false));
-	    cityButton.onClick.AddListener(() => ShowCityDialog(city));
+	    // cityButton.onClick.AddListener(() => ShowCityDialog(city));
 	    // cityButton.onClick.AddListener(() => DialogManager.instance.LoadDialogForCity(city.symbol));
 	}
 
-	private void ShowCityDialog(Models.City city) {
+	public void ShowCityDialog(string citySymbol) {
+		Models.City city = DataManager.GetCityInfo(citySymbol);
+
 		Button goBtn = (Button)Instantiate(cityButtonPrefab);
-		CanvasRenderer diagRenderer = (CanvasRenderer)Instantiate(dialogueBoxPrefab);
-		
-		diagRenderer.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;  
-		diagRenderer.GetComponent<RectTransform>().pivot = new Vector2(-.5f, -.5f);
 
-	    diagRenderer.transform.parent = canvasParent.transform;
-	    diagRenderer.transform.localScale = new Vector3(1, 1, 1);
-
-	    Text diagText = diagRenderer.transform.Find("Panel/Dialogue Text").GetComponent<Text>() as Text;
-	    diagText.text = city.description;
+		CanvasRenderer diagRenderer = DialogManager.instance.CreateGenericDialog(transform, city.description);
 	  
 	  	// Make go button
 	    goBtn.transform.parent = diagRenderer.transform.Find("Panel/Single Button");
