@@ -8,35 +8,12 @@ public class MapManager : MonoBehaviour {
 	public CanvasRenderer dialogueBoxPrefab;
 	public Button cityButtonPrefab;
 
-	private GameObject canvasParent;
-
 	private Transform cityCanvas;
 
 	void Start () {
 
 		cityCanvas = transform.Find("Map Buttons");
 
-		canvasParent = GenerateCanvasParent();
-
-	}
-
-	private GameObject GenerateCanvasParent() {
-		GameObject g = new GameObject("CanvasParent");
-		g.transform.parent = transform;
-	    g.transform.localScale = new Vector3(1, 1, 1);
-
-		Canvas canvas = g.AddComponent<Canvas>();
-		canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-		canvas.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-		
-		CanvasScaler cs = g.AddComponent<CanvasScaler>();
-		cs.dynamicPixelsPerUnit = 100;
-		
-		g.AddComponent<GraphicRaycaster>();
-		// g.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 3.0f);
-		// g.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 3.0f);
- 
- 		return g;
 	}
 
 	// Use this for initialization
@@ -59,27 +36,27 @@ public class MapManager : MonoBehaviour {
 		label.text = city.display_name;
  
 	    cityButton.onClick.AddListener(() => cityCanvas.gameObject.SetActive(false));
-	    // cityButton.onClick.AddListener(() => ShowCityDialog(city));
-	    // cityButton.onClick.AddListener(() => DialogManager.instance.LoadDialogForCity(city.symbol));
+
 	}
 
 	public void ShowCityDialog(string citySymbol) {
 		Models.City city = DataManager.GetCityInfo(citySymbol);
 
-		Button goBtn = (Button)Instantiate(cityButtonPrefab);
+		Instantiate(cityButtonPrefab);
 
-		CanvasRenderer diagRenderer = DialogManager.instance.CreateGenericDialog(transform, city.description);
+		CanvasRenderer diagRenderer = DialogManager.instance.CreateGenericDialog(city.description);
 	  
-	  	// Make go button
-	    goBtn.transform.parent = diagRenderer.transform.Find("Panel/Single Button");
-	    goBtn.transform.localScale = new Vector3(1, 1, 1);
+	  	// Setup go button
+	    Button goBtn = (Button)diagRenderer.transform.Find("Action Button").GetComponent<Button>();
 	    
 	    Text label = goBtn.transform.FindChild("Text").GetComponent<Text>();
-		label.text = "Go";
+		label.text = "Go to " + city.display_name;
  
 	    goBtn.onClick.AddListener(() => gameObject.SetActive(false));
 	    goBtn.onClick.AddListener(() => DataManager.SetSceneContext(city.symbol));
 	    goBtn.onClick.AddListener(() => Application.LoadLevel("Dialog"));
+
+	    goBtn.gameObject.SetActive(true);
 
 	}
 }
