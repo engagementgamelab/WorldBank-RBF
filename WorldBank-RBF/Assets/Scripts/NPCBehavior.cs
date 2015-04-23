@@ -11,61 +11,37 @@ Created by Engagement Lab, 2015
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 using System.Collections;
 using System.Timers;
+using Extensions;
 
 public class NPCBehavior : MB {
 
+ 	public string npcSymbol;
+
 	private Models.NPC npcRef;
 
-	private Transform targetNPC;
- 	private Timer aTimer;
+ 	void Start() {
 
- 	private bool startDialog = false;
- 	private float cameraStartTime = 0.7f;
- 	private float cameraTime = 0.7f;
+ 		if(npcSymbol == null || npcSymbol.Length == 0)
+ 			 throw new Exception("NPC symbol not set!");
 
- 	private Camera mainCam;
+ 		Initialize();
 
- 	public void Initialize(Models.NPC npcData) {
+ 	}
 
- 		mainCam = Camera.main;
- 		npcRef = npcData;
-	  
-	    transform.localScale = Vector3.one;
+ 	public void Initialize() {
 
-	    // Temporary: set NPC position automatically
-	    // .1f + (index/2)
-	    transform.position = new Vector3(1, 0, mainCam.transform.position.z + 2);
-
-		Texture2D npcTex = Resources.Load("Textures/NPC/" + npcData.character, typeof(Texture2D)) as Texture2D;
- 		GetComponent<Renderer>().material.mainTexture = npcTex;
+ 		// Get reference for this NPC
+ 		npcRef = DataManager.GetNPCsForCity(npcSymbol)[0];
 
  	}
 
  	// On Touch/Click NPC
 	void OnMouseDown() {
-		/*CameraBehavior.ZoomIn(transform);
-		mainCam.Camera().Move(10f);
-		
-		startDialog = true;
-		cameraStartTime = 0;*/
 
+		// Opens initial dialog for this NPC
 		DialogManager.instance.OpenCharacterDialog(npcRef, "Initial");
 	}
-
-	/*void Update()
-	{
-
-		if(!startDialog) 
-			return;
-
-		if(cameraStartTime < cameraTime)
-		    cameraStartTime += Time.deltaTime;
-		else {
-			DialogManager.instance.OpenCharacterDialog(npcRef, "Initial");	 
-			startDialog = false;
-		}
-
-	}*/
 }

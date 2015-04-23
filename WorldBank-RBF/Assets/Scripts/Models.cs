@@ -70,5 +70,4 @@ public class Models {
     public class Characters {
         public List<Dictionary<string, object>> dialogue = new List<Dictionary<string, object>>();
     }
-
 }
