@@ -93,7 +93,7 @@ public class DepthLayer : MB, IEditorPoolable {
 	public void AddImage () {
 		background.CreateImage ();
 	}
-
+	
 	public void RemoveImage () {
 		background.RemoveImage ();
 	}

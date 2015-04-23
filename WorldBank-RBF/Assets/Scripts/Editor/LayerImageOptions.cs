@@ -13,7 +13,7 @@ public class LayerImageOptions : ScriptableObject {
 	public void SetLayerImage (LayerImage layerImage) {
 		this.layerImage = layerImage;
 		imageSettings = CreateInstance ("ImageSettings") as ImageSettings;
-		imageSettings.Init (layerImage.Texture, layerImage.ColliderEnabled, layerImage.ColliderWidth, layerImage.ColliderCenter);
+		imageSettings.Init (layerImage.NPCSymbol, layerImage.Texture, layerImage.ColliderEnabled, layerImage.ColliderWidth, layerImage.ColliderHeight, layerImage.ColliderCenterX, layerImage.ColliderCenterY);
 		serializedImageSettings = new UnityEditor.SerializedObject (imageSettings);
 	}
 
@@ -29,19 +29,25 @@ public class LayerImageOptions : ScriptableObject {
 
 		GUI.color = Color.white;
 		
+		layerImage.NPCSymbol = EditorGUILayout.TextField ("NPC Symbol", layerImage.NPCSymbol);
+
 		serializedImageSettings.Update ();
 		EditorGUILayout.PropertyField (serializedImageSettings.FindProperty ("texture"), new GUIContent ("Texture"), true);
 		serializedImageSettings.ApplyModifiedProperties ();
 
 		imageSettings.colliderEnabled 	= EditorGUILayout.Toggle ("Enable Collider", imageSettings.colliderEnabled);
 		if (imageSettings.colliderEnabled) {
-			imageSettings.width 			= EditorGUILayout.Slider ("Collider Width", imageSettings.width, 0, 1);
-			imageSettings.center 			= EditorGUILayout.Slider ("Collider Center", imageSettings.center, -0.5f, 0.5f);
+			imageSettings.width 		= EditorGUILayout.Slider ("Collider Width", imageSettings.width, 0, 1);
+			imageSettings.height 		= EditorGUILayout.Slider ("Collider Height", imageSettings.height, 0, 1);
+			imageSettings.centerX 		= EditorGUILayout.Slider ("Collider X", imageSettings.centerX, -0.5f, 0.5f);
+			imageSettings.centerY 		= EditorGUILayout.Slider ("Collider Y", imageSettings.centerY, -0.5f, 0.5f);
 		}
 		layerImage.Texture 				= imageSettings.texture;
 		layerImage.ColliderEnabled		= imageSettings.colliderEnabled;
 		layerImage.ColliderWidth 		= imageSettings.width;
-		layerImage.ColliderCenter 		= imageSettings.center;
+		layerImage.ColliderHeight		= imageSettings.height;
+		layerImage.ColliderCenterX 		= imageSettings.centerX;
+		layerImage.ColliderCenterY		= imageSettings.centerY;
 	}
 
 	public void Unselect () {

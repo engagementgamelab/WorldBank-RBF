@@ -9,6 +9,7 @@ public class LineOfSight : MB {
 	float width = 4;
 	Vector3 direction;
 	float distance;
+	bool overForegroundObject = false;
 
 	MainCamera mainCamera = null;
 	MainCamera MainCamera {
@@ -61,12 +62,21 @@ public class LineOfSight : MB {
 	}
 
 	void Update () {
-		for (int i = 0; i < LayerManager.DepthLayers.Length; i ++) {
-			CastRaysOnLayer (LayerManager.DepthLayers[i]);
+		if (CastRaysOnLayer (LayerManager.DepthLayers[0]).Count > 0) {
+			if (!overForegroundObject) {
+				MainCamera.Instance.ZoomTo (0f, 5f);
+				overForegroundObject = true;
+			}
+		} else {
+			if (overForegroundObject) {
+				MainCamera.Instance.ZoomTo (2f, 5f);
+				overForegroundObject = false;
+			}
 		}
 	}
 
-	void CastRaysOnLayer (int layer) {
+	List<int> CastRaysOnLayer (int layer) {
+		List<int> raysHit = new List<int> ();
 		for (int i = 0; i < rayCount; i ++) {
 			RaycastHit hit;
 			Vector3 position = MainCamera.Position;
@@ -78,8 +88,10 @@ public class LineOfSight : MB {
 					#if DEBUG
 						Debug.DrawRay (position, Transform.TransformDirection (direction) * distance);
 					#endif
+					raysHit.Add (i);
 				}
 			}
 		}
+		return raysHit;
 	}
 }

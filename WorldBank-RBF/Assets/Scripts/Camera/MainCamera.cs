@@ -3,6 +3,21 @@ using System.Collections;
 
 public class MainCamera : MB {
 
+	static MainCamera instance = null;
+	static public MainCamera Instance {
+		get {
+			if (instance == null) {
+				instance = Object.FindObjectOfType (typeof (MainCamera)) as MainCamera;
+				if (instance == null) {
+					GameObject go = new GameObject ("MainCamera");
+					DontDestroyOnLoad (go);
+					instance = go.AddComponent<MainCamera>();
+				}
+			}
+			return instance;
+		}
+	}
+
 	float fov = -1;
 	public float FOV {
 		get {
@@ -34,7 +49,7 @@ public class MainCamera : MB {
 	}
 
 	float zoom = 0;
-	float Zoom {
+	public float Zoom {
 		get { return zoom; }
 		set {
 			zoom = Mathf.Clamp (value, 0, 15);
@@ -44,6 +59,18 @@ public class MainCamera : MB {
 			xMin = y * Aspect;
 			Transform.SetPositionX (Mathf.Max (xMin, Position.x));
 		}
+	}
+
+	float targetZoom = 0;
+	public float TargetZoom {
+		get { return targetZoom; }
+		set { targetZoom = value; }
+	}
+
+	float zoomVelocity = 3f;
+	public float ZoomVelocity {
+		get { return zoomVelocity; }
+		set { zoomVelocity = value; }
 	}
 
 	float altitude = 0;
@@ -61,6 +88,7 @@ public class MainCamera : MB {
 	Vector3 startDragPosition;
 	Vector3 startDrag;
 	bool dragging = false;
+	bool moving = false;
 
 	void Awake () {
 		Events.instance.AddListener<ReleaseEvent> (OnReleaseEvent);
@@ -70,30 +98,58 @@ public class MainCamera : MB {
 
 	void Start () {
 		Zoom = 2;
+		TargetZoom = 2;
 	}
 
 	void Update () {
-		float delta = Input.GetAxis ("Mouse ScrollWheel");
+		/*float delta = Input.GetAxis ("Mouse ScrollWheel");
 		if (delta != 0) {
 			Zoom += delta;
-		}
-	}
-	
-	void Move (float target) {
-		StartCoroutine (CoMove (Position.x, Mathf.Max (0, target)));
+		}*/
+
+		Zoom = Mathf.Lerp (Zoom, TargetZoom, ZoomVelocity * Time.deltaTime);
 	}
 
-	IEnumerator CoMove (float start, float end) {
+	public void ZoomTo (float target, float velocity=-1) {
+		TargetZoom = target;
+		if (velocity != -1) ZoomVelocity = velocity;
+	}
+
+	/*public void ZoomTo (float to, float duration) {
+		StartCoroutine (CoZoomTo (Zoom, to, duration));
+	}
+
+	IEnumerator CoZoomTo (float from, float to, float duration) {
 		
-		float distance = Mathf.Abs (start - end);
-		float time = distance / speed;
-		float eTime = 0;
+		float eTime = 0f;
 	
+		while (eTime < duration) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / duration);
+			Zoom = Mathf.Lerp (from, to, progress);
+			yield return null;
+		}
+	}*/
+	
+	public void MoveToTarget (float target, float duration=-1) {
+		if (moving) return;
+		moving = true;
+		StartCoroutine (CoMove (Position.x, Mathf.Max (0, target), duration));
+	}
+
+	IEnumerator CoMove (float start, float end, float duration=-1) {
+
+		float distance = Mathf.Abs (start - end);
+		float time = (duration == -1) ? distance / speed : duration;
+		float eTime = 0;
+
 		while (eTime < time) {
 			eTime += Time.deltaTime;
 			Transform.SetPositionX (Mathf.SmoothStep (start, end, eTime / time));
 			yield return null;
 		}
+
+		moving = false;
 	}
 
 	IEnumerator CoDrag () {
@@ -112,9 +168,9 @@ public class MainCamera : MB {
 	 */
 
 	void OnReleaseEvent (ReleaseEvent e) {
-		if (!e.releaseSettings.left) {
-			Move (MouseController.MousePosition.x);
-		}
+		/*if (!e.releaseSettings.left) {
+			MoveToTarget (MouseController.MousePositionWorldRay.x);
+		}*/
 	}
 
 	void OnDragDownEvent (DragDownEvent e) {

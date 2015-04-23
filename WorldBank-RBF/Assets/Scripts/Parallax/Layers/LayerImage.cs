@@ -9,10 +9,13 @@ public class LayerImage : QuadImage, IClickable {
 		get {
 			LayerImageSettings json = new LayerImageSettings ();
 			json.SetIndex (Index);
+			json.SetNPCSymbol (npcSymbol);
 			json.SetTexture (Texture);
 			json.SetColliderEnabled (ColliderEnabled);
 			json.SetColliderWidth (ColliderWidth);
-			json.SetColliderCenter (ColliderCenter);
+			json.SetColliderHeight (ColliderHeight);
+			json.SetColliderCenterX (ColliderCenterX);
+			json.SetColliderCenterY (ColliderCenterY);
 			return json;
 		}
 	}
@@ -20,10 +23,14 @@ public class LayerImage : QuadImage, IClickable {
 
 	public InputLayer[] IgnoreLayers { get { return null; } }
 
-	[SerializeField, HideInInspector] float xPosition;
+	[SerializeField, HideInInspector] protected float xPosition;
+	[SerializeField, HideInInspector] protected string npcSymbol = "";
+	public string NPCSymbol {
+		get { return npcSymbol; }
+		set { npcSymbol = value; }
+	}
 
-	bool expanded = false;
-	bool scaling = false;
+	public bool IsSprite { get { return npcSymbol != ""; } }
 
 	float scale = 1;
 	public float Scale {
@@ -36,8 +43,8 @@ public class LayerImage : QuadImage, IClickable {
 		}
 	}
 
-	float XOffset {
-		get { return -BoxCollider.center.x; }
+	public float XPosition {
+		get { return Position.x + XOffset; }
 	}
 
 	public int Layer {
@@ -60,43 +67,39 @@ public class LayerImage : QuadImage, IClickable {
 	}
 
 	public void OnClick (ClickSettings clickSettings) {
-		if (scaling) return;
-		if (expanded) {
-			StartCoroutine (CoShrink ());
-		} else {
-			StartCoroutine (CoExpand ());
-		}
+		if (!IsSprite) return;
+		NPCFocusBehavior.Instance.ToggleFocus (this);
 	}
 
-	IEnumerator CoExpand () {
+	public void Expand (float duration) {
+		StartCoroutine (CoExpand (duration));
+	}
+
+	public void Shrink (float duration) {
+		StartCoroutine (CoShrink (duration));
+	}
+
+	IEnumerator CoExpand (float duration) {
 		
-		float time = 0.5f;
 		float eTime = 0f;
 		
-		scaling = true;
-		while (eTime < time) {
+		while (eTime < duration) {
 			eTime += Time.deltaTime;
-			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			float progress = Mathf.SmoothStep (0, 1, eTime / duration);
 			Scale = Mathf.Lerp (1, 2, progress);
 			yield return null;
 		}
-		scaling = false;
-		expanded = true;
 	}
 
-	IEnumerator CoShrink () {
+	IEnumerator CoShrink (float duration) {
 		
-		float time = 0.5f;
 		float eTime = 0f;
 		
-		scaling = true;
-		while (eTime < time) {
+		while (eTime < duration) {
 			eTime += Time.deltaTime;
-			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			float progress = Mathf.SmoothStep (0, 1, eTime / duration);
 			Scale = Mathf.Lerp (2, 1, progress);
 			yield return null;
 		}
-		scaling = false;
-		expanded = false;
 	}
 }

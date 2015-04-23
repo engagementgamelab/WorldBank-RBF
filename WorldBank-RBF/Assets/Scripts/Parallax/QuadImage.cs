@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// TODO: set render queue to prevent z fighting
-
 [RequireComponent (typeof (BoxCollider), typeof (MeshRenderer), typeof (MeshFilter))]
 public class QuadImage : MB, IEditorPoolable {
 
@@ -25,7 +23,7 @@ public class QuadImage : MB, IEditorPoolable {
 
 	[SerializeField, HideInInspector] bool colliderEnabled = false;	
 	public bool ColliderEnabled {
-		get { return BoxCollider.enabled; }
+		get { return colliderEnabled; }
 		set { 
 			colliderEnabled = value;
 			BoxCollider.enabled = value; 
@@ -41,12 +39,30 @@ public class QuadImage : MB, IEditorPoolable {
 		}
 	}
 
-	[SerializeField, HideInInspector] float colliderCenter = 0;
-	public float ColliderCenter {
-		get { return colliderCenter; }
+	[SerializeField, HideInInspector] float colliderHeight = 1;
+	public float ColliderHeight {
+		get { return colliderHeight; }
 		set {
-			colliderCenter = value;
-			BoxCollider.SetCenterX (colliderCenter);
+			colliderHeight = value;
+			BoxCollider.SetSizeY (colliderHeight);
+		}
+	}
+
+	[SerializeField, HideInInspector] float colliderCenterX = 0;
+	public float ColliderCenterX {
+		get { return colliderCenterX; }
+		set {
+			colliderCenterX = value;
+			BoxCollider.SetCenterX (colliderCenterX);
+		}
+	}
+
+	[SerializeField, HideInInspector] float colliderCenterY = 0;
+	public float ColliderCenterY {
+		get { return colliderCenterY; }
+		set {
+			colliderCenterY = value;
+			BoxCollider.SetCenterY (colliderCenterY);
 		}
 	}
 
@@ -74,6 +90,10 @@ public class QuadImage : MB, IEditorPoolable {
 			}
 			return boxCollider;
 		}
+	}
+
+	protected float XOffset {
+		get { return -BoxCollider.center.x; }
 	}
 
 	public virtual void Init () {}

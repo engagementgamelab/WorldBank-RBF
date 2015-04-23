@@ -23,6 +23,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 434048}
+  - 114: {fileID: 11469784}
   m_Layer: 0
   m_Name: DirectionalLightController
   m_TagString: Untagged
@@ -72,9 +73,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 434048}
   - {fileID: 492730}
   - {fileID: 415562}
-  - {fileID: 434048}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &415562
@@ -88,7 +89,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 412764}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &434048
 Transform:
   m_ObjectHideFlags: 1
@@ -96,11 +97,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.1199913, y: -47.2213364, z: 109.210358}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 412764}
-  m_RootOrder: 2
+  m_RootOrder: 0
 --- !u!4 &492730
 Transform:
   m_ObjectHideFlags: 1
@@ -112,7 +113,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 412764}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!108 &10813282
 Light:
   m_ObjectHideFlags: 1
@@ -177,6 +178,19 @@ Light:
   m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_AreaSize: {x: 1, y: 1}
+--- !u!114 &11469784
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8e61ab22d61c49adbc834316808fa44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inclusive: {fileID: 10864432}
+  exclusive: {fileID: 10813282}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

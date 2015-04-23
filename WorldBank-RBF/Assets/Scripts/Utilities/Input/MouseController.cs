@@ -11,11 +11,11 @@ public class MouseController : MonoBehaviour {
 		get { return ScreenPositionHandler.ScreenToWorld (Input.mousePosition); }
 	}
 
-	public static Vector3 MousePositionWorld {
+	public static Vector3 MousePositionWorldRay {
 		get {
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
-			if (Physics.Raycast (ray, out hit, Mathf.Infinity, 1 << (int)InputLayer.Structure)) {
+			if (Physics.Raycast (ray, out hit, Mathf.Infinity)) {
 				return hit.point;
 			}
 			return Vector3.zero;
@@ -66,7 +66,8 @@ public class MouseController : MonoBehaviour {
 		RaycastHit hit;
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity)) {
 			Debug.DrawRay (ray.origin, ray.direction * 1000);
-		} 
+		}
+
 	}
 	#endif
 }

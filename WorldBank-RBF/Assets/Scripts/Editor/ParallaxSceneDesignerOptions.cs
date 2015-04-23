@@ -88,6 +88,7 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
                 selectedLayer = i;
                 layerOptions.SetDepthLayer (layer);
                 Selection.activeGameObject = layer.gameObject;
+                GUI.FocusControl (null);
             }
         }
         EditorGUILayout.EndHorizontal ();

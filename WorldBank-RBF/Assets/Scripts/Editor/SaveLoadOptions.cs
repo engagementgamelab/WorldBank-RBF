@@ -45,6 +45,7 @@ public class SaveLoadOptions : ScriptableObject {
     }
 
     void Save (string savePath) {
+        if (savePath == "") return;
         SaveLayerSettings (savePath);
     }
 

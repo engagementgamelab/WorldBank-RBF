@@ -31,13 +31,13 @@ public class LayerOptions : ScriptableObject {
 		GUI.color = Color.white;
 		depthLayer.LocalSeparation = EditorGUILayout.Slider ("Relative Distance", depthLayer.LocalSeparation, 0, DepthLayer.layerSeparation-1);
 
-		GUILayout.Label ("Add or remove images", EditorStyles.boldLabel);
+		GUILayout.Label ("Add or remove tiles", EditorStyles.boldLabel);
 		EditorGUILayout.BeginHorizontal ();
-		if (GUILayout.Button ("+")) {
+		if (GUILayout.Button ("Add tile")) {
 			depthLayer.AddImage ();
 		}
 		if (depthLayer.Images.Count > 0) {
-			if (GUILayout.Button ("-")) {
+			if (GUILayout.Button ("Remove last tile")) {
 				depthLayer.RemoveImage ();
 			}
 		}
@@ -54,10 +54,11 @@ public class LayerOptions : ScriptableObject {
 				GUI.color = Color.white;
 			}
 			int imageIndex = i+1;
-			if (GUILayout.Button ("Image " + imageIndex)) {
+			if (GUILayout.Button ("Tile " + imageIndex)) {
 				selectedImage = i;
 				layerImageOptions.SetLayerImage (image);
 				Selection.activeGameObject = image.gameObject;
+				GUI.FocusControl (null);
 			}
 		}
 		EditorGUILayout.EndHorizontal ();

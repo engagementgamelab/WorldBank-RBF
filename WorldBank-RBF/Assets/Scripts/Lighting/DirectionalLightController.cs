@@ -3,6 +3,21 @@ using System.Collections;
 
 public class DirectionalLightController : MonoBehaviour {
 
+	static DirectionalLightController instance = null;
+	static public DirectionalLightController Instance {
+		get {
+			if (instance == null) {
+				instance = Object.FindObjectOfType (typeof (DirectionalLightController)) as DirectionalLightController;
+				if (instance == null) {
+					GameObject go = new GameObject ("DirectionalLightController");
+					DontDestroyOnLoad (go);
+					instance = go.AddComponent<DirectionalLightController>();
+				}
+			}
+			return instance;
+		}
+	}
+
 	public Light inclusive;
 	public Light exclusive;
 
@@ -13,6 +28,14 @@ public class DirectionalLightController : MonoBehaviour {
 	public void FocusLayer (int layer) {
 		inclusive.cullingMask = ~(1 << layer);
 		exclusive.cullingMask = 1 << layer;
+	}
+
+	public void FadeOut (float duration) {
+		StartCoroutine (CoFade (inclusive, 1f, 0.25f));
+	}
+
+	public void FadeIn (float duration) {
+		StartCoroutine (CoFade (inclusive, 0.25f, 1f));
 	}
 
 	IEnumerator CoFade (Light light, float from, float to) {
@@ -29,19 +52,4 @@ public class DirectionalLightController : MonoBehaviour {
 
 		light.intensity = to;
 	}
-
-	void Update () {
-		if (Input.GetKeyDown (KeyCode.Q)) {
-			StartCoroutine (CoFade (inclusive, 1f, 0.25f));
-		}
-		if (Input.GetKeyDown (KeyCode.W)) {
-			StartCoroutine (CoFade (inclusive, 0.25f, 1f));
-		}
-	}
-
-	/*float SCurve (float x) {
-		return (x < 0.5f)
-			? 2 * Mathf.Pow (x, 2)
-			: -2 * Mathf.Pow (x, 2) + 4 * x - 1;
-	}*/
 }

@@ -1,11 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NPC : MB, IClickable {
+public class NPC : MB {
 
-	public InputLayer[] IgnoreLayers { get { return null; } }
-
-	public void OnClick (ClickSettings clickSettings) {
-		Debug.Log ("heard");
-	}
 }
