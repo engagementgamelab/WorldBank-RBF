@@ -19,9 +19,11 @@ using JsonFx.Json;
 public class DataManager {
 
     public static string serverRoot;
+    public static string currentSceneContext;
 
     private static JsonReaderSettings _readerSettings = new JsonReaderSettings();
     private static Models.GameData currentGameData;
+
 
     public static void SetGameConfig(string data)
     {
@@ -36,6 +38,10 @@ public class DataManager {
 
     public static void SetGameData(string data)
     {
+        // Set global data only if there is none
+        if(currentGameData != null) 
+            return;
+
         currentGameData = JsonReader.Deserialize<Models.GameData>(data);
 
         // create file in Assets/Config/
@@ -45,9 +51,9 @@ public class DataManager {
 
     }
 
-    public static Models.NPC[] GetDataForCity(string strCityName)    {
-        
-        return currentGameData.phase_one[strCityName];
+    public static void SetSceneContext(string context) {
+
+        currentSceneContext = context;
 
     }
 
@@ -66,6 +72,15 @@ public class DataManager {
         }
 
         return null;
+
+    }
+
+    public static Models.NPC[] GetNPCsForCity(string strSelector=null)    {
+        
+        if(strSelector == null)
+            return currentGameData.phase_one[currentSceneContext];
+        else
+            return new Models.NPC[] { Array.Find(currentGameData.phase_one[currentSceneContext], npc => npc.character == strSelector) };
 
     }
 

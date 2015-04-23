@@ -78,7 +78,8 @@ public class MapManager : MonoBehaviour {
 		label.text = "Go";
  
 	    goBtn.onClick.AddListener(() => gameObject.SetActive(false));
-	    goBtn.onClick.AddListener(() => DialogManager.instance.LoadDialogForCity(city.symbol));
+	    goBtn.onClick.AddListener(() => DataManager.SetSceneContext(city.symbol));
+	    goBtn.onClick.AddListener(() => Application.LoadLevel("Dialog"));
 
 	}
 }

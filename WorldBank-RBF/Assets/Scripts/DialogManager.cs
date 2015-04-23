@@ -8,7 +8,6 @@ Created by Engagement Lab, 2015
  Created by Johnny Richardson on 4/14/15.
 ==============
 */
-
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -103,7 +102,7 @@ public class DialogManager : MonoBehaviour {
 	public void LoadDialogForCity(string city)
 	{
 		// Data tests
-		Models.NPC[] itr = DataManager.GetDataForCity(city);
+		Models.NPC[] itr = DataManager.GetNPCsForCity(city);
 
 		int index = 1;
 
@@ -153,7 +152,7 @@ public class DialogManager : MonoBehaviour {
 		NPCBehavior currentNpc = (NPCBehavior)Instantiate(npcPrefab);
 
 	    // Initialize this NPC
-	    currentNpc.Initialize(npcData);
+	    // currentNpc.Initialize(npcData);
 
 	}
 
