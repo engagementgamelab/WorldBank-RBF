@@ -9,11 +9,23 @@ public class MapManager : MonoBehaviour {
 	public CanvasRenderer dialogueBoxPrefab;
 	public Button cityButtonPrefab;
 
+	public string citySceneName;
+
 	private Transform cityCanvas;
+	private Light citySpotlight;
 
 	void Start () {
 
 		cityCanvas = transform.Find("Map Buttons");
+		citySpotlight = transform.Find("City Light").GetComponent<Light>();
+
+	}
+
+	void Update() {
+
+		// Light glow
+		citySpotlight.spotAngle = Mathf.PingPong(Time.time*14, 30) + 5;
+		citySpotlight.intensity = Mathf.PingPong(Time.time, 2) + 1;
 
 	}
 
@@ -41,23 +53,24 @@ public class MapManager : MonoBehaviour {
 	}
 
 	public void ShowCityDialog(string citySymbol) {
-		Models.City city = DataManager.GetCityInfo(citySymbol);
 
-		Instantiate(cityButtonPrefab);
+		Models.City city = DataManager.GetCityInfo(citySymbol);
 
 		CanvasRenderer diagRenderer = DialogManager.instance.CreateGenericDialog(city.description);
 	  
 	  	// Setup go button
-	    Button goBtn = (Button)diagRenderer.transform.Find("Action Button").GetComponent<Button>();
+	  	GameObject goBtnObj = diagRenderer.transform.Find("Action Button").gameObject;
+	    Button goBtn = goBtnObj.GetComponent<Button>();
+
+	    goBtnObj.SetActive(true);
 	    
 	    Text label = goBtn.transform.FindChild("Text").GetComponent<Text>();
 		label.text = "Go to " + city.display_name;
  
-	    goBtn.onClick.AddListener(() => gameObject.SetActive(false));
+ 		// Set city context and go to city
 	    goBtn.onClick.AddListener(() => DataManager.SetSceneContext(city.symbol));
-	    goBtn.onClick.AddListener(() => Application.LoadLevel(parallaxScene));
 
 	    goBtn.gameObject.SetActive(true);
-
+	    goBtn.onClick.AddListener(() => Application.LoadLevel(citySceneName));
 	}
 }

@@ -17,9 +17,6 @@ public class MapCity : MonoBehaviour {
 
  	// On Touch/Click City
 	void OnMouseDown() {
-		
-		// Temp: hide map
-		transform.parent.Find("BG").gameObject.SetActive(false);
 
 		(transform.parent.gameObject.GetComponent<MapManager>() as MapManager).ShowCityDialog(citySymbol);
 
