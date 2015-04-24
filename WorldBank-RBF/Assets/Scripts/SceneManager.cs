@@ -67,11 +67,14 @@ public class SceneManager : MonoBehaviour {
 	        StreamReader reader = new StreamReader(Application.dataPath + "/Config/data.json");
 	        
 			gameData = reader.ReadToEnd();
+
+			reader.Close();
 		
 		}
 
 		// Set global game data
-		DataManager.SetGameData(gameData);
+		if(gameData != null && gameData.Length > 0)	
+			DataManager.SetGameData(gameData);
 
 	}
 }

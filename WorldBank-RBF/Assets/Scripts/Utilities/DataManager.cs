@@ -44,9 +44,12 @@ public class DataManager {
 
         currentGameData = JsonReader.Deserialize<Models.GameData>(data);
 
-        // create file in Assets/Config/
-        #if !UNITY_WEBPLAYER
-            File.WriteAllText(Application.dataPath + "/Config/data.json", data); 
+        // create/save to file in Assets/Config/
+        #if !UNITY_WEBPLAYER    
+            using (StreamWriter outfile = new StreamWriter(Application.dataPath + "/Config/data.json", false))
+            {
+                outfile.Write(data);
+            } 
         #endif
 
     }
