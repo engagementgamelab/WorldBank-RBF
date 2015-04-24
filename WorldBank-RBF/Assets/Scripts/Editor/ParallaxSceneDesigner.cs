@@ -13,8 +13,9 @@ public class ParallaxSceneDesigner : EditorWindow {
  
     void OnEnable () {
         hideFlags = HideFlags.HideAndDontSave;
-        if (options == null)
+        if (options == null) {
             options = CreateInstance ("ParallaxSceneDesignerOptions") as ParallaxSceneDesignerOptions;
+        }
     }
 
     void OnGUI () {

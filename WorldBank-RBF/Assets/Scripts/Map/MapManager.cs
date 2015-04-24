@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class MapManager : MonoBehaviour {
 
+	public string parallaxScene;
 	public CanvasRenderer dialogueBoxPrefab;
 	public Button cityButtonPrefab;
 
@@ -54,7 +55,7 @@ public class MapManager : MonoBehaviour {
  
 	    goBtn.onClick.AddListener(() => gameObject.SetActive(false));
 	    goBtn.onClick.AddListener(() => DataManager.SetSceneContext(city.symbol));
-	    goBtn.onClick.AddListener(() => Application.LoadLevel("Dialog"));
+	    goBtn.onClick.AddListener(() => Application.LoadLevel(parallaxScene));
 
 	    goBtn.gameObject.SetActive(true);
 

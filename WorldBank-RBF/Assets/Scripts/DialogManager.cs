@@ -117,17 +117,21 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
 	/// <param name="showBackBtn">Whether or not to show the back button</param>
-	public GameObject CreateNPCDialog(string strDialogTxt, bool showBackBtn = true) {
+	public NPCDialogBox CreateNPCDialog(string strDialogTxt, bool showBackBtn = true) {
 
-		GameObject canvasObject = Instantiate(Resources.Load("Prefabs/DialogueNPC", typeof(GameObject))) as GameObject;
+		/*GameObject canvasObject = Instantiate(Resources.Load("Prefabs/DialogueNPC", typeof(GameObject))) as GameObject;
 
 	    Text diagText = canvasObject.transform.Find("Layout/Speech/Text").GetComponent<Text>() as Text;
 	    diagText.text = strDialogTxt;
 		
 		canvasObject.transform.Find("Layout/Back Button").gameObject.SetActive(showBackBtn);
 
-	    return canvasObject;
+	    return canvasObject;*/
 
+	    NPCDialogBox dialog = Instantiate (Resources.Load ("Prefabs/NPCDialogBox", typeof (NPCDialogBox))) as NPCDialogBox;
+	    dialog.Content = strDialogTxt;
+	    dialog.backButton.gameObject.SetActive (showBackBtn);
+	    return dialog;
 	}
 
 /*	/// <summary>
@@ -164,14 +168,21 @@ public class DialogManager : MonoBehaviour {
 
 		string strToDisplay = strDialogTxt.Replace("[[", "<color=orange>").Replace("]]", "</color>");
 
-		GameObject diagRenderer = CreateNPCDialog(strToDisplay);
+		// GameObject diagRenderer = CreateNPCDialog(strToDisplay);
+		NPCDialogBox dialog = CreateNPCDialog (strToDisplay);
 
 		// currentDialogLabel = diagRenderer.transform.Find("Panel/Dialogue Text").GetComponent<Text>() as Text;
-		Transform dialogueBtnPanel = diagRenderer.transform.Find("Layout/Choices");
-		Button dialogueBackBtn = diagRenderer.transform.Find("Layout/Back Button").GetComponent<Button>();
+		//-Transform dialogueBtnPanel = diagRenderer.transform.Find("Layout/Choices");
+		Transform choiceGroup = dialog.choiceGroup;
+		foreach (Transform child in choiceGroup) {
+			GameObject.Destroy (child.gameObject);
+			// ObjectPool.Destroy<NPCDialogButton> (child);
+		}
+		// Button dialogueBackBtn = diagRenderer.transform.Find("Layout/Back Button").GetComponent<Button>();
+		Button backButton = dialog.backButton;
 
-		foreach (Transform child in dialogueBtnPanel.transform)
-		    GameObject.Destroy(child.gameObject);
+		/*foreach (Transform child in dialogueBtnPanel.transform)
+		    GameObject.Destroy(child.gameObject);*/
 
 		currentDialogueText = new List<string>();
 		
@@ -205,25 +216,33 @@ public class DialogManager : MonoBehaviour {
 			string choiceName = textInfo.ToTitleCase(choice);
 
 			Button btnChoice = (Button)Instantiate(btnPrefab);
+			// Button btnChoice = ObjectPool.Instantiate<NPCDialogButton> ().button;
 
-			btnChoice.transform.parent = dialogueBtnPanel;
+			//btnChoice.transform.SetParent (dialogueBtnPanel);
+			btnChoice.transform.SetParent (choiceGroup);
 			btnChoice.transform.localScale = new Vector3(1, 1, 1);
+			btnChoice.transform.localPosition = Vector3.zero;
 			
 			Text btnTxt = btnChoice.transform.FindChild("Text").GetComponent<Text>();
 			btnTxt.text = choiceName;
 			
-			btnChoice.onClick.AddListener(() => Destroy(diagRenderer));
+			//btnChoice.onClick.AddListener(() => Destroy(diagRenderer));
+			btnChoice.onClick.AddListener(() => Destroy(dialog.gameObject));
 			btnChoice.onClick.AddListener(() => currentDialogueChoices.Remove(choice));
 			btnChoice.onClick.AddListener(() => OpenCharacterDialog(currNpc, choiceName));
 		}
 
 		// Setup back button
-		dialogueBackBtn.onClick.AddListener(() => Destroy(diagRenderer));
+		// dialogueBackBtn.onClick.AddListener(() => Destroy(diagRenderer));
+		// dialogueBackBtn.onClick.AddListener(() => Destroy(dialog));
+		backButton.onClick.AddListener(() => Destroy(dialog.gameObject));
 		if(strDialogueKey != "Initial")
-			dialogueBackBtn.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", true));
+			backButton.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", true));
+			// dialogueBackBtn.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", true));
 
 		if(currentDialogueChoices.Count > 0)
-			dialogueBtnPanel.gameObject.SetActive (true);
+			choiceGroup.gameObject.SetActive (true);
+			// dialogueBtnPanel.gameObject.SetActive (true);
 
 	}
 }

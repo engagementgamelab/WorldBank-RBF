@@ -23,25 +23,26 @@ public class NPCBehavior : MB {
 	private Models.NPC npcRef;
 
  	void Start() {
-
- 		if(npcSymbol == null || npcSymbol.Length == 0)
- 			 throw new Exception("NPC symbol not set!");
-
  		Initialize();
-
  	}
 
  	public void Initialize() {
 
+ 		if(npcSymbol == null || npcSymbol.Length == 0)
+ 			 throw new Exception("NPC symbol not set!");
+
  		// Get reference for this NPC
  		npcRef = DataManager.GetNPCsForCity(npcSymbol)[0];
-
  	}
 
  	// On Touch/Click NPC
 	void OnMouseDown() {
 
 		// Opens initial dialog for this NPC
+		DialogManager.instance.OpenCharacterDialog(npcRef, "Initial");
+	}
+
+	public void OpenDialog () {
 		DialogManager.instance.OpenCharacterDialog(npcRef, "Initial");
 	}
 }

@@ -12,6 +12,10 @@ public enum InputLayer {
 }
 
 public class LayerController {
+	
 	static int[] layers = new int[] { 5, 8, 9, 10, 11, 12, 13 };
 	public static int[] Layers { get { return layers; } }
+
+	static int[] depthLayers = new int[] { 8, 9, 10, 11, 12, 13 };
+	public static int[] DepthLayers { get { return depthLayers; } }
 }

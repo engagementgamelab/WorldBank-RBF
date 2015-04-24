@@ -62,7 +62,7 @@ public class LineOfSight : MB {
 	}
 
 	void Update () {
-		if (CastRaysOnLayer (LayerManager.DepthLayers[0]).Count > 0) {
+		if (CastRaysOnLayer (LayerController.DepthLayers[0]).Count > 0) {
 			if (!overForegroundObject) {
 				MainCamera.Instance.ZoomTo (0f, 5f);
 				overForegroundObject = true;

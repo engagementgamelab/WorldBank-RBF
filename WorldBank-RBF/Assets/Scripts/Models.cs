@@ -47,6 +47,10 @@ public class Models {
 
     }
 
+    public class Scene {
+        // TODO: Move scene model into here
+    }
+
     public class NPC {
 
         public string symbol { get; set; }

@@ -9,9 +9,8 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
 	
     float space = 10;
 
-    [Range (1, 6)]
-    int layerCount = 4;
-    int prevLayerCount = 4;
+    int layerCount = 0;
+    int prevLayerCount = 0;
 
     List<DepthLayer> layers;
     LayerOptions layerOptions;
@@ -26,6 +25,7 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
         hideFlags = HideFlags.HideAndDontSave;
         if (layerOptions == null) {
             layerOptions = CreateInstance<LayerOptions> () as LayerOptions;
+            EditorObjectPool.Clear ();
         }
         if (saveLoadOptions == null) {
             saveLoadOptions = CreateInstance<SaveLoadOptions> () as SaveLoadOptions;
@@ -37,7 +37,7 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
     }
 
     public void OnGUI () {
-
+        
         EditorGUILayout.BeginHorizontal ();
         GUI.color = Color.green;
         if (GUILayout.Button ("Refresh", largeButtonHeight)) {
@@ -59,7 +59,7 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
         saveLoadOptions.OnGUI ();
         EditorGUILayout.Separator ();
 
-        layerCount = EditorGUILayout.IntSlider ("Layer Count", layerCount, 1, 6);
+        layerCount = EditorGUILayout.IntSlider ("Layer Count", layerCount, 0, 6);
         if (layerCount != prevLayerCount) {
             Refresh ();
             prevLayerCount = layerCount;

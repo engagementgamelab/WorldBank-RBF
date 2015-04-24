@@ -21,13 +21,27 @@ public class LayerImage : QuadImage, IClickable {
 	}
 	#endif
 
-	public InputLayer[] IgnoreLayers { get { return null; } }
+	public InputLayer[] IgnoreLayers { 
+		get { return new InputLayer[] { InputLayer.UI }; } 
+	}
 
-	[SerializeField, HideInInspector] protected float xPosition;
-	[SerializeField, HideInInspector] protected string npcSymbol = "";
+	[SerializeField, HideInInspector] float xPosition;
+	[SerializeField, HideInInspector] NPCBehavior behavior = null;
+	[SerializeField, HideInInspector] string npcSymbol = "";
 	public string NPCSymbol {
 		get { return npcSymbol; }
-		set { npcSymbol = value; }
+		set { 
+			npcSymbol = value;
+			if (npcSymbol == "" && behavior != null) {
+				ObjectPool.Destroy<NPCBehavior> (behavior.Transform);
+				behavior = null;
+			}
+			if (npcSymbol != "" && behavior == null) {
+				behavior = ObjectPool.Instantiate<NPCBehavior> ();
+				behavior.Transform.SetParent (Transform);
+			}
+			if (behavior != null) behavior.npcSymbol = npcSymbol;
+		}
 	}
 
 	public bool IsSprite { get { return npcSymbol != ""; } }
@@ -65,10 +79,19 @@ public class LayerImage : QuadImage, IClickable {
 		if (Material == null) return;
 		Transform.SetLocalPosition (new Vector3 (xPosition, 0, 0));
 	}
-
+	
 	public void OnClick (ClickSettings clickSettings) {
+	if (!IsSprite) return;
+	NPCFocusBehavior.Instance.ToggleFocus (this, OnFocus);
+	}
+
+	/*void OnMouseDown () {
 		if (!IsSprite) return;
-		NPCFocusBehavior.Instance.ToggleFocus (this);
+		NPCFocusBehavior.Instance.ToggleFocus (this, OnFocus);
+	}*/
+
+	void OnFocus () {
+		if (behavior != null) behavior.OpenDialog ();
 	}
 
 	public void Expand (float duration) {

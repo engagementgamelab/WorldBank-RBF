@@ -22,18 +22,20 @@ public class NPCFocusBehavior : MonoBehaviour {
 	bool focusing = false;
 	LayerImage npc;
 	float zoomBeforeFocus;
+	System.Action onFocus;
 
-	public void ToggleFocus (LayerImage npc) {
+	public void ToggleFocus (LayerImage npc, System.Action onFocus) {
 		if (focusing) return;
 		if (focused) {
 			FocusOut ();
 		} else {
-			FocusIn (npc);
+			FocusIn (npc, onFocus);
 		}
 	}
 
-	void FocusIn (LayerImage npc) {
+	void FocusIn (LayerImage npc, System.Action onFocus) {
 		this.npc = npc;
+		this.onFocus = onFocus;
 		focused = true;
 		focusing = true;
 		zoomBeforeFocus = MainCamera.Instance.Zoom;
@@ -58,6 +60,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 	}
 
 	void FinishFocusIn () {
+		onFocus ();
 		focusing = false;
 	}
 
