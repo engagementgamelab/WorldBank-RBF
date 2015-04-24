@@ -29,6 +29,7 @@ public class DepthLayer : MB, IEditorPoolable {
 		set { 
 			index = value;
 			gameObject.layer = index + 8;
+			if (background != null) background.Layer = gameObject.layer;
 		}
 	}
 
@@ -65,7 +66,7 @@ public class DepthLayer : MB, IEditorPoolable {
 
 	public void Init () {
 		background = CreateChildIfNoneExists<LayerBackground> ();
-		background.Init ();
+		background.Layer = gameObject.layer;
 		UpdatePosition ();
 	}
 
@@ -92,7 +93,7 @@ public class DepthLayer : MB, IEditorPoolable {
 	public void AddImage () {
 		background.CreateImage ();
 	}
-
+	
 	public void RemoveImage () {
 		background.RemoveImage ();
 	}

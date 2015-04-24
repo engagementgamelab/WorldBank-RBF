@@ -6,6 +6,16 @@ public class LayerBackground : MB, IEditorPoolable {
 
 	public int Index { get; set; }
 
+	public int Layer {
+		get { return gameObject.layer; }
+		set {
+			gameObject.layer = value;
+			foreach (LayerImage image in Images) {
+				image.Layer = value;
+			}
+		}
+	}
+
 	int tileCount = 0;
 	int TileCount {
 		get { return tileCount; }
@@ -38,9 +48,13 @@ public class LayerBackground : MB, IEditorPoolable {
 			for (int i = 0; i < TileCount; i ++) {
 				LayerImageSettings settings = imageSettings[i];
 				Images[i].Index = settings.GetIndex ();
+				Images[i].NPCSymbol = settings.GetNPCSymbol ();
 				Images[i].Texture = settings.GetTexture2D ();
+				Images[i].ColliderEnabled = settings.GetColliderEnabled ();
 				Images[i].ColliderWidth = settings.GetColliderWidth ();
-				Images[i].ColliderCenter = settings.GetColliderCenter ();
+				Images[i].ColliderHeight = settings.GetColliderHeight ();
+				Images[i].ColliderCenterX = settings.GetColliderCenterX ();
+				Images[i].ColliderCenterY = settings.GetColliderCenterY ();
 			}
 		}
 	}
@@ -68,6 +82,7 @@ public class LayerBackground : MB, IEditorPoolable {
 		LayerImage image = EditorObjectPool.Create<LayerImage> ();
 		image.SetParent (Transform, Images.Count);
 		image.Texture = null;
+		image.Layer = gameObject.layer;
 		Images.Add (image);
 	}
 

@@ -21,6 +21,15 @@ public class QuadImage : MB, IEditorPoolable {
 		}
 	}
 
+	[SerializeField, HideInInspector] bool colliderEnabled = false;	
+	public bool ColliderEnabled {
+		get { return colliderEnabled; }
+		set { 
+			colliderEnabled = value;
+			BoxCollider.enabled = value; 
+		}
+	}
+
 	[SerializeField, HideInInspector] float colliderWidth = 1;
 	public float ColliderWidth {
 		get { return colliderWidth; }
@@ -30,12 +39,30 @@ public class QuadImage : MB, IEditorPoolable {
 		}
 	}
 
-	[SerializeField, HideInInspector] float colliderCenter = 0;
-	public float ColliderCenter {
-		get { return colliderCenter; }
+	[SerializeField, HideInInspector] float colliderHeight = 1;
+	public float ColliderHeight {
+		get { return colliderHeight; }
 		set {
-			colliderCenter = value;
-			BoxCollider.SetCenterX (colliderCenter);
+			colliderHeight = value;
+			BoxCollider.SetSizeY (colliderHeight);
+		}
+	}
+
+	[SerializeField, HideInInspector] float colliderCenterX = 0;
+	public float ColliderCenterX {
+		get { return colliderCenterX; }
+		set {
+			colliderCenterX = value;
+			BoxCollider.SetCenterX (colliderCenterX);
+		}
+	}
+
+	[SerializeField, HideInInspector] float colliderCenterY = 0;
+	public float ColliderCenterY {
+		get { return colliderCenterY; }
+		set {
+			colliderCenterY = value;
+			BoxCollider.SetCenterY (colliderCenterY);
 		}
 	}
 
@@ -56,7 +83,7 @@ public class QuadImage : MB, IEditorPoolable {
 	}
 
 	BoxCollider boxCollider = null;
-	BoxCollider BoxCollider {
+	protected BoxCollider BoxCollider {
 		get {
 			if (boxCollider == null) {
 				boxCollider = GetComponent<BoxCollider> ();
@@ -65,9 +92,8 @@ public class QuadImage : MB, IEditorPoolable {
 		}
 	}
 
-	bool ColliderEnabled {
-		get { return BoxCollider.enabled; }
-		set { BoxCollider.enabled = value; }
+	protected float XOffset {
+		get { return -BoxCollider.center.x; }
 	}
 
 	public virtual void Init () {}

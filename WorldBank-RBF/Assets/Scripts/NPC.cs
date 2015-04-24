@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NPC : MB, IClickable {
+public class NPC : MB {
 
-	public void OnClick (ClickSettings clickSettings) {
-		Debug.Log ("heard");
-	}
 }
