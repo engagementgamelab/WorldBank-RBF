@@ -102,7 +102,7 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
         for (int i = 0; i < layers.Count; i ++) {
             LayerSettingsJson layer = layers[i];
             LayerSettings settings = EditorObjectPool.Create<LayerSettings> ();
-            settings.Init (layer.GetIndex (), layer.GetLocalSeparation (), layer.GetImages ());
+            settings.Init (layer);
         }
         Refresh ();
     }

@@ -47,14 +47,14 @@ public class LayerBackground : MB, IEditorPoolable {
 			TileCount = imageSettings.Count;
 			for (int i = 0; i < TileCount; i ++) {
 				LayerImageSettings settings = imageSettings[i];
-				Images[i].Index = settings.GetIndex ();
-				Images[i].NPCSymbol = settings.GetNPCSymbol ();
-				Images[i].Texture = settings.GetTexture2D ();
-				Images[i].ColliderEnabled = settings.GetColliderEnabled ();
-				Images[i].ColliderWidth = settings.GetColliderWidth ();
-				Images[i].ColliderHeight = settings.GetColliderHeight ();
-				Images[i].ColliderCenterX = settings.GetColliderCenterX ();
-				Images[i].ColliderCenterY = settings.GetColliderCenterY ();
+				Images[i].Index = settings.index;
+				Images[i].NPCSymbol = settings.npc_symbol;
+				Images[i].Texture = settings.GetTexture ();
+				Images[i].ColliderEnabled = settings.collider_enabled;
+				Images[i].ColliderWidth = settings.collider_width;
+				Images[i].ColliderHeight = settings.collider_height;
+				Images[i].ColliderCenterX = settings.collider_center_x;
+				Images[i].ColliderCenterY = settings.collider_center_y;
 			}
 		}
 	}

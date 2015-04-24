@@ -43,17 +43,21 @@ public class LayerSettings : MB, IEditorPoolable {
 
 			// Create a json serializable object
 			LayerSettingsJson json = new LayerSettingsJson ();
-			json.SetIndex (Index);
-			json.SetLocalSeparation (LocalSeparation);
-			json.SetImages (ImageSettings);
+			json.index = Index;
+			json.local_separation = LocalSeparation;
+			json.images = ImageSettings;
 			return json;
 		}
 	}
 
-	public void Init (int index, float localSeparation=0, List<LayerImageSettings> imageSettings=null) {
-		this.imageSettings = imageSettings;
+	public void Init (int index) {
 		this.index = index;
-		this.localSeparation = localSeparation;
+	}
+
+	public void Init (LayerSettingsJson json) {
+		this.imageSettings = json.images;
+		this.index = json.index;
+		this.localSeparation = json.local_separation;
 	}
 	#endif
 

@@ -8,14 +8,14 @@ public class LayerImage : QuadImage, IClickable {
 	public LayerImageSettings Json {
 		get {
 			LayerImageSettings json = new LayerImageSettings ();
-			json.SetIndex (Index);
-			json.SetNPCSymbol (npcSymbol);
+			json.index = Index;
+			json.npc_symbol = npcSymbol;
 			json.SetTexture (Texture);
-			json.SetColliderEnabled (ColliderEnabled);
-			json.SetColliderWidth (ColliderWidth);
-			json.SetColliderHeight (ColliderHeight);
-			json.SetColliderCenterX (ColliderCenterX);
-			json.SetColliderCenterY (ColliderCenterY);
+			json.collider_enabled = ColliderEnabled;
+			json.collider_width = ColliderWidth;
+			json.collider_height = ColliderHeight;
+			json.collider_center_x = ColliderCenterX;
+			json.collider_center_y = ColliderCenterY;
 			return json;
 		}
 	}
