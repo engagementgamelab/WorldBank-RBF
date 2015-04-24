@@ -40,12 +40,7 @@ public class DialogManager : MonoBehaviour {
 	}
 
 	// Variable Definitions
-	public Button btnLoadData;
 	public Button btnPrefab;
-	public Button btnGoBack;
-	public NPCBehavior npcPrefab;
-	
-	public GameObject dialoguePanel;
 
 	private StringBuilder builder = new StringBuilder();
 
@@ -135,15 +130,7 @@ public class DialogManager : MonoBehaviour {
 
 	}
 
-	public void HideCharacterDialog() {
-
-		dialoguePanel.SetActive (false);
-
-		CameraBehavior.ZoomOut();
-
-	}
-
-	/// <summary>
+/*	/// <summary>
 	/// Generate an NPC
 	/// </summary>
 	/// <param name="npcData">Instance of Models.NPC for this NPC</param>
@@ -156,7 +143,7 @@ public class DialogManager : MonoBehaviour {
 	    // Initialize this NPC
 	    // currentNpc.Initialize(npcData);
 
-	}
+	}*/
 
 	/// <summary>
 	/// Open specified dialog for a given character
