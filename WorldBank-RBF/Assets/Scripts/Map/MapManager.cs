@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,20 +13,29 @@ public class MapManager : MonoBehaviour {
 	public string citySceneName;
 
 	private Transform cityCanvas;
-	private Light citySpotlight;
+	private List<Light> citySpotlights;
+
+	private Vector3 initialDialogScale;
 
 	void Start () {
 
 		cityCanvas = transform.Find("Map Buttons");
-		citySpotlight = transform.Find("City Light").GetComponent<Light>();
+
+		citySpotlights = new List<Light>();
+		GameObject[] cityHighlights = GameObject.FindGameObjectsWithTag("CityHighlight");
+
+		Array.ForEach(cityHighlights, element => citySpotlights.Add(element.GetComponent<Light>()));
 
 	}
 
 	void Update() {
 
-		// Light glow
-		citySpotlight.spotAngle = Mathf.PingPong(Time.time*14, 30) + 5;
-		citySpotlight.intensity = Mathf.PingPong(Time.time, 2) + 1;
+		// City lights glow
+		citySpotlights.ForEach(delegate(Light citySpotlight)
+        {
+			citySpotlight.spotAngle = Mathf.PingPong(Time.time*14, 30) + 5;
+			citySpotlight.intensity = Mathf.PingPong(Time.time, 2) + 1;
+        });
 
 	}
 
@@ -56,21 +66,28 @@ public class MapManager : MonoBehaviour {
 
 		Models.City city = DataManager.GetCityInfo(citySymbol);
 
-		CanvasRenderer diagRenderer = DialogManager.instance.CreateGenericDialog(city.description);
+		GameObject diagRenderer = DialogManager.instance.CreateGenericDialog(city.description);
+
+		initialDialogScale = diagRenderer.transform.localScale;
 	  
 	  	// Setup go button
 	  	GameObject goBtnObj = diagRenderer.transform.Find("Action Button").gameObject;
-	    Button goBtn = goBtnObj.GetComponent<Button>();
-
-	    goBtnObj.SetActive(true);
-	    
-	    Text label = goBtn.transform.FindChild("Text").GetComponent<Text>();
+	    goBtnObj.SetActive(city.unlocked);
+		
+		Button goBtn = goBtnObj.GetComponent<Button>();
+		Text label = goBtn.transform.FindChild("Text").GetComponent<Text>();
 		label.text = "Go to " + city.display_name;
  
  		// Set city context and go to city
 	    goBtn.onClick.AddListener(() => DataManager.SetSceneContext(city.symbol));
-
-	    goBtn.gameObject.SetActive(true);
 	    goBtn.onClick.AddListener(() => Application.LoadLevel(citySceneName));
+
 	}
+
+	IEnumerator ZoomInMapUI() {
+
+	    yield return null;
+
+	}
+
 }

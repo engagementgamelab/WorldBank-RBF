@@ -99,16 +99,16 @@ public class DialogManager : MonoBehaviour {
 	/// Generate a generic dialog with text
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	public CanvasRenderer CreateGenericDialog(string strDialogTxt) {
+	public GameObject CreateGenericDialog(string strDialogTxt) {
 
 		GameObject canvasObject = Instantiate(Resources.Load("Prefabs/DialogueBox", typeof(GameObject))) as GameObject;
 	    
-		CanvasRenderer diagRenderer = canvasObject.transform.Find("Box").gameObject.GetComponent<CanvasRenderer>() as CanvasRenderer;
+		Transform diagParent = canvasObject.transform;
 
-	    Text diagText = diagRenderer.transform.Find("Panel/Dialogue Text").GetComponent<Text>() as Text;
+	    Text diagText = diagParent.Find("Panel/Dialogue Text").GetComponent<Text>() as Text;
 	    diagText.text = strDialogTxt;
 
-	    return diagRenderer;
+	    return canvasObject;
 
 	}
 

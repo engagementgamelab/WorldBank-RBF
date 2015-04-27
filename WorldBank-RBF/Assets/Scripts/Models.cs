@@ -44,6 +44,8 @@ public class Models {
         public string symbol { get; set; }
         public string display_name { get; set; }
         public string description { get; set; }
+        public bool enabled { get; set; }
+        public bool unlocked { get; set; }
 
     }
 
