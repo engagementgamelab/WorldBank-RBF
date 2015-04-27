@@ -5,6 +5,7 @@ using System.Collections;
 public class ImageSettings : ScriptableObject {
 
 	public string npcSymbol;
+	public bool facingLeft;
 	public Texture2D texture;
 	public bool colliderEnabled;
 	public float width;
@@ -12,8 +13,9 @@ public class ImageSettings : ScriptableObject {
 	public float centerX;
 	public float centerY;
 
-	public void Init (string npcSymbol, Texture2D texture, bool colliderEnabled, float width, float height, float centerX, float centerY) {
+	public void Init (string npcSymbol, bool facingLeft, Texture2D texture, bool colliderEnabled, float width, float height, float centerX, float centerY) {
 		this.npcSymbol = npcSymbol;
+		this.facingLeft = facingLeft;
 		this.texture = texture;
 		this.colliderEnabled = colliderEnabled;
 		this.width = width;

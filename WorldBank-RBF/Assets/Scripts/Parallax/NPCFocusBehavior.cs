@@ -33,7 +33,8 @@ public class NPCFocusBehavior : MonoBehaviour {
 		}
 	}
 
-	void FocusIn (LayerImage npc, System.Action onFocus) {
+	public void FocusIn (LayerImage npc, System.Action onFocus) {
+		if (focused) return;
 		this.npc = npc;
 		this.onFocus = onFocus;
 		focused = true;
@@ -42,16 +43,24 @@ public class NPCFocusBehavior : MonoBehaviour {
 		StartCoroutine (CoFocusIn ());
 
 		float duration = 1f;
+		float center = npc.Position.x - (npc.Transform.lossyScale.x * 2f * npc.XOffset);
+		float offset = (npc.ColliderWidth + NPCDialogBox.width) / 2f;
+		Debug.Log (center);
+		Debug.Log (offset);
+		float xPosition = npc.FacingLeft ? center - offset : center + offset;
+		// MainCamera.Instance.MoveToTarget (npc.XPosition, duration);
+		
 		Invoke ("FinishFocusIn", duration);
-		npc.Expand (duration);
-		DirectionalLightController.Instance.FadeOut (duration);
-		MainCamera.Instance.MoveToTarget (npc.XPosition, duration);
+		MainCamera.Instance.MoveToTarget (xPosition, duration);
 		MainCamera.Instance.ZoomTo (12, 2.5f);
+		npc.Expand (duration);
+		MainCamera.Instance.Positioner.DragEnabled = false;
+		DirectionalLightController.Instance.FadeOut (duration);
 	}
 
-	void FocusOut () {
-		focused = false;
-
+	public void FocusOut () {
+		if (!focused) return;
+		focusing = true;
 		float duration = 1f;
 		Invoke ("FinishFocusOut", duration);	
 		npc.Shrink (duration);
@@ -66,6 +75,9 @@ public class NPCFocusBehavior : MonoBehaviour {
 
 	void FinishFocusOut () {
 		MainCamera.Instance.ZoomVelocity = 3f;
+		MainCamera.Instance.Positioner.DragEnabled = true;
+		focusing = false;
+		focused = false;
 	}
 
 	// TODO: queue actions for focus

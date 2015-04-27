@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class MapManager : MonoBehaviour {
 
-	public string parallaxScene;
 	public CanvasRenderer dialogueBoxPrefab;
 	public Button cityButtonPrefab;
 

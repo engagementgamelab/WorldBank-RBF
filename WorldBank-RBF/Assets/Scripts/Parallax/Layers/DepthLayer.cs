@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[ExecuteInEditMode]
 public class DepthLayer : MB, IEditorPoolable {
 
 	[SerializeField, HideInInspector] bool selected;
@@ -48,7 +49,7 @@ public class DepthLayer : MB, IEditorPoolable {
 	}
 
 	public static float layerSeparation = 20;
-	float localSeparation = 0;
+	[SerializeField, HideInInspector] float localSeparation = 0;
 	public float LocalSeparation {
 		get { return localSeparation; }
 		set {
@@ -64,9 +65,14 @@ public class DepthLayer : MB, IEditorPoolable {
 		set { background.Images = value; }
 	}
 
+	void Awake () {
+		UpdatePosition ();
+	}
+
 	public void Init () {
 		background = CreateChildIfNoneExists<LayerBackground> ();
 		background.Layer = gameObject.layer;
+		background.LocalScale = new Vector3 (1, 1, 1);
 		UpdatePosition ();
 	}
 

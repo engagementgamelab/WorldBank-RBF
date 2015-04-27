@@ -49,6 +49,7 @@ public class LayerBackground : MB, IEditorPoolable {
 				LayerImageSettings settings = imageSettings[i];
 				Images[i].Index = settings.index;
 				Images[i].NPCSymbol = settings.npc_symbol;
+				Images[i].FacingLeft = settings.facing_left;
 				Images[i].Texture = settings.GetTexture ();
 				Images[i].ColliderEnabled = settings.collider_enabled;
 				Images[i].ColliderWidth = settings.collider_width;
