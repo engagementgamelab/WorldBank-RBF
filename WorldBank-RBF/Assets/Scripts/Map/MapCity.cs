@@ -18,7 +18,7 @@ public class MapCity : MonoBehaviour {
  	// On Touch/Click City
 	void OnMouseDown() {
 
-		(transform.parent.gameObject.GetComponent<MapManager>() as MapManager).ShowCityDialog(citySymbol);
+		StartCoroutine((transform.parent.gameObject.GetComponent<MapManager>() as MapManager).ShowCityDialog(citySymbol));
 
 	}
 }
