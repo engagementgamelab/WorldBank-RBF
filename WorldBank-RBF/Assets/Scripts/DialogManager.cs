@@ -116,10 +116,10 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
 	/// <param name="showBackBtn">Whether or not to show the back button</param>
-	public NPCDialogBox CreateNPCDialog(string strDialogTxt, Vector3 position, bool showBackBtn = true) {
+	public NPCDialogBox CreateNPCDialog(string strDialogTxt, NPCBehavior npc, bool showBackBtn = true) {
 
 	    NPCDialogBox dialog = ObjectPool.Instantiate<NPCDialogBox> ();
-	    dialog.Open (position);
+	    dialog.Open (npc);
 	    dialog.Content = strDialogTxt;
 	    dialog.backButton.gameObject.SetActive (showBackBtn);
 	    
@@ -147,7 +147,7 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
 	/// <param name="strDialogueKey">The key corresponding to the dialogue to show</param>
 	/// <param name="returning">Specify whether player is returning to previous dialog</param>
-	public void OpenCharacterDialog(Models.NPC currNpc, string strDialogueKey, Vector3 position, bool returning=false) {
+	public void OpenCharacterDialog(Models.NPC currNpc, string strDialogueKey, NPCBehavior npc, bool returning=false) {
 
 		string strDialogTxt = currNpc.dialogue[strDialogueKey]["text"];
 		
@@ -160,7 +160,7 @@ public class DialogManager : MonoBehaviour {
 
 		string strToDisplay = strDialogTxt.Replace("[[", "<color=orange>").Replace("]]", "</color>");
 
-		NPCDialogBox dialog = CreateNPCDialog (strToDisplay, position);
+		NPCDialogBox dialog = CreateNPCDialog (strToDisplay, npc);
 
 		Transform choiceGroup = dialog.choiceGroup;
 		foreach (Transform child in choiceGroup) {
@@ -210,7 +210,7 @@ public class DialogManager : MonoBehaviour {
 			string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
 			btnChoice.onClick.AddListener (() => currentDialogueChoices.Remove (t));
 			btnChoice.onClick.AddListener(() => ObjectPool.Destroy<NPCDialogBox> (dialog.Transform));
-			btnChoice.onClick.AddListener(() => OpenCharacterDialog(currNpc, choiceName, position));
+			btnChoice.onClick.AddListener(() => OpenCharacterDialog(currNpc, choiceName, npc));
 		}
 
 		// Setup back button
@@ -220,7 +220,7 @@ public class DialogManager : MonoBehaviour {
 		} else {
 			backButton.onClick.RemoveAllListeners ();
 			backButton.onClick.AddListener(() => ObjectPool.Destroy<NPCDialogBox> (dialog.Transform));
-			backButton.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", position, true));
+			backButton.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", npc, true));
 		}
 
 		if(currentDialogueChoices.Count > 0)

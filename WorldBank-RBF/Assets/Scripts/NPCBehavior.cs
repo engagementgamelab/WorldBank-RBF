@@ -41,6 +41,6 @@ public class NPCBehavior : MB {
  	}
 
 	public void OpenDialog () {
-		DialogManager.instance.OpenCharacterDialog(npcRef, "Initial", Position);
+		DialogManager.instance.OpenCharacterDialog(npcRef, "Initial", this);
 	}
 }

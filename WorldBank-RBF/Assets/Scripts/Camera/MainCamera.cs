@@ -18,6 +18,16 @@ public class MainCamera : MB {
 		}
 	}
 
+	LineOfSight lineOfSight = null;
+	public LineOfSight LineOfSight {
+		get {
+			if (lineOfSight == null) {
+				lineOfSight = GameObject.Find ("LineOfSight").GetScript<LineOfSight> ();
+			}
+			return lineOfSight;
+		}
+	}
+
 	float fov = -1;
 	public float FOV {
 		get {

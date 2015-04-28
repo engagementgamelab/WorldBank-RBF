@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 public class LineOfSight : MB {
 
-	int rayCount = 7;
-	float width = 4;
-	Vector3 direction;
-	float distance;
-	bool overForegroundObject = false;
+	bool zoomEnabled = true;
+	public bool ZoomEnabled {
+		get { return zoomEnabled; }
+		set { zoomEnabled = value; }
+	}
 
 	MainCamera mainCamera = null;
 	MainCamera MainCamera {
@@ -33,6 +33,12 @@ public class LineOfSight : MB {
 			return rayPositions;
 		}
 	}
+
+	int rayCount = 7;
+	float width = 4;
+	Vector3 direction;
+	float distance;
+	bool overForegroundObject = false;
 
 	void Awake () {
 		float angle = -MainCamera.FOV / 2;
@@ -62,6 +68,7 @@ public class LineOfSight : MB {
 	}
 
 	void Update () {
+		if (!ZoomEnabled) return;
 		if (CastRaysOnLayer (LayerController.DepthLayers[0]).Count > 0) {
 			if (!overForegroundObject) {
 				MainCamera.Instance.ZoomTo (0f, 5f);
