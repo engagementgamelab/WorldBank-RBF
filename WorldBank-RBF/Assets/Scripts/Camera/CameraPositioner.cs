@@ -9,7 +9,14 @@ public class CameraPositioner : MB {
 		set { dragEnabled = value; }
 	}
 	
-	public float XMin { get; set; }
+	float xMin;
+	public float XMin { 
+		get { return xMin; }
+		set {
+			xMin = value;
+			Transform.SetPositionX (Mathf.Max (xMin, Position.x));
+		}
+	}
 
 	float speed = 10;
 	Vector3 startDragPosition;
@@ -47,7 +54,8 @@ public class CameraPositioner : MB {
 
 		while (eTime < time) {
 			eTime += Time.deltaTime;
-			Transform.SetPositionX (Mathf.SmoothStep (start, end, eTime / time));
+			float newPosition = Mathf.SmoothStep (start, end, eTime / time);
+			Transform.SetPositionX (Mathf.Max (XMin, newPosition));
 			yield return null;
 		}
 

@@ -27,7 +27,6 @@ public class LayerImage : QuadImage, IClickable {
 	}
 
 	[SerializeField, HideInInspector] float xPosition;
-	[SerializeField, HideInInspector] NPCBehavior behavior = null;
 	[SerializeField, HideInInspector] string npcSymbol = "";
 	public string NPCSymbol {
 		get { return npcSymbol; }
@@ -45,6 +44,9 @@ public class LayerImage : QuadImage, IClickable {
 			if (behavior != null) behavior.npcSymbol = npcSymbol;
 		}
 	}
+	
+	[SerializeField, HideInInspector] NPCBehavior behavior = null;
+	public NPCBehavior Behavior { get { return behavior; } }
 
 	public bool FacingLeft {
 		get {
@@ -68,8 +70,7 @@ public class LayerImage : QuadImage, IClickable {
 		set { 
 			scale = value; 
 			LocalScale = new Vector3 (scale, scale, 1);
-			Transform.SetLocalPositionY ((scale-1)*0.25f);
-			LocalPosition = new Vector3 (xPosition + XOffset * (scale-1), (scale-1)*0.1f, 0);
+			LocalPosition = new Vector3 (xPosition + XOffset * (scale-1), (scale-1)*0.33f, 0);
 		}
 	}
 
@@ -98,11 +99,7 @@ public class LayerImage : QuadImage, IClickable {
 	
 	public void OnClick (ClickSettings clickSettings) {
 		if (!IsSprite) return;
-		NPCFocusBehavior.Instance.FocusIn (this, OnFocus);
-	}
-
-	void OnFocus () {
-		if (behavior != null) behavior.OpenDialog ();
+		NPCFocusBehavior.Instance.FocusIn (this);
 	}
 
 	public void Expand (float duration) {

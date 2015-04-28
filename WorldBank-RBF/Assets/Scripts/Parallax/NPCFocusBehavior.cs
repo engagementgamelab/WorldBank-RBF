@@ -22,39 +22,35 @@ public class NPCFocusBehavior : MonoBehaviour {
 	bool focusing = false;
 	LayerImage npc;
 	float zoomBeforeFocus;
-	System.Action onFocus;
 
-	public void ToggleFocus (LayerImage npc, System.Action onFocus) {
+	public void ToggleFocus (LayerImage npc) {
 		if (focusing) return;
 		if (focused) {
 			FocusOut ();
 		} else {
-			FocusIn (npc, onFocus);
+			FocusIn (npc);
 		}
 	}
 
-	public void FocusIn (LayerImage npc, System.Action onFocus) {
+	public void FocusIn (LayerImage npc) {
 		if (focused) return;
 		this.npc = npc;
-		this.onFocus = onFocus;
 		focused = true;
 		focusing = true;
 		zoomBeforeFocus = MainCamera.Instance.Zoom;
 		StartCoroutine (CoFocusIn ());
 
 		float duration = 1f;
-		float center = npc.Position.x - (npc.Transform.lossyScale.x * 2f * npc.XOffset);
+		float center = npc.Position.x - (npc.XOffset * npc.Transform.lossyScale.x);
 		float offset = (npc.ColliderWidth + NPCDialogBox.width) / 2f;
-		Debug.Log (center);
-		Debug.Log (offset);
 		float xPosition = npc.FacingLeft ? center - offset : center + offset;
-		// MainCamera.Instance.MoveToTarget (npc.XPosition, duration);
-		
+
 		Invoke ("FinishFocusIn", duration);
 		MainCamera.Instance.MoveToTarget (xPosition, duration);
 		MainCamera.Instance.ZoomTo (12, 2.5f);
 		npc.Expand (duration);
 		MainCamera.Instance.Positioner.DragEnabled = false;
+		MainCamera.Instance.LineOfSight.ZoomEnabled = false;
 		DirectionalLightController.Instance.FadeOut (duration);
 	}
 
@@ -69,13 +65,16 @@ public class NPCFocusBehavior : MonoBehaviour {
 	}
 
 	void FinishFocusIn () {
-		onFocus ();
+		if (npc.Behavior != null) {
+			npc.Behavior.OpenDialog ();
+		}
 		focusing = false;
 	}
 
 	void FinishFocusOut () {
 		MainCamera.Instance.ZoomVelocity = 3f;
 		MainCamera.Instance.Positioner.DragEnabled = true;
+		MainCamera.Instance.LineOfSight.ZoomEnabled = true;
 		focusing = false;
 		focused = false;
 	}
