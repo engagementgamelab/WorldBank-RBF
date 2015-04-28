@@ -19,8 +19,13 @@ using Extensions;
 public class NPCBehavior : MB {
 
  	public string npcSymbol;
-
-	private Models.NPC npcRef;
+	Models.NPC npcRef;
+	
+	[SerializeField, HideInInspector] bool facingLeft = true;
+	public bool FacingLeft {
+		get { return facingLeft; }
+		set { facingLeft = value; }
+	}
 
  	void Start() {
  		Initialize();
@@ -35,14 +40,7 @@ public class NPCBehavior : MB {
  		npcRef = DataManager.GetNPCsForCity(npcSymbol)[0];
  	}
 
- 	// On Touch/Click NPC
-	void OnMouseDown() {
-
-		// Opens initial dialog for this NPC
-		DialogManager.instance.OpenCharacterDialog(npcRef, "Initial");
-	}
-
 	public void OpenDialog () {
-		DialogManager.instance.OpenCharacterDialog(npcRef, "Initial");
+		DialogManager.instance.OpenCharacterDialog(npcRef, "Initial", Position);
 	}
 }

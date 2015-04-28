@@ -10,6 +10,7 @@ public class LayerImage : QuadImage, IClickable {
 			LayerImageSettings json = new LayerImageSettings ();
 			json.index = Index;
 			json.npc_symbol = npcSymbol;
+			json.facing_left = FacingLeft;
 			json.SetTexture (Texture);
 			json.collider_enabled = ColliderEnabled;
 			json.collider_width = ColliderWidth;
@@ -39,8 +40,23 @@ public class LayerImage : QuadImage, IClickable {
 			if (npcSymbol != "" && behavior == null) {
 				behavior = ObjectPool.Instantiate<NPCBehavior> ();
 				behavior.Transform.SetParent (Transform);
+				behavior.Transform.Reset ();
 			}
 			if (behavior != null) behavior.npcSymbol = npcSymbol;
+		}
+	}
+
+	public bool FacingLeft {
+		get {
+			if (behavior != null) {
+				return behavior.FacingLeft;
+			}
+			return false;
+		}
+		set {
+			if (behavior != null) {
+				behavior.FacingLeft = value;
+			}
 		}
 	}
 
@@ -81,14 +97,9 @@ public class LayerImage : QuadImage, IClickable {
 	}
 	
 	public void OnClick (ClickSettings clickSettings) {
-	if (!IsSprite) return;
-	NPCFocusBehavior.Instance.ToggleFocus (this, OnFocus);
-	}
-
-	/*void OnMouseDown () {
 		if (!IsSprite) return;
-		NPCFocusBehavior.Instance.ToggleFocus (this, OnFocus);
-	}*/
+		NPCFocusBehavior.Instance.FocusIn (this, OnFocus);
+	}
 
 	void OnFocus () {
 		if (behavior != null) behavior.OpenDialog ();

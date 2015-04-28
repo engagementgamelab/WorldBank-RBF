@@ -92,7 +92,7 @@ public class QuadImage : MB, IEditorPoolable {
 		}
 	}
 
-	protected float XOffset {
+	public float XOffset {
 		get { return -BoxCollider.center.x; }
 	}
 

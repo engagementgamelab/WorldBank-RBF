@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1 &102118
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -178,6 +178,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &190096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 473324}
+  - 114: {fileID: 11496522}
+  m_Layer: 0
+  m_Name: ScreenScroller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &402886
 Transform:
   m_ObjectHideFlags: 1
@@ -253,8 +269,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 491086}
-  m_Father: {fileID: 487664}
-  m_RootOrder: 2
+  m_Father: {fileID: 473324}
+  m_RootOrder: 0
 --- !u!4 &451936
 Transform:
   m_ObjectHideFlags: 1
@@ -267,6 +283,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 402886}
   m_RootOrder: 0
+--- !u!4 &473324
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 190096}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 449608}
+  m_Father: {fileID: 487664}
+  m_RootOrder: 2
 --- !u!4 &486094
 Transform:
   m_ObjectHideFlags: 1
@@ -291,7 +320,7 @@ Transform:
   m_Children:
   - {fileID: 437382}
   - {fileID: 424920}
-  - {fileID: 449608}
+  - {fileID: 473324}
   - {fileID: 402886}
   - {fileID: 411864}
   m_Father: {fileID: 0}
@@ -476,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead28a1d9afe348508c442d928ba8b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inEditMode: 1
+  inEditMode: 0
 --- !u!114 &11464904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -512,6 +541,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   btnPrefab: {fileID: 11459904, guid: e1e8f96045639424da1af7b9bce721e9, type: 2}
+--- !u!114 &11496522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 190096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f571595091758442a86115d74be22278, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 11434796}
 --- !u!124 &12467966
 Behaviour:
   m_ObjectHideFlags: 1

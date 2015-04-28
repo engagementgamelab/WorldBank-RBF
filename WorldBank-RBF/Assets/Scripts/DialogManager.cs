@@ -102,7 +102,6 @@ public class DialogManager : MonoBehaviour {
 	public GameObject CreateGenericDialog(string strDialogTxt) {
 
 		GameObject canvasObject = Instantiate(Resources.Load("Prefabs/DialogueBox", typeof(GameObject))) as GameObject;
-	    
 		Transform diagParent = canvasObject.transform;
 
 	    Text diagText = diagParent.Find("Panel/Dialogue Text").GetComponent<Text>() as Text;
@@ -117,20 +116,13 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
 	/// <param name="showBackBtn">Whether or not to show the back button</param>
-	public NPCDialogBox CreateNPCDialog(string strDialogTxt, bool showBackBtn = true) {
+	public NPCDialogBox CreateNPCDialog(string strDialogTxt, Vector3 position, bool showBackBtn = true) {
 
-		/*GameObject canvasObject = Instantiate(Resources.Load("Prefabs/DialogueNPC", typeof(GameObject))) as GameObject;
-
-	    Text diagText = canvasObject.transform.Find("Layout/Speech/Text").GetComponent<Text>() as Text;
-	    diagText.text = strDialogTxt;
-		
-		canvasObject.transform.Find("Layout/Back Button").gameObject.SetActive(showBackBtn);
-
-	    return canvasObject;*/
-
-	    NPCDialogBox dialog = Instantiate (Resources.Load ("Prefabs/NPCDialogBox", typeof (NPCDialogBox))) as NPCDialogBox;
+	    NPCDialogBox dialog = ObjectPool.Instantiate<NPCDialogBox> ();
+	    dialog.Open (position);
 	    dialog.Content = strDialogTxt;
 	    dialog.backButton.gameObject.SetActive (showBackBtn);
+	    
 	    return dialog;
 	}
 
@@ -155,7 +147,7 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
 	/// <param name="strDialogueKey">The key corresponding to the dialogue to show</param>
 	/// <param name="returning">Specify whether player is returning to previous dialog</param>
-	public void OpenCharacterDialog(Models.NPC currNpc, string strDialogueKey, bool returning=false) {
+	public void OpenCharacterDialog(Models.NPC currNpc, string strDialogueKey, Vector3 position, bool returning=false) {
 
 		string strDialogTxt = currNpc.dialogue[strDialogueKey]["text"];
 		
@@ -168,22 +160,14 @@ public class DialogManager : MonoBehaviour {
 
 		string strToDisplay = strDialogTxt.Replace("[[", "<color=orange>").Replace("]]", "</color>");
 
-		// GameObject diagRenderer = CreateNPCDialog(strToDisplay);
-		NPCDialogBox dialog = CreateNPCDialog (strToDisplay);
+		NPCDialogBox dialog = CreateNPCDialog (strToDisplay, position);
 
-		// currentDialogLabel = diagRenderer.transform.Find("Panel/Dialogue Text").GetComponent<Text>() as Text;
-		//-Transform dialogueBtnPanel = diagRenderer.transform.Find("Layout/Choices");
 		Transform choiceGroup = dialog.choiceGroup;
 		foreach (Transform child in choiceGroup) {
-			GameObject.Destroy (child.gameObject);
-			// ObjectPool.Destroy<NPCDialogButton> (child);
+			ObjectPool.Destroy<NPCDialogButton> (child);
 		}
-		// Button dialogueBackBtn = diagRenderer.transform.Find("Layout/Back Button").GetComponent<Button>();
+		
 		Button backButton = dialog.backButton;
-
-		/*foreach (Transform child in dialogueBtnPanel.transform)
-		    GameObject.Destroy(child.gameObject);*/
-
 		currentDialogueText = new List<string>();
 		
 		foreach(char c in strDialogTxt)
@@ -203,7 +187,6 @@ public class DialogManager : MonoBehaviour {
 			    if (m.Success)
 				{
 			        string strKeyword = m.Groups[3].ToString();
-
 			        currentDialogueChoices.Add(strKeyword.ToLower());				
 				}
 			}
@@ -215,34 +198,33 @@ public class DialogManager : MonoBehaviour {
 
 			string choiceName = textInfo.ToTitleCase(choice);
 
-			Button btnChoice = (Button)Instantiate(btnPrefab);
-			// Button btnChoice = ObjectPool.Instantiate<NPCDialogButton> ().button;
-
-			//btnChoice.transform.SetParent (dialogueBtnPanel);
+			Button btnChoice = ObjectPool.Instantiate<NPCDialogButton> ().Button;
 			btnChoice.transform.SetParent (choiceGroup);
 			btnChoice.transform.localScale = new Vector3(1, 1, 1);
 			btnChoice.transform.localPosition = Vector3.zero;
 			
 			Text btnTxt = btnChoice.transform.FindChild("Text").GetComponent<Text>();
 			btnTxt.text = choiceName;
-			
-			//btnChoice.onClick.AddListener(() => Destroy(diagRenderer));
-			btnChoice.onClick.AddListener(() => Destroy(dialog.gameObject));
-			btnChoice.onClick.AddListener(() => currentDialogueChoices.Remove(choice));
-			btnChoice.onClick.AddListener(() => OpenCharacterDialog(currNpc, choiceName));
+
+			btnChoice.onClick.RemoveAllListeners ();
+			string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
+			btnChoice.onClick.AddListener (() => currentDialogueChoices.Remove (t));
+			btnChoice.onClick.AddListener(() => ObjectPool.Destroy<NPCDialogBox> (dialog.Transform));
+			btnChoice.onClick.AddListener(() => OpenCharacterDialog(currNpc, choiceName, position));
 		}
 
 		// Setup back button
-		// dialogueBackBtn.onClick.AddListener(() => Destroy(diagRenderer));
-		// dialogueBackBtn.onClick.AddListener(() => Destroy(dialog));
-		backButton.onClick.AddListener(() => Destroy(dialog.gameObject));
-		if(strDialogueKey != "Initial")
-			backButton.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", true));
-			// dialogueBackBtn.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", true));
+		if (strDialogueKey == "Initial") {
+			backButton.onClick.RemoveAllListeners ();
+			backButton.onClick.AddListener (() => dialog.Close ());
+		} else {
+			backButton.onClick.RemoveAllListeners ();
+			backButton.onClick.AddListener(() => ObjectPool.Destroy<NPCDialogBox> (dialog.Transform));
+			backButton.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", position, true));
+		}
 
 		if(currentDialogueChoices.Count > 0)
 			choiceGroup.gameObject.SetActive (true);
-			// dialogueBtnPanel.gameObject.SetActive (true);
 
 	}
 }

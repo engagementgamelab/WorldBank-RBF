@@ -13,7 +13,7 @@ public class LayerImageOptions : ScriptableObject {
 	public void SetLayerImage (LayerImage layerImage) {
 		this.layerImage = layerImage;
 		imageSettings = CreateInstance ("ImageSettings") as ImageSettings;
-		imageSettings.Init (layerImage.NPCSymbol, layerImage.Texture, layerImage.ColliderEnabled, layerImage.ColliderWidth, layerImage.ColliderHeight, layerImage.ColliderCenterX, layerImage.ColliderCenterY);
+		imageSettings.Init (layerImage.NPCSymbol, layerImage.FacingLeft, layerImage.Texture, layerImage.ColliderEnabled, layerImage.ColliderWidth, layerImage.ColliderHeight, layerImage.ColliderCenterX, layerImage.ColliderCenterY);
 		serializedImageSettings = new UnityEditor.SerializedObject (imageSettings);
 	}
 
@@ -30,6 +30,9 @@ public class LayerImageOptions : ScriptableObject {
 		GUI.color = Color.white;
 		
 		layerImage.NPCSymbol = EditorGUILayout.TextField ("NPC Symbol", layerImage.NPCSymbol);
+		if (layerImage.NPCSymbol != "") {
+			imageSettings.facingLeft 	= EditorGUILayout.Toggle ("Facing left", imageSettings.facingLeft);
+		}
 
 		serializedImageSettings.Update ();
 		EditorGUILayout.PropertyField (serializedImageSettings.FindProperty ("texture"), new GUIContent ("Texture"), true);
@@ -42,6 +45,7 @@ public class LayerImageOptions : ScriptableObject {
 			imageSettings.centerX 		= EditorGUILayout.Slider ("Collider X", imageSettings.centerX, -0.5f, 0.5f);
 			imageSettings.centerY 		= EditorGUILayout.Slider ("Collider Y", imageSettings.centerY, -0.5f, 0.5f);
 		}
+		layerImage.FacingLeft 			= imageSettings.facingLeft;
 		layerImage.Texture 				= imageSettings.texture;
 		layerImage.ColliderEnabled		= imageSettings.colliderEnabled;
 		layerImage.ColliderWidth 		= imageSettings.width;
