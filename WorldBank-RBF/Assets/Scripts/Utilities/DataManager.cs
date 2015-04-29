@@ -46,10 +46,14 @@ public class DataManager {
 
         // create/save to file in Assets/Config/
         #if !UNITY_WEBPLAYER    
+<<<<<<< HEAD
             using (StreamWriter outfile = new StreamWriter(Application.dataPath + "/Resources/Config/data.json"))
+=======
+            using (StreamWriter outfile = new StreamWriter(Application.dataPath + "/Resources/data.json"))
+>>>>>>> ec4b5cac4efb86a669e7c9ba9420f808bbf99b3c
             {
                 outfile.Write(data);
-            } 
+            }
         #endif
 
     }
