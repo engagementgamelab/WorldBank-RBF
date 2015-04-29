@@ -132,9 +132,15 @@ public class MapManager : MonoBehaviour {
         }
  
         if (!Input.GetMouseButton(0)) return;
+
+        Debug.Log(Input.mousePosition - dragOrigin);
  
         Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
         Vector3 move = new Vector3(pos.x * dragSpeed, pos.y * dragSpeed, 0);
+
+
+
+        Debug.Log("move: " + move);
  
         Camera.main.transform.Translate(move, Space.World);
         Camera.main.transform.LookAt(mapCollider.transform);
