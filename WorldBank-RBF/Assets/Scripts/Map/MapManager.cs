@@ -58,14 +58,6 @@ public class MapManager : MonoBehaviour {
 
 		Array.ForEach(cityHighlights, element => citySpotlights.Add(element.GetComponent<Light>()));
 
-/*		cameraLimitsMin.x = cameraTransform.rotation.x + cameraLimitsMin.x;
-		cameraLimitsMin.y = cameraTransform.rotation.y + cameraLimitsMin.y;
-		cameraLimitsMin.z = cameraTransform.rotation.z + cameraLimitsMin.z;
-
-		cameraLimitsMax.x = cameraTransform.rotation.x + cameraLimitsMin.x;
-		cameraLimitsMax.y = cameraTransform.rotation.y + cameraLimitsMin.y;
-		cameraLimitsMax.z = cameraTransform.rotation.z + cameraLimitsMin.z;*/
-
 	}
 
 	void Update() {
@@ -77,50 +69,10 @@ public class MapManager : MonoBehaviour {
 			citySpotlight.intensity = Mathf.PingPong(Time.time, 2) + 1;
         });
 
-		// Catch clicks/touches
-        /*if (Input.GetMouseButtonDown(0))
-		{
+        if(Camera.main.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+        	return;
 
-			RaycastHit hit;
-	        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-	        int rayFilter = 1 << 15;
-	        
-	        if (mapCollider.Raycast(ray, out hit, 10)) {
-
-	        	if(Camera.main.GetComponent<Animator>().enabled) {
-	        	
-	        		initialCamRotation = cameraTransform.rotation;
-	        		initialCamPosition = cameraTransform.position;
-
-	        	}
-
-	        	// Disable animator on camera
-	        	Camera.main.GetComponent<Animator>().enabled = false;
-
-	        	Vector3 mousePos = Input.mousePosition;
-	        	mousePos.z = hit.transform.position.z - cameraTransform.position.z;
-
-	        	Vector3 lookPos = (Camera.main.ScreenToWorldPoint(mousePos) - cameraTransform.position);
-
-				targetCamPosition = lookPos.normalized;
-				targetCamPosition.z = cameraTransform.position.z;
-	        	
-	        	lookPos = Vector3.Scale(lookPos, new Vector3(cameraDamping, cameraDamping, cameraDamping));
-
-	        	// lookPos.x = Mathf.Clamp(lookPos.x, cameraLimitsMin.x, cameraLimitsMax.x);
-	        	// lookPos.y = Mathf.Clamp(lookPos.y, cameraLimitsMin.y, cameraLimitsMax.y);
-	        	// lookPos.z = Mathf.Clamp(lookPos.z, cameraLimitsMin.z, cameraLimitsMax.z);
-
-				targetCamRotation = Quaternion.LookRotation(lookPos, Vector3.up);
-	        }
-		}*/
-
-    	
-    	//cameraTransform.rotation = Quaternion.Slerp(cameraTransform.rotation, targetCamRotation, Time.deltaTime);
-    	// cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetCamPosition, Time.deltaTime);
-
-    	// cityDialog.GetComponent<RectTransform>().anchoredPosition = initialDialogAnchor;
-
+		// Set drag origin on click/touch
     	if (Input.GetMouseButtonDown(0))
         {
             dragOrigin = Input.mousePosition;
@@ -131,19 +83,33 @@ public class MapManager : MonoBehaviour {
             return;
         }
  
+ 		// Do not move camera if mouse button is not down
         if (!Input.GetMouseButton(0)) return;
 
-        Debug.Log(Input.mousePosition - dragOrigin);
+        // Create camera limits based on map collider bounds
+        Vector3 mapCenter = mapCollider.bounds.center;
+        float maxYLimit = mapCollider.bounds.max.y - 1;
+        float minYLimit = mapCollider.bounds.min.y + 1;
  
-        Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-        Vector3 move = new Vector3(pos.x * dragSpeed, pos.y * dragSpeed, 0);
+ 		// Calculate how much to translate camera
+        Vector3 posDelta = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
+        Vector3 camTranslation = new Vector3(posDelta.x * dragSpeed, posDelta.y * dragSpeed, 0);
 
+        //  Save x/y movement targets
+		float xTarget = (cameraTransform.position + camTranslation).x;
+		float yTarget = (cameraTransform.position + camTranslation).y;
 
+		bool isWithinXBounds = xTarget >= (mapCenter.x - 1) && xTarget <= (mapCenter.x + 1);
+		bool isWithinYBounds = (yTarget <= maxYLimit && yTarget >= minYLimit);
 
-        Debug.Log("move: " + move);
- 
-        Camera.main.transform.Translate(move, Space.World);
-        Camera.main.transform.LookAt(mapCollider.transform);
+		// Move camera only if target destination is within bounds
+		if(isWithinXBounds && isWithinYBounds)
+			cameraTransform.Translate(camTranslation, Space.World);
+
+		// Ensure camera is facing map
+        Vector3 rotDelta = mapCollider.transform.position - cameraTransform.position;
+	    Quaternion targetRotation = Quaternion.LookRotation(rotDelta);
+	    cameraTransform.rotation = Quaternion.Slerp(cameraTransform.rotation, targetRotation, Time.deltaTime * 2);
 
 	}
 
