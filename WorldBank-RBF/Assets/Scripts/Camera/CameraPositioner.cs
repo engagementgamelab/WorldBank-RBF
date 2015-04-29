@@ -78,7 +78,7 @@ public class CameraPositioner : MB {
 		}
 
 		float inertia = inertialScroll.AverageVelocity;
-		while (inertia != 0 && !dragging) {
+		while (inertia != 0 && !dragging && !moving) {
 			Transform.SetPositionX (
 				Mathf.Max (
 					XMin,

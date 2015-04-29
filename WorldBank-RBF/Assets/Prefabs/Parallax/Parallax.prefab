@@ -83,6 +83,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &131442
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 411772}
+  - 108: {fileID: 10853440}
+  - 114: {fileID: 11447386}
+  m_Layer: 0
+  m_Name: NPCHighlight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &148910
 GameObject:
   m_ObjectHideFlags: 1
@@ -188,7 +205,7 @@ GameObject:
   - 4: {fileID: 473324}
   - 114: {fileID: 11496522}
   m_Layer: 0
-  m_Name: ScreenScroller
+  m_Name: CameraPositioner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -207,7 +224,20 @@ Transform:
   - {fileID: 451936}
   - {fileID: 490058}
   - {fileID: 486094}
+  - {fileID: 411772}
   m_Father: {fileID: 487664}
+  m_RootOrder: 3
+--- !u!4 &411772
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 131442}
+  m_LocalRotation: {x: .353553414, y: .612372518, z: -.353553474, w: .612372398}
+  m_LocalPosition: {x: -15, y: 12, z: -4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 402886}
   m_RootOrder: 3
 --- !u!4 &411864
 Transform:
@@ -459,6 +489,38 @@ Light:
   m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_AreaSize: {x: 1, y: 1}
+--- !u!108 &10853440
+Light:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 131442}
+  m_Enabled: 1
+  serializedVersion: 6
+  m_Type: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 4
+  m_Range: 45
+  m_SpotAngle: 70
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_Strength: 1
+    m_Bias: .0500000007
+    m_NormalBias: .400000006
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 512
+  m_Lightmapping: 4
+  m_BounceIntensity: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_AreaSize: {x: 1, y: 1}
 --- !u!114 &11427718
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -483,6 +545,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f38217fa1e7f4ec2bbe9c0d3322b0bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11447386
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 131442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1dd242ce1f9f4178ab584c46ddf5737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11452310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -505,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead28a1d9afe348508c442d928ba8b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inEditMode: 0
+  inEditMode: 1
 --- !u!114 &11464904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -552,7 +625,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f571595091758442a86115d74be22278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 11434796}
 --- !u!124 &12467966
 Behaviour:
   m_ObjectHideFlags: 1
