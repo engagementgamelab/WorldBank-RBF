@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MapCity : MonoBehaviour {
+public class MapCity : MB, IClickable {
 
 	public string citySymbol;
 
@@ -15,8 +15,12 @@ public class MapCity : MonoBehaviour {
 	
 	}
 
+	public InputLayer[] IgnoreLayers { 
+		get { return new InputLayer[] { InputLayer.UI }; } 
+	}
+
  	// On Touch/Click City
-	void OnMouseDown() {
+	public void OnClick (ClickSettings clickSettings) {
 
 		StartCoroutine((transform.parent.gameObject.GetComponent<MapManager>() as MapManager).ShowCityDialog(citySymbol));
 
