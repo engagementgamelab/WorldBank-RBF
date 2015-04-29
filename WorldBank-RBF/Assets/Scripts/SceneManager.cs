@@ -39,13 +39,8 @@ public class SceneManager : MonoBehaviour {
 	private void LoadGameConfig()
 	{
 		// Open stream to API JSON config file
-<<<<<<< HEAD
-		StreamReader reader = new StreamReader(Application.dataPath + "/Resources/Config/api.json");
-		string strConfigData = reader.ReadToEnd();
-=======
 		TextAsset apiJson = (TextAsset)Resources.Load("api", typeof(TextAsset));
 		StringReader strConfigData = new StringReader(apiJson.text);
->>>>>>> ec4b5cac4efb86a669e7c9ba9420f808bbf99b3c
 
 		// Set in data manager class
 		DataManager.SetGameConfig(strConfigData.ReadToEnd());
@@ -70,12 +65,8 @@ public class SceneManager : MonoBehaviour {
 		// Fallback: load game data from local config
 		catch {
  
-<<<<<<< HEAD
-	        StreamReader reader = new StreamReader(Application.dataPath + "/Resources/Config/data.json");
-=======
 	        TextAsset dataJson = (TextAsset)Resources.Load("data", typeof(TextAsset));
 			StringReader strData = new StringReader(dataJson.text);
->>>>>>> ec4b5cac4efb86a669e7c9ba9420f808bbf99b3c
 	        
 			gameData = strData.ReadToEnd();
 
