@@ -31,11 +31,23 @@ public class CameraPositioner : MB {
 
 	IEnumerator CoDrag () {
 		
+		float prevX = ScreenPositionHandler.ViewportToWorld (startDrag).x;
+		float velocity = 0f;
+
 		while (dragging) {
 			Vector3 w1 = ScreenPositionHandler.ViewportToWorld (startDrag);
 			Vector3 w2 = ScreenPositionHandler.ViewportToWorld (MouseController.MousePositionViewport);
 			float deltaX = (w1.x - w2.x);
 			Transform.SetPositionX (Mathf.Max (XMin, startDragPosition.x + deltaX));
+			float currX = ScreenPositionHandler.ViewportToWorld (MouseController.MousePositionViewport).x;
+			velocity = (prevX - currX) * 10000000f;
+			prevX = currX;
+			yield return null;
+		}
+
+		while (velocity > 0 && !dragging) {
+			velocity -= 1f;
+			Debug.Log (velocity);
 			yield return null;
 		}
 	}

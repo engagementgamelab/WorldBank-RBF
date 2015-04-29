@@ -11,6 +11,7 @@ public class NPCDialogBox : MB {
 	public Button backButton;
 	public Transform verticalGroup;
 	public Transform choiceGroup;
+	bool open = false;
 
 	string content = "";
 	public string Content {
@@ -41,16 +42,32 @@ public class NPCDialogBox : MB {
 		Position = new Vector3 (GetXPosition (npc.FacingLeft), 0, z);
 		verticalGroup.localScale = new Vector3 (scale * 0.1f, scale * 0.1f, 1);
 		Transform.localScale = new Vector3 (canvasScale, canvasScale, 1);
+		open = true;
+		StartCoroutine (CoRotate (npc.FacingLeft));
 	}
 
 	public void Close () {
 		NPCFocusBehavior.Instance.FocusOut ();
 		ObjectPool.Destroy<NPCDialogBox> (Transform);
+		open = false;
 	}
 
 	float GetXPosition (bool facingLeft) {
 		// TODO: write an actual formula to replace these hardcoded values
 		float xOffset = 11.5f;
 		return MainCamera.Instance.Positioner.Position.x + (facingLeft ? -xOffset : xOffset);
+	}
+
+	IEnumerator CoRotate (bool facingLeft) {
+		
+		float startTime = Time.time;
+		float startRotation = facingLeft ? 355f : 2.5f;
+		float endRotation = facingLeft ? 2.5f : 5f;
+
+		while (open) {
+			float eTime = startTime - Time.time;
+			Transform.rotation = Quaternion.Euler (0, startRotation + Mathf.PingPong (eTime, endRotation), 0);
+			yield return null;
+		}
 	}
 }

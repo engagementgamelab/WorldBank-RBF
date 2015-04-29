@@ -15,7 +15,7 @@ public class SaveLoadOptions : ScriptableObject {
 	public List<LayerSettings> LayerSettings { get; set; }
 	public int LayerCount { get; set; } 
 
-	string PATH { get { return Application.dataPath + "/Config/PhaseOne/Cities/"; } }
+	string PATH { get { return Application.dataPath + "/Resources/Config/PhaseOne/Cities/"; } }
 
 	public void Init (ParallaxSceneDesignerOptions parallaxSceneDesignerOptions) {
 		this.parallaxSceneDesignerOptions = parallaxSceneDesignerOptions;

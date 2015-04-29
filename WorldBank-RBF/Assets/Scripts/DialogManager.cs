@@ -116,12 +116,12 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
 	/// <param name="showBackBtn">Whether or not to show the back button</param>
-	public NPCDialogBox CreateNPCDialog(string strDialogTxt, NPCBehavior npc, bool showBackBtn = true) {
+	public NPCDialogBox CreateNPCDialog(string strDialogTxt, NPCBehavior npc) {
 
 	    NPCDialogBox dialog = ObjectPool.Instantiate<NPCDialogBox> ();
 	    dialog.Open (npc);
 	    dialog.Content = strDialogTxt;
-	    dialog.backButton.gameObject.SetActive (showBackBtn);
+	    //dialog.backButton.gameObject.SetActive (showBackBtn);
 	    
 	    return dialog;
 	}
@@ -147,7 +147,7 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
 	/// <param name="strDialogueKey">The key corresponding to the dialogue to show</param>
 	/// <param name="returning">Specify whether player is returning to previous dialog</param>
-	public void OpenCharacterDialog(Models.NPC currNpc, string strDialogueKey, NPCBehavior npc, bool returning=false) {
+	public void OpenCharacterDialog(Models.NPC currNpc, string strDialogueKey, NPCBehavior npc, bool returning=false, NPCDialogBox dialogBox=null) {
 
 		string strDialogTxt = currNpc.dialogue[strDialogueKey]["text"];
 		
@@ -160,14 +160,18 @@ public class DialogManager : MonoBehaviour {
 
 		string strToDisplay = strDialogTxt.Replace("[[", "<color=orange>").Replace("]]", "</color>");
 
-		NPCDialogBox dialog = CreateNPCDialog (strToDisplay, npc);
+		if (dialogBox == null) {
+			dialogBox = CreateNPCDialog (strToDisplay, npc);
+		} else {
+			dialogBox.Content = strToDisplay;
+		}
 
-		Transform choiceGroup = dialog.choiceGroup;
+		Transform choiceGroup = dialogBox.choiceGroup;
 		foreach (Transform child in choiceGroup) {
 			ObjectPool.Destroy<NPCDialogButton> (child);
 		}
 		
-		Button backButton = dialog.backButton;
+		Button backButton = dialogBox.backButton;
 		currentDialogueText = new List<string>();
 		
 		foreach(char c in strDialogTxt)
@@ -202,6 +206,7 @@ public class DialogManager : MonoBehaviour {
 			btnChoice.transform.SetParent (choiceGroup);
 			btnChoice.transform.localScale = new Vector3(1, 1, 1);
 			btnChoice.transform.localPosition = Vector3.zero;
+			btnChoice.transform.localEulerAngles = Vector3.zero;
 			
 			Text btnTxt = btnChoice.transform.FindChild("Text").GetComponent<Text>();
 			btnTxt.text = choiceName;
@@ -209,22 +214,21 @@ public class DialogManager : MonoBehaviour {
 			btnChoice.onClick.RemoveAllListeners ();
 			string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
 			btnChoice.onClick.AddListener (() => currentDialogueChoices.Remove (t));
-			btnChoice.onClick.AddListener(() => ObjectPool.Destroy<NPCDialogBox> (dialog.Transform));
-			btnChoice.onClick.AddListener(() => OpenCharacterDialog(currNpc, choiceName, npc));
+			btnChoice.onClick.AddListener(() => OpenCharacterDialog(currNpc, choiceName, npc, false, dialogBox));
 		}
 
 		// Setup back button
 		if (strDialogueKey == "Initial") {
 			backButton.onClick.RemoveAllListeners ();
-			backButton.onClick.AddListener (() => dialog.Close ());
+			backButton.onClick.AddListener (() => dialogBox.Close ());
 		} else {
 			backButton.onClick.RemoveAllListeners ();
-			backButton.onClick.AddListener(() => ObjectPool.Destroy<NPCDialogBox> (dialog.Transform));
-			backButton.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", npc, true));
+			backButton.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", npc, true, dialogBox));
 		}
 
-		if(currentDialogueChoices.Count > 0)
+		if(currentDialogueChoices.Count > 0) {
 			choiceGroup.gameObject.SetActive (true);
+		}
 
 	}
 }

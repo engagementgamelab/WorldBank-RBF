@@ -39,7 +39,7 @@ public class SceneManager : MonoBehaviour {
 	private void LoadGameConfig()
 	{
 		// Open stream to API JSON config file
-		StreamReader reader = new StreamReader(Application.dataPath + "/Config/api.json");
+		StreamReader reader = new StreamReader(Application.dataPath + "/Resources/Config/api.json");
 		string strConfigData = reader.ReadToEnd();
 
 		// Set in data manager class
@@ -63,7 +63,7 @@ public class SceneManager : MonoBehaviour {
 		// Fallback: load game data from local config
 		catch {
  
-	        StreamReader reader = new StreamReader(Application.dataPath + "/Config/data.json");
+	        StreamReader reader = new StreamReader(Application.dataPath + "/Resources/Config/data.json");
 	        
 			gameData = reader.ReadToEnd();
 
