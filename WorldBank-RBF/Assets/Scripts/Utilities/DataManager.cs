@@ -87,12 +87,27 @@ public class DataManager {
 
     }
 
+    /// <summary>
+    /// Get a reference to a particular Unlockable given its symbol
+    /// </summary>
+    /// <param name="strSymbol">Symbol of the unlockable</param>
+    /// <returns>The Models.Unlockable with the symbol matching the input</returns>
+    public static Models.Unlockable GetUnlockableBySymbol(string strSymbol) {
+
+        Models.Unlockable unlockRef = new Models.Unlockable[] { Array.Find(currentGameData.unlockables, unlockable => unlockable.symbol == strSymbol) }[0];
+
+        if(unlockRef == null)
+            throw new Exception("Unable to find Unlockable with symbol '" + strSymbol + "'! Uh oh.");
+        
+        return unlockRef;
+    }
+
     public static Models.Character GetDataForCharacter(string strCharName)    {
         
         int characterIndex = Array.FindIndex(currentGameData.characters, row => row.symbol == strCharName);
 
         if(characterIndex == -1)
-            throw new Exception("Unable to find Character with symbol '" + strCharName + "'");
+            throw new Exception("Unable to find Character with symbol '" + strCharName + "'! Uh oh.");
      
         return currentGameData.characters[characterIndex];
 

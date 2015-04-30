@@ -17,7 +17,7 @@ public class MapManager : MonoBehaviour {
 	public Vector3 cameraLimitsMin;
 	public Vector3 cameraLimitsMax;
 
-    private Vector3 dragOrigin;
+	public GameObject daysLeftPanel;
 
 	private Transform cityCanvas;
 	private Transform cameraTransform;
@@ -33,14 +33,20 @@ public class MapManager : MonoBehaviour {
 	private Vector3 initialDialogScale;
 	private Vector2 initialDialogAnchor;
 
+    private Vector3 dragOrigin;
+
 	private GameObject cityDialog;
 	private Animator dialogAnimator;
 
 	private List<Light> citySpotlights;
 
+	private Text daysLeftText;
+
 	const string dialogOpenID = "Open";
 	const string dialogCloseID = "Closed";
 	const string dialogSwitchID = "Switch";
+
+	private int daysAllowed = 9;
 
 
 	void Start () {
@@ -52,6 +58,8 @@ public class MapManager : MonoBehaviour {
 		cityDialog = Camera.main.transform.Find("DialogueBox").gameObject;
 
 		initialDialogAnchor = cityDialog.GetComponent<RectTransform>().anchoredPosition;
+
+		daysLeftText = daysLeftPanel.transform.Find("Text").GetComponent<Text>();
 
 		citySpotlights = new List<Light>();
 		GameObject[] cityHighlights = GameObject.FindGameObjectsWithTag("CityHighlight");
@@ -142,8 +150,9 @@ public class MapManager : MonoBehaviour {
 		Models.City city = DataManager.GetCityInfo(citySymbol);
 
 		// GameObject diagRenderer = DialogManager.instance.CreateGenericDialog(city.description);
-		cityDialog.transform.Find("Content/Text").GetComponent<Text>().text = city.description;
+		cityDialog.transform.Find("Content/Text").GetComponent<Text>().text = city.description + "\n   <i><color=orange>" + city.cost + " days to travel.</color></i>";
 	 	dialogAnimator = cityDialog.GetComponent<Animator>();
+		
 		if(!dialogAnimator.GetBool(dialogOpenID))
 			dialogAnimator.SetBool(dialogOpenID, true);
 		else
@@ -163,17 +172,32 @@ public class MapManager : MonoBehaviour {
 		Button goBtn = goBtnObj.GetComponent<Button>();
 		Button goBackBtn = goBackBtnObj.GetComponent<Button>();
 		Text label = goBtn.transform.FindChild("Text").GetComponent<Text>();
-		label.text = "Go to " + city.display_name;
+		label.text = "Travel to " + city.display_name;
  
  		// Set city context and go to city
 	    goBtn.onClick.AddListener(() => DataManager.SetSceneContext(city.symbol));
-	    goBtn.onClick.AddListener(() => Application.LoadLevel(citySceneName));
+	    goBtn.onClick.AddListener(() => label.text = "Loading...");
+	    goBtn.onClick.AddListener(() => StartCoroutine( UnlockRoute(city.cost) ));
 
 	    goBackBtn.onClick.AddListener(() => CloseCurrent());
 
 	    // Reset camera position
 	    targetCamRotation = initialCamRotation;
 	    targetCamPosition = initialCamPosition;
+
+	}
+
+	// Unlock the route for selected city
+	IEnumerator UnlockRoute(int dayCost) {
+
+		daysAllowed = daysAllowed - dayCost; 
+		daysLeftText.text = daysAllowed + " Days Left";
+
+		daysLeftPanel.GetComponent<Animator>().enabled = true;
+
+		yield return new WaitForSeconds(1.2f);
+
+		Application.LoadLevel(citySceneName);
 
 	}
 

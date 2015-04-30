@@ -125,21 +125,6 @@ public class DialogManager : MonoBehaviour {
 	    return dialogBox;
 	}
 
-/*	/// <summary>
-	/// Generate an NPC
-	/// </summary>
-	/// <param name="npcData">Instance of Models.NPC for this NPC</param>
-	/// <param name="index">Index of this NPC</param>
-	private void GenerateNPC(Models.NPC npcData, int index) {
-
-		// Create NPC prefab instance
-		NPCBehavior currentNpc = (NPCBehavior)Instantiate(npcPrefab);
-
-	    // Initialize this NPC
-	    // currentNpc.Initialize(npcData);
-
-	}*/
-
 	/// <summary>
 	/// Open specified dialog for a given character
 	/// </summary>
@@ -155,7 +140,12 @@ public class DialogManager : MonoBehaviour {
 
 		// Does this dialogue unlock something?
 		if(currNpc.dialogue[strDialogueKey].ContainsKey("unlocks"))
+		{
 			strDialogTxt += "\n\n<color=yellow>Unlocks</color>: " + currNpc.dialogue[strDialogueKey]["unlocks"];
+
+			// Unlock this implementation option for player
+			PlayerData.UnlockImplementation(currNpc.dialogue[strDialogueKey]["unlocks"]);
+		}
 
 		string strToDisplay = strDialogTxt.Replace("[[", "<color=orange>").Replace("]]", "</color>");
 
