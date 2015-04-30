@@ -24,7 +24,8 @@ public class Models {
 
         public Character[] characters { get; set; }
         public City[] cities { get; set; }
-		public Dictionary<string, NPC[]> phase_one { get; set; }
+        public Unlockable[] unlockables { get; set; }
+        public Dictionary<string, NPC[]> phase_one { get; set; }
         public Dictionary<string, object> phase_two { get; set; }
 
     }
@@ -46,6 +47,17 @@ public class Models {
         public string description { get; set; }
         public bool enabled { get; set; }
         public bool unlocked { get; set; }
+        public int cost { get; set; }
+
+    }
+
+    public class Unlockable {
+
+        public string symbol { get; set; }
+        public string title { get; set; }
+        public string[] description { get; set; }
+        public string type { get; set; }
+        public int priority { get; set; }
 
     }
 
