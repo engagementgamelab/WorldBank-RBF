@@ -77,7 +77,7 @@ public class MainCamera : MB {
 		set { targetZoom = value; }
 	}
 
-	float zoomVelocity = 3f;
+	float zoomVelocity = 5f;
 	public float ZoomVelocity {
 		get { return zoomVelocity; }
 		set { zoomVelocity = value; }

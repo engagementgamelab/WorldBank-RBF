@@ -42,8 +42,10 @@ public class NPCFocusBehavior : MonoBehaviour {
 
 		float duration = 1f;
 		float center = npc.Position.x - (npc.XOffset * npc.Transform.lossyScale.x);
+		float middle = npc.Position.y - (npc.ColliderCenterY * npc.Transform.lossyScale.x);
 		float offset = (npc.ColliderWidth + NPCDialogBox.width) / 2f;
 		float xPosition = npc.FacingLeft ? center - offset : center + offset;
+
 
 		Invoke ("FinishFocusIn", duration);
 		MainCamera.Instance.MoveToTarget (xPosition, duration);
@@ -52,6 +54,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 		MainCamera.Instance.Positioner.DragEnabled = false;
 		MainCamera.Instance.LineOfSight.ZoomEnabled = false;
 		DirectionalLightController.Instance.FadeOut (duration);
+		NPCHighlight.Instance.Activate (new Vector3 (center, middle, npc.Position.z));
 	}
 
 	public void FocusOut () {
@@ -62,6 +65,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 		npc.Shrink (duration);
 		MainCamera.Instance.ZoomTo (zoomBeforeFocus);
 		DirectionalLightController.Instance.FadeIn (duration);
+		NPCHighlight.Instance.Deactivate ();
 	}
 
 	void FinishFocusIn () {

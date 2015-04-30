@@ -1,7 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CameraPositioner : MB {
+
+	class InertialScroll {
+
+		public float AverageVelocity {
+			get {
+				if (velocities.Count == 0) return 0;
+				float[] vs = new float[velocities.Count];
+				velocities.CopyTo (vs, 0);
+				float total = 0;
+				for (int i = 0; i < vs.Length; i ++) {
+					total += vs[i];
+				}
+				return total / (float)vs.Length;
+			}
+		}
+
+		public readonly float multiplier = 4000f;
+		public readonly float damping = 1.025f;
+
+		Queue<float> velocities = new Queue<float> ();
+		int maxVelocityCount = 6;
+
+		public void AddVelocity (float v) {
+			if (velocities.Count+1 > maxVelocityCount) {
+				velocities.Dequeue ();
+			}
+			velocities.Enqueue (v);
+		}
+	}
 
 	bool dragEnabled = true;
 	public bool DragEnabled {
@@ -23,6 +53,7 @@ public class CameraPositioner : MB {
 	Vector3 startDrag;
 	bool dragging = false;
 	bool moving = false;
+	InertialScroll inertialScroll = new InertialScroll ();
 
 	void Awake () {
 		Events.instance.AddListener<DragDownEvent> (OnDragDownEvent);
@@ -31,11 +62,33 @@ public class CameraPositioner : MB {
 
 	IEnumerator CoDrag () {
 		
+		float prevX = Position.x;
+		float velocity = 0f;
+
 		while (dragging) {
 			Vector3 w1 = ScreenPositionHandler.ViewportToWorld (startDrag);
 			Vector3 w2 = ScreenPositionHandler.ViewportToWorld (MouseController.MousePositionViewport);
 			float deltaX = (w1.x - w2.x);
 			Transform.SetPositionX (Mathf.Max (XMin, startDragPosition.x + deltaX));
+			float currX = Position.x;
+			velocity = (currX - prevX) * Time.deltaTime;
+			inertialScroll.AddVelocity (velocity);
+			prevX = currX;
+			yield return null;
+		}
+
+		float inertia = inertialScroll.AverageVelocity;
+		while (inertia != 0 && !dragging && !moving) {
+			Transform.SetPositionX (
+				Mathf.Max (
+					XMin,
+					Position.x + (inertia * inertialScroll.multiplier) * Time.deltaTime
+				)
+			);
+			inertia /= inertialScroll.damping;
+			if (Mathf.Abs (inertia) <= 0.001f) {
+				inertia = 0;
+			}
 			yield return null;
 		}
 	}
