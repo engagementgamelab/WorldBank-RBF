@@ -20,9 +20,11 @@ public class DirectionalLightController : MonoBehaviour {
 
 	public Light inclusive;
 	public Light exclusive;
+	const float FULL_LIGHT = 1f;
+	const float LOW_LIGHT = 0.25f;
 
 	void Start () {
-		FocusLayer (9);
+		FocusLayer (LayerController.DepthLayers[1]);
 	}
 
 	public void FocusLayer (int layer) {
@@ -31,21 +33,43 @@ public class DirectionalLightController : MonoBehaviour {
 	}
 
 	public void FadeOut (float duration) {
-		StartCoroutine (CoFade (inclusive, 1f, 0.25f));
+		StartCoroutine (CoFade (inclusive, FULL_LIGHT, LOW_LIGHT, duration));
 	}
 
 	public void FadeIn (float duration) {
-		StartCoroutine (CoFade (inclusive, 0.25f, 1f));
+		StartCoroutine (CoFade (inclusive, LOW_LIGHT, FULL_LIGHT, duration));
 	}
 
-	IEnumerator CoFade (Light light, float from, float to) {
+	public void FadeToPercentage (float p, float duration) {
+		FadeTo (Mathf.Lerp (FULL_LIGHT, LOW_LIGHT, p), duration);
+	}
 
-		float time = 1f;
+	public void FadeTo (float to, float duration) {
+		StartCoroutine (CoFadeTo (inclusive, to, duration));
+	}
+
+	IEnumerator CoFade (Light light, float from, float to, float duration) {
+
 		float eTime = 0f;
 
-		while (eTime < time) {
+		while (eTime < duration) {
 			eTime += Time.deltaTime;
-			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			float progress = Mathf.SmoothStep (0, 1, eTime / duration);
+			light.intensity = Mathf.Lerp (from, to, progress);
+			yield return null;
+		}
+
+		light.intensity = to;
+	}
+
+	IEnumerator CoFadeTo (Light light, float to, float duration) {
+		
+		float eTime = 0f;
+		float from = light.intensity;
+	
+		while (eTime < duration) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / duration);
 			light.intensity = Mathf.Lerp (from, to, progress);
 			yield return null;
 		}

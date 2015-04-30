@@ -41,6 +41,7 @@ public class DialogManager : MonoBehaviour {
 
 	// Variable Definitions
 	public Button btnPrefab;
+	public NPCDialogBox dialogBox;
 
 	private StringBuilder builder = new StringBuilder();
 
@@ -118,12 +119,10 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="showBackBtn">Whether or not to show the back button</param>
 	public NPCDialogBox CreateNPCDialog(string strDialogTxt, NPCBehavior npc) {
 
-	    NPCDialogBox dialog = ObjectPool.Instantiate<NPCDialogBox> ();
-	    dialog.Open (npc);
-	    dialog.Content = strDialogTxt;
-	    //dialog.backButton.gameObject.SetActive (showBackBtn);
-	    
-	    return dialog;
+	    dialogBox = ObjectPool.Instantiate<NPCDialogBox> ();
+	    dialogBox.Open (npc);
+	    dialogBox.Content = strDialogTxt;
+	    return dialogBox;
 	}
 
 /*	/// <summary>
@@ -147,7 +146,7 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
 	/// <param name="strDialogueKey">The key corresponding to the dialogue to show</param>
 	/// <param name="returning">Specify whether player is returning to previous dialog</param>
-	public void OpenCharacterDialog(Models.NPC currNpc, string strDialogueKey, NPCBehavior npc, bool returning=false, NPCDialogBox dialogBox=null) {
+	public void OpenCharacterDialog(Models.NPC currNpc, string strDialogueKey, NPCBehavior npc, bool returning=false) {//, NPCDialogBox dialogBox=null) {
 
 		string strDialogTxt = currNpc.dialogue[strDialogueKey]["text"];
 		
@@ -214,21 +213,29 @@ public class DialogManager : MonoBehaviour {
 			btnChoice.onClick.RemoveAllListeners ();
 			string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
 			btnChoice.onClick.AddListener (() => currentDialogueChoices.Remove (t));
-			btnChoice.onClick.AddListener(() => OpenCharacterDialog(currNpc, choiceName, npc, false, dialogBox));
+			btnChoice.onClick.AddListener(() => OpenCharacterDialog(currNpc, choiceName, npc, false));//, dialogBox));
 		}
 
 		// Setup back button
 		if (strDialogueKey == "Initial") {
 			backButton.onClick.RemoveAllListeners ();
-			backButton.onClick.AddListener (() => dialogBox.Close ());
+			// backButton.onClick.AddListener (() => dialogBox.Close ());
+			// backButton.onClick.AddListener (() => dialogBox = null);
+			backButton.onClick.AddListener (() => CloseCharacterDialog ());
 		} else {
 			backButton.onClick.RemoveAllListeners ();
-			backButton.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", npc, true, dialogBox));
+			backButton.onClick.AddListener(() => OpenCharacterDialog(currNpc, "Initial", npc, true));//, dialogBox));
 		}
 
 		if(currentDialogueChoices.Count > 0) {
 			choiceGroup.gameObject.SetActive (true);
 		}
+	}
 
+	public void CloseCharacterDialog () {
+		if (dialogBox != null) {
+			dialogBox.Close ();
+			dialogBox = null;
+		}
 	}
 }

@@ -18,7 +18,7 @@ public class NPCHighlight : MB {
 		}
 	}
 
-	Light light;
+	new Light light;
 	Light Light {
 		get {
 			if (light == null) {
@@ -29,30 +29,31 @@ public class NPCHighlight : MB {
 	}
 
 	Vector3 startPosition;
-	float maxIntensity = 3f;
+	const float MIN_INTENSITY = 0f;
+	const float MAX_INTENSITY = 5f;
 
 	void Awake () {
 		startPosition = Position;
 	}
 
-	public void Activate (Vector3 position) {
+	public void Activate (Vector3 position, float p, float duration) {
+		if (p < 1f) return;
 		Position = position + startPosition;
 		Light.enabled = true;
-		StartCoroutine (CoFade (0, maxIntensity));
+		StartCoroutine (CoFade (0, MAX_INTENSITY, duration));
 	}
 
-	public void Deactivate () {
-		StartCoroutine (CoFade (maxIntensity, 0));
+	public void Deactivate (float duration) {
+		StartCoroutine (CoFade (MAX_INTENSITY, 0, duration));
 	}
 
-	IEnumerator CoFade (float from, float to) {
+	IEnumerator CoFade (float from, float to, float duration) {
 		
-		float time = 1f;
 		float eTime = 0f;
 	
-		while (eTime < time) {
+		while (eTime < duration) {
 			eTime += Time.deltaTime;
-			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			float progress = Mathf.SmoothStep (0, 1, eTime / duration);
 			Light.intensity = Mathf.Lerp (from, to, progress);
 			yield return null;
 		}

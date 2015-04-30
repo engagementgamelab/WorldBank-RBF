@@ -12,6 +12,7 @@ public class NPCDialogBox : MB {
 	public Transform verticalGroup;
 	public Transform choiceGroup;
 	bool open = false;
+	NPCBehavior npc;
 
 	string content = "";
 	public string Content {
@@ -24,6 +25,7 @@ public class NPCDialogBox : MB {
 
 	public void Open (NPCBehavior npc) {
 		
+		this.npc = npc;
 		Vector3 position = npc.Position;
 		float aspect = 1f / MainCamera.Instance.Aspect;
 		float z = position.z;
@@ -47,7 +49,10 @@ public class NPCDialogBox : MB {
 	}
 
 	public void Close () {
-		NPCFocusBehavior.Instance.FocusOut ();
+		// NPCFocusBehavior.Instance.FocusOut ();
+		// npc.OnClick ();
+		npc.CloseDialog ();
+		npc = null;
 		ObjectPool.Destroy<NPCDialogBox> (Transform);
 		open = false;
 	}

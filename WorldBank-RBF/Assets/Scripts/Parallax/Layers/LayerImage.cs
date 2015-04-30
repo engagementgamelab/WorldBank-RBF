@@ -74,6 +74,9 @@ public class LayerImage : QuadImage, IClickable {
 		}
 	}
 
+	const float MAX_SCALE = 2f;
+	const float MIN_SCALE = 1f;
+
 	public float XPosition {
 		get { return Position.x + XOffset; }
 	}
@@ -99,7 +102,9 @@ public class LayerImage : QuadImage, IClickable {
 	
 	public void OnClick (ClickSettings clickSettings) {
 		if (!IsSprite) return;
-		NPCFocusBehavior.Instance.FocusIn (this);
+		// NPCFocusBehavior.Instance.FocusIn (this);
+		// NPCFocusBehavior.Instance.SetFocus (this);
+		if (behavior != null) behavior.OnClick ();
 	}
 
 	public void Expand (float duration) {
@@ -110,14 +115,23 @@ public class LayerImage : QuadImage, IClickable {
 		StartCoroutine (CoShrink (duration));
 	}
 
+	public void ScaleToPercentage (float p, float duration) {
+		ScaleTo (Mathf.Lerp (MIN_SCALE, MAX_SCALE, p), duration);
+	}
+
+	public void ScaleTo (float to, float duration) {
+		StartCoroutine (CoScaleTo (to, duration));
+	}
+
 	IEnumerator CoExpand (float duration) {
 		
 		float eTime = 0f;
+		float from = Scale;
 		
 		while (eTime < duration) {
 			eTime += Time.deltaTime;
 			float progress = Mathf.SmoothStep (0, 1, eTime / duration);
-			Scale = Mathf.Lerp (1, 2, progress);
+			Scale = Mathf.Lerp (from, MAX_SCALE, progress);
 			yield return null;
 		}
 	}
@@ -125,11 +139,25 @@ public class LayerImage : QuadImage, IClickable {
 	IEnumerator CoShrink (float duration) {
 		
 		float eTime = 0f;
+		float from = Scale;
 		
 		while (eTime < duration) {
 			eTime += Time.deltaTime;
 			float progress = Mathf.SmoothStep (0, 1, eTime / duration);
-			Scale = Mathf.Lerp (2, 1, progress);
+			Scale = Mathf.Lerp (from, MIN_SCALE, progress);
+			yield return null;
+		}
+	}
+
+	IEnumerator CoScaleTo (float to, float duration) {
+		
+		float eTime = 0f;
+		float from = Scale;
+	
+		while (eTime < duration) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / duration);
+			Scale = Mathf.Lerp (from, to, progress);
 			yield return null;
 		}
 	}

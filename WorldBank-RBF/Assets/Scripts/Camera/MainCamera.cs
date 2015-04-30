@@ -107,11 +107,8 @@ public class MainCamera : MB {
 
 	bool moving = false;
 	float speed = 10;
-
-
-	void Awake () {
-		Events.instance.AddListener<ReleaseEvent> (OnReleaseEvent);
-	}
+	const float MIN_ZOOM = 0f;
+	const float MAX_ZOOM = 12f;
 
 	void Start () {
 		Zoom = 0;
@@ -127,6 +124,10 @@ public class MainCamera : MB {
 		Zoom = Mathf.Lerp (Zoom, TargetZoom, ZoomVelocity * Time.deltaTime);
 	}
 
+	public void ZoomToPercentage (float p, float velocity=-1) {
+		ZoomTo (Mathf.Lerp (MIN_ZOOM, MAX_ZOOM, p), velocity);
+	}
+
 	public void ZoomTo (float target, float velocity=-1) {
 		TargetZoom = target;
 		if (velocity != -1) ZoomVelocity = velocity;
@@ -134,15 +135,5 @@ public class MainCamera : MB {
 
 	public void MoveToTarget (float target, float duration=-1) {
 		Positioner.MoveToTarget (target, duration);
-	}
-
-	/**
-	 *	Events
-	 */
-
-	void OnReleaseEvent (ReleaseEvent e) {
-		/*if (!e.releaseSettings.left) {
-			MoveToTarget (MouseController.MousePositionWorldRay.x);
-		}*/
 	}
 }
