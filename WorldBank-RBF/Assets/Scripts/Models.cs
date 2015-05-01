@@ -17,6 +17,16 @@ using System.Collections.Generic;
 /// </summary>
 public class Models {
 
+    /// <summary>
+    /// Stores game config schema.
+    /// </summary>
+    public class GameConfig {
+
+        public string serverRoot { get; set; }
+        public string authKey { get; set; }
+
+    }
+
 	/// <summary>
 	/// Stores all game data.
 	/// </summary>

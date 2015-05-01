@@ -32,11 +32,15 @@ public class NPCFocusBehavior : MonoBehaviour {
 	
 	bool focused = false;
 	bool focusing = false;
+	bool openNextDiag = false;
 	LayerImage npc;
 	float zoomBeforeFocus;
 	float focusPercentage = 0f;
 
-	public void SetFocus (LayerImage npc, FocusLevel level=FocusLevel.Null) {
+	public void SetFocus (LayerImage npc, FocusLevel level=FocusLevel.Null, bool openNext=true) {
+
+		openNextDiag = openNext;
+
 		if (!InitFocusIn (npc)) return;
 		if (level == FocusLevel.Null) {
 			if (focusLevel == FocusLevel.Default) {
@@ -51,7 +55,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 			focusLevel = level;
 		}
 		// StartCoroutine (CoFocusIn ((float)focusLevel / 100f));
-		if (focusLevel == FocusLevel.Default) {
+		if (focusLevel == FocusLevel.Default || focusLevel == FocusLevel.Preview) {
 			StartCoroutine (CoFocusOut ());
 		} else {
 			StartCoroutine (CoFocusIn ((float)focusLevel / 100f));
@@ -88,7 +92,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 	}
 
 	void FinishFocusIn (float percentage) {
-		if (Mathf.Approximately (percentage, 1f) && npc.Behavior != null) {
+		if (Mathf.Approximately (percentage, 1f) && npc.Behavior != null && openNextDiag) {
 			npc.Behavior.OpenDialog ();
 		}
 		focusing = false;

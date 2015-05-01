@@ -48,10 +48,10 @@ public class NPCDialogBox : MB {
 		StartCoroutine (CoRotate (npc.FacingLeft));
 	}
 
-	public void Close () {
+	public void Close (bool openNext) {
 		// NPCFocusBehavior.Instance.FocusOut ();
 		// npc.OnClick ();
-		npc.CloseDialog ();
+		npc.CloseDialog (openNext);
 		npc = null;
 		ObjectPool.Destroy<NPCDialogBox> (Transform);
 		open = false;
