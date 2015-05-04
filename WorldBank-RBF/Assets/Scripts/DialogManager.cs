@@ -102,7 +102,7 @@ public class DialogManager : MonoBehaviour {
 	/// Generate a dialog with text and choice buttons
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	public void CreateChoiceDialog(string strDialogTxt, List<Button> btnChoices, BackButtonDelegate backEvent, NPCBehavior npc) {
+	public void CreateChoiceDialog(string strDialogTxt, List<NPCDialogButton> btnChoices, BackButtonDelegate backEvent, NPCBehavior npc) {
 
 		if (dialogBox == null) {
 			dialogBox = CreateNPCDialog (strDialogTxt, npc);
@@ -111,12 +111,12 @@ public class DialogManager : MonoBehaviour {
 		}
 
 		Transform choiceGroup = dialogBox.choiceGroup;
-		foreach (Transform child in choiceGroup) {
-			ObjectPool.Destroy<NPCDialogButton> (child);
-		}
-
+		
+		foreach (NPCDialogButton child in choiceGroup.gameObject.GetComponentsInChildren<NPCDialogButton>())
+			ObjectPool.Destroy<NPCDialogButton> (child.transform);
+		
 		if(btnChoices != null) {
-			foreach(Button btnChoice in btnChoices) {
+			foreach(NPCDialogButton btnChoice in btnChoices) {
 				btnChoice.transform.SetParent(choiceGroup);
 				btnChoice.transform.localScale = new Vector3(1, 1, 1);
 				btnChoice.transform.localPosition = Vector3.zero;
@@ -154,7 +154,15 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="npcInstance">Instance of NPCBehavior for this NPC</param>
 	public void OpenIntroDialog(Models.NPC currNpc, NPCBehavior npcInstance) {
 
-		CreateChoiceDialog("intro", null, delegate { CloseCharacterDialog(false); }, npcInstance);
+		NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton> ();
+		
+		Text btnTxt = btnChoice.Button.transform.FindChild("Text").GetComponent<Text>();
+		btnTxt.text = "Learn More";
+
+		btnChoice.Button.onClick.RemoveAllListeners ();
+		btnChoice.Button.onClick.AddListener(() => npcInstance.OpenDialog());
+
+		CreateChoiceDialog("intro", new List<NPCDialogButton>(){ btnChoice }, delegate { CloseCharacterDialog(false); }, npcInstance);
 
 	}
 
@@ -208,7 +216,7 @@ public class DialogManager : MonoBehaviour {
 			}
 		}
 
-		List<Button> btnList = new List<Button>();
+		List<NPCDialogButton> btnList = new List<NPCDialogButton>();
 
 		foreach(string choice in currentDialogueChoices) {
 			CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
@@ -216,15 +224,15 @@ public class DialogManager : MonoBehaviour {
 
 			string choiceName = textInfo.ToTitleCase(choice);
 
-			Button btnChoice = ObjectPool.Instantiate<NPCDialogButton> ().Button;
+			NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton> ();
 			
-			Text btnTxt = btnChoice.transform.FindChild("Text").GetComponent<Text>();
+			Text btnTxt = btnChoice.Button.transform.FindChild("Text").GetComponent<Text>();
 			btnTxt.text = choiceName;
 
-			btnChoice.onClick.RemoveAllListeners ();
+			btnChoice.Button.onClick.RemoveAllListeners ();
 			string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
-			btnChoice.onClick.AddListener (() => currentDialogueChoices.Remove (t));
-			btnChoice.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, npc, false));//, dialogBox));
+			btnChoice.Button.onClick.AddListener (() => currentDialogueChoices.Remove (t));
+			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, npc, false));//, dialogBox));
 
 			btnList.Add(btnChoice);
 		}

@@ -51,13 +51,14 @@ public class NPCBehavior : MB {
  	}
 
 	public void OpenDialog () {
+		NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Dialog);
 		DialogManager.instance.OpenSpeechDialog(npcRef, "Initial", this);
 	}
 
 	public void OnClick () {
 		FocusLevel level = NPCFocusBehavior.Instance.FocusLevel;
 		if (level == FocusLevel.Default) {
-			NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Preview);
+			// NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Preview);
 			DialogManager.instance.OpenIntroDialog(npcRef, this);
 		} else if (level == FocusLevel.Dialog) {
 			DialogManager.instance.CloseCharacterDialog ();
@@ -66,6 +67,6 @@ public class NPCBehavior : MB {
 	}
 
 	public void CloseDialog (bool zoomOut=false) {
-		NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Default);
+		NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Default, zoomOut);
 	}
 }

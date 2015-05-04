@@ -32,20 +32,18 @@ public class NPCFocusBehavior : MonoBehaviour {
 	
 	bool focused = false;
 	bool focusing = false;
-	bool openNextDiag = false;
+	
 	LayerImage npc;
 	float zoomBeforeFocus;
 	float focusPercentage = 0f;
 
 	public void SetFocus (LayerImage npc, FocusLevel level=FocusLevel.Null, bool openNext=true) {
 
-		openNextDiag = openNext;
-
 		if (!InitFocusIn (npc)) return;
 		if (level == FocusLevel.Null) {
+			Debug.Log ("level: " + level + "; focusLevel: " + focusLevel);
 			if (focusLevel == FocusLevel.Default) {
 				zoomBeforeFocus = MainCamera.Instance.Zoom;
-				focusLevel = FocusLevel.Preview;
 			} else if (focusLevel == FocusLevel.Preview)  {
 				focusLevel = FocusLevel.Dialog;
 			} else if (focusLevel == FocusLevel.Dialog) {
@@ -55,7 +53,9 @@ public class NPCFocusBehavior : MonoBehaviour {
 			focusLevel = level;
 		}
 		// StartCoroutine (CoFocusIn ((float)focusLevel / 100f));
-		if (focusLevel == FocusLevel.Default || focusLevel == FocusLevel.Preview) {
+		if(!openNext)
+			StartCoroutine (CoFocusOut ());
+		else if (focusLevel == FocusLevel.Default || focusLevel == FocusLevel.Preview) {
 			StartCoroutine (CoFocusOut ());
 		} else {
 			StartCoroutine (CoFocusIn ((float)focusLevel / 100f));
@@ -91,8 +91,8 @@ public class NPCFocusBehavior : MonoBehaviour {
 		return true;
 	}
 
-	void FinishFocusIn (float percentage) {
-		if (Mathf.Approximately (percentage, 1f) && npc.Behavior != null && openNextDiag) {
+	void FinishFocusIn (float percentage, bool openNext=true) {
+		if (Mathf.Approximately (percentage, 1f) && npc.Behavior != null && openNext) {
 			npc.Behavior.OpenDialog ();
 		}
 		focusing = false;
@@ -106,7 +106,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 		// focused = false;
 	}
 
-	IEnumerator CoFocusIn (float percentage) {
+	IEnumerator CoFocusIn (float percentage, bool openNext=true) {
 		
 		float duration = 1.25f;
 		float eTime = 0f;
@@ -137,7 +137,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 			yield return null;
 		}
 
-		FinishFocusIn (percentage);
+		FinishFocusIn (percentage, openNext);
 	}
 
 	IEnumerator CoFocusOut () {
