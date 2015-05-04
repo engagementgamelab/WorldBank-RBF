@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public enum FocusLevel {
@@ -50,7 +50,6 @@ public class NPCFocusBehavior : MonoBehaviour {
 		} else {
 			focusLevel = level;
 		}
-		// StartCoroutine (CoFocusIn ((float)focusLevel / 100f));
 		if (focusLevel == FocusLevel.Default) {
 			StartCoroutine (CoFocusOut ());
 		} else {
@@ -58,17 +57,9 @@ public class NPCFocusBehavior : MonoBehaviour {
 		}
 	}
 
-	/*void FocusIn (LayerImage npc) {
-		if (InitFocusIn (npc)) {
-			StartCoroutine (CoFocusIn ((float)focusLevel));
-		}
-	}*/
-
 	bool InitFocusIn (LayerImage npc) {
-		// if (focused) return false;
 		if (focusing) return false;
 		this.npc = npc;
-		// focused = true;
 		focusing = true;
 		
 		return true;
@@ -81,7 +72,6 @@ public class NPCFocusBehavior : MonoBehaviour {
 	}
 
 	bool InitFocusOut () {
-		// if (!focused) return false;
 		if (focusing) return false;
 		focusing = true;
 		return true;
@@ -99,7 +89,6 @@ public class NPCFocusBehavior : MonoBehaviour {
 		MainCamera.Instance.Positioner.DragEnabled = true;
 		MainCamera.Instance.LineOfSight.ZoomEnabled = true;
 		focusing = false;
-		// focused = false;
 	}
 
 	IEnumerator CoFocusIn (float percentage) {
@@ -148,8 +137,6 @@ public class NPCFocusBehavior : MonoBehaviour {
 			new FocusAction (1f, 0f,   0.5f,  (float t) => NPCHighlight.Instance.Deactivate (t))
 		};
 
-		Debug.Log ("hek");
-	
 		while (eTime < duration) {
 			eTime += Time.deltaTime;
 			float p = eTime / duration;
@@ -159,7 +146,6 @@ public class NPCFocusBehavior : MonoBehaviour {
 			yield return null;
 		}
 
-		Debug.Log ("heard");
 		MainCamera.Instance.Positioner.DragEnabled = true;
 		MainCamera.Instance.LineOfSight.ZoomEnabled = true;
 
