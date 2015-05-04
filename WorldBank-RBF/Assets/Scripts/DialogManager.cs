@@ -111,9 +111,10 @@ public class DialogManager : MonoBehaviour {
 		}
 
 		Transform choiceGroup = dialogBox.choiceGroup;
-		
-		foreach (NPCDialogButton child in choiceGroup.gameObject.GetComponentsInChildren<NPCDialogButton>())
-			ObjectPool.Destroy<NPCDialogButton> (child.transform);
+
+		foreach (Transform child in choiceGroup.transform)
+			ObjectPool.Destroy<NPCDialogButton> (child);
+
 		
 		if(btnChoices != null) {
 			foreach(NPCDialogButton btnChoice in btnChoices) {

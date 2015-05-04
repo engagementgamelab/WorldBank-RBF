@@ -20,7 +20,7 @@ public class CameraPositioner : MB {
 		}
 
 		public readonly float multiplier = 4000f;
-		public readonly float damping = 1.05f;
+		public readonly float damping = 6f;
 
 		Queue<float> velocities = new Queue<float> ();
 		int maxVelocityCount = 6;
@@ -49,7 +49,9 @@ public class CameraPositioner : MB {
 	}
 
 	float speed = 10;
-	float scrollSpeed = 1.15f;
+	// float scrollSpeed = 1.33f;
+	float scrollSpeed = 250f;
+	float maxSpeed = 2.5f;
 	Vector3 startDragPosition;
 	Vector3 startDrag;
 	bool dragging = false;
@@ -71,8 +73,14 @@ public class CameraPositioner : MB {
 			// Positioning
 			Vector3 w1 = ScreenPositionHandler.ViewportToWorld (startDrag);
 			Vector3 w2 = ScreenPositionHandler.ViewportToWorld (MouseController.MousePositionViewport);
-			float deltaX = (w1.x - w2.x) * scrollSpeed;
-			Transform.SetPositionX (Mathf.Max (XMin, startDragPosition.x + deltaX));
+			float deltaX = (w1.x - w2.x);// * scrollSpeed;
+			Transform.SetPositionX (
+				Mathf.Max (
+					XMin,
+					Position.x + Mathf.Min (maxSpeed, Mathf.Max (-maxSpeed, deltaX * scrollSpeed * Time.deltaTime))
+				)
+			);
+			startDrag = MouseController.MousePositionViewport;
 			
 			// Inertia
 			float currX = Position.x;
@@ -87,10 +95,10 @@ public class CameraPositioner : MB {
 			Transform.SetPositionX (
 				Mathf.Max (
 					XMin,
-					Position.x + (inertia * inertialScroll.multiplier) * Time.deltaTime
+					Position.x + inertia * inertialScroll.multiplier * Time.deltaTime
 				)
 			);
-			inertia /= inertialScroll.damping;
+			inertia += -inertia * inertialScroll.damping * Time.deltaTime;
 			if (Mathf.Abs (inertia) <= 0.0005f) {
 				inertia = 0;
 			}

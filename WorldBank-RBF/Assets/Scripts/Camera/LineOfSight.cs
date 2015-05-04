@@ -41,7 +41,7 @@ public class LineOfSight : MB {
 	bool overForegroundObject = false;
 
 	void Awake () {
-		float angle = -MainCamera.FOV / 2;
+		float angle = (-MainCamera.FOV / 2f) + 2f;
 		direction = new Vector3 (
 			0,
 			Mathf.Sin (angle * Mathf.Deg2Rad),
@@ -89,7 +89,7 @@ public class LineOfSight : MB {
 			Vector3 position = MainCamera.Position;
 			position.x += RayPositions[i];
 			position.y += 1;
-			if (Physics.Raycast (position, Transform.TransformDirection (direction) * distance, out hit, 1 << layer)) {
+			if (Physics.Raycast (position, Transform.TransformDirection (direction) * distance, out hit)) {//, 1 << layer)) {
 				// why isn't my layer mask working? :(
 				if (hit.transform.gameObject.layer == layer) {
 					#if DEBUG

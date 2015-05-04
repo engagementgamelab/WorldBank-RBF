@@ -119,6 +119,7 @@ public class ObjectPool : MonoBehaviour {
 	}
 
 	void ReleaseInstance (Transform instance, bool remove=true) {
+		instance.SetParent (null);
 		instance.gameObject.SetActive (false);
 		if (remove) activeInstances.Remove (instance);
 		inactiveInstances.Push (instance);
