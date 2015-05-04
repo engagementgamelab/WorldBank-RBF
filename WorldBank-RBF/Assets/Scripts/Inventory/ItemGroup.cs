@@ -25,13 +25,12 @@ public abstract class ItemGroup {
 	}
 
 	public abstract void Initialize (Inventory inventory);
-	public abstract void Add ();
-	public abstract void Add (InventoryItem item);
-	public abstract void Remove ();
-	public abstract void Remove (InventoryItem item);
+	public abstract void Add (InventoryItem item=null);
+	public abstract void Add (List<InventoryItem> newItems);
+	public abstract void Remove (InventoryItem item=null);
 }
 
-public class ItemGroup<T> : ItemGroup where T : InventoryItem {
+public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	
 	public override string Name { get { return ""; } }
 
@@ -39,19 +38,12 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem {
 		this.inventory = inventory;
 	}
 
-	public void Add2 () {
-		Add (new DayItem ());
-	}
-
-	public override void Add () {
-		Add (new InventoryItem () as T);
-	}
-
-	public override void Add (InventoryItem item) {
+	public override void Add (InventoryItem item=null) {
+		if (item == null) item = new T ();
 		Add (new List<InventoryItem> () { item });
 	}
 
-	public void Add (List<InventoryItem> newItems) {
+	public override void Add (List<InventoryItem> newItems) {
 		while (newItems.Count > 0) {
 			InventoryItem newItem = newItems[0];
 			if (newItem != null) {
@@ -62,11 +54,11 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem {
 		}
 	}
 
-	public override void Remove () {
-		items.RemoveAt (0);
-	}
-
-	public override void Remove (InventoryItem item) {
-		items.Remove (item);
+	public override void Remove (InventoryItem item=null) {
+		if (Empty) return;
+		if (item == null) 
+			items.RemoveAt (0);
+		else 
+			items.Remove (item);
 	}
 }

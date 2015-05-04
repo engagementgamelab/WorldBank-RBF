@@ -1,4 +1,4 @@
-﻿#define DEBUG
+﻿#undef DEBUG
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ public class LineOfSight : MB {
 	MainCamera MainCamera {
 		get {
 			if (mainCamera == null) {
-				mainCamera = transform.parent.GetScript<MainCamera> ();
+				mainCamera = Parent.GetScript<MainCamera> ();
 			}
 			return mainCamera;
 		}
@@ -35,36 +35,18 @@ public class LineOfSight : MB {
 	}
 
 	int rayCount = 7;
-	float width = 4;
+	float width = 6f;
 	Vector3 direction;
-	float distance;
+	float distance = 10000f;
 	bool overForegroundObject = false;
 
-	void Awake () {
+	void Start () {
 		float angle = (-MainCamera.FOV / 2f) + 2f;
 		direction = new Vector3 (
-			0,
+			0f,
 			Mathf.Sin (angle * Mathf.Deg2Rad),
 			Mathf.Cos (angle * Mathf.Deg2Rad)
 		);
-		StartCoroutine (GetDistance ());
-	}
-
-	IEnumerator GetDistance () {
-		
-		List<Transform> layers = ObjectPool.GetInstances<DepthLayer> ();
-		while (layers.Count == 0) {
-			layers = ObjectPool.GetInstances<DepthLayer> ();
-			yield return null;
-		}
-
-		// Set distance to furthest layer
-		float d = 0;
-		for (int i = 0; i < layers.Count; i ++) {
-			float z = layers[i].transform.localScale.x;
-			if (d < z) d = z;
-		}
-		distance = d;
 	}
 
 	void Update () {
@@ -89,7 +71,7 @@ public class LineOfSight : MB {
 			Vector3 position = MainCamera.Position;
 			position.x += RayPositions[i];
 			position.y += 1;
-			if (Physics.Raycast (position, Transform.TransformDirection (direction) * distance, out hit)) {//, 1 << layer)) {
+			if (Physics.Raycast (position, Transform.TransformDirection (direction) * distance, out hit, 1 << layer)) {
 				// why isn't my layer mask working? :(
 				if (hit.transform.gameObject.layer == layer) {
 					#if DEBUG

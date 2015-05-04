@@ -8,14 +8,20 @@ public class InventoryDrawer : MonoBehaviour {
 	void Awake () {
 		inventory = new Inventory ();
 		inventory.Add (new DayGroup ());
+		inventory.Add (new CityGroup ());
 	}
 
 	void OnGUI () {
+		DrawGroup<DayGroup> ();
+		DrawGroup<CityGroup> ();
+	}
+
+	void DrawGroup<T> () where T : ItemGroup {
 		GUILayout.BeginHorizontal ();
-		DayGroup group = inventory.Get<DayGroup> ();
+		T group = inventory.Get<T> () as T;
 		GUILayout.Label (group.Name);
 		if (GUILayout.Button ("Add")) {
-			group.Add2 ();
+			group.Add ();
 		}
 		if (GUILayout.Button ("Remove")) {
 			group.Remove ();
@@ -24,22 +30,5 @@ public class InventoryDrawer : MonoBehaviour {
 		for (int i = 0; i < group.Items.Count; i ++) {
 			GUILayout.Label (group.Items[i].Name);
 		}
-		/*for (int i = 0; i < inventory.Groups.Count; i ++) {
-			ItemGroup group = inventory.Groups[i];
-			GUILayout.BeginHorizontal ();
-			GUILayout.Label (group.Name);
-			if (GUILayout.Button ("Add")) {
-				group.Add ();
-			}
-			if (GUILayout.Button ("Remove")) {
-				// group.Remove ();
-			}
-			GUILayout.EndHorizontal ();
-			GUILayout.BeginVertical ();
-			for (int j = 0; j < group.Items.Count; i ++) {
-				// GUILayout.Label (group.Items[i].Name);
-			}
-			GUILayout.EndVertical ();
-		}*/
 	}
 }

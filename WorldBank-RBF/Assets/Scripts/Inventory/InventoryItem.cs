@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InventoryItem {
+public abstract class InventoryItem {
 
-	public virtual string Name { get { return ""; } }
+	public abstract string Name { get; }
 
 	ItemGroup group;
 	public ItemGroup Group {

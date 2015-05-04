@@ -19,7 +19,7 @@ public class CameraPositioner : MB {
 			}
 		}
 
-		public readonly float multiplier = 4000f;
+		public readonly float multiplier = 100f;
 		public readonly float damping = 6f;
 
 		Queue<float> velocities = new Queue<float> ();
@@ -49,9 +49,8 @@ public class CameraPositioner : MB {
 	}
 
 	float speed = 10;
-	// float scrollSpeed = 1.33f;
-	float scrollSpeed = 250f;
-	float maxSpeed = 2.5f;
+	float scrollSpeed = 200f;
+	float maxSpeed = 2f;
 	Vector3 startDragPosition;
 	Vector3 startDrag;
 	bool dragging = false;
@@ -63,23 +62,22 @@ public class CameraPositioner : MB {
 		Events.instance.AddListener<DragUpEvent> (OnDragUpEvent);
 	}
 
+	// TODO: This can be cleaned up
 	IEnumerator CoDrag () {
 		
 		float prevX = Position.x;
 		float velocity = 0f;
+
+		InertialScroll dragScroll = new InertialScroll ();
 
 		while (dragging) {
 			
 			// Positioning
 			Vector3 w1 = ScreenPositionHandler.ViewportToWorld (startDrag);
 			Vector3 w2 = ScreenPositionHandler.ViewportToWorld (MouseController.MousePositionViewport);
-			float deltaX = (w1.x - w2.x);// * scrollSpeed;
-			Transform.SetPositionX (
-				Mathf.Max (
-					XMin,
-					Position.x + Mathf.Min (maxSpeed, Mathf.Max (-maxSpeed, deltaX * scrollSpeed * Time.deltaTime))
-				)
-			);
+			float deltaX = (w1.x - w2.x);
+			dragScroll.AddVelocity (deltaX);
+			Transform.SetPositionX (Mathf.Max (XMin, Position.x + dragScroll.AverageVelocity));
 			startDrag = MouseController.MousePositionViewport;
 			
 			// Inertia
@@ -90,7 +88,7 @@ public class CameraPositioner : MB {
 			yield return null;
 		}
 
-		float inertia = inertialScroll.AverageVelocity;
+		float inertia = dragScroll.AverageVelocity;
 		while (inertia != 0 && !dragging && !moving) {
 			Transform.SetPositionX (
 				Mathf.Max (

@@ -4,24 +4,28 @@ using System.Collections.Generic;
 
 public class Inventory {
 
-	List<ItemGroup> groups = new List<ItemGroup> ();
-	public List<ItemGroup> Groups {
+	Dictionary<System.Type, ItemGroup> groups = new Dictionary<System.Type, ItemGroup> ();
+	public Dictionary<System.Type, ItemGroup> Groups {
 		get { return groups; }
 	}
 
 	public void Add (ItemGroup group) {
 		group.Initialize (this);
-		groups.Add (group);
+		groups.Add (group.GetType (), group);
 	}
 
-	/*public void AddItem<T> (InventoryItem item) where T : ItemGroup {
+	public void AddItem<T> (InventoryItem item=null) where T : ItemGroup {
 		Get<T> ().Add (item);
-	}*/
+	}
+
+	public void RemoveItem<T> (InventoryItem item=null) where T : ItemGroup {
+		Get<T> ().Remove (item);
+	}
 
 	public T Get<T> () where T : ItemGroup {
-		foreach (ItemGroup group in groups) {
-			T t = group as T;
-			if (t != null) return t;
+		ItemGroup group;
+		if (groups.TryGetValue (typeof (T), out group)) {
+			return group as T;
 		}
 		return null;
 	}
