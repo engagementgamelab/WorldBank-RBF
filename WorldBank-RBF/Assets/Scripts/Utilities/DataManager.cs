@@ -27,7 +27,7 @@ public class DataManager {
     /// <summary>
     /// Set global game config data, such as API endpoints, given a valid input string
     /// </summary>
-    /// <param name="strSymbol">Data to be used to set config; must conform to GameConfig model.</param>
+    /// <param name="data">Data to be used to set config; must conform to GameConfig model.</param>
     public static void SetGameConfig(string data)
     {
 
@@ -43,7 +43,7 @@ public class DataManager {
     /// <summary>
     /// Set global game data, given a valid input string
     /// </summary>
-    /// <param name="strSymbol">String to be used to set game data; must conform to GameData model.</param>
+    /// <param name="data">String to be used to set game data; must conform to GameData model.</param>
     public static void SetGameData(string data)
     {
         // Set global data only if there is none

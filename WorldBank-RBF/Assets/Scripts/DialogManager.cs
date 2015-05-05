@@ -111,9 +111,10 @@ public class DialogManager : MonoBehaviour {
 		}
 
 		Transform choiceGroup = dialogBox.choiceGroup;
+		NPCDialogButton[] remove = choiceGroup.GetComponentsInChildren<NPCDialogButton>();
 
-		foreach (Transform child in choiceGroup.transform)
-			ObjectPool.Destroy<NPCDialogButton> (child);
+		foreach (NPCDialogButton child in remove)
+			ObjectPool.Destroy<NPCDialogButton> (child.transform);
 
 		
 		if(btnChoices != null) {
@@ -122,6 +123,8 @@ public class DialogManager : MonoBehaviour {
 				btnChoice.transform.localScale = new Vector3(1, 1, 1);
 				btnChoice.transform.localPosition = Vector3.zero;
 				btnChoice.transform.localEulerAngles = Vector3.zero;
+
+				Debug.Log("Added button: " + btnChoice.Button.transform.FindChild("Text").GetComponent<Text>().text);
 			}
 		}
 		
@@ -161,9 +164,16 @@ public class DialogManager : MonoBehaviour {
 		btnTxt.text = "Learn More";
 
 		btnChoice.Button.onClick.RemoveAllListeners ();
-		btnChoice.Button.onClick.AddListener(() => npcInstance.OpenDialog());
+		btnChoice.Button.onClick.AddListener(() => npcInstance.DialogFocus());
 
-		CreateChoiceDialog("intro", new List<NPCDialogButton>(){ btnChoice }, delegate { CloseCharacterDialog(false); }, npcInstance);
+		CreateChoiceDialog(
+
+			DataManager.GetDataForCharacter(currNpc.character).description, 
+			new List<NPCDialogButton>(){ btnChoice },
+			delegate { CloseCharacterDialog(false); },
+			npcInstance
+
+		);
 
 	}
 
@@ -211,7 +221,7 @@ public class DialogManager : MonoBehaviour {
 			foreach(Match m in keyMatches) {
 			    if (m.Success)
 				{
-			        string strKeyword = m.Groups[3].ToString();
+			        string strKeyword = m.Groups[3].ToString().Replace(".", "");
 			        currentDialogueChoices.Add(strKeyword.ToLower());				
 				}
 			}

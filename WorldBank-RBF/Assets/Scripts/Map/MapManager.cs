@@ -12,7 +12,9 @@ public class MapManager : MonoBehaviour {
 
 	public string citySceneName;
 	public float cameraDamping;
+	public float cameraBounceFactor;
 	public float dragSpeed = 2;
+	public float panDrag;
 
 	public Vector3 cameraLimitsMin;
 	public Vector3 cameraLimitsMax;
@@ -47,6 +49,11 @@ public class MapManager : MonoBehaviour {
 	const string dialogSwitchID = "Switch";
 
 	private int daysAllowed = 9;
+	
+	private Vector3 cameraLimitPush;			// Position of cursor when mouse dragging starts
+	private bool isPanning;				// Is the camera being panned?
+	private bool isRotating;			// Is the camera being rotated?
+	private bool isZooming;				// Is the camera zooming?
 
 
 	void Start () {
@@ -96,8 +103,12 @@ public class MapManager : MonoBehaviour {
 
         // Create camera limits based on map collider bounds
         Vector3 mapCenter = mapCollider.bounds.center;
-        float maxYLimit = mapCollider.bounds.max.y - 1;
-        float minYLimit = mapCollider.bounds.min.y + 1;
+
+        float maxXLimit = mapCollider.bounds.max.x;
+        float minXLimit = mapCollider.bounds.min.x;
+
+        float maxYLimit = mapCollider.bounds.max.y;
+        float minYLimit = mapCollider.bounds.min.y;
  
  		// Calculate how much to translate camera
         Vector3 posDelta = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
@@ -107,18 +118,108 @@ public class MapManager : MonoBehaviour {
 		float xTarget = (cameraTransform.position + camTranslation).x;
 		float yTarget = (cameraTransform.position + camTranslation).y;
 
-		bool isWithinXBounds = xTarget >= (mapCenter.x - 1) && xTarget <= (mapCenter.x + 1);
-		bool isWithinYBounds = (yTarget <= maxYLimit && yTarget >= minYLimit);
+		bool atMinXLimit = xTarget >= minXLimit;
+		bool atMaxXLimit = xTarget <= maxXLimit;
+
+		bool atMinYLimit = yTarget >= minYLimit;
+		bool atMaxYLimit = yTarget <= maxYLimit;
+
+		bool isWithinXBounds = atMinXLimit && atMaxXLimit;
+		bool isWithinYBounds = atMinYLimit && atMaxYLimit;
 
 		// Move camera only if target destination is within bounds
-		if(isWithinXBounds && isWithinYBounds)
+		if(isWithinXBounds && isWithinYBounds) {
 			cameraTransform.Translate(camTranslation, Space.World);
-
+			Camera.main.GetComponent<Rigidbody>().velocity = Vector3.zero;
+}
+	/*			else
+		{	
+			if(!isWithinXBounds)
+				cameraLimitPush = new Vector3((atMinXLimit ? -1 : 1) * cameraBounceFactor, 0, 0);
+			if(!isWithinYBounds)
+				cameraLimitPush = new Vector3(0, (atMinYLimit ? -1 : 1) * cameraBounceFactor, 0);
+			
+			isPanning = true;
+		}
+*/
 		// Ensure camera is facing map
         Vector3 rotDelta = mapCollider.transform.position - cameraTransform.position;
 	    Quaternion targetRotation = Quaternion.LookRotation(rotDelta);
-	    cameraTransform.rotation = Quaternion.Slerp(cameraTransform.rotation, targetRotation, Time.deltaTime * 2);
+	    // cameraTransform.rotation = Quaternion.Slerp(cameraTransform.rotation, targetRotation, Time.deltaTime * 2);
+	}
 
+	void FixedUpdate()
+	{
+		// == Movement Code ==
+		
+		// Rotate camera along X and Y axis
+		/*if (isRotating)
+		{
+			// Get mouse displacement vector from original to current position
+	    	Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
+			
+			// Set Drag
+			Camera.main.GetComponent<Rigidbody>().angularDrag = turnDrag;
+			
+			// Two rotations are required, one for x-mouse movement and one for y-mouse movement
+			Camera.main.GetComponent<Rigidbody>().AddTorque(-pos.y * turnSpeed * transform.right, ForceMode.Acceleration);
+			Camera.main.GetComponent<Rigidbody>().AddTorque(pos.x * turnSpeed * transform.up, ForceMode.Acceleration);
+		}*/
+		
+		// Move (pan) the camera on it's XY plane
+		if (isPanning)
+		{
+
+	        // Create camera limits based on map collider bounds
+/*	        Vector3 mapCenter = mapCollider.bounds.center;
+
+	        float maxXLimit = mapCollider.bounds.max.x + 1;
+	        float minXLimit = mapCollider.bounds.min.x - 1;
+
+	        float maxYLimit = mapCollider.bounds.max.y - 1;
+	        float minYLimit = mapCollider.bounds.min.y + 1;
+			
+			// Get mouse displacement vector from original to current position
+    		Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
+    		Vector3 move = new Vector3(pos.x * panSpeed, pos.y * panSpeed, 0);
+
+	        //  Save x/y movement targets
+			float xTarget = (cameraTransform.position).x;
+			float yTarget = (cameraTransform.position).y;
+
+			bool isWithinXBounds = xTarget <= maxXLimit && xTarget >= minXLimit;
+			bool isWithinYBounds = (yTarget <= maxYLimit && yTarget >= minYLimit);
+
+			// Move camera only if target destination is within bounds
+			if(!isWithinXBounds)
+				move = new Vector3(pos.x * -panSpeed, pos.y * panSpeed, 0);
+			if(!isWithinYBounds)
+				move = new Vector3(pos.x * panSpeed, pos.y * -panSpeed, 0);
+
+			// Apply the pan's move vector in the orientation of the camera's front
+			Quaternion forwardRotation = Quaternion.LookRotation(transform.forward, transform.up);
+			move = forwardRotation * move;*/
+			
+			// Set Drag
+			Camera.main.GetComponent<Rigidbody>().drag = panDrag;
+			
+			// Pan
+			Camera.main.GetComponent<Rigidbody>().AddForce(cameraLimitPush, ForceMode.Acceleration);
+		}
+		
+		// Move the camera linearly along Z axis
+/*		if (isZooming)
+		{
+			// Get mouse displacement vector from original to current position
+	    		Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
+	    		Vector3 move = pos.y * zoomSpeed * transform.forward; 
+			
+			// Set Drag
+			Camera.main.GetComponent<Rigidbody>().drag = zoomDrag;
+			
+			// Zoom
+			Camera.main.GetComponent<Rigidbody>().AddForce(move, ForceMode.Acceleration);
+		}*/
 	}
 
 	// Use this for initialization

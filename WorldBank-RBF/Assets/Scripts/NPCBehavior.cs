@@ -51,8 +51,12 @@ public class NPCBehavior : MB {
  	}
 
 	public void OpenDialog () {
-		NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Dialog);
+		DialogFocus();
 		DialogManager.instance.OpenSpeechDialog(npcRef, "Initial", this);
+	}
+
+	public void DialogFocus () {
+		NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Dialog);
 	}
 
 	public void OnClick () {
