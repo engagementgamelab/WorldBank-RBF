@@ -10,6 +10,7 @@ public class LayerImage : QuadImage, IClickable {
 			LayerImageSettings json = new LayerImageSettings ();
 			json.index = Index;
 			json.npc_symbol = npcSymbol;
+			json.x_pos = XPos;
 			json.facing_left = FacingLeft;
 			json.SetTexture (Texture);
 			json.collider_enabled = ColliderEnabled;
@@ -26,7 +27,16 @@ public class LayerImage : QuadImage, IClickable {
 		get { return new InputLayer[] { InputLayer.UI }; } 
 	}
 
-	[SerializeField, HideInInspector] float xPosition;
+	[SerializeField, HideInInspector] float xIndex;
+	[SerializeField, HideInInspector] float xPos;
+	public float XPos {
+		get { return xPos; }
+		set { 
+			xPos = value;
+			Transform.SetLocalPositionX (xIndex + xPos);
+		}
+	}
+
 	[SerializeField, HideInInspector] string npcSymbol = "";
 	public string NPCSymbol {
 		get { return npcSymbol; }
@@ -70,7 +80,7 @@ public class LayerImage : QuadImage, IClickable {
 		set { 
 			scale = value; 
 			LocalScale = new Vector3 (scale, scale, 1);
-			LocalPosition = new Vector3 (xPosition + XOffset * (scale-1), (scale-1)*0.33f, 0);
+			LocalPosition = new Vector3 (xIndex + XPos + XOffset * (scale-1), (scale-1)*0.33f, 0);
 		}
 	}
 
@@ -89,21 +99,19 @@ public class LayerImage : QuadImage, IClickable {
 		}
 	}
 
-	public void SetParent (Transform parent, float xPosition=0) {
-		this.xPosition = xPosition;
+	public void SetParent (Transform parent, float xIndex=0) {
+		this.xIndex = xIndex;
 		Transform.parent = parent;
 		Transform.Reset ();
 	}
 
 	protected override void OnSetTexture () {
 		if (Material == null) return;
-		Transform.SetLocalPosition (new Vector3 (xPosition, 0, 0));
+		Transform.SetLocalPosition (new Vector3 (xIndex + xPos, 0, 0));
 	}
 	
 	public void OnClick (ClickSettings clickSettings) {
 		if (!IsSprite) return;
-		// NPCFocusBehavior.Instance.FocusIn (this);
-		// NPCFocusBehavior.Instance.SetFocus (this);
 		if (behavior != null) behavior.OnClick ();
 	}
 

@@ -4,6 +4,7 @@ using System.Collections;
 
 public class ImageSettings : ScriptableObject {
 
+	public float xPos;
 	public string npcSymbol;
 	public bool facingLeft;
 	public Texture2D texture;
@@ -13,7 +14,8 @@ public class ImageSettings : ScriptableObject {
 	public float centerX;
 	public float centerY;
 
-	public void Init (string npcSymbol, bool facingLeft, Texture2D texture, bool colliderEnabled, float width, float height, float centerX, float centerY) {
+	public void Init (float xPos, string npcSymbol, bool facingLeft, Texture2D texture, bool colliderEnabled, float width, float height, float centerX, float centerY) {
+		this.xPos = xPos;
 		this.npcSymbol = npcSymbol;
 		this.facingLeft = facingLeft;
 		this.texture = texture;
