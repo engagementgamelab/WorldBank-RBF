@@ -1,10 +1,23 @@
-﻿using UnityEngine;
+﻿/* 
+World Bank RBF
+Created by Engagement Lab, 2015
+==============
+ MapManager.cs
+ World map management.
+
+ Created by Johnny Richardson on 4/21/15.
+==============
+*/
+
+using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 
+
+// TODO: Tons of cleanup/docs!
 public class MapManager : MonoBehaviour {
 
 	public CanvasRenderer dialogueBoxPrefab;
@@ -38,6 +51,7 @@ public class MapManager : MonoBehaviour {
     private Vector3 dragOrigin;
 
 	private GameObject cityDialog;
+	private Text cityDialogText;
 	private Animator dialogAnimator;
 
 	private List<Light> citySpotlights;
@@ -63,6 +77,7 @@ public class MapManager : MonoBehaviour {
 		cameraTransform = Camera.main.GetComponent<Transform>();
 
 		cityDialog = Camera.main.transform.Find("DialogueBox").gameObject;
+		cityDialogText = cityDialog.transform.Find("Content/Text").GetComponent<Text>();
 
 		initialDialogAnchor = cityDialog.GetComponent<RectTransform>().anchoredPosition;
 
@@ -247,19 +262,33 @@ public class MapManager : MonoBehaviour {
 
 	public IEnumerator ShowCityDialog(string citySymbol) {
 
+		dialogAnimator = cityDialog.GetComponent<Animator>();
+
 		// Get data for selected city
 		Models.City city = DataManager.GetCityInfo(citySymbol);
 
-		// GameObject diagRenderer = DialogManager.instance.CreateGenericDialog(city.description);
-		cityDialog.transform.Find("Content/Text").GetComponent<Text>().text = city.description + "\n   <i><color=orange>" + city.cost + " days to travel.</color></i>";
-	 	dialogAnimator = cityDialog.GetComponent<Animator>();
+		string strCityTxt = city.description + "\n   <i><color=orange>" + city.cost + " days to travel.</color></i>";
 		
-		if(!dialogAnimator.GetBool(dialogOpenID))
+		if(!dialogAnimator.GetBool(dialogOpenID)) {
+			cityDialogText.text = strCityTxt;
+
 			dialogAnimator.SetBool(dialogOpenID, true);
+		}
 		else
 		{
-			dialogAnimator.SetTrigger(dialogSwitchID);
-			yield return new WaitForSeconds(2);
+			// dialogAnimator.SetTrigger(dialogSwitchID);
+			dialogAnimator.SetBool(dialogOpenID, false);
+			dialogAnimator.SetBool(dialogCloseID, true);
+
+			yield return new WaitForSeconds(1);
+
+			cityDialogText.text = strCityTxt;
+
+			dialogAnimator.SetBool(dialogOpenID, true);
+			dialogAnimator.SetBool(dialogCloseID, false);
+
+			// yield return null;
+			// yield return new WaitForSeconds(2);
 		}
 
 		initialDialogScale = cityDialog.transform.localScale;
@@ -268,6 +297,7 @@ public class MapManager : MonoBehaviour {
 	  	GameObject goBtnObj = cityDialog.transform.Find("Action Button").gameObject;
 	  	GameObject goBackBtnObj = cityDialog.transform.Find("Go Back").gameObject;
 	    
+	    // Show Go button if city is unlocked
 	    goBtnObj.SetActive(city.unlocked);
 		
 		Button goBtn = goBtnObj.GetComponent<Button>();
@@ -285,6 +315,9 @@ public class MapManager : MonoBehaviour {
 	    // Reset camera position
 	    targetCamRotation = initialCamRotation;
 	    targetCamPosition = initialCamPosition;
+
+		yield return null;
+
 
 	}
 
@@ -317,6 +350,17 @@ public class MapManager : MonoBehaviour {
         // dialogAnimator.SetBool(dialogCloseID, true);
         
     }
+    
+    private IEnumerator WaitForAnimation()
+	{
+			
+		do
+	    {
+	        yield return null;
+	    } while ( dialogAnimator.GetCurrentAnimatorStateInfo(0).IsName(dialogCloseID) );
+
+	}
+
 /*
     //Coroutine that will detect when the Closing animation is finished and it will deactivate the
     //hierarchy.
