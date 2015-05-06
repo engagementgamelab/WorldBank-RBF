@@ -8,6 +8,7 @@ public class LayerImageSettings {
 
 	public int index { get; set; }
 	public string npc_symbol { get; set; }
+	public float x_pos { get; set; }
 	public bool facing_left { get; set; }
 	public string texture { get; set; }
 	public bool collider_enabled { get; set; }
