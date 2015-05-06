@@ -20,4 +20,4 @@ target_tar="$EXTERNAL_BUILDS_DIR/$OUTPUT_NAME.tgz";
 # Create tar of latest build with a readme
 echo "Build is from most recent successful Jenkins build ($BUILD_NUM)" > "$output_dir/readme.txt";
 
-cd $WORKSPACE/WorldBank-RBF/Output && tar -czvf $target_tar .;
+cd $WORKSPACE/WorldBank-RBF/Output && tar -czf $target_tar .;

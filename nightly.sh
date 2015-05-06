@@ -52,4 +52,4 @@ drive share -i $new_file_id;
 url="$(drive url -i $new_file_id)";
 
 # Tell slack about the new file
-echo "$OUTPUT_NAME Nightly build for $(date +"%D") posted ($url)"
+echo "$OUTPUT_NAME Nightly build for $(date +"%D") posted ($url)" | slackcat -n LabDevBot
