@@ -98,4 +98,19 @@ public class Models {
     public class Characters {
         public List<Dictionary<string, object>> dialogue = new List<Dictionary<string, object>>();
     }
+
+    public class Test {
+        public string hello { get; set; }
+    }
+
+    public class Test2 {
+        public float happiness { get; set; }
+        public float sadness { get; set; }
+        public Texture2D texture { get; set; }
+    }
+
+    public class Test3 {
+        public List<Test2> test2s { get; set; }
+        public List<string> texts { get; set; }
+    }
 }
