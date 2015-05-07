@@ -259,6 +259,13 @@ public class MapManager : MonoBehaviour {
 		Models.City city = DataManager.GetCityInfo(strCitySymbol);
 
 		string strCityTxt = city.description + "\n   <i><color=orange>" + city.cost + " days to travel.</color></i>";
+	  
+	  	// Setup go/go back buttons
+	  	GameObject goBtnObj = cityDialog.transform.Find("Action Button").gameObject;
+	  	GameObject goBackBtnObj = cityDialog.transform.Find("Go Back").gameObject;
+		
+		Button goBtn = goBtnObj.GetComponent<Button>();
+		Button goBackBtn = goBackBtnObj.GetComponent<Button>();
 		
 		if(!dialogAnimator.GetBool(dialogOpenID)) {
 			cityDialogText.text = strCityTxt;
@@ -274,6 +281,9 @@ public class MapManager : MonoBehaviour {
 			yield return new WaitForSeconds(1);
 
 			cityDialogText.text = strCityTxt;
+		    
+		    goBtn.onClick.RemoveAllListeners();
+		    goBackBtn.onClick.RemoveAllListeners();
 
 			dialogAnimator.SetBool(dialogOpenID, true);
 			dialogAnimator.SetBool(dialogCloseID, false);
@@ -283,16 +293,9 @@ public class MapManager : MonoBehaviour {
 		}
 
 		initialDialogScale = cityDialog.transform.localScale;
-	  
-	  	// Setup go/go back buttons
-	  	GameObject goBtnObj = cityDialog.transform.Find("Action Button").gameObject;
-	  	GameObject goBackBtnObj = cityDialog.transform.Find("Go Back").gameObject;
 	    
 	    // Show Go button if city is unlocked
 	    goBtnObj.SetActive(city.unlocked);
-		
-		Button goBtn = goBtnObj.GetComponent<Button>();
-		Button goBackBtn = goBackBtnObj.GetComponent<Button>();
 		Text label = goBtn.transform.FindChild("Text").GetComponent<Text>();
 		label.text = "Travel to " + city.display_name;
  
@@ -328,14 +331,10 @@ public class MapManager : MonoBehaviour {
 
  	public void CloseCurrent()
     {
-       /* if (dialogAnimator == null)
-            return;
+	  	GameObject goBackBtnObj = cityDialog.transform.Find("Go Back").gameObject;
+		Button goBackBtn = goBackBtnObj.GetComponent<Button>();
 
-        //Start the close animation.
-        dialogAnimator.SetBool(dialogOpenID, false);
-
-        //Start Coroutine to disable the hierarchy when closing animation finishes.
-        StartCoroutine(DisablePanelDeleyed(dialogAnimator));*/
+	    goBackBtn.onClick.RemoveAllListeners();
 
         dialogAnimator.SetBool(dialogOpenID, false);
         // dialogAnimator.SetBool(dialogCloseID, true);
