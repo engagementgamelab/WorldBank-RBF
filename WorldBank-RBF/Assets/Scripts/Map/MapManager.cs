@@ -237,35 +237,16 @@ public class MapManager : MonoBehaviour {
 		}*/
 	}
 
-	// Use this for initialization
-	public void LoadCities() {
-
-        foreach(Models.City city in DataManager.GetAllCities())
-        	GenerateCityButton(city);
-	
-	}
-
-	private void GenerateCityButton(Models.City city) {
-
-		// Create NPC prefab instance
-		Button cityButton = (Button)Instantiate(cityButtonPrefab);
-	  
-	    cityButton.transform.parent = cityCanvas;
-	    cityButton.transform.localScale = new Vector3(1, 1, 1);
-	    
-	    Text label = cityButton.transform.FindChild("Text").GetComponent<Text>();
-		label.text = city.display_name;
- 
-	    cityButton.onClick.AddListener(() => cityCanvas.gameObject.SetActive(false));
-
-	}
-
-	public IEnumerator ShowCityDialog(string citySymbol) {
+	/// <summary>
+	/// Generate a dialog with text and relevant buttons for city
+	/// </summary>
+	/// <param name="strCitySymbol">Text to show in the dialogue</param>
+	public IEnumerator ShowCityDialog(string strCitySymbol) {
 
 		dialogAnimator = cityDialog.GetComponent<Animator>();
 
 		// Get data for selected city
-		Models.City city = DataManager.GetCityInfo(citySymbol);
+		Models.City city = DataManager.GetCityInfo(strCitySymbol);
 
 		string strCityTxt = city.description + "\n   <i><color=orange>" + city.cost + " days to travel.</color></i>";
 		

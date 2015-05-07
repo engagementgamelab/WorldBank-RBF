@@ -28,17 +28,17 @@ if [ -z "$current_file_id" ]; then
 else
 	echo $current_file_id;
 	
-	# Delete the current _Nightly tar from Drive
+	# Delete the current _Nightly tar from Drive via gdrive
 	drive delete -i $current_file_id;
 fi
 
 # Set target path for local tar file
 target_tar="$EXTERNAL_BUILDS_DIR/$OUTPUT_NAME.tgz";
 
-# Upload latest build tar to Drive
+# Upload latest build tar to Drive via gdrive
 drive upload -f $target_tar -t "$OUTPUT_NAME""_Nightly.tgz";
 
-# Now get new file ID and share the file with all users
+# Now get new file ID and share the file with all users via gdrive
 new_file_info="$(drive list -t $OUTPUT_NAME""_Nightly)";
 
 arr_new_file_info=($new_file_info);
@@ -48,8 +48,8 @@ new_file_id=${arr_new_file_info[4]};
 # Share file
 drive share -i $new_file_id;
 
-# Get URL
+# Get URL via gdrive
 url="$(drive url -i $new_file_id)";
 
 # Tell slack about the new file
-echo "$OUTPUT_NAME Nightly build for $(date +"%D") posted ($url)" | slackcat -n LabDevBot
+echo "$OUTPUT_NAME Nightly build for $(date +"%D") posted ($url)" | ~/go/bin/slackcat -n "EL Dev Server" -i ":lab:"

@@ -62,6 +62,11 @@ public class CameraPositioner : MB {
 		Events.instance.AddListener<DragUpEvent> (OnDragUpEvent);
 	}
 
+	void OnDestroy() {
+		Events.instance.RemoveListener<DragDownEvent> (OnDragDownEvent);
+		Events.instance.RemoveListener<DragUpEvent> (OnDragUpEvent);
+    }
+
 	// TODO: This can be cleaned up
 	IEnumerator CoDrag () {
 		
