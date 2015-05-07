@@ -22,10 +22,17 @@ public class MapCity : MB, IClickable {
 
  	// On Touch/Click City
 	public void OnClick (ClickSettings clickSettings) {
+
+		// Bail if mouse is not directly over city (e.g. on UI)
 		if (EventSystem.current.IsPointerOverGameObject())
 			return;
 
-		StartCoroutine((transform.parent.gameObject.GetComponent<MapManager>() as MapManager).ShowCityDialog(citySymbol));
+		// Get ref to map manager
+		MapManager manager = transform.parent.gameObject.GetComponent<MapManager>() as MapManager;
+
+		// Show this city's dialog only if the main camera is not currently in an animation
+		if(!manager.CameraIsAnimating())
+			StartCoroutine(manager.ShowCityDialog(citySymbol));
 
 	}
 }

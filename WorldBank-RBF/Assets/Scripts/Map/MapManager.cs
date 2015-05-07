@@ -99,7 +99,8 @@ public class MapManager : MonoBehaviour {
 			citySpotlight.intensity = Mathf.PingPong(Time.time, 2) + 1;
         });
 
-        if(Camera.main.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+		// Do nothing else during camera animation
+        if(CameraIsAnimating())
         	return;
 
 		// Set drag origin on click/touch
@@ -235,6 +236,15 @@ public class MapManager : MonoBehaviour {
 			// Zoom
 			Camera.main.GetComponent<Rigidbody>().AddForce(move, ForceMode.Acceleration);
 		}*/
+	}
+
+	/// <summary>
+	/// Reports if the main camera is currently under control of an animation.
+	/// </summary>
+	public bool CameraIsAnimating() {
+
+		// If animation state's normalized time is less than 1, it's still going, as this is a fractional of the current loop
+		return Camera.main.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime < 1;
 	}
 
 	/// <summary>
