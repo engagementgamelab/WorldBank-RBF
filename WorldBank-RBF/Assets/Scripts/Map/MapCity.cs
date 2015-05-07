@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class MapCity : MB, IClickable {
@@ -21,6 +22,8 @@ public class MapCity : MB, IClickable {
 
  	// On Touch/Click City
 	public void OnClick (ClickSettings clickSettings) {
+		if (EventSystem.current.IsPointerOverGameObject())
+			return;
 
 		StartCoroutine((transform.parent.gameObject.GetComponent<MapManager>() as MapManager).ShowCityDialog(citySymbol));
 
