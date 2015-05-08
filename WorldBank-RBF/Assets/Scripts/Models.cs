@@ -1,4 +1,4 @@
-﻿/* 
+/* 
 World Bank RBF
 Created by Engagement Lab, 2015
 ==============
@@ -106,11 +106,16 @@ public class Models {
     public class Test2 {
         public float happiness { get; set; }
         public float sadness { get; set; }
-        public Texture2D texture { get; set; }
+        // public Texture2D texture { get; set; }
+        public List<object> blahs { get; set; }
     }
 
     public class Test3 {
-        public List<Test2> test2s { get; set; }
+        public int goop { get; set; }
         public List<string> texts { get; set; }
+        // public string[] blahs { get; set; }
+        public List<object> test2s { get; set; }
+        public object[] test3s { get; set; }
+        public object ex2 { get; set; }
     }
 }

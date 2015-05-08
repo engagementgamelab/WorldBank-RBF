@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 using System.IO;
 using JsonFx.Json;
 
@@ -81,6 +82,15 @@ public class ParallaxDesigner : EditorWindow, IEditorObjectDrawer<Example2> {
     	Target = null;
     }
 
+
+    void Save () {
+        WriteJsonData (CreateModelFromObject (Target));
+    }
+
+    void Load () {
+        Target = (Example2)SetObjectMembersFromModel (Target);
+    }
+
     Dictionary<FieldInfo, Attribute> GetFieldsWithAttribute (System.Type type, System.Type attribute) {
     	FieldInfo[] fields = type.GetFields ();
     	Dictionary<FieldInfo, Attribute> fieldsWithAttribute = new Dictionary<FieldInfo, Attribute> ();
@@ -93,169 +103,130 @@ public class ParallaxDesigner : EditorWindow, IEditorObjectDrawer<Example2> {
     	return fieldsWithAttribute;
     }
 
-    void Save () {
+    object CreateModelFromObject (System.Object obj) {
 
-    	/*Dictionary<FieldInfo, Attribute> fields = GetFieldsWithAttribute (typeof (JsonSerializableAttribute));
-    	Dictionary<string, object> models = new Dictionary<string, object> ();
-    	
-    	foreach (var field in fields) {
-    		
-			FieldInfo info = field.Key;
-    		JsonSerializableAttribute attribute = field.Value as JsonSerializableAttribute;
-			System.Type modelType = attribute.modelType;
-			string attributeName = modelType.Name;
-			object model;
+        if (obj == null) 
+            return null;
 
-			if (models.ContainsKey (attributeName)) {
-				model = models[attributeName];
-			} else {
-				model = Activator.CreateInstance (attribute.modelType);
-				models.Add (attributeName, model);
-			}
+        System.Type modelType = GetModelType (obj);
+        object model = Activator.CreateInstance (modelType);
+        List<PropertyInfo> modelProperties  = new List<PropertyInfo> (modelType.GetProperties ());
+        model = ApplyModelProperties (obj, model, modelProperties);
 
-			if (typeof (IList).IsAssignableFrom (info.FieldType)) {
-				foreach (var item in info.GetValue (Target) as IList) {
-					System.Type itemType = item.GetType ();
-					Debug.Log (itemType);
-				}
-			}
-
-			PropertyInfo prop = modelType.GetProperty (info.Name);
-			prop.SetValue (
-				model,
-				Convert.ChangeType (info.GetValue (Target), info.FieldType),
-				null);
-    	}
-
-    	foreach (var model in models) {
-	    	WriteJsonData (model.Value, model.Key);
-    	}*/
-
-    	WriteJsonData (GetModelFromObject (Target), "Example2");
+        return model;
     }
 
-    object GetModelFromObject (System.Object obj) {
+    object ApplyModelProperties (object obj, object applyTo, List<PropertyInfo> modelProperties) {
 
-    	Dictionary<FieldInfo, Attribute> fields = GetFieldsWithAttribute (obj.GetType (), typeof (JsonSerializableAttribute));
-    	if (fields.Count == 0)
-    		return null;
+        for (int i = 0; i < modelProperties.Count; i ++) {
+           
+            PropertyInfo p = modelProperties[i];
+            object value = null;
+            System.Type memberType = null;
 
-    	JsonSerializableAttribute attribute;
-    	System.Type modelType = null;
-    	string attributeName;
-    	object model = null;
+            PropertyInfo targetProperty = obj.GetType ().GetProperty (p.Name);
+            if (targetProperty != null) {
+                value = targetProperty.GetValue (obj, null);
+                memberType = targetProperty.PropertyType;
+            }
 
-    	foreach (var field in fields) {
+            FieldInfo targetField = obj.GetType ().GetField (p.Name);
+            if (targetField != null) {
+                value = targetField.GetValue (obj);
+                memberType = targetField.FieldType;
+            }
 
-    		FieldInfo info = field.Key;
-			if (model == null) {
-	    		attribute = field.Value as JsonSerializableAttribute;
-				modelType = attribute.modelType;
-				attributeName = modelType.Name;
-				model = Activator.CreateInstance (attribute.modelType);
-			}
+            if (typeof (IEnumerable).IsAssignableFrom (memberType)) {
+                
+                // List
+                if (value is IList 
+                    && value.GetType ().IsGenericType 
+                    && !IsFundamental (memberType.GetGenericArguments ()[0])) {
+                    
+                    IList list = (IList)value;
+                    IEnumerable<object> o = list.Cast<object> ();
+                    value = o.Select (x => CreateModelFromObject (x)).ToList ();
 
-            // Left off here:
-            // this needs to handle lists/arrays of objects that also have json serializable fields
-			/*if (typeof (IList).IsAssignableFrom (info.FieldType)) {
-				IList l = info.GetValue (obj) as IList;
-				IList models = CreateList (l[0].GetType ());
-				foreach (var i in l) {
-					System.Type itemType = i.GetType ();
-					if (!IsFundamental (itemType)) {
-                        System.Object o = GetModelFromObject (i);
-						models.Add (o);
-					}
-				}
-				if (models.Count > 0) {
-					PropertyInfo prop2 = modelType.GetProperty (info.Name);
-					prop2.SetValue (
-						model,
-						Convert.ChangeType (models, info.FieldType),
-						null);
-				}
-			}*/
+                // Array
+                } else if (memberType.IsArray && !IsFundamental (memberType.GetElementType ())) {
+                    IList list = (IList)value;
+                    IEnumerable<object> o = list.Cast<object> ();
+                    value = o.Select (x => CreateModelFromObject (x)).ToArray ();
+                }
 
-			PropertyInfo prop = modelType.GetProperty (info.Name);
-			prop.SetValue (
-				model,
-				Convert.ChangeType (info.GetValue (obj), info.FieldType),
-				null);
-    	}
+            } else {
+                if (!IsFundamental (memberType)) {
+                    value = CreateModelFromObject (value);
+                } 
+            }
 
-    	return model;
+            if (value == null) {
+                continue;
+            } else {
+                memberType = value.GetType ();
+            }
+
+            if (value != null && memberType != null) {
+                p.SetValue (
+                    applyTo,
+                    Convert.ChangeType (value, memberType),
+                    null);
+            } else {
+                Debug.LogError (obj.GetType () + " does not include a field or property named " + p.Name);
+            }
+        }
+
+        return applyTo;
     }
 
-    public IList CreateList(Type myType) {
-	    Type genericListType = typeof(List<>).MakeGenericType(myType);
-	    return (IList)Activator.CreateInstance(genericListType);
-	}
+    object SetObjectMembersFromModel (object obj) {
 
-    /*List<object> GetModelsFromObject (System.Object obj) {
+        if (obj == null) 
+            return null;
 
-    	Dictionary<FieldInfo, Attribute> fields = GetFieldsWithAttribute (typeof (JsonSerializableAttribute));
-    	Dictionary<string, object> models = new Dictionary<string, object> ();
+        System.Type modelType = GetModelType (obj);
+        object model = ReadJsonData<object> ();
+        Dictionary<string, object> dict = (Dictionary<string, object>)model;
+        // TODO: go through dict and set Target's values to match the properties in the loaded model
 
-    	foreach (var field in fields) {
-    		
-			FieldInfo info = field.Key;
-    		JsonSerializableAttribute attribute = field.Value as JsonSerializableAttribute;
-			System.Type modelType = attribute.modelType;
-			string attributeName = modelType.Name;
-			object model;
+        /*foreach (var d in dict) {
 
-			if (models.ContainsKey (attributeName)) {
-				model = models[attributeName];
-			} else {
-				model = Activator.CreateInstance (attribute.modelType);
-				models.Add (attributeName, model);
-			}
+        }*/
 
-			if (typeof (IList).IsAssignableFrom (info.FieldType)) {
-				List<List<object>> customTypes = new List<List<object>> ();
-				foreach (var item in info.GetValue (Target) as IList) {
-					System.Type itemType = item.GetType ();
-					if (IsFundamental (itemType)) continue;
-					customTypes.Add (GetModelsFromObject (item));
-				}
-				if (customTypes.Count > 0) {
+        // model = dict.ToObject2 (modelType);
+        // Debug.Log (model.GetType ());
 
-				}
-			}
+        List<PropertyInfo> modelProperties = new List<PropertyInfo> (modelType.GetProperties ());
+        object o = ApplyModelProperties (model, Target, modelProperties);
 
-			PropertyInfo prop = modelType.GetProperty (info.Name);
-			prop.SetValue (
-				model,
-				Convert.ChangeType (info.GetValue (Target), info.FieldType),
-				null);
-    	}
+        return o;
+    }
 
-    	return new List<object> (models.Values);
-    }*/
+    System.Type GetModelType (object obj) {
+        JsonSerializableAttribute j = (JsonSerializableAttribute) Attribute.GetCustomAttribute (
+            obj.GetType (), 
+            typeof (JsonSerializableAttribute));
+        return j.modelType;
+    }
 
-    public static void WriteJsonData (object obj, string fileName) {
+    public void WriteJsonData (object obj) {
+        string fileName = Target.GetType ().Name;
     	string path = Application.dataPath + "/Scripts/Utilities/JsonSerializable/Data/";
 		var streamWriter = new StreamWriter (path + "" + fileName + ".json");
         streamWriter.Write(JsonWriter.Serialize (obj));
         streamWriter.Close();
     }
 
-    bool IsFundamental (System.Type type) {
-    	return type.IsPrimitive || type.Equals (typeof (string)) || type.Equals (typeof (DateTime));
+    public T ReadJsonData<T> () where T : class {
+        string fileName = Target.GetType ().Name;
+        string path = Application.dataPath + "/Scripts/Utilities/JsonSerializable/Data/";
+        StreamReader streamReader = new StreamReader (path + "" + fileName + ".json");
+        string data = streamReader.ReadToEnd ();
+        streamReader.Close ();
+        return JsonReader.Deserialize<T> (data);
     }
 
-    /*void SetFieldWithName (KeyValuePair<FieldInfo, Attribute> info, ref System.Object model) {
-    	string name = info.Key.Name;
-    	FieldInfo[] fieldInfo = model.GetType ().GetFields ();
-    	// Debug.Log (fieldInfo.Length);
-    	List<FieldInfo> modelFields = new List<FieldInfo> (fieldInfo);
-    	// Debug.Log (modelFields.Count);
-    	FieldInfo field = modelFields.Find (x => x.Name == name);
-    	// Debug.Log (field);
-    	field.SetValue (model, info.Key.GetValue (Target));
-    }*/
-
-    void Load () {
-
+    bool IsFundamental (System.Type type) {
+    	return type.IsPrimitive || type.Equals (typeof (string)) || type.Equals (typeof (DateTime));
     }
 }

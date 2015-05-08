@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 
-public class JsonSerializableAttribute : PropertyAttribute {
-	
+[AttributeUsage (AttributeTargets.Class)]
+public class JsonSerializableAttribute : System.Attribute {
+
 	public readonly System.Type modelType;
 
 	public JsonSerializableAttribute (System.Type modelType) {
