@@ -3,6 +3,9 @@ using System.Collections;
 
 public class MainCamera : MB {
 
+	// Inspector Vars
+	public float initialZoomLevel;
+
 	static MainCamera instance = null;
 	static public MainCamera Instance {
 		get {
@@ -65,7 +68,7 @@ public class MainCamera : MB {
 			zoom = Mathf.Clamp (value, 0, 15);
 			float y = -Mathf.Tan (FOV / 2f * Mathf.Deg2Rad) * zoom;
 			//Transform.SetPosition (new Vector3 (Position.x, y, zoom)); 		// Zoom to bottom
-			Transform.SetPosition (new Vector3 (Position.x, Position.y, zoom)); // Zoom to middle
+			Transform.SetPosition (new Vector3 (Position.x, Position.y, 0)); // Zoom to middle
 			XMin = y * Aspect;
 			Positioner.XMin = XMin;
 		}
@@ -112,7 +115,7 @@ public class MainCamera : MB {
 
 	void Start () {
 		Zoom = 0;
-		TargetZoom = 2;
+		TargetZoom = initialZoomLevel;
 	}
 
 	void Update () {

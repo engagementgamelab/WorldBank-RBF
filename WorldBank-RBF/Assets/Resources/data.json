@@ -1,27 +1,27 @@
 {
   "characters": [
     {
-      "symbol": "capitolcitytraveler",
-      "display_name": "Traveler from the Capitol City",
+      "symbol": "capital_city_traveler",
+      "display_name": "Traveler from the Capital City",
       "description": "A woman who you imagine might come from the capitol stands before you. At first glance you notice she seems a bit disheveled and visibly annoyed. She is wearing a high-tech eyescreen headset and seems incredibly distracted."
     },
     {
-      "symbol": "centercityprofessor",
-      "display_name": "Professor from the Capitol City",
+      "symbol": "capital_city_professor",
+      "display_name": "Professor from the Capital City",
       "description": "A well-dressed middle-aged man leans against the ticket counter, casually reading the world news on his tablet. Next to him is a small cart filled with a dozen or so textbooks on the history of Zariba. You spy a univeristy pin on the his lapel."
     },
     {
-      "symbol": "fruitvendor",
+      "symbol": "fruit_vendor",
       "display_name": "Fruit Vendor",
       "description": "A young woman, maybe 19 years, is selling fruit from a well-stocked cart. Most of them you’ve never even seen before, and a perfume-like aroma wafts from a box of red berry clusters. She looks expectantly at you, smiling politely."
     },
     {
-      "symbol": "medicinemerchant",
+      "symbol": "medicine_merchant",
       "display_name": "Medicine Merchant",
       "description": "In the middle of the crowded marketplace, you see a man dressed in an impressive garb that feels important and professional, but at once authentic and grounded. He seems to be charming those around him as a small crowd gathers to listen to his sermon-like presentation. Behind him is an elaborate cart of small tokens and jars, all different sizes and shapes. The sign reads “Medicine” in multiple languages."
     },
     {
-      "symbol": "twowomen",
+      "symbol": "two_women",
       "display_name": "Women waiting for ferry",
       "description": "At the far end of the market there are two women in elaborate dress. You don’t know where they are from, but they are certainly not from this region, nor do they look like they came from Capitol City. Very ornamental and expensive, their dresses pop and glide in different directions and both are wearing wild headpieces. You feel a sense of royalty from them."
     }
@@ -147,82 +147,78 @@
     ],
     "malcom": [
       {
-        "symbol": "centercityprofessor_dialogue",
-        "character": "centercityprofessor",
+        "symbol": "capitalcityprofessor_dialogue",
+        "character": "capital_city_professor",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "He introduces himself enthusiastically and tells you about his work studying political science and the old Zariban empire. His friendly demeanor shifts into annoyance as he speaks about his need to get to [[Mile]] and rolls his eyes at the picture of the [[prime minister]] on the front page of his paper."
           },
           "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+            "text": "You ask him about Mile: <i>I haven’t been down that far south in decades but I hear the life hasn’t changed much. Good people who still remember life before the the current regime took power.</i> He indicates the Prime Minister’s photo as he speaks. <i>You can take the train through mile into Zema, though the tracks have been terrible for years.</i>"
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+          "Prime Minister": {
+            "text": "As soon as you say the words prime minister his eyes grow wide and he puts down his paper. <i>You know, ever since the new government took power, the train has gotten worse and worse. They should be investing in transport instead of inviting foreigners into the country to pillage our resources.</i> He eyes you appraisingly before continuing. <i>I will tell you this: the government is corrupt and incompetent. They are not respected in the highlands, where they still remember the old regime. They can’t keep the trains running, and they won’t be in power for long.</i>",
+            "unlocks": "unlockable_contract_ngo_to_administer_plan"
           }
         }
       },
       {
-        "symbol": "centercitytraveler_dialogue",
-        "character": "capitolcitytraveler",
+        "symbol": "capitalcitytraveler_dialogue",
+        "character": "capital_city_traveler",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours for the next train out of the station. “There have been two trains heading to [[Mile]] that have already been cancelled!” Flustered, she mutters under her breath about being late to meet [[her friend.]]"
+            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours for the next train out of the station. <i>There have been two trains heading to Mile that have already been cancelled!</i> Flustered, she mutters under her breath about being late to meet her friend."
           },
           "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been there. “I just need to pass through on the way to visit my [[friend.]]\""
+            "text": "You ask her about Mile, and she tells you she has never been there. <i>I just need to pass through on the way to visit my friend.</i>"
           },
-          "Her Friend": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. “We are very close, and since he has been frustrated with his job, I want to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says.”  She raises her arms in exasperation. “This accursed train! If medical supplies don’t even reach the hospital, what are my chances?”",
+          "Arrival Time": {
+            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. <i>We are very close, and since he has been frustrated with his job, I want to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says.</i>  She raises her arms in exasperation. <i>This accursed train! If medical supplies don’t even reach the hospital, what are my chances?</i>",
             "unlocks": "unlockable_hire_private_shipping_company"
           }
         }
       },
       {
         "symbol": "fruitvendor_dialogue",
-        "character": "fruitvendor",
+        "character": "fruit_vendor",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "<i>Fresh fruit!</i> she says as you approach. <i>Only the best, grown by local [[farmers]]. Try the berries! They are my [[daughter]]’s favorite.</i> She hands you a sample. <i>No charge,</i> she says.",
+            "unlocks": "unlockable_fruit_1"
           },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+          "Farmers": {
+            "text": "You ask about the farmers who grew the fruit. The woman replies in a rehearsed tone. <i>Very hardworking people. Very poor, but who needs money when you can eat what you grow? I live in the city, so I have to sell fruit to make ends meet and support my family.</i>",
+            "unclocks": "unlockable_plan_service_vouchers"
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+          "Daughter": {
+            "text": "<i>My daughter? She is just three, and the cutest girl you have ever seen,</i> the fruit seller beams. <i>Her grandmother is watching her so I can sell fruit here in the market. I support all three of us.</i> When you ask about the girl’s vaccinations, the woman shrugs. <i>Who has time to travel to a hospital? Keeping her fed is more important.</i>",
+            "unlocks": "unlockable_plan_traveling_nurses"
           }
         }
       },
       {
         "symbol": "medicinemerchant_dialogue",
-        "character": "medicinemerchant",
+        "character": "medicine_merchant",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "<i>You are looking ill, my friend!</i> he says to you by way of greeting. <i>We have the cure for whatever ails you. All of our products are 100% derived from the land itself, and we never use any ingredients of foreign origin. Our medicine is the only cure that has been proven by centuries of practice here in Zariba. We are headquartered in [[Kibari]], so all our products are checked for authenticity by [[Mr. Todd]] himself!</i>"
           },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+          "Kibari": {
+            "text": "You approach the man and ask about Kibari: <i>Kibari is the heart of the highlands, and the center of commerce and traditional knowledge for the nation. From Kibari, the whole nation is open wide to you. It is easy enough to get to. Just hitch a ride with one the local farm transports. They come and go every day.</i>",
+            "unlocks": "unlockable_route_malcom_to_kibari"
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+          "Mr. Todd": {
+            "text": "As soon as you mention Mr. Todd the medicine merchant’s face lights up: <i>I might be a bit biased, but that man is everything for the local region. He is a genius who has built a business from the ground up! Literally! Everyone loves Mr. Todd. You need to meet him. I’m sure one conversation with him will change all your thoughts on foreign medicine!</i>"
           }
         }
       },
       {
         "symbol": "twowomen_dialogue",
-        "character": "twowomen",
+        "character": "malcom_twowomen",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
-          },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
-          },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+            "text": "As you approach they both turn to eye you up and down, and you feel a sense of being judged by your attire. They turn back to each other smirking, continuing their conversation: <i>This market was fun for an hour or so, but I just cannot wait to be back at the estate. Did you hear? Uncle will be renovating the outer sand gardens to make space for three new horses!</i>/n/n The second woman smiles. <i>That sounds lovely. Hopefully next spring he’ll finally put in that airship tether he’s always going on about. What time is it, dear? The ferry should be here soon!</i>",
+            "unlocks": "unlockable_route_malcom_to_valeria"
           }
         }
       }
@@ -331,42 +327,85 @@
     ]
   },
   "phase_two": {
-    "problem_template": {
-      "symbol": "confusion_of_roles",
-      "name": "Confusion of roles / Ministry Outreach",
-      "initiating_npc": "CBO",
-      "initiating_dialogue": "We haven’t seen the outreach teams yet. They are supposed to be educating the populace about changes, but so far we don’t see them. The people have no idea anything has even changed.",
-      "starting_options": [
-        "conference",
-        "comply_with_Ministry"
-      ],
-      "contacts": {
-        "Dep. Minister of Health": {
-          "initial": "The providers have not supplied outreach plans that we can approve at this point. It’s important that we have consistent messaging that goes through approved channels and toes the line. The various providers are sending mixed messages to the citizens. We don’t want that to happen...",
+    "scenario_1": {
+      "card_template": {
+        "symbol": "government_overreach_on_verification",
+        "name": "Government overreach on verification",
+        "initiating_npc": "provider_2",
+        "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
+        "starting_options": [
+          "conference",
+          "comply_with_ministry"
+        ],
+        "final_options": [
+          "comply_with_ministry",
+          "authorize_push_back",
+          "clarify_roles"
+        ],
+        "dep_minister_of_health": {
+          "dialogue": "We are very interested in making sure the providers are doing what they say, and we have the staff available to review, so why not?",
+          "unlocks": "Narrows to third-party verifier and Coach",
+          "feedback": {
+            "clarify_roles": "All right, I understand. I'll inform the staff here."
+          }
+        },
+        "coach": {
+          "dialogue": "Duplicating efforts seems to be hampering the health providers. I'd either clarify everyone's roles for them, or empower health providers to push back somehow.",
           "unlocks": [
-            "pushback_against_providers",
-            "pushback_against_ministry"
+            "separation of rolls",
+            "give providers authority to push back"
           ]
         },
-        "Coach": {
-          "initial": "The outreach operations have been slow. I have been facilitating the conversation between the providers and the ministry, and the plan should be executed soon.",
-          "narrows": [
-            "health_provider_1",
-            "health_provider_2",
-            "ministry"
-          ]
+        "third_party_verifier": {
+          "dialogue": "I didn't know about this. If the Ministry is doubling our verification efforts, it could prove very confusing to the providers.",
+          "unlocks": "separation of roles"
         },
         "health_provider_1": {
-          "initial": "The ministry keeps asking to see our plans and revise them. If they don’t approve them soon, we’ll never get started. Tell them to get off our case and let us serve the community.",
-          "unlocks": "pushback_against_ministry"
+          "dialogue": "Honestly, we've been ignoring the ministry's requests. We've got too much actual work to worry about."
         },
         "health_provider_2": {
-          "initial": "The ministry keeps asking to see our plans and revise them. If they don’t approve them soon, we’ll never get started. Tell them to get off our case and let us serve the community.",
-          "narrows": [
-            "health_provider_1",
-            "ministry"
-          ],
-          "unlocks": "pushback_against_ministry"
+          "feedback": {
+            "comply_with_ministry": "OK, we'll do our best.",
+            "authorize_push_back": "OK I'll bring it up the next time they send in their request, but they can be very firm."
+          }
+        }
+      }
+    },
+    "scenario_2": {},
+    "scenario_3": {},
+    "tactics": {
+      "tactic_1": {
+        "symbol": "tactic",
+        "name": "Tactic name",
+        "initiating_npc": "provider_2",
+        "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
+        "starting_options": [
+          "conference",
+          "comply_with_ministry"
+        ],
+        "final_options": [
+          "comply_with_ministry",
+          "authorize_push_back",
+          "clarify_roles"
+        ],
+        "dep_minister_of_health": {
+          "dialogue": "We are very interested in making sure the providers are doing what they say, and we have the staff available to review, so why not?",
+          "unlocks": "Narrows to third-party verifier and Coach"
+        },
+        "coach": {
+          "dialogue": "Duplicating efforts seems to be hampering the health providers. I'd either clarify everyone's roles for them, or empower health providers to push back somehow.",
+          "unlocks": [
+            "separation of rolls",
+            "give providers authority to push back"
+          ]
+        },
+        "third_party_verifier": {
+          "dialogue": "I didn't know about this. If the Ministry is doubling our verification efforts, it could prove very confusing to the providers.",
+          "unlocks": "separation of roles"
+        },
+        "health_provider_1": {
+          "dialogue": "Honestly, we've been ignoring the ministry's requests. We've got too much actual work to worry about.",
+          "unlocks": "something"
         }
       }
     }
@@ -420,6 +459,42 @@
     },
     {
       "symbol": "unlockable_hire_private_shipping_company",
+      "title": "Something",
+      "description": "(pbc option)",
+      "unlocked": [
+        "malcom"
+      ],
+      "type": "professionalism"
+    },
+    {
+      "symbol": "unlockable_contract_ngo_to_administer_plan",
+      "title": "Something",
+      "description": "(pbc option)",
+      "unlocked": [
+        "malcom"
+      ],
+      "type": "professionalism"
+    },
+    {
+      "symbol": "unlockable_route_malcom_to_kibari",
+      "title": "Something",
+      "description": "(pbc option)",
+      "unlocked": [
+        "malcom"
+      ],
+      "type": "professionalism"
+    },
+    {
+      "symbol": "unlockable_fruit_1",
+      "title": "Something",
+      "description": "(pbc option)",
+      "unlocked": [
+        "malcom"
+      ],
+      "type": "professionalism"
+    },
+    {
+      "symbol": "unlockable_plan_traveling_nurses",
       "title": "Something",
       "description": "(pbc option)",
       "unlocked": [

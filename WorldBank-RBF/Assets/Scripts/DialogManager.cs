@@ -42,6 +42,9 @@ public class DialogManager : MonoBehaviour {
 	// Variable Definitions
 	public Button btnPrefab;
 	public NPCDialogBox dialogBox;
+	public ScenarioDialog scenarioDialog;
+
+	public delegate void BackButtonDelegate();
 
 	private StringBuilder builder = new StringBuilder();
 
@@ -50,8 +53,6 @@ public class DialogManager : MonoBehaviour {
 	private double[] currentDialogueOpacity;
 	private List<string> currentDialogueText;
 	private List<string> currentDialogueChoices;
-
-	public delegate void BackButtonDelegate();
 
 	void Awake() {
 
@@ -69,7 +70,7 @@ public class DialogManager : MonoBehaviour {
 	}
 
 	// TODO: Will be used for fading in text
-/*	void Update() {
+	/*	void Update() {
 
 		if(currentDialogueText != null)
 		{
@@ -95,7 +96,6 @@ public class DialogManager : MonoBehaviour {
 			currentDialogIndex++;
 
 		}
-
 	}*/
 
 	/// <summary>
@@ -116,15 +116,12 @@ public class DialogManager : MonoBehaviour {
 		foreach (NPCDialogButton child in remove)
 			ObjectPool.Destroy<NPCDialogButton> (child.transform);
 
-		
 		if(btnChoices != null) {
 			foreach(NPCDialogButton btnChoice in btnChoices) {
 				btnChoice.transform.SetParent(choiceGroup);
-				btnChoice.transform.localScale = new Vector3(1, 1, 1);
+				btnChoice.transform.localScale = Vector3.one;
 				btnChoice.transform.localPosition = Vector3.zero;
 				btnChoice.transform.localEulerAngles = Vector3.zero;
-
-				Debug.Log("Added button: " + btnChoice.Button.transform.FindChild("Text").GetComponent<Text>().text);
 			}
 		}
 		
@@ -149,6 +146,26 @@ public class DialogManager : MonoBehaviour {
 	    dialogBox.Open (npc);
 	    dialogBox.Content = strDialogTxt;
 	    return dialogBox;
+	}
+
+	public GenericDialogBox CreateGenericDialog() {
+
+	    GenericDialogBox dialog = ObjectPool.Instantiate<GenericDialogBox>();
+	    dialog.Open ();
+	    dialog.Content = "strDialogTxt";
+
+	    return dialog;
+
+	}
+
+	public ScenarioDialog CreateScenarioDialog() {
+
+	    scenarioDialog = ObjectPool.Instantiate<ScenarioDialog>();
+	    scenarioDialog.Open();
+	    scenarioDialog.Content = "strDialogTxt";
+	    
+	    return scenarioDialog;
+
 	}
 
 	/// <summary>
@@ -221,8 +238,8 @@ public class DialogManager : MonoBehaviour {
 			foreach(Match m in keyMatches) {
 			    if (m.Success)
 				{
-			        string strKeyword = m.Groups[3].ToString().Replace(".", "");
-			        currentDialogueChoices.Add(strKeyword.ToLower());				
+			        string strKeyword = m.Groups[3].ToString();
+			        currentDialogueChoices.Add(strKeyword);	
 				}
 			}
 		}
@@ -235,15 +252,16 @@ public class DialogManager : MonoBehaviour {
 
 			string choiceName = textInfo.ToTitleCase(choice);
 
-			NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton> ();
+			NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton>();
 			
 			Text btnTxt = btnChoice.Button.transform.FindChild("Text").GetComponent<Text>();
 			btnTxt.text = choiceName;
 
-			btnChoice.Button.onClick.RemoveAllListeners ();
+			btnChoice.Button.onClick.RemoveAllListeners();
+
 			string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
-			btnChoice.Button.onClick.AddListener (() => currentDialogueChoices.Remove (t));
-			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, npc, false));//, dialogBox));
+			btnChoice.Button.onClick.AddListener (() => currentDialogueChoices.Remove(t));
+			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, npc, false));
 
 			btnList.Add(btnChoice);
 		}

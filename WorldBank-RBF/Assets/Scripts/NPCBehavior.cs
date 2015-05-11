@@ -56,7 +56,7 @@ public class NPCBehavior : MB {
 	}
 
 	public void DialogFocus () {
-		NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Dialog);
+		NPCFocusBehavior.Instance.SetFocus(NPC, FocusLevel.Dialog);
 	}
 
 	public void OnClick () {

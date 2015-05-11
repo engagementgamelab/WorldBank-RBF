@@ -2,18 +2,16 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class NPCDialogBox : MB {
-
-	public static readonly float width = 50f; // ew
+public class GenericDialogBox : MB {
 
 	public CanvasRenderer canvasRenderer;
 	public Text text;
-	public Button backButton;
+
 	public Transform verticalGroup;
 	public Transform choiceGroup;
+	
 	bool open = false;
-	NPCBehavior npc;
-
+	
 	string content = "";
 	public string Content {
 		get { return content; }
@@ -23,10 +21,9 @@ public class NPCDialogBox : MB {
 		}
 	}
 
-	public void Open (NPCBehavior npc) {
-		
-		this.npc = npc;
-		Vector3 position = npc.Position;
+	public void Open () {
+				
+		Vector3 position = Vector3.one;
 		float aspect = 1f / MainCamera.Instance.Aspect;
 		float z = position.z;
 		float scale = z * 0.09f;
@@ -41,21 +38,19 @@ public class NPCDialogBox : MB {
 			scale = z * 0.5f;
 		}
 
-		Position = new Vector3 (GetXPosition (npc.FacingLeft), 0, z);
+		Position = new Vector3 (0, 0, z);
 		verticalGroup.localScale = new Vector3 (scale * 0.1f, scale * 0.1f, 1);
 		Transform.localScale = new Vector3 (canvasScale, canvasScale, 1);
 		open = true;
 
-		StartCoroutine (CoRotate (npc.FacingLeft));
+		StartCoroutine (CoRotate());
 	}
 
-	public void Close (bool openNext) {
+	public void Close () {
 		// NPCFocusBehavior.Instance.FocusOut ();
 		// npc.OnClick ();
-		npc.CloseDialog (openNext);
-		npc = null;
-		ObjectPool.Destroy<NPCDialogBox> (Transform);
-		open = false;
+		ObjectPool.Destroy<GenericDialogBox> (Transform);
+		// callback?
 	}
 
 	float GetXPosition (bool facingLeft) {
@@ -64,11 +59,11 @@ public class NPCDialogBox : MB {
 		return MainCamera.Instance.Positioner.Position.x + (facingLeft ? -xOffset : xOffset);
 	}
 
-	IEnumerator CoRotate (bool facingLeft) {
+	IEnumerator CoRotate () {
 		
 		float startTime = Time.time;
-		float startRotation = facingLeft ? 355f : 2.5f;
-		float endRotation = facingLeft ? 2.5f : 5f;
+		float startRotation = 2.5f;
+		float endRotation = 5f;
 
 		while (open) {
 			float eTime = startTime - Time.time;
