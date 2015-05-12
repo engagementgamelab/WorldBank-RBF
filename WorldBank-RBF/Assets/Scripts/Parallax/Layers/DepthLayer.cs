@@ -48,7 +48,7 @@ public class DepthLayer : MB, IEditorPoolable {
 		get { return Mathf.Tan (MainCamera.FOV / 2 * Mathf.Deg2Rad) * Position.z * 2; }
 	}
 
-	public static float layerSeparation = 20;
+	public static float layerSeparation = 10;
 	[SerializeField, HideInInspector] float localSeparation = 0;
 	public float LocalSeparation {
 		get { return localSeparation; }

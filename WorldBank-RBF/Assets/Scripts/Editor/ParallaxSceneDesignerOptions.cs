@@ -59,7 +59,7 @@ public class ParallaxSceneDesignerOptions : ScriptableObject {
         saveLoadOptions.OnGUI ();
         EditorGUILayout.Separator ();
 
-        layerCount = EditorGUILayout.IntSlider ("Layer Count", layerCount, 0, 6);
+        layerCount = EditorGUILayout.IntSlider ("Layer Count", layerCount, 0, 10);
         if (layerCount != prevLayerCount) {
             Refresh ();
             prevLayerCount = layerCount;
