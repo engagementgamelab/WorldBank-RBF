@@ -25,7 +25,7 @@ public class ScenarioManager : MonoBehaviour {
 
 	public void OpenDialog() {
 
-		DialogManager.instance.CreateScenarioDialog();
+		DialogManager.instance.CreateScenarioDialog("card_template");
 
 	}
 }

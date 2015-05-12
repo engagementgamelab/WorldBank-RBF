@@ -15,7 +15,7 @@ using System.IO;
 
 public class SceneManager : MonoBehaviour {
 
-	public string cityName;
+	public string sceneName;
 
 	void Awake () {
 
@@ -25,7 +25,7 @@ public class SceneManager : MonoBehaviour {
 		// Set global game data if needed
 		SetGameData();
 
-		DataManager.SetSceneContext(cityName);
+		DataManager.SetSceneContext(sceneName);
 
 	}
 

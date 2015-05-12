@@ -79,6 +79,7 @@ public class Models {
         public string initiating_dialogue { get; set; }
         public string[] starting_options { get; set; }
         public string[] final_options { get; set; }
+        public Dictionary<string, Dictionary<string, string>> characters { get; set; }
 
     }
 
@@ -91,6 +92,14 @@ public class Models {
         public string symbol { get; set; }
         public string character { get; set; }
 		public Dictionary<string, Dictionary<string, string>> dialogue { get; set; }
+
+    }
+
+    public class Advisor {
+
+        public string dialogue { get; set; }
+        // public string[] unlocks { get; set; }
+        // public Dictionary<string, object> feedback { get; set; }
 
     }
 

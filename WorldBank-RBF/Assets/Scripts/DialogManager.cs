@@ -158,11 +158,16 @@ public class DialogManager : MonoBehaviour {
 
 	}
 
-	public ScenarioDialog CreateScenarioDialog() {
+	public ScenarioDialog CreateScenarioDialog(string strSymbol) {
+
+		Models.Scenario scenario = DataManager.GetScenarioBySymbol(strSymbol);
 
 	    scenarioDialog = ObjectPool.Instantiate<ScenarioDialog>();
 	    // scenarioDialog.Open();
-	    scenarioDialog.Content = "strDialogTxt";
+
+	    Debug.Log(scenario.characters["dep_minister_of_health"]);
+
+	    scenarioDialog.Content = scenario.initiating_dialogue;
 	    
 	    return scenarioDialog;
 

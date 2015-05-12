@@ -146,7 +146,7 @@ public class DataManager {
     /// <returns>The Models.Scenario for the symbol matching the input</returns>
     public static Models.Scenario GetScenarioBySymbol(string strSymbol) {
 
-        Models.Scenario unlockRef = gameData.phase_two["scenario_1"]["card_template"];
+        Models.Scenario unlockRef = gameData.phase_two["scenario_1"][strSymbol];
         
         return unlockRef;
     }
