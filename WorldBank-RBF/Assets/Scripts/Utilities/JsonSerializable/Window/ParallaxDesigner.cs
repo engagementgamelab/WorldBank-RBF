@@ -58,8 +58,6 @@ public class ParallaxDesigner : EditorWindow, IEditorObjectDrawer<Example2> {
 
     void SetTargetFromSelection () {
     	
-    	failsafe = 10;
-
     	UnityEngine.Object[] objects = Selection.objects;
     	if (objects.Length == 0) {
     		Target = null;
@@ -88,7 +86,7 @@ public class ParallaxDesigner : EditorWindow, IEditorObjectDrawer<Example2> {
     }
 
     void Load () {
-        Target = (Example2)SetObjectMembersFromModel (Target);
+        ApplyModelPropertiesToObject (Target);
     }
 
     Dictionary<FieldInfo, Attribute> GetFieldsWithAttribute (System.Type type, System.Type attribute) {
@@ -111,12 +109,12 @@ public class ParallaxDesigner : EditorWindow, IEditorObjectDrawer<Example2> {
         System.Type modelType = GetModelType (obj);
         object model = Activator.CreateInstance (modelType);
         List<PropertyInfo> modelProperties  = new List<PropertyInfo> (modelType.GetProperties ());
-        model = ApplyModelProperties (obj, model, modelProperties);
+        model = ApplyObjectPropertiesToModel (obj, model, modelProperties);
 
         return model;
     }
 
-    object ApplyModelProperties (object obj, object applyTo, List<PropertyInfo> modelProperties) {
+    object ApplyObjectPropertiesToModel (object obj, object applyTo, List<PropertyInfo> modelProperties) {
 
         for (int i = 0; i < modelProperties.Count; i ++) {
            
@@ -128,30 +126,28 @@ public class ParallaxDesigner : EditorWindow, IEditorObjectDrawer<Example2> {
             if (targetProperty != null) {
                 value = targetProperty.GetValue (obj, null);
                 memberType = targetProperty.PropertyType;
-            }
-
-            FieldInfo targetField = obj.GetType ().GetField (p.Name);
-            if (targetField != null) {
-                value = targetField.GetValue (obj);
-                memberType = targetField.FieldType;
+            } else {
+                FieldInfo targetField = obj.GetType ().GetField (p.Name);
+                if (targetField != null) {
+                    value = targetField.GetValue (obj);
+                    memberType = targetField.FieldType;
+                }
             }
 
             if (typeof (IEnumerable).IsAssignableFrom (memberType)) {
                 
+                IList ilist = (IList)value;
+                IEnumerable<object> list = ilist.Cast<object> ().Select (x => CreateModelFromObject (x));
+
                 // List
                 if (value is IList 
                     && value.GetType ().IsGenericType 
                     && !IsFundamental (memberType.GetGenericArguments ()[0])) {
-                    
-                    IList list = (IList)value;
-                    IEnumerable<object> o = list.Cast<object> ();
-                    value = o.Select (x => CreateModelFromObject (x)).ToList ();
+                    value = list.ToList ();
 
                 // Array
                 } else if (memberType.IsArray && !IsFundamental (memberType.GetElementType ())) {
-                    IList list = (IList)value;
-                    IEnumerable<object> o = list.Cast<object> ();
-                    value = o.Select (x => CreateModelFromObject (x)).ToArray ();
+                    value = list.ToArray ();
                 }
 
             } else {
@@ -179,27 +175,147 @@ public class ParallaxDesigner : EditorWindow, IEditorObjectDrawer<Example2> {
         return applyTo;
     }
 
-    object SetObjectMembersFromModel (object obj) {
-
-        if (obj == null) 
-            return null;
+    void ApplyModelPropertiesToObject (object obj) {
 
         System.Type modelType = GetModelType (obj);
+        System.Type objType = obj.GetType ();
         object model = ReadJsonData<object> ();
         Dictionary<string, object> dict = (Dictionary<string, object>)model;
-        // TODO: go through dict and set Target's values to match the properties in the loaded model
+        
+        foreach (var val in dict) {
+            string propName = val.Key;
+            PropertyInfo property = modelType.GetProperty (propName);
+            if (property == null) {
+                // This happens because JsonFX serializes backing fields, 
+                // but they aren't needed
+                continue;
+            }
+            object value = val.Value;
+            System.Type memberType = property.PropertyType;
 
-        /*foreach (var d in dict) {
+            if (typeof (IEnumerable).IsAssignableFrom (memberType)) {
+                
+                IList ilist = (IList)value;
+                List<object> list = ilist.Cast<object> ().ToList ();
 
-        }*/
+                if (memberType.IsGenericType) {
+                    System.Type oType = memberType.GetGenericArguments ()[0];
+                    if (IsFundamental (oType)) {
+                        value = ConvertObjectListToTypeList (
+                            list, objType.GetField (propName).FieldType, oType);
+                        memberType = value.GetType ();
+                    } else {
+                        SetObjectsFromModels (
+                            objType.GetField (propName).GetValue (obj), list);
+                        continue;
+                    }
+                } else {
+                    if (!IsFundamental (memberType.GetElementType ())) {
+                        SetObjectsFromModels (
+                            objType.GetField (propName).GetValue (obj), list);
+                        continue;
+                    }
+                }
+            } else {
+                if (!IsFundamental (memberType)) {
+                    object o = objType.GetField (propName).GetValue (obj); // reference to object field on the object we're setting values to
+                    SetObjectFromModel (o, value);
+                    continue;
+                }
+            }
 
-        // model = dict.ToObject2 (modelType);
-        // Debug.Log (model.GetType ());
+            SetMemberValue (obj, propName, value);
+        }
+    }
 
-        List<PropertyInfo> modelProperties = new List<PropertyInfo> (modelType.GetProperties ());
-        object o = ApplyModelProperties (model, Target, modelProperties);
+    void SetObjectsFromModels (object group, List<object> models) {
+        IList ilist = (IList)group;
+        List<object> list = ilist.Cast<object> ().ToList ();
+        for (int i = 0; i < models.Count; i ++) {
+            SetObjectFromModel (list[i], models[i]);
+        }
+    }
 
-        return o;
+    void SetObjectFromModel (object obj, object model) {
+        
+        if (obj == null)
+            return;
+
+        System.Type modelType = GetModelType (obj);
+        System.Type objType = obj.GetType ();
+        Dictionary<string, object> dict = (Dictionary<string, object>)model;
+
+        foreach (var val in dict) {
+            string propName = val.Key;
+            PropertyInfo property = modelType.GetProperty (propName);
+            if (property == null) {
+                continue;
+            }
+
+            object value = val.Value;
+            System.Type memberType = property.PropertyType;
+
+            if (typeof (IEnumerable).IsAssignableFrom (memberType)) {
+                
+                IList ilist = (IList)value;
+                List<object> list = ilist.Cast<object> ().ToList ();
+
+                if (memberType.IsGenericType) {
+                    System.Type oType = memberType.GetGenericArguments ()[0];
+                    if (IsFundamental (oType)) {
+                        value = ConvertObjectListToTypeList (
+                            list, objType.GetField (propName).FieldType, oType);
+                        memberType = value.GetType ();
+                    } else {
+                        SetObjectsFromModels (
+                            objType.GetField (propName).GetValue (obj), list);
+                        continue;
+                    }
+                } else {
+                    if (!IsFundamental (memberType.GetElementType ())) {
+                        SetObjectsFromModels (
+                            objType.GetField (propName).GetValue (obj), list);
+                        continue;
+                    }
+                }
+            } else {
+                if (!IsFundamental (memberType)) {
+                    object o = objType.GetField (propName).GetValue (obj);
+                    SetObjectFromModel (o, value);
+                    continue;
+                }
+            }
+
+            SetMemberValue (obj, propName, value);
+        }
+    }
+
+    void SetMemberValue (object obj, string memberName, object value) {
+        
+        System.Type objType = obj.GetType ();
+        System.Type memberType = value.GetType ();
+        
+        PropertyInfo targetProperty = objType.GetProperty (memberName);
+        if (targetProperty != null) {
+            targetProperty.SetValue (
+                obj, Convert.ChangeType (value, memberType), null);
+        }
+
+
+        FieldInfo targetField = objType.GetField (memberName);
+        if (targetField != null) {
+            targetField.SetValue (
+                obj, Convert.ChangeType (value, memberType));
+        }
+    }
+
+    object ConvertObjectListToTypeList (List<object> fromList, System.Type toListType, System.Type toItemType) {
+        object newList = Activator.CreateInstance (toListType);
+        IList l = (IList)newList;
+        foreach (object ob in fromList) {
+            l.Add (Convert.ChangeType (ob, toItemType));
+        }
+        return l;
     }
 
     System.Type GetModelType (object obj) {
@@ -209,12 +325,16 @@ public class ParallaxDesigner : EditorWindow, IEditorObjectDrawer<Example2> {
         return j.modelType;
     }
 
+    bool IsFundamental (System.Type type) {
+        return type.IsPrimitive || type.Equals (typeof (string)) || type.Equals (typeof (DateTime));
+    }
+
     public void WriteJsonData (object obj) {
         string fileName = Target.GetType ().Name;
     	string path = Application.dataPath + "/Scripts/Utilities/JsonSerializable/Data/";
 		var streamWriter = new StreamWriter (path + "" + fileName + ".json");
-        streamWriter.Write(JsonWriter.Serialize (obj));
-        streamWriter.Close();
+        streamWriter.Write (JsonWriter.Serialize (obj));
+        streamWriter.Close ();
     }
 
     public T ReadJsonData<T> () where T : class {
@@ -225,8 +345,5 @@ public class ParallaxDesigner : EditorWindow, IEditorObjectDrawer<Example2> {
         streamReader.Close ();
         return JsonReader.Deserialize<T> (data);
     }
-
-    bool IsFundamental (System.Type type) {
-    	return type.IsPrimitive || type.Equals (typeof (string)) || type.Equals (typeof (DateTime));
-    }
 }
+

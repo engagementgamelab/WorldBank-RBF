@@ -106,16 +106,16 @@ public class Models {
     public class Test2 {
         public float happiness { get; set; }
         public float sadness { get; set; }
+        public object ex { get; set; }
         // public Texture2D texture { get; set; }
-        public List<object> blahs { get; set; }
     }
 
     public class Test3 {
         public int goop { get; set; }
         public List<string> texts { get; set; }
-        // public string[] blahs { get; set; }
+        public string[] blahs { get; set; }
         public List<object> test2s { get; set; }
         public object[] test3s { get; set; }
-        public object ex2 { get; set; }
+        // public object ex2 { get; set; }
     }
 }

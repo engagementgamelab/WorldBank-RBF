@@ -87,6 +87,98 @@ NavMeshSettings:
     cellSize: .166666672
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &129860737
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 129860739}
+  - 114: {fileID: 129860738}
+  m_Layer: 0
+  m_Name: Example_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &129860738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 129860737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0039baa582fbe4abc9d75d284adbd98a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverAddress: 192.168.0.1
+  happiness: 95
+  sadness: 2.54321003
+  blahs:
+  - {fileID: 200768980}
+  ex: {fileID: 0}
+--- !u!4 &129860739
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 129860737}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.83078, y: -8.80744171, z: 99.5615768}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+--- !u!1 &200768979
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 200768981}
+  - 114: {fileID: 200768980}
+  m_Layer: 0
+  m_Name: Example2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &200768980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 200768979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e88f245170bf42f6b9a7e3f174bcb12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goop: 5
+  texts: []
+  blahs:
+  - a
+  - f
+  test2s: []
+  test3s: []
+  ex2: {fileID: 0}
+--- !u!4 &200768981
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 200768979}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -19.3648682, y: -58.6860199, z: 64.1912918}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
 --- !u!1 &231904310
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,12 +311,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e88f245170bf42f6b9a7e3f174bcb12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  examples:
-  - {fileID: 1619070601}
+  goop: 9001
   texts:
-  - lazy
-  - plodding
-  - gerbil
+  - blegn
+  - yurp
+  - kenot
+  - plen
+  - gasdton
+  blahs:
+  - yerp
+  - jofen
+  test2s:
+  - {fileID: 1619070601}
+  - {fileID: 1619070601}
+  - {fileID: 129860738}
+  test3s:
+  - {fileID: 1619070601}
+  - {fileID: 129860738}
+  ex2: {fileID: 1619070601}
 --- !u!4 &550200670
 Transform:
   m_ObjectHideFlags: 0
@@ -390,7 +494,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serverAddress: 192.168.0.1
   happiness: 35
-  sadness: 2.5
+  sadness: 2562.5835
+  blahs: []
+  ex: {fileID: 129860738}
 --- !u!4 &1619070602
 Transform:
   m_ObjectHideFlags: 0
@@ -433,6 +539,8 @@ MonoBehaviour:
   serverAddress: 127.0.0.1
   happiness: 35
   sadness: 2.5
+  blahs: []
+  ex: {fileID: 0}
 --- !u!4 &2047678581
 Transform:
   m_ObjectHideFlags: 0

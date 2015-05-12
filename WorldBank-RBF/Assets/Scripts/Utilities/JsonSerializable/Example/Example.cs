@@ -20,6 +20,9 @@ public class Example : MonoBehaviour {
     [WindowField]
     public List<Example2> blahs = new List<Example2> ();
 
+    [WindowField]
+    public Example ex;
+
     // [WindowField, JsonSerializable (typeof (Models.Test2))]
     // public Texture2D texture;
 
