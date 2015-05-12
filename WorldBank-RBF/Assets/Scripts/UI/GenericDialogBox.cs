@@ -38,9 +38,9 @@ public class GenericDialogBox : MB {
 			scale = z * 0.5f;
 		}
 
-		Position = new Vector3 (0, 0, z);
-		verticalGroup.localScale = new Vector3 (scale * 0.1f, scale * 0.1f, 1);
-		Transform.localScale = new Vector3 (canvasScale, canvasScale, 1);
+		Position = Vector3.zero;
+		verticalGroup.localScale = Vector3.one;
+		Transform.localScale = Vector3.one;
 		open = true;
 
 		StartCoroutine (CoRotate());

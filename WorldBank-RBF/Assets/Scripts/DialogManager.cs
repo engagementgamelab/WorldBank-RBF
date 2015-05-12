@@ -161,7 +161,7 @@ public class DialogManager : MonoBehaviour {
 	public ScenarioDialog CreateScenarioDialog() {
 
 	    scenarioDialog = ObjectPool.Instantiate<ScenarioDialog>();
-	    scenarioDialog.Open();
+	    // scenarioDialog.Open();
 	    scenarioDialog.Content = "strDialogTxt";
 	    
 	    return scenarioDialog;

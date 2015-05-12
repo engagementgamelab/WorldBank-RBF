@@ -140,6 +140,18 @@ public class DataManager {
     }
 
     /// <summary>
+    /// Get the phase two scenario specified by the symbol input.
+    /// </summary>
+    /// <param name="strSymbol">Symbol of the scenario</param>
+    /// <returns>The Models.Scenario for the symbol matching the input</returns>
+    public static Models.Scenario GetScenarioBySymbol(string strSymbol) {
+
+        Models.Scenario unlockRef = gameData.phase_two["scenario_1"]["card_template"];
+        
+        return unlockRef;
+    }
+
+    /// <summary>
     /// Get a character's data given its symbol
     /// </summary>
     /// <param name="strCharSymbol">Symbol of the character</param>

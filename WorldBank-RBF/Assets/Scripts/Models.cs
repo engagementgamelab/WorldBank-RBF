@@ -36,7 +36,7 @@ public class Models {
         public City[] cities { get; set; }
         public Unlockable[] unlockables { get; set; }
         public Dictionary<string, NPC[]> phase_one { get; set; }
-        public Dictionary<string, object> phase_two { get; set; }
+        public Dictionary<string, Dictionary<string, Scenario>> phase_two { get; set; }
 
     }
 
@@ -68,6 +68,17 @@ public class Models {
         public string[] description { get; set; }
         public string type { get; set; }
         public int priority { get; set; }
+
+    }
+
+    public class Scenario {
+
+        public string symbol { get; set; }
+        public string name { get; set; }
+        public string initiating_npc { get; set; }
+        public string initiating_dialogue { get; set; }
+        public string[] starting_options { get; set; }
+        public string[] final_options { get; set; }
 
     }
 
