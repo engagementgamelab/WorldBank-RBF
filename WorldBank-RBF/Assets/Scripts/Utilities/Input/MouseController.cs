@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class MouseController : MonoBehaviour {
-
 	protected const int LEFT = 0;
 	protected const int RIGHT = 1;
 
@@ -33,11 +32,19 @@ public class MouseController : MonoBehaviour {
 	void Awake () {
 		int[] layers = LayerController.Layers;
 		clickManager = new ClickManager (layers);
-		dragManager = new DragManager (layers);
-		releaseManager = new ReleaseManager (layers);
+
+		// if(enableLayers)
+		// {
+			dragManager = new DragManager (layers);
+			releaseManager = new ReleaseManager (layers);
+
+		// }
 	}
 
 	void LateUpdate () {
+		// if(!enableLayers)
+		// 	return;
+
 		if (Input.GetMouseButton (LEFT)) {
 			clickManager.HandleMouseDown (LEFT);
 			dragManager.HandleMouseDown (LEFT);

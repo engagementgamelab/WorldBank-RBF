@@ -45,6 +45,7 @@ public class NPCDialogBox : MB {
 		verticalGroup.localScale = new Vector3 (scale * 0.1f, scale * 0.1f, 1);
 		Transform.localScale = new Vector3 (canvasScale, canvasScale, 1);
 		open = true;
+
 		StartCoroutine (CoRotate (npc.FacingLeft));
 	}
 

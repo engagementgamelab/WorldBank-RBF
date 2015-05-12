@@ -21,11 +21,16 @@ class GenerateBuilds {
 
     static string APP_NAME = "WorldBank";
     static string TARGET_DIR = "Output";
-    [MenuItem ("Build/Build Mac OS X")]
+    [MenuItem ("Build/Build Mac OS X Universal")]
     static void PerformMacOSXBuild ()
     {
              string target_dir = APP_NAME + ".app";
-             GenericBuild(SCENES, TARGET_DIR + "/Mac/" + target_dir, BuildTarget.StandaloneOSXIntel, BuildOptions.None);
+             GenericBuild(SCENES, TARGET_DIR + "/Mac/" + target_dir, BuildTarget.StandaloneOSXUniversal, BuildOptions.None);
+    }
+    [MenuItem ("Build/Build PC")]
+    static void PerformPCBuild ()
+    {
+             GenericBuild(SCENES, TARGET_DIR + "/PC/" + APP_NAME, BuildTarget.StandaloneWindows, BuildOptions.None);
     }
 
     [MenuItem ("Build/Build WebGL")]
@@ -46,6 +51,7 @@ class GenerateBuilds {
     static void MakeAllBuilds()
     {
         PerformMacOSXBuild();
+        PerformPCBuild();
         PerformWebGLBuild();
         PerformWebBuild();
     }

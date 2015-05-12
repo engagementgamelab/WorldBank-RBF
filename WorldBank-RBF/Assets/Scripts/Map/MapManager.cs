@@ -1,10 +1,23 @@
-﻿using UnityEngine;
+﻿/* 
+World Bank RBF
+Created by Engagement Lab, 2015
+==============
+ MapManager.cs
+ World map management.
+
+ Created by Johnny Richardson on 4/21/15.
+==============
+*/
+
+using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 
+
+// TODO: Tons of cleanup/docs!
 public class MapManager : MonoBehaviour {
 
 	public CanvasRenderer dialogueBoxPrefab;
@@ -38,6 +51,7 @@ public class MapManager : MonoBehaviour {
     private Vector3 dragOrigin;
 
 	private GameObject cityDialog;
+	private Text cityDialogText;
 	private Animator dialogAnimator;
 
 	private List<Light> citySpotlights;
@@ -63,6 +77,7 @@ public class MapManager : MonoBehaviour {
 		cameraTransform = Camera.main.GetComponent<Transform>();
 
 		cityDialog = Camera.main.transform.Find("DialogueBox").gameObject;
+		cityDialogText = cityDialog.transform.Find("Content/Text").GetComponent<Text>();
 
 		initialDialogAnchor = cityDialog.GetComponent<RectTransform>().anchoredPosition;
 
@@ -84,7 +99,8 @@ public class MapManager : MonoBehaviour {
 			citySpotlight.intensity = Mathf.PingPong(Time.time, 2) + 1;
         });
 
-        if(Camera.main.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+		// Do nothing else during camera animation
+        if(CameraIsAnimating())
         	return;
 
 		// Set drag origin on click/touch
@@ -222,56 +238,64 @@ public class MapManager : MonoBehaviour {
 		}*/
 	}
 
-	// Use this for initialization
-	public void LoadCities() {
+	/// <summary>
+	/// Reports if the main camera is currently under control of an animation.
+	/// </summary>
+	public bool CameraIsAnimating() {
 
-        foreach(Models.City city in DataManager.GetAllCities())
-        	GenerateCityButton(city);
-	
+		// If animation state's normalized time is less than 1, it's still going, as this is a fractional of the current loop
+		return Camera.main.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime < 1;
 	}
 
-	private void GenerateCityButton(Models.City city) {
+	/// <summary>
+	/// Generate a dialog with text and relevant buttons for city
+	/// </summary>
+	/// <param name="strCitySymbol">Text to show in the dialogue</param>
+	public IEnumerator ShowCityDialog(string strCitySymbol) {
 
-		// Create NPC prefab instance
-		Button cityButton = (Button)Instantiate(cityButtonPrefab);
-	  
-	    cityButton.transform.parent = cityCanvas;
-	    cityButton.transform.localScale = new Vector3(1, 1, 1);
-	    
-	    Text label = cityButton.transform.FindChild("Text").GetComponent<Text>();
-		label.text = city.display_name;
- 
-	    cityButton.onClick.AddListener(() => cityCanvas.gameObject.SetActive(false));
-
-	}
-
-	public IEnumerator ShowCityDialog(string citySymbol) {
+		dialogAnimator = cityDialog.GetComponent<Animator>();
 
 		// Get data for selected city
-		Models.City city = DataManager.GetCityInfo(citySymbol);
+		Models.City city = DataManager.GetCityInfo(strCitySymbol);
 
-		// GameObject diagRenderer = DialogManager.instance.CreateGenericDialog(city.description);
-		cityDialog.transform.Find("Content/Text").GetComponent<Text>().text = city.description + "\n   <i><color=orange>" + city.cost + " days to travel.</color></i>";
-	 	dialogAnimator = cityDialog.GetComponent<Animator>();
-		
-		if(!dialogAnimator.GetBool(dialogOpenID))
-			dialogAnimator.SetBool(dialogOpenID, true);
-		else
-		{
-			dialogAnimator.SetTrigger(dialogSwitchID);
-			yield return new WaitForSeconds(2);
-		}
-
-		initialDialogScale = cityDialog.transform.localScale;
+		string strCityTxt = city.description + "\n   <i><color=orange>" + city.cost + " days to travel.</color></i>";
 	  
 	  	// Setup go/go back buttons
 	  	GameObject goBtnObj = cityDialog.transform.Find("Action Button").gameObject;
 	  	GameObject goBackBtnObj = cityDialog.transform.Find("Go Back").gameObject;
-	    
-	    goBtnObj.SetActive(city.unlocked);
 		
 		Button goBtn = goBtnObj.GetComponent<Button>();
 		Button goBackBtn = goBackBtnObj.GetComponent<Button>();
+		
+		if(!dialogAnimator.GetBool(dialogOpenID)) {
+			cityDialogText.text = strCityTxt;
+
+			dialogAnimator.SetBool(dialogOpenID, true);
+		}
+		else
+		{
+			// dialogAnimator.SetTrigger(dialogSwitchID);
+			dialogAnimator.SetBool(dialogOpenID, false);
+			dialogAnimator.SetBool(dialogCloseID, true);
+
+			yield return new WaitForSeconds(1);
+
+			cityDialogText.text = strCityTxt;
+		    
+		    goBtn.onClick.RemoveAllListeners();
+		    goBackBtn.onClick.RemoveAllListeners();
+
+			dialogAnimator.SetBool(dialogOpenID, true);
+			dialogAnimator.SetBool(dialogCloseID, false);
+
+			// yield return null;
+			// yield return new WaitForSeconds(2);
+		}
+
+		initialDialogScale = cityDialog.transform.localScale;
+	    
+	    // Show Go button if city is unlocked
+	    goBtnObj.SetActive(city.unlocked);
 		Text label = goBtn.transform.FindChild("Text").GetComponent<Text>();
 		label.text = "Travel to " + city.display_name;
  
@@ -285,6 +309,9 @@ public class MapManager : MonoBehaviour {
 	    // Reset camera position
 	    targetCamRotation = initialCamRotation;
 	    targetCamPosition = initialCamPosition;
+
+		yield return null;
+
 
 	}
 
@@ -304,19 +331,26 @@ public class MapManager : MonoBehaviour {
 
  	public void CloseCurrent()
     {
-       /* if (dialogAnimator == null)
-            return;
+	  	GameObject goBackBtnObj = cityDialog.transform.Find("Go Back").gameObject;
+		Button goBackBtn = goBackBtnObj.GetComponent<Button>();
 
-        //Start the close animation.
-        dialogAnimator.SetBool(dialogOpenID, false);
-
-        //Start Coroutine to disable the hierarchy when closing animation finishes.
-        StartCoroutine(DisablePanelDeleyed(dialogAnimator));*/
+	    goBackBtn.onClick.RemoveAllListeners();
 
         dialogAnimator.SetBool(dialogOpenID, false);
         // dialogAnimator.SetBool(dialogCloseID, true);
         
     }
+    
+    private IEnumerator WaitForAnimation()
+	{
+			
+		do
+	    {
+	        yield return null;
+	    } while ( dialogAnimator.GetCurrentAnimatorStateInfo(0).IsName(dialogCloseID) );
+
+	}
+
 /*
     //Coroutine that will detect when the Closing animation is finished and it will deactivate the
     //hierarchy.

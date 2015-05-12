@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class LineOfSight : MB {
 
-	bool zoomEnabled = true;
+	public bool zoomEnabled = true;
 	public bool ZoomEnabled {
 		get { return zoomEnabled; }
 		set { zoomEnabled = value; }

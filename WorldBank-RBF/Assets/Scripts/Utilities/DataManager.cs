@@ -50,7 +50,12 @@ public class DataManager {
         if(gameData != null) 
             return;
 
-        gameData = JsonReader.Deserialize<Models.GameData>(data);
+        try {
+            gameData = JsonReader.Deserialize<Models.GameData>(data);
+        }
+        catch(Exception e) {
+            throw new Exception("Unable to set game data: " + e);
+        }
 
         // create/save to file in Assets/Resources/Config/
         #if !UNITY_WEBPLAYER    
@@ -116,7 +121,7 @@ public class DataManager {
             
             return npcRef;
         }
-
+        
     }
 
     /// <summary>
