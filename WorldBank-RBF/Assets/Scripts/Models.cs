@@ -71,10 +71,6 @@ public class Models {
 
     }
 
-    public class Scene {
-        // TODO: Move scene model into here
-    }
-
     public class NPC {
 
         public string symbol { get; set; }
@@ -99,10 +95,21 @@ public class Models {
         public List<Dictionary<string, object>> dialogue = new List<Dictionary<string, object>>();
     }
 
+    public class Scene {
+        public int LayerCount { get; set; }
+        public List<object> layers { get; set; }
+    }
+
+    public class ParallaxLayer {
+        public float LocalSeparation { get; set; }
+    }
+
+    // TODO: remove
     public class Test {
         public string hello { get; set; }
     }
 
+    // TODO: remove
     public class Test2 {
         public float happiness { get; set; }
         public float sadness { get; set; }
@@ -110,6 +117,7 @@ public class Models {
         // public Texture2D texture { get; set; }
     }
 
+    // TODO: remove
     public class Test3 {
         public int goop { get; set; }
         public List<string> texts { get; set; }

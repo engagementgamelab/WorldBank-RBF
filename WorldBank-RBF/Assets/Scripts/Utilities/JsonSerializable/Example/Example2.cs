@@ -10,7 +10,7 @@ public class Example2 : MonoBehaviour {
 
 	// [WindowField, JsonSerializable (typeof (Models.Test3))]
 	// public List<string> texts = new List<string> ();
-	[WindowField]	
+	/*[WindowField]	
 	public int goop = 5;
 
 	[WindowField]
@@ -26,5 +26,5 @@ public class Example2 : MonoBehaviour {
 	public Example[] test3s;
 	
 	[WindowField]
-	public Example ex2;
+	public Example ex2;*/
 }

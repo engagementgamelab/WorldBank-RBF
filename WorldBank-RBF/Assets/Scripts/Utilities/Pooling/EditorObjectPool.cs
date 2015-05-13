@@ -30,6 +30,13 @@ public class EditorObjectPool : MonoBehaviour {
 		return objects;
 	}
 
+	public static object Create (string typeName) {
+		IEditorPoolable obj = ObjectPool.Instantiate (typeName) as IEditorPoolable;
+		obj.Index = ObjectPool.GetInstances (typeName).Count-1;
+		obj.Init ();
+		return obj as object;
+	}
+
 	public static T Create<T> () where T : MonoBehaviour, IEditorPoolable {
 		T obj = ObjectPool.Instantiate<T> () as T;
 		obj.Index = ObjectPool.GetInstances<T> ().Count-1;
