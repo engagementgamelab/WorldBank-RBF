@@ -11,7 +11,6 @@
 
 OUTPUT_NAME=$1;
 EXTERNAL_BUILDS_DIR="/Library/BuildArtifacts";
-GOOGLE_DRIVE_DIR="$HOME/Google\ Drive";
 CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 
 # Run nightly build only if latest build generated "success" file

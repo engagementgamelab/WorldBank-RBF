@@ -14,4 +14,19 @@ public class NPCDialogButton : MonoBehaviour {
 			return button;
 		}
 	}
+
+	public string Text {
+
+		get {
+
+			return GetComponent<Transform>().FindChild("Text").GetComponent<Text>().text;
+		}
+
+		set {
+
+			GetComponent<Transform>().FindChild("Text").GetComponent<Text>().text = value;
+
+		}
+
+	}
 }

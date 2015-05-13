@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GenericDialogBox : MB {
 
@@ -51,6 +52,24 @@ public class GenericDialogBox : MB {
 		// npc.OnClick ();
 		ObjectPool.Destroy<GenericDialogBox> (Transform);
 		// callback?
+	}
+
+	public void AddButtons(List<NPCDialogButton> btnChoices) {
+
+		NPCDialogButton[] remove = choiceGroup.GetComponentsInChildren<NPCDialogButton>();
+
+		foreach (NPCDialogButton child in remove)
+			ObjectPool.Destroy<NPCDialogButton> (child.transform);
+
+		if(btnChoices != null) {
+			foreach(NPCDialogButton btnChoice in btnChoices) {
+				btnChoice.transform.SetParent(choiceGroup);
+				btnChoice.transform.localScale = Vector3.one;
+				btnChoice.transform.localPosition = Vector3.zero;
+				btnChoice.transform.localEulerAngles = Vector3.zero;
+			}
+		}
+
 	}
 
 	float GetXPosition (bool facingLeft) {

@@ -25,6 +25,11 @@ echo "Started automation from git commit head ($(git rev-parse HEAD)):" | tee -a
 # Checkout master branch since we're going to modify it
 git checkout master
 
+# Optimize all textures' sizes in asset directory
+imageoptim -a -d $EXTERNAL_ASSET_DIR
+
+wait
+
 # Find all .png files in external dir
 for f in $(find $EXTERNAL_ASSET_DIR -name "*.png")
 do
@@ -32,7 +37,6 @@ do
 	# Get parent dir of file
 	dir=$(dirname $f)
 	dir=${dir#$EXTERNAL_ASSET_DIR}
-	# dir=$(basename $dir)
 
 	# Get filename w/o extension
 	file_no_ext=${f%.png};

@@ -158,16 +158,37 @@ public class DialogManager : MonoBehaviour {
 
 	}
 
-	public ScenarioDialog CreateScenarioDialog(string strSymbol) {
+	public ScenarioDialog CreateScenarioDialog(string strSymbol, string strAdvisorSymbol=null) {
 
 		Models.Scenario scenario = DataManager.GetScenarioBySymbol(strSymbol);
 
 	    scenarioDialog = ObjectPool.Instantiate<ScenarioDialog>();
 	    // scenarioDialog.Open();
 
-	    Debug.Log(scenario.characters["dep_minister_of_health"]);
+	    // Get initial dialogue or an advisor's?
+	    if(strAdvisorSymbol == null)
+		    scenarioDialog.Content = scenario.initiating_dialogue;
+		else
+			scenarioDialog.Content = scenario.characters[strAdvisorSymbol].dialogue;
 
-	    scenarioDialog.Content = scenario.initiating_dialogue;
+		List<NPCDialogButton> btnList = new List<NPCDialogButton>();
+
+		// Create buttons for all advisors
+		foreach(string characterSymbol in new List<string>(scenario.characters.Keys)) {
+
+			NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton>();
+			
+			btnChoice.Text = characterSymbol;
+
+			btnChoice.Button.onClick.RemoveAllListeners();
+
+			btnChoice.Button.onClick.AddListener (() => CreateScenarioDialog(strSymbol, characterSymbol));
+			// btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, npc, false));
+
+			btnList.Add(btnChoice);
+		}
+
+		scenarioDialog.AddButtons(btnList);
 	    
 	    return scenarioDialog;
 
@@ -182,8 +203,7 @@ public class DialogManager : MonoBehaviour {
 
 		NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton> ();
 		
-		Text btnTxt = btnChoice.Button.transform.FindChild("Text").GetComponent<Text>();
-		btnTxt.text = "Learn More";
+		btnChoice.text = "Learn More";
 
 		btnChoice.Button.onClick.RemoveAllListeners ();
 		btnChoice.Button.onClick.AddListener(() => npcInstance.DialogFocus());
@@ -258,9 +278,7 @@ public class DialogManager : MonoBehaviour {
 			string choiceName = textInfo.ToTitleCase(choice);
 
 			NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton>();
-			
-			Text btnTxt = btnChoice.Button.transform.FindChild("Text").GetComponent<Text>();
-			btnTxt.text = choiceName;
+			btnChoice.Text = choiceName;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
 

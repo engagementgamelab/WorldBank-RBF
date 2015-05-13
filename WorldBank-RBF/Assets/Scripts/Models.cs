@@ -9,6 +9,7 @@ Created by Engagement Lab, 2015
 ==============
 */
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -79,7 +80,7 @@ public class Models {
         public string initiating_dialogue { get; set; }
         public string[] starting_options { get; set; }
         public string[] final_options { get; set; }
-        public Dictionary<string, Dictionary<string, string>> characters { get; set; }
+        public Dictionary<string, Advisor> characters { get; set; }
 
     }
 
@@ -98,24 +99,42 @@ public class Models {
     public class Advisor {
 
         public string dialogue { get; set; }
-        // public string[] unlocks { get; set; }
-        // public Dictionary<string, object> feedback { get; set; }
+        public string[] unlocks { get; set; }
+        public Dictionary<string, object> feedback { get; set; }
 
     }
 
     public class Dialogue {
 
-        public string symbol { get; set; }
-        public string character { get; set; }
-        public Dictionary<string, object> dialogue { get; set; }
+        public Dictionary<string, string> dialogue { get; set; }
 
     }
 
-	public class PhaseOne {
-		public Dictionary<string, object>[] npcs { get; set; }
-	}
+    /*
+    public class UnlocksConverter : JsonConverter {
+        public override bool CanConvert (Type type) {
+            return type == typeof(Bounds);
+        }
+        
+        public override string[] ReadJson (Type objectType, object value) {
 
-    public class Characters {
-        public List<Dictionary<string, object>> dialogue = new List<Dictionary<string, object>>();
+            string[] convertedVal;
+
+            if(value.GetType().IsArray)
+            {
+                convertedVal = ((IEnumerable)value).Cast<object>()
+                                                 .Select(x => x.ToString())
+                                                 .ToArray();
+            }
+            else
+                unlocksVal = new string[] { value.ToString() };
+
+            return convertedVal;
+        }
+        
+        public override string[] WriteJson (Type type, string[] value) {
+            return value;
+        }
     }
+    */
 }
