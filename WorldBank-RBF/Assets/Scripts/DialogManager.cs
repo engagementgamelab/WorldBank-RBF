@@ -148,16 +148,11 @@ public class DialogManager : MonoBehaviour {
 	    return dialogBox;
 	}
 
-	public GenericDialogBox CreateGenericDialog() {
-
-	    GenericDialogBox dialog = ObjectPool.Instantiate<GenericDialogBox>();
-	    dialog.Open ();
-	    dialog.Content = "strDialogTxt";
-
-	    return dialog;
-
-	}
-
+	/// <summary>
+	/// Generate a Scenario dialog for the specified scenario
+	/// </summary>
+	/// <param name="strSymbol">The symbol of the scenario</param>
+	/// <param name="strAdvisorSymbol">The symbol of the advisor who is talking (optional)</param>
 	public ScenarioDialog CreateScenarioDialog(string strSymbol, string strAdvisorSymbol=null) {
 
 		Models.Scenario scenario = DataManager.GetScenarioBySymbol(strSymbol);
