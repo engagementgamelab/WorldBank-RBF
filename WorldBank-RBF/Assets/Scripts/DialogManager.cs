@@ -198,7 +198,7 @@ public class DialogManager : MonoBehaviour {
 
 		NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton> ();
 		
-		btnChoice.text = "Learn More";
+		btnChoice.Text = "Learn More";
 
 		btnChoice.Button.onClick.RemoveAllListeners ();
 		btnChoice.Button.onClick.AddListener(() => npcInstance.DialogFocus());

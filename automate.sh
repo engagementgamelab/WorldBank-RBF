@@ -28,7 +28,7 @@ git checkout master
 # Optimize all textures' sizes in asset directory
 imageoptim -a -d $EXTERNAL_ASSET_DIR
 
-wait
+# wait
 
 # Find all .png files in external dir
 for f in $(find $EXTERNAL_ASSET_DIR -name "*.png")
@@ -46,18 +46,18 @@ do
 	base_new_path="$UNITY_ASSET_DIR$dir";
 	new_path="$base_new_path/$file_no_ext.png";
 
-	# Create desination dir if missing
-	mkdir -p $base_new_path;
+	# # Create desination dir if missing
+	# mkdir -p $base_new_path;
 
-	# Move file
-	mv $f $new_path && git add -N $new_path;
-	echo "Moved $f to $new_path" | tee -a automate.log;
+	# # Move file
+	# mv $f $new_path && git add -N $new_path;
+	# echo "Moved $f to $new_path" | tee -a automate.log;
 
 done  
 
 wait
 
-git commit -am "Dev Server auto-commit for successful Jenkins build $1";
+# git commit -am "Dev Server auto-commit for successful Jenkins build $1";
 
 # Logging
 echo "DONE" | tee -a automate.log;
