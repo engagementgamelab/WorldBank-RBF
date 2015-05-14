@@ -66,4 +66,8 @@ public class MaterialsManager {
 		}
 		#endif
 	}
+
+	public static Material Blank {
+		get { return Resources.Load ("Materials/Blank.mat") as Material; }
+	}
 }

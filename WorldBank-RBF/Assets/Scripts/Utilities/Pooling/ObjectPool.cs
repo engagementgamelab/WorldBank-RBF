@@ -237,7 +237,6 @@ public class ObjectPool : MonoBehaviour {
 
 	#if UNITY_EDITOR
 	void OnDestroy () {
-		Debug.Log (EditorState.InEditMode);
 		if (EditorState.InEditMode) {
 			pools.Remove (name);
 		}

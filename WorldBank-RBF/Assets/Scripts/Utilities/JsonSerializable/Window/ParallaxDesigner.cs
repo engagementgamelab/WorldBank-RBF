@@ -24,25 +24,24 @@ public class ParallaxDesigner : EditorWindow {
         if (layerDesigner == null) {
             layerDesigner = CreateInstance ("ParallaxLayerDesigner") as ParallaxLayerDesigner;
         }
-    }
-
-    void OnSelectionChange () {
-        objectDrawer.OnSelectionChange ();
-        Repaint ();
+        SetTarget ();
     }
 
     void OnGUI () {
-        if (objectDrawer.Selected) {
-            GUILayout.Label (objectDrawer.Target.name);
-            if (GUILayout.Button ("Save")) {
-                objectDrawer.Save ();
-            }
-            if (GUILayout.Button ("Load")) {
-                objectDrawer.Load ();
-            }
-            objectDrawer.DrawObjectProperties ();
-            DrawLayerSelection ();
+        if (!EditorState.InEditMode) {
+            GUILayout.Label ("Editor disabled in play mode");
+            return;
         }
+        SetTarget ();
+        GUILayout.Label (objectDrawer.Target.name);
+        if (GUILayout.Button ("Save")) {
+            objectDrawer.Save ();
+        }
+        if (GUILayout.Button ("Load")) {
+            objectDrawer.Load ();
+        }
+        objectDrawer.DrawObjectProperties ();
+        DrawLayerSelection ();
         layerDesigner.OnGUI ();
     }
 
@@ -53,6 +52,12 @@ public class ParallaxDesigner : EditorWindow {
                 EditorGUILayout.IntField ("Select a layer to edit", selectedLayer, new GUILayoutOption[0]),
                 1, layerCount);
             layerDesigner.objectDrawer.Target = objectDrawer.Target.layers[selectedLayer-1];
+        }
+    }
+
+    void SetTarget () {
+        if (objectDrawer.Target == null) {
+            objectDrawer.Target = ParallaxLayerManager.Instance;
         }
     }
 }

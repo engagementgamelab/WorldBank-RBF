@@ -5,6 +5,21 @@ using System.Collections.Generic;
 [JsonSerializable (typeof (Models.Scene))]
 public class ParallaxLayerManager : MonoBehaviour {
 
+	static ParallaxLayerManager instance = null;
+	static public ParallaxLayerManager Instance {
+		get {
+			if (instance == null) {
+				instance = Object.FindObjectOfType (typeof (ParallaxLayerManager)) as ParallaxLayerManager;
+				if (instance == null) {
+					GameObject go = new GameObject ("ParallaxLayerManager");
+					DontDestroyOnLoad (go);
+					instance = go.AddComponent<ParallaxLayerManager>();
+				}
+			}
+			return instance;
+		}
+	}
+
 	[HideInInspector]
 	public List<ParallaxLayer> layers = new List<ParallaxLayer> ();
 

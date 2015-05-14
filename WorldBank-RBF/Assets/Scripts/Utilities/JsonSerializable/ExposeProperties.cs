@@ -23,7 +23,7 @@ public static class ExposeProperties
 		EditorGUILayout.BeginVertical();
  
 		foreach ( PropertyField field in properties )
-		{
+		{	
 			EditorGUILayout.BeginHorizontal();
 			DrawProperty (field);
 			EditorGUILayout.EndHorizontal();
@@ -62,60 +62,45 @@ public static class ExposeProperties
 					property.SetValue( EditorGUILayout.Vector3Field( property.Name, (Vector3)property.GetValue(), emptyOptions ) );
 				break;
  
- 
- 
 			case SerializedPropertyType.Enum:
-   				        property.SetValue(EditorGUILayout.EnumPopup(property.Name, (Enum)property.GetValue(), emptyOptions));
+   				    property.SetValue (EditorGUILayout.EnumPopup(property.Name, (Enum)property.GetValue(), emptyOptions));
 				break;
- 
-			default:
- 
-				break;
- 
+ 			
+			default: break;
 			}
 	}
  
-	public static PropertyField[] GetProperties( System.Object obj )
-	{
+	public static PropertyField[] GetProperties (System.Object obj) {
  
 		List< PropertyField > fields = new List<PropertyField>();
+		PropertyInfo[] infos = obj.GetType().GetProperties (BindingFlags.Public | BindingFlags.Instance);
  
-		PropertyInfo[] infos = obj.GetType().GetProperties( BindingFlags.Public | BindingFlags.Instance );
- 
-		foreach ( PropertyInfo info in infos )
-		{
- 
-			if ( ! (info.CanRead && info.CanWrite) )
+		foreach (PropertyInfo info in infos) {
+			
+			if (!(info.CanRead && info.CanWrite))
 				continue;
  
 			object[] attributes = info.GetCustomAttributes( true );
- 
 			bool isExposed = false;
  
-			foreach( object o in attributes )
-			{
-				if ( o.GetType() == typeof( ExposePropertyAttribute ) )
-				{
+			foreach (object o in attributes) {
+				if (o.GetType() == typeof( ExposePropertyAttribute )) {
 					isExposed = true;
 					break;
 				}
 			}
  
-			if ( !isExposed )
+			if (!isExposed)
 				continue;
  
 			SerializedPropertyType type = SerializedPropertyType.Integer;
- 
-			if( PropertyField.GetPropertyType( info, out type ) )
-			{
-				PropertyField field = new PropertyField( obj, info, type );
-				fields.Add( field );
+			if (PropertyField.GetPropertyType (info, out type)) {
+				PropertyField field = new PropertyField (obj, info, type);
+				fields.Add (field);
 			}
- 
 		}
  
 		return fields.ToArray();
- 
 	}
  
 }
@@ -128,49 +113,36 @@ public class PropertyField
  
 	MethodInfo m_Getter;
 	MethodInfo m_Setter;
- 
-	public SerializedPropertyType Type
-	{
-		get
-		{
-			return m_Type;	
-		}
+
+	public SerializedPropertyType Type {
+		get { return m_Type; }
 	}
  
-	public String Name
-	{	
-		get
-		{
-			return ObjectNames.NicifyVariableName( m_Info.Name );	
-		}
+	public String Name {	
+		get { return ObjectNames.NicifyVariableName( m_Info.Name );	}
 	}
  
-	public PropertyField( System.Object instance, PropertyInfo info, SerializedPropertyType type )
-	{	
+	public PropertyField (System.Object instance, PropertyInfo info, SerializedPropertyType type) {	
  
 		m_Instance = instance;
 		m_Info = info;
 		m_Type = type;
  
-		m_Getter = m_Info.GetGetMethod();
-		m_Setter = m_Info.GetSetMethod();
+		m_Getter = m_Info.GetGetMethod ();
+		m_Setter = m_Info.GetSetMethod ();
 	}
  
-	public System.Object GetValue() 
-	{
-		return m_Getter.Invoke( m_Instance, null );
+	public System.Object GetValue() {
+		return m_Getter.Invoke (m_Instance, null);
 	}
  
-	public void SetValue( System.Object value )
-	{
-		m_Setter.Invoke( m_Instance, new System.Object[] { value } );
+	public void SetValue (System.Object value) {
+		m_Setter.Invoke (m_Instance, new System.Object[] { value });
 	}
  
-	public static bool GetPropertyType( PropertyInfo info, out SerializedPropertyType propertyType )
-	{
+	public static bool GetPropertyType (PropertyInfo info, out SerializedPropertyType propertyType) {
  
 		propertyType = SerializedPropertyType.Generic;
- 
 		Type type = info.PropertyType;
  
 		if ( type == typeof( int ) )
@@ -214,7 +186,7 @@ public class PropertyField
 			propertyType = SerializedPropertyType.Enum;
 			return true;
 		}
- 
+
 		return false;
 	}
 }
