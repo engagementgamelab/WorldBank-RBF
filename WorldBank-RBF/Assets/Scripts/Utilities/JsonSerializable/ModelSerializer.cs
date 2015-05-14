@@ -44,7 +44,7 @@ public class ModelSerializer {
                 }
             }
 
-            if (typeof (IEnumerable).IsAssignableFrom (memberType)) {
+            if (typeof (IEnumerable).IsAssignableFrom (memberType) && memberType != typeof (string)) {
                 
                 IList ilist = (IList)value;
                 IEnumerable<object> list = ilist.Cast<object> ().Select (x => CreateModelFromObject (x));
