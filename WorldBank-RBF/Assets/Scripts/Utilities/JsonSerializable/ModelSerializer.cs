@@ -13,14 +13,20 @@ public class ModelSerializer {
 		get { return Application.dataPath + "/Scripts/Utilities/JsonSerializable/Data/"; }
 	}
 
-	public static void Save (object obj, string fileName = "") {
-        fileName = (fileName == "") ? obj.GetType ().ToString () : fileName;
-        WriteJsonData (CreateModelFromObject (obj), fileName);
+	public static void Save (object obj, string path) {//string fileName = "") {
+        // fileName = (fileName == "") ? obj.GetType ().ToString () : fileName;
+        path = (path == "") 
+            ? PATH + obj.GetType ().ToString () + ".json" 
+            : path;
+        WriteJsonData (CreateModelFromObject (obj), path);
     }
 
-    public static void Load (object obj, string fileName = "") {
-    	fileName = (fileName == "") ? obj.GetType ().ToString () : fileName;
-    	ApplyModelPropertiesToObject (obj, ReadJsonData (obj, fileName));
+    public static void Load (object obj, string path) {//string fileName = "") {
+    	// fileName = (fileName == "") ? obj.GetType ().ToString () : fileName;
+        path = (path == "") 
+            ? PATH + obj.GetType ().ToString () + ".json" 
+            : path;
+    	ApplyModelPropertiesToObject (obj, ReadJsonData (obj, path));
     }
 
     // Saving
@@ -106,7 +112,7 @@ public class ModelSerializer {
             object value = val.Value;
             System.Type memberType = property.PropertyType;
 
-            if (typeof (IEnumerable).IsAssignableFrom (memberType)) {
+            if (typeof (IEnumerable).IsAssignableFrom (memberType) && memberType != typeof (string)) {
                 
                 IList ilist = (IList)value;
                 List<object> list = ilist.Cast<object> ().ToList ();
@@ -223,14 +229,16 @@ public class ModelSerializer {
         return type.IsPrimitive || type.Equals (typeof (string)) || type.Equals (typeof (DateTime));
     }
 
-    static public void WriteJsonData (object obj, string fileName) {
-		var streamWriter = new StreamWriter (PATH + "" + fileName + ".json");
+    static public void WriteJsonData (object obj, string path) {//string fileName) {
+		// var streamWriter = new StreamWriter (PATH + "" + fileName + ".json");
+        var streamWriter = new StreamWriter (path);
         streamWriter.Write (JsonWriter.Serialize (obj));
         streamWriter.Close ();
     }
 
-    static public object ReadJsonData (object obj, string fileName) {
-        StreamReader streamReader = new StreamReader (PATH + "" + fileName + ".json");
+    static public object ReadJsonData (object obj, string path) {//string fileName) {
+        // StreamReader streamReader = new StreamReader (PATH + "" + fileName + ".json");
+        StreamReader streamReader = new StreamReader (path);
         string data = streamReader.ReadToEnd ();
         streamReader.Close ();
         return JsonReader.Deserialize<object> (data);

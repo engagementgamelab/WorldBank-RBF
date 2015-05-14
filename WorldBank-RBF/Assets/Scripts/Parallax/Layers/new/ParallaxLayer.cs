@@ -17,7 +17,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		get { return localSeparation; }
 		set { 
 			localSeparation = value; 
-			UpdatePosition ();
+			UpdateTransform ();
 		}
 	}
 
@@ -28,22 +28,14 @@ public class ParallaxLayer : MB, IEditorPoolable {
 	}
 
 	public void Init () {
-		UpdatePosition ();
+		UpdateTransform ();
 	}
 
-	void UpdatePosition () {
-		SetPosition ();
-		SetScale ();
-	}
-
-	void SetScale () {
-		Transform.localScale = new Vector3 (Scale, Scale, 1);
-	}
-
-	void SetPosition () {
+	void UpdateTransform () {
 		Vector3 target = ScreenPositionHandler.ViewportToWorld (new Vector3 (0, 0.5f, 0));
-		target.x -= LocalScale.x / 2;
 		target.z = (Index+1) * layerSeparation + LocalSeparation;
 		Transform.SetPosition (target);
+		Transform.localScale = new Vector3 (Scale, Scale, 1);
+		Transform.SetPositionX (-LocalScale.x / 2);
 	}
 }

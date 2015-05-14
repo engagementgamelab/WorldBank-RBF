@@ -20,6 +20,9 @@ public class ParallaxLayerManager : MonoBehaviour {
 		}
 	}
 
+	[WindowExposed]
+	public string cityName;
+
 	[HideInInspector]
 	public List<ParallaxLayer> layers = new List<ParallaxLayer> ();
 

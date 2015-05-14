@@ -96,6 +96,7 @@ public class Models {
     }
 
     public class Scene {
+        public string cityName { get; set; }
         public int LayerCount { get; set; }
         public List<object> layers { get; set; }
     }

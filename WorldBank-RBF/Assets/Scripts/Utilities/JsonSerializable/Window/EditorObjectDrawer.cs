@@ -32,12 +32,12 @@ public class EditorObjectDrawer<T> where T : UnityEngine.Object {
 
     PropertyField[] properties;
 
-    public void Save () {
-	    ModelSerializer.Save (Target);
+    public void Save (string fileName="") {
+	    ModelSerializer.Save (Target, fileName);
     }
 
-    public void Load () {
-		ModelSerializer.Load (Target);
+    public void Load (string fileName="") {
+		ModelSerializer.Load (Target, fileName);
 	}
 
 	public void DrawObjectProperties () {
