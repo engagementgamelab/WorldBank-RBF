@@ -55,11 +55,5 @@ public class ParallaxLayerManager : MonoBehaviour {
         while (layers.Count < layerCount) {
             layers.Add (EditorObjectPool.Create<ParallaxLayer> () as ParallaxLayer);
         }
-
-        // Apply settings
-        /*for (int i = 0; i < layerCount; i ++) {
-            ParallaxLayer layer = layers[i];
-            layer.LayerSettings = layerSettings[layer.Index];
-        }  */
     }
 }

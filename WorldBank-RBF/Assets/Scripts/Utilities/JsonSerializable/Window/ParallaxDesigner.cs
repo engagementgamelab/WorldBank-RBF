@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,6 +17,15 @@ public class ParallaxDesigner : EditorWindow {
 
     ParallaxLayerDesigner layerDesigner;
     int selectedLayer = 1;
+    int SelectedLayer {
+        get { return selectedLayer; }
+        set { selectedLayer = Mathf.Clamp (value, 1, LayerCount); }
+    }
+
+    int LayerCount {
+        get { return objectDrawer.Target.layers.Count; }
+    }
+
     GUILayoutOption largeButtonHeight = GUILayout.Height (25f);
 
 	[MenuItem ("Window/Parallax Designer")]
@@ -60,21 +70,63 @@ public class ParallaxDesigner : EditorWindow {
             GUILayout.Label ("Editing " + fileName);
         }
         EditorGUILayout.BeginHorizontal ();
+        if (GUILayout.Button ("New")) {
+            if (fileName == "") {
+
+            } else {
+                New ();
+            }
+        }
         if (GUILayout.Button ("Save")) {
             if (savePath == "") {
                 SaveAs ();
             } else {
-                objectDrawer.Save (savePath);
+                Save ();
             }
         }
         if (GUILayout.Button ("Save As")) {
             SaveAs ();
         }
         if (GUILayout.Button ("Load")) {
-            string loadPath = EditorUtility.OpenFilePanel ("Load a city", PATH, "json");
-            objectDrawer.Load (loadPath);
+            Load ();
         }
         EditorGUILayout.EndHorizontal ();
+    }
+
+    void DrawLayerSelection () {
+        if (LayerCount > 0) {
+            GUILayout.Label ("Select a layer to edit:");
+            EditorGUILayout.BeginHorizontal ();
+            if (GUILayout.Button ("<-")) {
+                SelectedLayer -= 1;
+            }
+            if (GUILayout.Button ("->")) {
+                SelectedLayer += 1;
+            }
+            SelectedLayer = EditorGUILayout.IntField (SelectedLayer, new GUILayoutOption[0]);
+            ParallaxLayer layer = objectDrawer.Target.layers[selectedLayer-1];
+            if (EditorWindow.focusedWindow == this) {
+                layerDesigner.objectDrawer.Target = layer;
+                Selection.activeGameObject = layer.gameObject;
+            }
+            EditorGUILayout.EndHorizontal ();
+        }
+    }
+
+    void SetTarget () {
+        if (objectDrawer.Target == null) {
+            objectDrawer.Target = ParallaxLayerManager.Instance;
+        }
+    }
+
+    void New () {
+        EditorObjectPool.Clear ();
+        fileName = "";
+        savePath = "";
+    }
+
+    void Save () {
+        objectDrawer.Save (savePath);
     }
 
     void SaveAs () {
@@ -82,26 +134,17 @@ public class ParallaxDesigner : EditorWindow {
             ? objectDrawer.Target.cityName + ".json"
             : fileName;
         savePath = EditorUtility.SaveFilePanel ("Save city", PATH, file, "json");
-        objectDrawer.Save (savePath);
-        fileName = System.IO.Path.GetFileName (savePath);
-    }
-
-    void DrawLayerSelection () {
-        int layerCount = objectDrawer.Target.layers.Count;
-        if (layerCount > 0) {
-            selectedLayer = Mathf.Clamp (
-                EditorGUILayout.IntField ("Select a layer to edit", selectedLayer, new GUILayoutOption[0]),
-                1, layerCount);
-
-            ParallaxLayer layer = objectDrawer.Target.layers[selectedLayer-1];
-            layerDesigner.objectDrawer.Target = layer;
-            Selection.activeGameObject = layer.gameObject;
+        if (savePath != "") {
+            Save ();
+            fileName = Path.GetFileName (savePath);
         }
     }
 
-    void SetTarget () {
-        if (objectDrawer.Target == null) {
-            objectDrawer.Target = ParallaxLayerManager.Instance;
+    void Load () {
+        string loadPath = EditorUtility.OpenFilePanel ("Load a city", PATH, "json");
+        if (loadPath != "") {
+            objectDrawer.Load (loadPath);
+            fileName = Path.GetFileName (loadPath);
         }
     }
 }

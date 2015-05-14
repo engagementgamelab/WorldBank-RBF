@@ -5,7 +5,16 @@ using System.Collections;
 [RequireComponent (typeof (MeshRenderer), typeof (MeshFilter))]
 [JsonSerializable (typeof (Models.ParallaxImage))]
 [ExecuteInEditMode]
-public class ParallaxImage : MB, IEditorRefreshable {
+public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
+
+	[HideInInspector] public int index;
+	public int Index {
+		get { return index; }
+		set { 
+			index = value;
+			Transform.SetLocalPositionX (index);
+		}
+	}
 
 	#if UNITY_EDITOR
 	public string TexturePath {
@@ -53,4 +62,6 @@ public class ParallaxImage : MB, IEditorRefreshable {
 		Texture = texture;
 		Transform.Reset ();
 	}
+
+	public void Init () {}
 }

@@ -13,16 +13,14 @@ public class ModelSerializer {
 		get { return Application.dataPath + "/Scripts/Utilities/JsonSerializable/Data/"; }
 	}
 
-	public static void Save (object obj, string path) {//string fileName = "") {
-        // fileName = (fileName == "") ? obj.GetType ().ToString () : fileName;
+	public static void Save (object obj, string path) {
         path = (path == "") 
             ? PATH + obj.GetType ().ToString () + ".json" 
             : path;
         WriteJsonData (CreateModelFromObject (obj), path);
     }
 
-    public static void Load (object obj, string path) {//string fileName = "") {
-    	// fileName = (fileName == "") ? obj.GetType ().ToString () : fileName;
+    public static void Load (object obj, string path) {
         path = (path == "") 
             ? PATH + obj.GetType ().ToString () + ".json" 
             : path;
@@ -134,6 +132,7 @@ public class ModelSerializer {
                         memberType = value.GetType ();
                     } else {
                         SetObjectsFromModels (
+                            obj,
                             objType.GetField (propName).FieldType.GetGenericArguments ()[0],
                             objType.GetField (propName).GetValue (obj), list);
                         continue;
@@ -146,6 +145,7 @@ public class ModelSerializer {
                     Debug.Log ("array " + oType);
                     if (!IsFundamental (oType)) {
                         SetObjectsFromModels (
+                            obj,
                             oType,
                             objType.GetField (propName).GetValue (obj), list);
                         continue;
@@ -176,13 +176,20 @@ public class ModelSerializer {
         return model;
     }
 
-    static void SetObjectsFromModels (System.Type itemType, object group, List<object> models) {
+    static void SetObjectsFromModels (object parent, System.Type itemType, object group, List<object> models) {
         IList ilist = (IList)group;
         List<object> list = ilist.Cast<object> ().ToList ();
         for (int i = 0; i < models.Count; i ++) {
             if (list.Count < i+1) {
                 if (typeof (IEditorPoolable).IsAssignableFrom (itemType)) {
-                    list.Add (EditorObjectPool.Create (itemType.ToString ()));
+                    object obj = EditorObjectPool.Create (itemType.ToString ());
+                    //TODO: is it possible to parent objects here?
+                    /*GameObject uObj = obj as GameObject;
+                    Debug.Log (uObj);
+                    // GameObject go = (GameObject)obj;
+                    GameObject goParent = (GameObject)parent;
+                    // go.transform.SetParent (goParent.transform);*/
+                    list.Add (obj);
                 } else {
                     list.Add (Activator.CreateInstance (itemType));
                 }
@@ -229,15 +236,13 @@ public class ModelSerializer {
         return type.IsPrimitive || type.Equals (typeof (string)) || type.Equals (typeof (DateTime));
     }
 
-    static public void WriteJsonData (object obj, string path) {//string fileName) {
-		// var streamWriter = new StreamWriter (PATH + "" + fileName + ".json");
+    static public void WriteJsonData (object obj, string path) {
         var streamWriter = new StreamWriter (path);
         streamWriter.Write (JsonWriter.Serialize (obj));
         streamWriter.Close ();
     }
 
-    static public object ReadJsonData (object obj, string path) {//string fileName) {
-        // StreamReader streamReader = new StreamReader (PATH + "" + fileName + ".json");
+    static public object ReadJsonData (object obj, string path) {
         StreamReader streamReader = new StreamReader (path);
         string data = streamReader.ReadToEnd ();
         streamReader.Close ();

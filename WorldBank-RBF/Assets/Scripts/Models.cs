@@ -103,11 +103,17 @@ public class Models {
 
     public class ParallaxLayer {
         public float LocalSeparation { get; set; }
-        public object image { get; set; }
+        public List<object> images { get; set; }
+        public List<object> elements { get; set; }
     }
 
     public class ParallaxImage {
+        public int Index { get; set; }
         public string TexturePath { get; set; }
+    }
+
+    public class ParallaxElement {
+
     }
 
     // TODO: remove

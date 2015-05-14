@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [JsonSerializable (typeof (Models.ParallaxLayer))]
 public class ParallaxLayer : MB, IEditorPoolable {
@@ -21,7 +22,10 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		}
 	}
 
-	public ParallaxImage image;
+	public List<ParallaxImage> images;
+
+	// TODO: Elements are things like NPCs and foreground objects that cause the camera to zoom
+	public List<ParallaxElement> elements;
 
 	float Scale {
 		get { return Mathf.Tan (MainCamera.Instance.FOV / 2 * Mathf.Deg2Rad) * Position.z * 2; }
@@ -38,4 +42,17 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		Transform.localScale = new Vector3 (Scale, Scale, 1);
 		Transform.SetPositionX (-LocalScale.x / 2);
 	}
+
+	#if UNITY_EDITOR
+	public void ClearImages () {
+		EditorObjectPool.Destroy (images);
+	}
+
+	public void AddImage (ParallaxImage newImage) {
+		images.Add (newImage);
+		newImage.Parent = Transform;
+		newImage.Transform.Reset ();
+		newImage.Transform.SetLocalPositionX (images.Count-1);
+	}
+	#endif
 }
