@@ -27,5 +27,11 @@ public class ParallaxLayerDesigner : ScriptableObject {
 			textureLoader.LoadTexturesDirectory (objectDrawer.Target);
 		}
 		objectDrawer.DrawObjectProperties ();
+		if (GUILayout.Button ("Add Element")) {
+			ParallaxElement element = EditorObjectPool.Create<ParallaxElement> ();
+			objectDrawer.Target.AddImage (element);
+		}
+
+		// TODO: Draw all parallax elements attached to the layer
 	}
 }

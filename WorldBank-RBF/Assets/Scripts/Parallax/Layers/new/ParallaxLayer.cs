@@ -49,12 +49,22 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		images.Clear ();
 	}
 
-	public void AddImage (ParallaxImage newImage) {
-		Debug.Log (images.Count);
-		images.Add (newImage);
-		newImage.Parent = Transform;
-		newImage.Transform.Reset ();
-		newImage.Transform.SetLocalPositionX (images.Count-1);
+	public void AddImage (ParallaxImage image) {
+		images.Add (image);
+		image.Parent = Transform;
+		image.Transform.Reset ();
+		image.Transform.SetLocalPositionX (images.Count-1);
+	}
+
+	public void AddElement (ParallaxElement element) {
+		elements.Add (element);
+		element.Parent = Transform;
+		element.Transform.Reset ();
+	}
+
+	public void RemoveElement (ParallaxElement element) {
+		EditorObjectPool.Destroy (element.Transform);
+		elements.Remove (element);
 	}
 	#endif
 }
