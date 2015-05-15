@@ -56,4 +56,10 @@ public class ParallaxLayerManager : MonoBehaviour {
             layers.Add (EditorObjectPool.Create<ParallaxLayer> () as ParallaxLayer);
         }
     }
+
+    #if UNITY_EDITOR
+	public void Reset () {
+		cityName = "";
+	}
+	#endif
 }

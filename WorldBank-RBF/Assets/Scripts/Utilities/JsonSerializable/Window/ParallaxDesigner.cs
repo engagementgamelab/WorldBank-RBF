@@ -8,6 +8,7 @@ using System.Reflection;
 
 public class ParallaxDesigner : EditorWindow {
 
+    string TEXTURES_PATH { get { return Application.dataPath + "/Textures/Cities/"; } }
     string PATH { get { return Application.dataPath + "/Resources/Config/PhaseOne/Cities/"; } }
     string savePath = "";
     string fileName = "";
@@ -26,7 +27,13 @@ public class ParallaxDesigner : EditorWindow {
         get { return objectDrawer.Target.layers.Count; }
     }
 
+    ParallaxLayerManager Target {
+        get { return objectDrawer.Target; }
+        set { objectDrawer.Target = value; }
+    }
+
     GUILayoutOption largeButtonHeight = GUILayout.Height (25f);
+    TextureLoader textureLoader;
 
 	[MenuItem ("Window/Parallax Designer")]
 	static void Init () {
@@ -39,6 +46,9 @@ public class ParallaxDesigner : EditorWindow {
         if (layerDesigner == null) {
             layerDesigner = CreateInstance ("ParallaxLayerDesigner") as ParallaxLayerDesigner;
         }
+        if (textureLoader == null) {
+            textureLoader = new TextureLoader (TEXTURES_PATH);
+        }
         SetTarget ();
     }
 
@@ -50,6 +60,9 @@ public class ParallaxDesigner : EditorWindow {
         SetTarget ();
         DrawPoolCommands ();
         DrawSaveLoad ();
+        if (GUILayout.Button ("Load city textures from directory")) {
+            textureLoader.LoadCityTextures (Target);
+        }
         objectDrawer.DrawObjectProperties ();
         DrawLayerSelection ();
         layerDesigner.OnGUI ();
@@ -72,7 +85,7 @@ public class ParallaxDesigner : EditorWindow {
         EditorGUILayout.BeginHorizontal ();
         if (GUILayout.Button ("New")) {
             if (fileName == "") {
-
+                NewDialog ();
             } else {
                 New ();
             }
@@ -104,7 +117,7 @@ public class ParallaxDesigner : EditorWindow {
                 SelectedLayer += 1;
             }
             SelectedLayer = EditorGUILayout.IntField (SelectedLayer, new GUILayoutOption[0]);
-            ParallaxLayer layer = objectDrawer.Target.layers[selectedLayer-1];
+            ParallaxLayer layer = Target.layers[selectedLayer-1];
             if (EditorWindow.focusedWindow == this) {
                 layerDesigner.objectDrawer.Target = layer;
                 Selection.activeGameObject = layer.gameObject;
@@ -114,15 +127,36 @@ public class ParallaxDesigner : EditorWindow {
     }
 
     void SetTarget () {
-        if (objectDrawer.Target == null) {
-            objectDrawer.Target = ParallaxLayerManager.Instance;
+        if (Target == null) {
+            Target = ParallaxLayerManager.Instance;
         }
     }
 
     void New () {
         EditorObjectPool.Clear ();
+        Target.Reset ();
         fileName = "";
         savePath = "";
+    }
+
+    void NewDialog () {
+        int option = EditorUtility.DisplayDialogComplex (
+            "You have unsaved changes",
+            "Save your changes or discard them",
+            "Save City",
+            "Cancel",
+            "New without saving");
+        switch (option) {
+            case 0:
+                SaveAs ();
+                New ();
+                break;
+            case 1:
+                break;
+            case 2:
+                New ();
+                break;
+        }
     }
 
     void Save () {
@@ -131,7 +165,7 @@ public class ParallaxDesigner : EditorWindow {
 
     void SaveAs () {
         string file = (fileName == "")
-            ? objectDrawer.Target.cityName + ".json"
+            ? Target.cityName + ".json"
             : fileName;
         savePath = EditorUtility.SaveFilePanel ("Save city", PATH, file, "json");
         if (savePath != "") {
@@ -145,6 +179,7 @@ public class ParallaxDesigner : EditorWindow {
         if (loadPath != "") {
             objectDrawer.Load (loadPath);
             fileName = Path.GetFileName (loadPath);
+            savePath = loadPath;
         }
     }
 }

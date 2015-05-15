@@ -4,16 +4,12 @@ using System.Collections;
 
 [RequireComponent (typeof (MeshRenderer), typeof (MeshFilter))]
 [JsonSerializable (typeof (Models.ParallaxImage))]
-[ExecuteInEditMode]
 public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 
 	[HideInInspector] public int index;
 	public int Index {
 		get { return index; }
-		set { 
-			index = value;
-			Transform.SetLocalPositionX (index);
-		}
+		set { index = value; }
 	}
 
 	#if UNITY_EDITOR
@@ -53,15 +49,18 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 		}
 	}
 
-	void Awake () {
+	public float LocalPositionX {
+		get { return LocalPosition.x; }
+		set { Transform.SetLocalPositionX (value); }
+	}
+
+	public void Init () {
 		Texture = null;
 		Transform.Reset ();
 	}
-	
+
 	public void Refresh () {
 		Texture = texture;
 		Transform.Reset ();
 	}
-
-	public void Init () {}
 }

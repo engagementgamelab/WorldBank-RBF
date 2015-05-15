@@ -108,34 +108,13 @@ public class Models {
     }
 
     public class ParallaxImage {
+        public bool child { get; set; }
         public int Index { get; set; }
         public string TexturePath { get; set; }
+        public float LocalPositionX { get; set; }
     }
 
     public class ParallaxElement {
-
-    }
-
-    // TODO: remove
-    public class Test {
-        public string hello { get; set; }
-    }
-
-    // TODO: remove
-    public class Test2 {
-        public float happiness { get; set; }
-        public float sadness { get; set; }
-        public object ex { get; set; }
-        // public Texture2D texture { get; set; }
-    }
-
-    // TODO: remove
-    public class Test3 {
-        public int goop { get; set; }
-        public List<string> texts { get; set; }
-        public string[] blahs { get; set; }
-        public List<object> test2s { get; set; }
-        public object[] test3s { get; set; }
-        // public object ex2 { get; set; }
+        public bool child { get; set; }
     }
 }

@@ -30,8 +30,12 @@ public class EditorObjectPool : MonoBehaviour {
 		return objects;
 	}
 
-	public static object Create (string typeName) {
+	public static object Create (string typeName, Transform parent=null) {
 		IEditorPoolable obj = ObjectPool.Instantiate (typeName) as IEditorPoolable;
+		MonoBehaviour mb = (MonoBehaviour)obj;
+		if (parent != null) {
+			mb.transform.SetParent (parent);
+		}
 		obj.Index = ObjectPool.GetInstances (typeName).Count-1;
 		obj.Init ();
 		return obj as object;

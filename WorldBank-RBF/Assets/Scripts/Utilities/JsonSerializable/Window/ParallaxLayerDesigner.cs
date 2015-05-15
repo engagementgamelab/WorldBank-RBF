@@ -11,46 +11,21 @@ public class ParallaxLayerDesigner : ScriptableObject {
 	public EditorObjectDrawer<ParallaxLayer> objectDrawer = 
         new EditorObjectDrawer<ParallaxLayer> ();
 
-    // ParallaxImageDesigner backgroundImageDesigner = null;
+    TextureLoader textureLoader;
 
     void OnEnable () {
-    	/*if (backgroundImageDesigner == null) {
-    		backgroundImageDesigner = CreateInstance ("ParallaxImageDesigner") as ParallaxImageDesigner;
-    	}*/
+    	if (textureLoader == null) {
+    		textureLoader = new TextureLoader (PATH);
+    	}
     }
 
 	public void OnGUI () {
 		if (objectDrawer.Target == null) return;
-		// backgroundImageDesigner.objectDrawer.Target = objectDrawer.Target;
 		int layerIndex = objectDrawer.Target.Index + 1;
 		GUILayout.Label ("Layer " + layerIndex);
-		if (GUILayout.Button ("Load layer textures folder")) {
-			LoadTexturesDirectory ();
+		if (GUILayout.Button ("Load layer textures from directory")) {
+			textureLoader.LoadTexturesDirectory (objectDrawer.Target);
 		}
 		objectDrawer.DrawObjectProperties ();
-		// backgroundImageDesigner.OnGUI ();
-	}
-
-	void LoadTexturesDirectory () {
-		string loadPath = EditorUtility.OpenFolderPanel ("Load layer textures", PATH, "json");
-		string[] textures = Directory.GetFiles (loadPath);
-		List<string> texturesToLoad = new List<string> ();
-		for (int i = 0; i < textures.Length; i ++) {
-			string texture = textures[i];
-			if (texture.EndsWith (".png")) {
-				texturesToLoad.Add (texture);
-			}
-		}
-		LoadTextures (texturesToLoad);
-	}
-
-	void LoadTextures (List<string> textures) {
-		objectDrawer.Target.ClearImages ();
-		foreach (string texturePath in textures) {
-			ParallaxImage image = EditorObjectPool.Create<ParallaxImage> ();
-			string path = "Assets" + texturePath.Remove (0, Application.dataPath.Length);
-			image.Texture = AssetDatabase.LoadAssetAtPath (path, typeof (Texture2D)) as Texture2D;
-			objectDrawer.Target.AddImage (image);
-		}
 	}
 }

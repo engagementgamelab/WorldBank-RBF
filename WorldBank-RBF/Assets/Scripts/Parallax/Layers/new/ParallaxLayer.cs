@@ -46,9 +46,11 @@ public class ParallaxLayer : MB, IEditorPoolable {
 	#if UNITY_EDITOR
 	public void ClearImages () {
 		EditorObjectPool.Destroy (images);
+		images.Clear ();
 	}
 
 	public void AddImage (ParallaxImage newImage) {
+		Debug.Log (images.Count);
 		images.Add (newImage);
 		newImage.Parent = Transform;
 		newImage.Transform.Reset ();

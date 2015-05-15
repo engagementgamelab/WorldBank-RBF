@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,17 +14,19 @@ public class ModelSerializer {
 	}
 
 	public static void Save (object obj, string path) {
-        path = (path == "") 
-            ? PATH + obj.GetType ().ToString () + ".json" 
-            : path;
-        WriteJsonData (CreateModelFromObject (obj), path);
+        WriteJsonData (
+            CreateModelFromObject (obj), FilePath (obj, path));
     }
 
     public static void Load (object obj, string path) {
-        path = (path == "") 
+    	ApplyModelPropertiesToObject (
+            obj, ReadJsonData (obj, FilePath (obj, path)));
+    }
+
+    static string FilePath (object obj, string path) {
+        return (path == "") 
             ? PATH + obj.GetType ().ToString () + ".json" 
             : path;
-    	ApplyModelPropertiesToObject (obj, ReadJsonData (obj, path));
     }
 
     // Saving
@@ -46,6 +48,15 @@ public class ModelSerializer {
                     value = targetField.GetValue (obj);
                     memberType = targetField.FieldType;
                 }
+            }
+
+            // "child" is a special property that keeps track of whether the object has a parent
+            // if so, it will be childed on load
+            if (p.Name == "child") {
+                MonoBehaviour mb = (MonoBehaviour)obj;
+                bool isChild = (mb.transform.parent != null);
+                p.SetValue (applyTo, isChild, null);
+                continue;
             }
 
             if (typeof (IEnumerable).IsAssignableFrom (memberType) && memberType != typeof (string)) {
@@ -141,7 +152,7 @@ public class ModelSerializer {
 
                 	// Array
                     System.Type oType = memberType.GetElementType ();
-                    // TODO: this does not pass the correct type into SetObjectsFromModels (must grab it from the array)
+                    // TODO: this does not pass the correct type into SetObjectsFromModels (must grab it from the array, as it does with the list above ^^)
                     Debug.Log ("array " + oType);
                     if (!IsFundamental (oType)) {
                         SetObjectsFromModels (
@@ -159,12 +170,14 @@ public class ModelSerializer {
                 }
             }
 
-            SetMemberValue (obj, propName, value);
+            if (propName != "child") {
+                SetMemberValue (obj, propName, value);
+            }
         }
     }
 
     static object CreateModelFromObject (System.Object obj) {
-
+        
         if (obj == null) 
             return null;
 
@@ -182,13 +195,7 @@ public class ModelSerializer {
         for (int i = 0; i < models.Count; i ++) {
             if (list.Count < i+1) {
                 if (typeof (IEditorPoolable).IsAssignableFrom (itemType)) {
-                    object obj = EditorObjectPool.Create (itemType.ToString ());
-                    //TODO: is it possible to parent objects here?
-                    /*GameObject uObj = obj as GameObject;
-                    Debug.Log (uObj);
-                    // GameObject go = (GameObject)obj;
-                    GameObject goParent = (GameObject)parent;
-                    // go.transform.SetParent (goParent.transform);*/
+                    object obj = EditorObjectPool.Create (itemType.ToString (), GetParentIfChild (parent, models[i]));//tParent);
                     list.Add (obj);
                 } else {
                     list.Add (Activator.CreateInstance (itemType));
@@ -198,21 +205,33 @@ public class ModelSerializer {
         }
     }
 
+    static Transform GetParentIfChild (object parent, object model) {
+        Dictionary<string, object> dict = (Dictionary<string, object>)model;
+        Transform tParent = null;
+        object isChild;
+        if (dict.TryGetValue ("child", out isChild)) {
+            if ((bool)isChild) {
+                MonoBehaviour mbParent = (MonoBehaviour)parent;
+                tParent = mbParent.transform;
+            }
+        }
+        return tParent;
+    }
+
     static void SetMemberValue (object obj, string memberName, object value) {
         
         System.Type objType = obj.GetType ();
-        System.Type memberType = value.GetType ();
         
         PropertyInfo targetProperty = objType.GetProperty (memberName);
         if (targetProperty != null) {
             targetProperty.SetValue (
-                obj, Convert.ChangeType (value, memberType), null);
+                obj, Convert.ChangeType (value, targetProperty.PropertyType), null);
         }
 
         FieldInfo targetField = objType.GetField (memberName);
         if (targetField != null) {
             targetField.SetValue (
-                obj, Convert.ChangeType (value, memberType));
+                obj, Convert.ChangeType (value, targetField.FieldType));
         }
     }
 
