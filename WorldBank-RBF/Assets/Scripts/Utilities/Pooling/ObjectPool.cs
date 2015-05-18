@@ -100,7 +100,12 @@ public class ObjectPool : MonoBehaviour {
 	}
 
 	static Transform CreatePrefab (string prefabName) {
-		GameObject go = Instantiate (Resources.Load ("Prefabs/" + prefabName)) as GameObject;
+		GameObject go = null;
+		try {
+			go = Instantiate (Resources.Load ("Prefabs/" + prefabName)) as GameObject;
+		} catch (System.Exception e) {
+			throw new System.Exception ("The prefab '" + prefabName + "' was not found in the Resources/Prefabs folder.");
+		}
 		#if UNITY_EDITOR
 		if (go == null)
 			Debug.Log (string.Format ("{0} was not found. Is it in the Resources/Prefabs directory?", prefabName));

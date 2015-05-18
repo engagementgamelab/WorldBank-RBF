@@ -18,20 +18,19 @@ public class ParallaxPreview : EditorWindow {
     }
 
     void OnEnable () {
-    	if (previewCamera == null) {
-    		previewCamera = GameObject.Find ("PreviewCamera").GetComponent<Camera> ();
-    		UpdateRenderTexture ();
-    	}
+    	FindCamera ();	
     }
 
     void Update () {
+    	
+    	FindCamera ();
     	if (previewCamera != null) {
     		previewCamera.targetTexture = renderTexture;
     		previewCamera.Render ();
     		previewCamera.targetTexture = null;
     	}
 
-    	if (renderTexture.width != position.width || renderTexture.height != position.height) {
+    	if (renderTexture != null && renderTexture.width != position.width || renderTexture.height != position.height) {
 	        UpdateRenderTexture ();
         }
     }
@@ -43,6 +42,7 @@ public class ParallaxPreview : EditorWindow {
         }
         GUI.DrawTexture (new Rect (0f, 0f, position.width, position.height), renderTexture);
         EditorGUILayout.BeginHorizontal ();
+        // TODO: Replace with scrollbar
         if (GUILayout.RepeatButton ("<-")) {
         	previewCamera.transform.SetPositionX (Mathf.Max (0, previewCamera.transform.position.x-1));
         } 
@@ -57,5 +57,18 @@ public class ParallaxPreview : EditorWindow {
 			(int)position.width,
 			(int)position.height,
 			(int)RenderTextureFormat.ARGB32);
+    }
+
+    void FindCamera () {
+    	if (previewCamera == null) {
+    		GameObject cam = GameObject.Find ("PreviewCamera");
+    		if (cam != null) {
+	    		previewCamera = cam.GetComponent<Camera> ();
+	    		UpdateRenderTexture ();
+    		}
+    	}
+        if (renderTexture == null) {
+            UpdateRenderTexture ();
+        }
     }
 }

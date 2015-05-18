@@ -8,62 +8,58 @@ using System.Reflection;
  
 public static class ExposeProperties
 {	
-	public static void Expose (string propertyName, PropertyField[] properties) {
+	public static void Expose (string propertyName, PropertyField[] properties, GUILayoutOption[] options) {
 		foreach (PropertyField field in properties) {
 			if (field.Name.Replace (" ", "") == propertyName) {
-				DrawProperty (field);
+				DrawProperty (field, options);
 				return;
 			}
 		}
 	}
 
-	public static void Expose( PropertyField[] properties )
-	{
+	public static void Expose (PropertyField[] properties, GUILayoutOption[] options) {
  
-		EditorGUILayout.BeginVertical();
+		EditorGUILayout.BeginVertical(options);
  
-		foreach ( PropertyField field in properties )
-		{	
+		foreach (PropertyField field in properties) {	
 			EditorGUILayout.BeginHorizontal();
-			DrawProperty (field);
+			DrawProperty (field, options);
 			EditorGUILayout.EndHorizontal();
 		}
  
 		EditorGUILayout.EndVertical();
- 
 	}
 
-	static void DrawProperty (PropertyField property) {
+	static void DrawProperty (PropertyField property, GUILayoutOption[] options) {
 
-		GUILayoutOption[] emptyOptions = new GUILayoutOption[0];
 		switch ( property.Type )
 			{
 			case SerializedPropertyType.Integer:
-					property.SetValue( EditorGUILayout.IntField( property.Name, (int)property.GetValue(), emptyOptions ) ); 
+					property.SetValue( EditorGUILayout.IntField( property.Name, (int)property.GetValue(), options ) ); 
 				break;
  
 			case SerializedPropertyType.Float:
-					property.SetValue( EditorGUILayout.FloatField( property.Name, (float)property.GetValue(), emptyOptions ) );
+					property.SetValue( EditorGUILayout.FloatField( property.Name, (float)property.GetValue(), options ) );
 				break;
  
 			case SerializedPropertyType.Boolean:
-					property.SetValue( EditorGUILayout.Toggle( property.Name, (bool)property.GetValue(), emptyOptions ) );
+					property.SetValue( EditorGUILayout.Toggle( property.Name, (bool)property.GetValue(), options ) );
 				break;
  
 			case SerializedPropertyType.String:
-					property.SetValue( EditorGUILayout.TextField( property.Name, (String)property.GetValue(), emptyOptions ) );
+					property.SetValue( EditorGUILayout.TextField( property.Name, (String)property.GetValue(), options ) );
 				break;
  
 			case SerializedPropertyType.Vector2:
-					property.SetValue( EditorGUILayout.Vector2Field( property.Name, (Vector2)property.GetValue(), emptyOptions ) );
+					property.SetValue( EditorGUILayout.Vector2Field( property.Name, (Vector2)property.GetValue(), options ) );
 				break;
  
 			case SerializedPropertyType.Vector3:
-					property.SetValue( EditorGUILayout.Vector3Field( property.Name, (Vector3)property.GetValue(), emptyOptions ) );
+					property.SetValue( EditorGUILayout.Vector3Field( property.Name, (Vector3)property.GetValue(), options ) );
 				break;
  
 			case SerializedPropertyType.Enum:
-   				    property.SetValue (EditorGUILayout.EnumPopup(property.Name, (Enum)property.GetValue(), emptyOptions));
+   				    property.SetValue (EditorGUILayout.EnumPopup(property.Name, (Enum)property.GetValue(), options));
 				break;
  			
 			default: break;

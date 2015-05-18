@@ -248,12 +248,23 @@ public class ModelSerializer {
         JsonSerializableAttribute j = (JsonSerializableAttribute) Attribute.GetCustomAttribute (
             obj.GetType (), 
             typeof (JsonSerializableAttribute));
-        return j.modelType;
+        try {
+            return j.modelType;
+        } catch (NullReferenceException e) {
+            Debug.LogError (
+                string.Format ("{0} does not have a JsonSerializableAttribute \n{1}", obj.GetType (), e));
+            throw;
+        }
+        return null;
     }
 
     static bool IsFundamental (System.Type type) {
         return type.IsPrimitive || type.Equals (typeof (string)) || type.Equals (typeof (DateTime));
     }
+
+    static bool IsType (object obj, System.Type type) {
+        return obj.GetType ().Equals (type);
+    } 
 
     static public void WriteJsonData (object obj, string path) {
         var streamWriter = new StreamWriter (path);

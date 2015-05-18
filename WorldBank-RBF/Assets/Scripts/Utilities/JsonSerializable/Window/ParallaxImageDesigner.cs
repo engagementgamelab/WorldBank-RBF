@@ -8,7 +8,7 @@ public class ParallaxImageDesigner : ScriptableObject {
 
 	public void OnGUI () {
 		if (objectDrawer.Target == null) return;
-		objectDrawer.DrawObjectProperties ();
+		objectDrawer.DrawObjectProperties (new GUILayoutOption[0]);
 		IEditorRefreshable refreshable = (IEditorRefreshable)objectDrawer.Target;
 		refreshable.Refresh ();
 	}

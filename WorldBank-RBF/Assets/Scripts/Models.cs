@@ -104,7 +104,8 @@ public class Models {
     public class ParallaxLayer {
         public float LocalSeparation { get; set; }
         public List<object> images { get; set; }
-        public List<object> elements { get; set; }
+        public List<object> npcs { get; set; }
+        public List<object> zoomTriggers { get; set; }
     }
 
     public class ParallaxImage {
@@ -114,7 +115,20 @@ public class Models {
         public float LocalPositionX { get; set; }
     }
 
-    public class ParallaxElement {
-        public bool child { get; set; }
+    public class ParallaxElement : ParallaxImage {
+        public float XPosition { get; set; }
+        public float YPosition { get; set; }
+        public float ColliderXPosition { get; set; }
+        public float ColliderYPosition { get; set; }
+        public float ColliderWidth { get; set; }
+        public float ColliderHeight { get; set; }
+    }
+
+    public class ParallaxNpc : ParallaxElement {
+        public string symbol { get; set; }
+    }
+
+    public class ParallaxZoomTrigger : ParallaxElement {
+        public float zoomTarget { get; set; }
     }
 }

@@ -40,7 +40,7 @@ public class EditorObjectDrawer<T> where T : UnityEngine.Object {
 		ModelSerializer.Load (Target, fileName);
 	}
 
-	public void DrawObjectProperties () {
+	public void DrawObjectProperties (GUILayoutOption[] options) {
 		if (Selected) {
     		serializedTarget.Update ();
             Dictionary<MemberInfo, Attribute> members = GetMembersWithWindowAttribute (Target.GetType ());
@@ -48,9 +48,9 @@ public class EditorObjectDrawer<T> where T : UnityEngine.Object {
                 string memberName = member.Key.Name;
                 SerializedProperty prop = serializedTarget.FindProperty (memberName);
                 if (prop == null) {
-                    ExposeProperties.Expose (memberName, properties);
+                    ExposeProperties.Expose (memberName, properties, options);
                 } else {
-                    EditorGUILayout.PropertyField (prop, true, new GUILayoutOption[0]);
+                    EditorGUILayout.PropertyField (prop, true, options);
                 }
             }
             serializedTarget.ApplyModifiedProperties ();

@@ -34,6 +34,8 @@ public class ParallaxDesigner : EditorWindow {
 
     GUILayoutOption largeButtonHeight = GUILayout.Height (25f);
     TextureLoader textureLoader;
+    Vector2 scrollPos;
+    GUILayoutOption[] options;
 
 	[MenuItem ("Window/Parallax Designer")]
 	static void Init () {
@@ -63,9 +65,14 @@ public class ParallaxDesigner : EditorWindow {
         if (GUILayout.Button ("Load city textures from directory")) {
             textureLoader.LoadCityTextures (Target);
         }
-        objectDrawer.DrawObjectProperties ();
+
+        options = new GUILayoutOption[] { GUILayout.MaxWidth(position.width-20f), GUILayout.MinWidth(20f) };
+        scrollPos = EditorGUILayout.BeginScrollView (scrollPos, false, true, GUILayout.Width (position.width), GUILayout.Height (position.height - 90));
+        objectDrawer.DrawObjectProperties (options);
         DrawLayerSelection ();
+        layerDesigner.Options = options;
         layerDesigner.OnGUI ();
+        EditorGUILayout.EndScrollView ();
     }
 
     void DrawPoolCommands () {
@@ -108,19 +115,26 @@ public class ParallaxDesigner : EditorWindow {
 
     void DrawLayerSelection () {
         if (LayerCount > 0) {
+
             GUILayout.Label ("Select a layer to edit:");
-            EditorGUILayout.BeginHorizontal ();
+            EditorGUILayout.BeginHorizontal (options);
             if (GUILayout.Button ("<-")) {
                 SelectedLayer -= 1;
+                SetSelection ();
             }
             if (GUILayout.Button ("->")) {
                 SelectedLayer += 1;
+                SetSelection ();
             }
-            SelectedLayer = EditorGUILayout.IntField (SelectedLayer, new GUILayoutOption[0]);
+            int prevLayer = SelectedLayer;
+            SelectedLayer = EditorGUILayout.IntField (SelectedLayer);
+            if (prevLayer != SelectedLayer) {
+                SetSelection ();
+            }
+            GUILayout.Label (" / " + LayerCount + " Layers");
             ParallaxLayer layer = Target.layers[selectedLayer-1];
             if (EditorWindow.focusedWindow == this) {
                 layerDesigner.objectDrawer.Target = layer;
-                Selection.activeGameObject = layer.gameObject;
             }
             EditorGUILayout.EndHorizontal ();
         }
@@ -130,6 +144,10 @@ public class ParallaxDesigner : EditorWindow {
         if (Target == null) {
             Target = ParallaxLayerManager.Instance;
         }
+    }
+
+    void SetSelection () {
+        Selection.activeGameObject = Target.layers[selectedLayer-1].gameObject;
     }
 
     void New () {

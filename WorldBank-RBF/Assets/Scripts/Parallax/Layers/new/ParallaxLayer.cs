@@ -23,9 +23,8 @@ public class ParallaxLayer : MB, IEditorPoolable {
 	}
 
 	public List<ParallaxImage> images;
-
-	// TODO: Elements are things like NPCs and foreground objects that cause the camera to zoom
-	public List<ParallaxElement> elements;
+	public List<ParallaxNpc> npcs;
+	public List<ParallaxZoomTrigger> zoomTriggers;
 
 	float Scale {
 		get { return Mathf.Tan (MainCamera.Instance.FOV / 2 * Mathf.Deg2Rad) * Position.z * 2; }
@@ -54,17 +53,31 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		image.Parent = Transform;
 		image.Transform.Reset ();
 		image.Transform.SetLocalPositionX (images.Count-1);
+		image.LayerPosition = (int)Position.z;
 	}
 
-	public void AddElement (ParallaxElement element) {
-		elements.Add (element);
-		element.Parent = Transform;
-		element.Transform.Reset ();
+	public void AddNpc (ParallaxNpc npc) {
+		npcs.Add (npc);
+		npc.Parent = Transform;
+		npc.Transform.Reset ();
+		npc.LayerPosition = (int)Position.z;
 	}
 
-	public void RemoveElement (ParallaxElement element) {
-		EditorObjectPool.Destroy (element.Transform);
-		elements.Remove (element);
+	public void RemoveNpc (ParallaxNpc npc) {
+		EditorObjectPool.Destroy<ParallaxNpc> (npc.Transform);
+		npcs.Remove (npc);
+	}
+
+	public void AddZoomTrigger (ParallaxZoomTrigger zoomTrigger) {
+		zoomTriggers.Add (zoomTrigger);
+		zoomTrigger.Parent = Transform;
+		zoomTrigger.Transform.Reset ();
+		zoomTrigger.LayerPosition = (int)Position.z;
+	}
+
+	public void RemoveZoomTrigger (ParallaxZoomTrigger zoomTrigger) {
+		EditorObjectPool.Destroy<ParallaxZoomTrigger> (zoomTrigger.Transform);
+		zoomTriggers.Remove (zoomTrigger);
 	}
 	#endif
 }

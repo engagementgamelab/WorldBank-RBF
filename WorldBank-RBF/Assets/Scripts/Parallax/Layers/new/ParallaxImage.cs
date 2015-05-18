@@ -2,6 +2,14 @@
 using UnityEditor;
 using System.Collections;
 
+/**
+  * Inheritance structure:
+  *	ParallaxImage
+  *		> ParallaxElement
+  *			> ParallaxNpc
+  *			> ParallaxForeground
+  */
+
 [RequireComponent (typeof (MeshRenderer), typeof (MeshFilter))]
 [JsonSerializable (typeof (Models.ParallaxImage))]
 public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
@@ -10,6 +18,24 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 	public int Index {
 		get { return index; }
 		set { index = value; }
+	}
+
+	int layerPosition = 3000;
+	public int LayerPosition {
+		get { return layerPosition; }
+		set {
+			
+			layerPosition = 4000 - (int)value;
+
+			// Prevents z fighting
+			if (Material != null) {
+				Material.renderQueue = layerPosition;
+			}
+		}
+	}
+
+	protected virtual bool Forward {
+		get { return false; }
 	}
 
 	#if UNITY_EDITOR
@@ -28,9 +54,16 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 			cachedTexture = value;
 			if (cachedTexture != null) {
 				Material = MaterialsManager.CreateMaterialFromTexture (cachedTexture, cachedTexture.format.HasAlpha ());
+				if (MaterialsManager.TextureIsBlank (Texture)) {
+					gameObject.SetActive (false);
+				} else {
+					gameObject.SetActive (true);
+				}
 			} else {
 				Material = MaterialsManager.Blank;
 			}
+			if (Material != null)
+				Material.renderQueue = LayerPosition;
 		}
 	}
 
@@ -56,11 +89,16 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 
 	public void Init () {
 		Texture = null;
-		Transform.Reset ();
+		Reset ();
 	}
 
 	public void Refresh () {
 		Texture = texture;
+		Reset ();
+	}
+
+	void Reset () {
 		Transform.Reset ();
+		if (Forward) Transform.SetLocalPositionZ (-0.01f);
 	}
 }
