@@ -85,9 +85,7 @@ public class ParallaxLayerDesigner : ScriptableObject {
 
 	void DrawNpcDesigner () {
 		
-        EditorGUILayout.BeginVertical (Options);
         showNpcDesigner = EditorGUILayout.Foldout (showNpcDesigner, "Edit NPCs");
-        EditorGUILayout.EndVertical ();
         if (!showNpcDesigner) return;
         
         EditorGUILayout.BeginVertical (Options);
@@ -131,9 +129,7 @@ public class ParallaxLayerDesigner : ScriptableObject {
 
     void DrawZoomTriggerDesigner () {
         
-        EditorGUILayout.BeginVertical (Options);     
         showZoomTriggerDesigner = EditorGUILayout.Foldout (showZoomTriggerDesigner, "Edit zoom triggers");
-        EditorGUILayout.EndVertical ();
         if (!showZoomTriggerDesigner) return;
 
         EditorGUILayout.BeginVertical (Options);

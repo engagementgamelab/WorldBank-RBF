@@ -66,13 +66,13 @@ public class ParallaxDesigner : EditorWindow {
             textureLoader.LoadCityTextures (Target);
         }
 
-        options = new GUILayoutOption[] { GUILayout.MaxWidth(position.width-20f), GUILayout.MinWidth(20f) };
-        scrollPos = EditorGUILayout.BeginScrollView (scrollPos, false, true, GUILayout.Width (position.width), GUILayout.Height (position.height - 90));
+        options = new GUILayoutOption[] { GUILayout.MaxWidth (position.width), GUILayout.MinWidth (20f) };
+        scrollPos = GUILayout.BeginScrollView (scrollPos, false, false, GUILayout.Width (position.width), GUILayout.Height (position.height - 90));
         objectDrawer.DrawObjectProperties (options);
         DrawLayerSelection ();
         layerDesigner.Options = options;
         layerDesigner.OnGUI ();
-        EditorGUILayout.EndScrollView ();
+        GUILayout.EndScrollView ();
     }
 
     void DrawPoolCommands () {

@@ -30,6 +30,13 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		get { return Mathf.Tan (MainCamera.Instance.FOV / 2 * Mathf.Deg2Rad) * Position.z * 2; }
 	}
 
+	public float RightMax {
+		get { 
+			Transform rightImage = images[images.Count-1].Transform;
+			return rightImage.position.x - rightImage.localScale.x * 0.5f;
+		}
+	}
+
 	public void Init () {
 		UpdateTransform ();
 	}

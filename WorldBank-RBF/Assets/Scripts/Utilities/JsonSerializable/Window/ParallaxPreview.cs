@@ -9,6 +9,9 @@ public class ParallaxPreview : EditorWindow {
 
 	bool leftPressed = false;
 	bool rightPressed = false;
+    Vector2 scrollPos;
+    float xMin = 0f;
+    float xMax;
 
 	[MenuItem ("Window/Parallax Preview")]
 	static void Init () {
@@ -18,7 +21,8 @@ public class ParallaxPreview : EditorWindow {
     }
 
     void OnEnable () {
-    	FindCamera ();	
+    	FindCamera ();
+        xMax = ParallaxLayerManager.Instance.FurthestLayer.RightMax;
     }
 
     void Update () {
@@ -40,8 +44,12 @@ public class ParallaxPreview : EditorWindow {
             GUILayout.Label ("Editor disabled in play mode");
             return;
         }
+        scrollPos = GUILayout.BeginScrollView (scrollPos, true, false, GUILayout.Width (position.width+20f), GUILayout.Height (position.height));
+        Debug.Log (scrollPos);
+        // previewCamera.transform.SetPositionX ()
         GUI.DrawTexture (new Rect (0f, 0f, position.width, position.height), renderTexture);
-        EditorGUILayout.BeginHorizontal ();
+        GUILayout.EndScrollView ();
+        /*EditorGUILayout.BeginHorizontal ();
         // TODO: Replace with scrollbar
         if (GUILayout.RepeatButton ("<-")) {
         	previewCamera.transform.SetPositionX (Mathf.Max (0, previewCamera.transform.position.x-1));
@@ -49,7 +57,7 @@ public class ParallaxPreview : EditorWindow {
         if (GUILayout.RepeatButton ("->")) {
         	previewCamera.transform.SetPositionX (previewCamera.transform.position.x+1);
         } 
-        EditorGUILayout.EndHorizontal ();
+        EditorGUILayout.EndHorizontal ();*/
     }
 
     void UpdateRenderTexture () {

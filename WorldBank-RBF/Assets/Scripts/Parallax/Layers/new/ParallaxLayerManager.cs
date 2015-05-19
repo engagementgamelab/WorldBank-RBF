@@ -36,6 +36,10 @@ public class ParallaxLayerManager : MonoBehaviour {
 		}
 	}
 
+	public ParallaxLayer FurthestLayer {
+		get { return layers[layers.Count-1]; }
+	}
+
 	void RefreshLayers () {
         
         layers = EditorObjectPool.GetObjectsOfTypeInOrder<ParallaxLayer> ();
