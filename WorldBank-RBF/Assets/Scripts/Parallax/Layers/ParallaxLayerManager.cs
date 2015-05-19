@@ -20,18 +20,18 @@ public class ParallaxLayerManager : MonoBehaviour {
 		}
 	}
 
-	[WindowExposed]
+	[ExposeInWindow]
 	public string cityName;
 
 	[HideInInspector]
 	public List<ParallaxLayer> layers = new List<ParallaxLayer> ();
 
-	[SerializeField] int layerCount = 3;
-	[WindowExposed, ExposeProperty]
+	[SerializeField] int layerCount = 1;
+	[ExposeInWindow, ExposeProperty]
 	public int LayerCount {
 		get { return layerCount; }
 		set { 
-			layerCount = Mathf.Clamp (value, 0, 10);
+			layerCount = Mathf.Clamp (value, 1, 10);
 			RefreshLayers ();
 		}
 	}

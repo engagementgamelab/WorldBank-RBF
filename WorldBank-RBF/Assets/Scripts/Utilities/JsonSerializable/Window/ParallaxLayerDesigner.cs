@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
+// TODO: NpcDesigner & ZoomTriggerDesigner are identical - should be a class
 public class ParallaxLayerDesigner : ScriptableObject {
 
 	string PATH { get { return Application.dataPath + "/Textures/Cities/"; } }
@@ -55,6 +56,7 @@ public class ParallaxLayerDesigner : ScriptableObject {
         get { return objectDrawer.Target.zoomTriggers.Count; }
     }
 
+    bool showLayerSettings = false;
     bool showNpcDesigner = false;
     bool showZoomTriggerDesigner = false;
 
@@ -75,23 +77,35 @@ public class ParallaxLayerDesigner : ScriptableObject {
 
 		int layerIndex = objectDrawer.Target.Index + 1;
 		GUILayout.Label ("Layer " + layerIndex, Options);
-		if (GUILayout.Button ("Load layer textures from directory", Options)) {
-			textureLoader.LoadTexturesDirectory (objectDrawer.Target);
-		}
-		objectDrawer.DrawObjectProperties (Options);
+        DrawLayerSettings ();
 		DrawNpcDesigner ();
         DrawZoomTriggerDesigner ();
 	}
 
+    void DrawLayerSettings () {
+        showLayerSettings = EditorGUILayout.Foldout (showLayerSettings, "Layer Settings");
+        if (showLayerSettings) {
+            if (GUILayout.Button ("Load layer textures from directory", Options)) {
+                textureLoader.LoadTexturesDirectory (objectDrawer.Target);
+            }
+            objectDrawer.DrawObjectProperties (Options);
+        }
+    }
+
 	void DrawNpcDesigner () {
 		
-        showNpcDesigner = EditorGUILayout.Foldout (showNpcDesigner, "Edit NPCs");
+        bool toggled = showNpcDesigner;
+        showNpcDesigner = EditorGUILayout.Foldout (showNpcDesigner, "NPCs");
+        if (toggled != showNpcDesigner) {
+            SelectLastNpc ();
+        }
         if (!showNpcDesigner) return;
         
         EditorGUILayout.BeginVertical (Options);
         if (GUILayout.Button ("Add NPC")) {
             objectDrawer.Target.AddNpc (
                 EditorObjectPool.Create<ParallaxNpc> ());
+            SelectLastNpc ();
         }
 
 		if (NpcCount > 0) {
@@ -113,14 +127,27 @@ public class ParallaxLayerDesigner : ScriptableObject {
             GUILayout.Label (" / " + NpcCount + " NPCs");
             EditorGUILayout.EndHorizontal ();
             npcDesigner.OnGUI ();
+            EditorGUILayout.BeginHorizontal ();
+            GUI.color = Color.yellow;
+            if (GUILayout.Button ("Reset")) {
+                SelectedNpc.Reset ();
+            }
             GUI.color = Color.red;
             if (GUILayout.Button ("Delete")) {
             	objectDrawer.Target.RemoveNpc (SelectedNpc);
             }
             GUI.color = Color.white;
+            EditorGUILayout.EndHorizontal ();
 		}
         EditorGUILayout.EndVertical ();
 	}
+
+    void SelectLastNpc () {
+        if (NpcCount > 0) {
+            SelectedNpcIndex = NpcCount;
+            SetNpcSelection ();
+        }
+    }
 
 	void SetNpcSelection () {
 		npcDesigner.objectDrawer.Target = SelectedNpc;
@@ -129,13 +156,18 @@ public class ParallaxLayerDesigner : ScriptableObject {
 
     void DrawZoomTriggerDesigner () {
         
-        showZoomTriggerDesigner = EditorGUILayout.Foldout (showZoomTriggerDesigner, "Edit zoom triggers");
+        bool toggled = showZoomTriggerDesigner;
+        showZoomTriggerDesigner = EditorGUILayout.Foldout (showZoomTriggerDesigner, "Zoom triggers");
+        if (toggled != showZoomTriggerDesigner) {
+            SelectLastZoomTrigger ();
+        }
         if (!showZoomTriggerDesigner) return;
 
         EditorGUILayout.BeginVertical (Options);
         if (GUILayout.Button ("Add zoom trigger")) {
             objectDrawer.Target.AddZoomTrigger (
                 EditorObjectPool.Create<ParallaxZoomTrigger> ());
+            SelectLastZoomTrigger ();
         }
 
         if (ZoomTriggerCount > 0) {
@@ -157,13 +189,27 @@ public class ParallaxLayerDesigner : ScriptableObject {
             GUILayout.Label (" / " + ZoomTriggerCount + " zoom triggers");
             EditorGUILayout.EndHorizontal ();
             zoomTriggerDesigner.OnGUI ();
+
+            EditorGUILayout.BeginHorizontal ();
+            GUI.color = Color.yellow;
+            if (GUILayout.Button ("Reset")) {
+                SelectedZoomTrigger.Reset ();
+            }
             GUI.color = Color.red;
             if (GUILayout.Button ("Delete")) {
                 objectDrawer.Target.RemoveZoomTrigger (SelectedZoomTrigger);
             }
             GUI.color = Color.white;
+            EditorGUILayout.EndHorizontal ();
         }
         EditorGUILayout.EndVertical ();
+    }
+
+    void SelectLastZoomTrigger () {
+        if (ZoomTriggerCount > 0) {
+            SelectedZoomTriggerIndex = ZoomTriggerCount;
+            SetZoomTriggerSelection ();
+        }
     }
 
     void SetZoomTriggerSelection () {

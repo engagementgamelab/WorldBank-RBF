@@ -55,10 +55,12 @@ public class ParallaxDesigner : EditorWindow {
     }
 
     void OnGUI () {
+        
         if (!EditorState.InEditMode) {
             GUILayout.Label ("Editor disabled in play mode");
             return;
         }
+        
         SetTarget ();
         DrawPoolCommands ();
         DrawSaveLoad ();

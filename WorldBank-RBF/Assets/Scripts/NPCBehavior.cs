@@ -27,7 +27,8 @@ public class NPCBehavior : MB {
 		set { facingLeft = value; }
 	}
 
-	LayerImage npc = null;
+	// Reference ParallaxNpc instead
+	/*LayerImage npc = null;
 	LayerImage NPC {
 		get {
 			if (npc == null) {
@@ -35,7 +36,7 @@ public class NPCBehavior : MB {
 			}
 			return npc;
 		}
-	}
+	}*/
 
  	void Start() {
  		Initialize();
@@ -56,7 +57,8 @@ public class NPCBehavior : MB {
 	}
 
 	public void DialogFocus () {
-		NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Dialog);
+		// TODO: Make this work with ParallaxNpc instead
+		// NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Dialog);
 	}
 
 	public void OnClick () {
@@ -71,6 +73,7 @@ public class NPCBehavior : MB {
 	}
 
 	public void CloseDialog (bool zoomOut=false) {
-		NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Default, zoomOut);
+		// TODO: Make this work with ParallaxNpc instead
+		// NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Default, zoomOut);
 	}
 }

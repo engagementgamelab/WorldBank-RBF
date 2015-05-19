@@ -9,7 +9,7 @@ public class ParallaxElement : ParallaxImage {
 	}
 
 	float xPosition = 0;
-	[WindowExposed, ExposeProperty] public float XPosition {
+	[ExposeInWindow, ExposeProperty] public float XPosition {
 		get { return xPosition; }
 		set {
 			xPosition = value;
@@ -18,7 +18,7 @@ public class ParallaxElement : ParallaxImage {
 	}
 
 	float yPosition = 0;
-	[WindowExposed, ExposeProperty] public float YPosition {
+	[ExposeInWindow, ExposeProperty] public float YPosition {
 		get { return yPosition; }
 		set { 
 			yPosition = value;
@@ -26,22 +26,22 @@ public class ParallaxElement : ParallaxImage {
 		}
 	}
 
-	[WindowExposed, ExposeProperty] public float ColliderXPosition {
+	[ExposeInWindow, ExposeProperty] public float ColliderXPosition {
 		get { return Collider.center.x; }
 		set { Collider.SetCenterX (value); }
 	}
 
-	[WindowExposed, ExposeProperty] public float ColliderYPosition {
+	[ExposeInWindow, ExposeProperty] public float ColliderYPosition {
 		get { return Collider.center.y; }
 		set { Collider.SetCenterY (value); }
 	}
 
-	[WindowExposed, ExposeProperty] public float ColliderWidth {
+	[ExposeInWindow, ExposeProperty] public float ColliderWidth {
 		get { return Collider.size.x; }
 		set { Collider.SetSizeX (value); }
 	}
 
-	[WindowExposed, ExposeProperty] public float ColliderHeight {
+	[ExposeInWindow, ExposeProperty] public float ColliderHeight {
 		get { return Collider.size.y; }
 		set { Collider.SetSizeY (value); }
 	}
@@ -54,5 +54,16 @@ public class ParallaxElement : ParallaxImage {
 			}
 			return collider;
 		}
+	}
+
+	public virtual void Reset () {
+		texture = null;
+		Texture = null;
+		XPosition = 0;
+		YPosition = 0;
+		ColliderXPosition = 0;
+		ColliderYPosition = 0;
+		ColliderWidth = 1;
+		ColliderHeight = 1;
 	}
 }

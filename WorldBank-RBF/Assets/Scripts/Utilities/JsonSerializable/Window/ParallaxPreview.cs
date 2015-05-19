@@ -7,11 +7,13 @@ public class ParallaxPreview : EditorWindow {
 	Camera previewCamera;
 	RenderTexture renderTexture;
 
-	bool leftPressed = false;
-	bool rightPressed = false;
-    Vector2 scrollPos;
     float xMin = 0f;
     float xMax;
+    float xPos = 0f;
+
+    float zMin = 0f;
+    float zMax = 9.5f;
+    float zPos = 0f;
 
 	[MenuItem ("Window/Parallax Preview")]
 	static void Init () {
@@ -41,23 +43,18 @@ public class ParallaxPreview : EditorWindow {
 
     void OnGUI () {
         if (!EditorState.InEditMode) {
-            GUILayout.Label ("Editor disabled in play mode");
+            GUILayout.Label ("Preview disabled in play mode");
             return;
         }
-        scrollPos = GUILayout.BeginScrollView (scrollPos, true, false, GUILayout.Width (position.width+20f), GUILayout.Height (position.height));
-        Debug.Log (scrollPos);
-        // previewCamera.transform.SetPositionX ()
+
+        previewCamera.transform.SetPositionX (xPos);
+        previewCamera.transform.SetPositionZ (zPos);
+
         GUI.DrawTexture (new Rect (0f, 0f, position.width, position.height), renderTexture);
-        GUILayout.EndScrollView ();
-        /*EditorGUILayout.BeginHorizontal ();
-        // TODO: Replace with scrollbar
-        if (GUILayout.RepeatButton ("<-")) {
-        	previewCamera.transform.SetPositionX (Mathf.Max (0, previewCamera.transform.position.x-1));
-        } 
-        if (GUILayout.RepeatButton ("->")) {
-        	previewCamera.transform.SetPositionX (previewCamera.transform.position.x+1);
-        } 
-        EditorGUILayout.EndHorizontal ();*/
+        xPos = GUILayout.HorizontalScrollbar (xPos, 1f, xMin, xMax, new GUILayoutOption[0]);
+
+        GUILayoutOption[] options = new GUILayoutOption[] { GUILayout.Height (position.height-10f) };
+        zPos = GUILayout.VerticalScrollbar (zPos, 1f, zMax, zMin, options);
     }
 
     void UpdateRenderTexture () {

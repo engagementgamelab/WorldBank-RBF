@@ -61,7 +61,7 @@ public class EditorObjectDrawer<T> where T : UnityEngine.Object {
         MemberInfo[] members = type.GetMembers ();
         Dictionary<MemberInfo, Attribute> membersWithAttribute = new Dictionary<MemberInfo, Attribute> ();
         for (int i = 0; i < members.Length; i ++) {
-            object[] attributes = members[i].GetCustomAttributes (typeof (WindowExposedAttribute), true);
+            object[] attributes = members[i].GetCustomAttributes (typeof (ExposeInWindowAttribute), true);
             if (attributes.Length > 0) {
                 membersWithAttribute.Add (members[i], attributes[0] as Attribute);
             }

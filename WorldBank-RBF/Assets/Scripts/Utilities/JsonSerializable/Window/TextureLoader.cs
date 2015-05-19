@@ -14,6 +14,7 @@ public class TextureLoader {
 
 	public void LoadCityTextures (ParallaxLayerManager layerManager) {
         string loadPath = EditorUtility.OpenFolderPanel ("Load city textures", path, "");
+        if (loadPath == "") return;
         string[] folders = Directory.GetDirectories (loadPath);
         int folderCount = folders.Length;
         layerManager.LayerCount = folderCount;

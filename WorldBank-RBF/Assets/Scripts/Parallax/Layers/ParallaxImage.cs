@@ -41,11 +41,14 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 	#if UNITY_EDITOR
 	public string TexturePath {
 		get { return AssetDatabase.GetAssetPath (Texture); }
-		set { Texture = AssetDatabase.LoadAssetAtPath (value, typeof (Texture2D)) as Texture2D; }
+		set { 
+			Texture = AssetDatabase.LoadAssetAtPath (value, typeof (Texture2D)) as Texture2D;
+			texture = Texture;
+		}
 	}
 	#endif
 
-	[WindowExposed] public Texture2D texture = null;
+	[ExposeInWindow, HideInInspector] public Texture2D texture = null;
 	Texture2D cachedTexture = null;
 	public Texture2D Texture {
 		get { return cachedTexture; }

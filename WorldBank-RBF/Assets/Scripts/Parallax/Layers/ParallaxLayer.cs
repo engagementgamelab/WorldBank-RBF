@@ -14,7 +14,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 	}
 
 	float localSeparation = 0f;
-	[WindowExposed, ExposeProperty] public float LocalSeparation {
+	[ExposeInWindow, ExposeProperty] public float LocalSeparation {
 		get { return localSeparation; }
 		set { 
 			localSeparation = value; 
@@ -32,6 +32,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 
 	public float RightMax {
 		get { 
+			if (images == null || images.Count == 0) return 0;
 			Transform rightImage = images[images.Count-1].Transform;
 			return rightImage.position.x - rightImage.localScale.x * 0.5f;
 		}

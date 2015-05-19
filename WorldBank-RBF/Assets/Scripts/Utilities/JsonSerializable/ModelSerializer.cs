@@ -144,8 +144,10 @@ public class ModelSerializer {
                     } else {
                         SetObjectsFromModels (
                             obj,
+                            propName,
                             objType.GetField (propName).FieldType.GetGenericArguments ()[0],
-                            objType.GetField (propName).GetValue (obj), list);
+                            objType.GetField (propName).GetValue (obj), 
+                            list);
                         continue;
                     }
                 } else {
@@ -157,8 +159,10 @@ public class ModelSerializer {
                     if (!IsFundamental (oType)) {
                         SetObjectsFromModels (
                             obj,
+                            propName,
                             oType,
-                            objType.GetField (propName).GetValue (obj), list);
+                            objType.GetField (propName).GetValue (obj), 
+                            list);
                         continue;
                     }
                 }
@@ -189,20 +193,31 @@ public class ModelSerializer {
         return model;
     }
 
-    static void SetObjectsFromModels (object parent, System.Type itemType, object group, List<object> models) {
+    static void SetObjectsFromModels (object parent, string memberName, System.Type itemType, object group, List<object> models) {
+        
+        // List of newly created objects
         IList ilist = (IList)group;
         List<object> list = ilist.Cast<object> ().ToList ();
+        
+        // Temporary list of new objects which can be converted to the type of list on the parent
+        var IListRef = typeof (List<>);
+        Type[] IListParam = {itemType};
+        object result = Activator.CreateInstance (IListRef.MakeGenericType (IListParam));
+
         for (int i = 0; i < models.Count; i ++) {
+            object obj;
             if (list.Count < i+1) {
                 if (typeof (IEditorPoolable).IsAssignableFrom (itemType)) {
-                    object obj = EditorObjectPool.Create (itemType.ToString (), GetParentIfChild (parent, models[i]));//tParent);
-                    list.Add (obj);
+                    obj = EditorObjectPool.Create (itemType.ToString (), GetParentIfChild (parent, models[i]));
                 } else {
-                    list.Add (Activator.CreateInstance (itemType));
+                    obj = Activator.CreateInstance (itemType);
                 }
+                list.Add (obj);
+                result.GetType ().GetMethod ("Add").Invoke (result, new object[] {obj});
             }
             ApplyModelPropertiesToObject (list[i], models[i]);
         }
+        SetMemberValue (parent, memberName, result);
     }
 
     static Transform GetParentIfChild (object parent, object model) {

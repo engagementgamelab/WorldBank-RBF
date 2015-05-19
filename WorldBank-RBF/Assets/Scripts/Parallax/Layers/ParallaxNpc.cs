@@ -4,6 +4,11 @@ using System.Collections;
 [JsonSerializable (typeof (Models.ParallaxNpc))]
 public class ParallaxNpc : ParallaxElement {
 
-	[WindowExposed]
+	[ExposeInWindow]
 	public string symbol;
+
+	public override void Reset () {
+		base.Reset ();
+		symbol = "";
+	}
 }
