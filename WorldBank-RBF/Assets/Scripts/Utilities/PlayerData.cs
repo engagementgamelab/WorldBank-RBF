@@ -11,6 +11,7 @@ Created by Engagement Lab, 2015
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerData : MonoBehaviour {
 
@@ -37,6 +38,8 @@ public class PlayerData : MonoBehaviour {
 			playerUnlockCounts[strSymbol]++;
 		else
 			playerUnlockCounts.Add(strSymbol, 1);
+
+		PlayerManager.Instance.SaveData(playerUnlockCounts.Keys.ToArray());
 
 	}
 
