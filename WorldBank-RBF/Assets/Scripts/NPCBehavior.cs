@@ -57,12 +57,11 @@ public class NPCBehavior : MB {
 	}
 
 	public void DialogFocus () {
-<<<<<<< HEAD
-		NPCFocusBehavior.Instance.SetFocus(NPC, FocusLevel.Dialog);
-=======
+
+
 		// TODO: Make this work with ParallaxNpc instead
 		// NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Dialog);
->>>>>>> parallax-layers
+
 	}
 
 	public void OnClick () {

@@ -153,12 +153,5 @@ public class CameraPositioner : MB {
 		dragging = false;
 	}
 
-	void Update () {
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			Transform.SetPositionX (Position.x + 1f);
-		}
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			Transform.SetPositionX (Position.x - 1f);
-		}
-	}
+
 }

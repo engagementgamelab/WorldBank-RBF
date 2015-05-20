@@ -72,7 +72,7 @@ public class Models {
 
     }
 
-<<<<<<< HEAD
+
     public class Scenario {
 
         public string symbol { get; set; }
@@ -85,12 +85,7 @@ public class Models {
 
     }
 
-    public class Scene {
-        // TODO: Move scene model into here
-    }
-
-=======
->>>>>>> parallax-layers
+   
     public class NPC {
 
         public string symbol { get; set; }
@@ -139,9 +134,9 @@ public class Models {
             return value;
         }
     }
-<<<<<<< HEAD
+
     */
-=======
+
 
     public class Scene {
         public string cityName { get; set; }
@@ -179,5 +174,5 @@ public class Models {
     public class ParallaxZoomTrigger : ParallaxElement {
         public float zoomTarget { get; set; }
     }
->>>>>>> parallax-layers
+
 }
