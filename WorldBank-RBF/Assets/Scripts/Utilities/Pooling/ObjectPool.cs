@@ -76,6 +76,14 @@ public class ObjectPool : MonoBehaviour {
 		return pools[poolName];
 	}
 
+	static ObjectPool GetPool (string typeName) {
+		string poolName = typeName + "Pool";
+		if (!pools.ContainsKey (poolName)) {
+			CreatePool (typeName);
+		}
+		return pools[poolName];
+	}
+
 	static void CreatePool<T> () where T : MonoBehaviour {
 		string prefabName = GetPrefabName<T> ();
 		string poolName = GetPoolName<T> ();
@@ -84,8 +92,20 @@ public class ObjectPool : MonoBehaviour {
 		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (prefabName).transform);
 	}
 
+	static void CreatePool (string typeName) {
+		string poolName = typeName + "Pool";
+		GameObject go = new GameObject (poolName);
+		DontDestroyOnLoad (go);
+		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (typeName).transform);	
+	}
+
 	static Transform CreatePrefab (string prefabName) {
-		GameObject go = Instantiate (Resources.Load ("Prefabs/" + prefabName)) as GameObject;
+		GameObject go = null;
+		try {
+			go = Instantiate (Resources.Load ("Prefabs/" + prefabName)) as GameObject;
+		} catch (System.Exception e) {
+			throw new System.Exception ("The prefab '" + prefabName + "' was not found in the Resources/Prefabs folder.");
+		}
 		#if UNITY_EDITOR
 		if (go == null)
 			Debug.Log (string.Format ("{0} was not found. Is it in the Resources/Prefabs directory?", prefabName));
@@ -139,6 +159,10 @@ public class ObjectPool : MonoBehaviour {
 		return GetPool<T> ().CreateInstance (position).GetScript<T> () as T;
 	}
 
+	public static MonoBehaviour Instantiate (string typeName) {
+		return GetPool (typeName).CreateInstance (Vector3.zero).GetScript<MonoBehaviour> ();
+	}
+
 	public static Transform InstantiateTransform<T> (Vector3 position = new Vector3 ()) where T : MonoBehaviour {
 		return GetPool<T> ().CreateInstance (position);
 	}
@@ -156,6 +180,10 @@ public class ObjectPool : MonoBehaviour {
 
 	public static List<Transform> GetInstances<T> () where T : MonoBehaviour {
 		return GetPool<T> ().ActiveInstances;
+	}
+
+	public static List<Transform> GetInstances (string typeName) {
+		return GetPool (typeName).ActiveInstances;
 	}
 
 	// Destroys all pooled objects and pools

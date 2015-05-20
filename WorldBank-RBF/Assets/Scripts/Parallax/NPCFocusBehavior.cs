@@ -33,7 +33,9 @@ public class NPCFocusBehavior : MonoBehaviour {
 	bool focused = false;
 	bool focusing = false;
 	
-	LayerImage npc;
+	// TODO: Make this work with ParallaxNpc instead
+
+	/*LayerImage npc;
 	float zoomBeforeFocus;
 	float focusPercentage = 0f;
 
@@ -155,7 +157,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 		MainCamera.Instance.LineOfSight.ZoomEnabled = true;
 
 		FinishFocusOut ();
-	}
+	}*/
 
 	class FocusAction {
 

@@ -30,11 +30,22 @@ public class EditorObjectPool : MonoBehaviour {
 		return objects;
 	}
 
+	public static object Create (string typeName, Transform parent=null) {
+		IEditorPoolable obj = ObjectPool.Instantiate (typeName) as IEditorPoolable;
+		MonoBehaviour mb = (MonoBehaviour)obj;
+		if (parent != null) {
+			mb.transform.SetParent (parent);
+		}
+		obj.Index = ObjectPool.GetInstances (typeName).Count-1;
+		obj.Init ();
+		return obj as object;
+	}
+
 	public static T Create<T> () where T : MonoBehaviour, IEditorPoolable {
 		T obj = ObjectPool.Instantiate<T> () as T;
 		obj.Index = ObjectPool.GetInstances<T> ().Count-1;
 		obj.Init ();
-		return obj;
+		return obj as T;
 	}
 
 	public static void Destroy<T> () where T : MonoBehaviour, IEditorPoolable {
@@ -44,6 +55,12 @@ public class EditorObjectPool : MonoBehaviour {
 
 	public static void Destroy<T> (Transform transform) where T : MonoBehaviour, IEditorPoolable {
 		ObjectPool.Destroy<T> (transform);
+	}
+
+	public static void Destroy<T> (List<T> objects) where T : MonoBehaviour, IEditorPoolable {
+		foreach (T obj in objects) {
+			ObjectPool.Destroy<T> (obj.transform);
+		}
 	}
 
 	public static void Clear () {

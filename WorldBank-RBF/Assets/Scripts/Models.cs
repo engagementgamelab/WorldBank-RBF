@@ -1,4 +1,4 @@
-﻿/* 
+/* 
 World Bank RBF
 Created by Engagement Lab, 2015
 ==============
@@ -72,6 +72,7 @@ public class Models {
 
     }
 
+<<<<<<< HEAD
     public class Scenario {
 
         public string symbol { get; set; }
@@ -88,6 +89,8 @@ public class Models {
         // TODO: Move scene model into here
     }
 
+=======
+>>>>>>> parallax-layers
     public class NPC {
 
         public string symbol { get; set; }
@@ -136,5 +139,45 @@ public class Models {
             return value;
         }
     }
+<<<<<<< HEAD
     */
+=======
+
+    public class Scene {
+        public string cityName { get; set; }
+        public int LayerCount { get; set; }
+        public List<object> layers { get; set; }
+    }
+
+    public class ParallaxLayer {
+        public float LocalSeparation { get; set; }
+        public List<object> images { get; set; }
+        public List<object> npcs { get; set; }
+        public List<object> zoomTriggers { get; set; }
+    }
+
+    public class ParallaxImage {
+        public bool child { get; set; }
+        public int Index { get; set; }
+        public string TexturePath { get; set; }
+        public float LocalPositionX { get; set; }
+    }
+
+    public class ParallaxElement : ParallaxImage {
+        public float XPosition { get; set; }
+        public float YPosition { get; set; }
+        public float ColliderXPosition { get; set; }
+        public float ColliderYPosition { get; set; }
+        public float ColliderWidth { get; set; }
+        public float ColliderHeight { get; set; }
+    }
+
+    public class ParallaxNpc : ParallaxElement {
+        public string symbol { get; set; }
+    }
+
+    public class ParallaxZoomTrigger : ParallaxElement {
+        public float zoomTarget { get; set; }
+    }
+>>>>>>> parallax-layers
 }

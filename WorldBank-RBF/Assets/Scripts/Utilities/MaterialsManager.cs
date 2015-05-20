@@ -66,4 +66,27 @@ public class MaterialsManager {
 		}
 		#endif
 	}
+
+	public static Material Blank {
+		get { return Resources.Load ("Materials/Blank.mat") as Material; }
+	}
+
+	public static bool TextureIsBlank (Texture2D tex) {
+		try {
+			Color c = tex.GetPixel (0, 0);
+		} catch (UnityException e) {
+			return false;
+		}
+		int w = tex.width;
+		int h = tex.height;
+		int resolution = 8;
+		for (int i = 0; i < w; i += resolution) {
+			for (int j = 0; j < h; j += resolution) {
+				if (tex.GetPixel (i, j).a > 0f) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

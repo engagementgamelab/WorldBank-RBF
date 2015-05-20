@@ -109,6 +109,15 @@ public class CameraPositioner : MB {
 		}
 	}
 
+	void Update () {
+		if (Input.GetKey (KeyCode.LeftArrow)) {
+			Transform.SetPositionX (Mathf.Max (XMin, Position.x - 0.5f));
+		}
+		if (Input.GetKey (KeyCode.RightArrow)) {
+			Transform.SetPositionX (Mathf.Max (XMin, Position.x + 0.5f));
+		}
+	}
+
 	public void MoveToTarget (float target, float duration=-1) {
 		if (moving) return;
 		moving = true;
