@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Linq;
 
 public static class ExtensionMethods {
 	
@@ -227,4 +230,32 @@ public static class ExtensionMethods {
 			format == TextureFormat.DXT5
 		);
 	}
+
+	/**
+	 * Dictionary Converters
+	**/
+
+    public static IDictionary<string, object> AsDictionary(this object source, BindingFlags bindingAttr = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
+    {
+        return source.GetType().GetProperties(bindingAttr).ToDictionary
+        (
+            propInfo => propInfo.Name,
+            propInfo => propInfo.GetValue(source, null)
+        );
+
+    }
+
+    public static T ToObject<T>(this IDictionary<string, object> source)
+        where T : class, new()
+    {
+            T someObject = new T();
+            Type someObjectType = someObject.GetType();
+
+            foreach (KeyValuePair<string, object> item in source)
+            {
+                someObjectType.GetProperty(item.Key).SetValue(someObject, item.Value, null);
+            }
+
+            return someObject;
+    }
 }

@@ -12,6 +12,8 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using JsonFx.Json;
 
 /// <summary>
 /// Game data models.
@@ -40,6 +42,17 @@ public class Models {
         public Dictionary<string, Dictionary<string, Scenario>> phase_two { get; set; }
 
     }
+
+    public class User {
+
+        public string _id { get; set; }
+        // public DateTime last_accessed { get; set; }
+        // public string location { get; set; }
+        public string username { get; set; }
+        public Plan plan { get; set; }
+
+    }
+
 
     [System.Serializable]
     public class Character {
@@ -107,6 +120,14 @@ public class Models {
         public Dictionary<string, string> dialogue { get; set; }
 
     }
+    
+    [JsonOptIn]
+    public class Plan {
+
+        [JsonMember]
+        public string[] unlocks { get; set; }
+
+    }
 
     /*
     public class UnlocksConverter : JsonConverter {
@@ -134,9 +155,7 @@ public class Models {
             return value;
         }
     }
-
     */
-
 
     public class Scene {
         public string cityName { get; set; }

@@ -13,6 +13,10 @@ public class ModelSerializer {
 		get { return Application.dataPath + "/Scripts/Utilities/JsonSerializable/Data/"; }
 	}
 
+    public static string Serialize (object obj) {
+       return JsonWriter.Serialize ( CreateModelFromObject (obj) );
+    }
+
 	public static void Save (object obj, string path) {
         WriteJsonData (
             CreateModelFromObject (obj), FilePath (obj, path));
