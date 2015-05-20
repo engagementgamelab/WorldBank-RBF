@@ -12,9 +12,9 @@ This is the documentation for the Unity Tool, **Parallax Designer**
 ***
 #### <a name="quick"> QUICK START GUIDE </a>
 
-<span style="color:green">** 1. Open Unity and open Parallax Designer if not already visible. 
-2. Load a previous .json city file OR load textures with the *Load City Textures from Directory* button. 
-3. Begin making transform changes. **</span>
+<span style="color:green">**1. Open Unity and open Parallax Designer if not already visible.  
+2. Load a previous .json city file OR load textures with the *Load City Textures from Directory* button.  
+3. Begin making transform changes.**</span>  
 
 ***
 
