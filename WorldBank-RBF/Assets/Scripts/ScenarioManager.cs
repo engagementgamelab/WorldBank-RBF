@@ -24,12 +24,6 @@ public class ScenarioManager : MonoBehaviour {
 	}
 
 	public void OpenDialog() {
-
-<<<<<<< HEAD
-		DialogManager.instance.CreateScenarioDialog("card_template");
-=======
 		// DialogManager.instance.CreateScenarioDialog("card_template");
->>>>>>> parallax-layers
-
 	}
 }

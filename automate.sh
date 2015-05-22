@@ -9,8 +9,8 @@
 #  Created by Johnny Richardson on 3/30/15.
 # ==============
 
-EXTERNAL_ASSET_DIR=$2"/Content/Art/"
-UNITY_ASSET_DIR=$2"/WorldBank-RBF/Assets/Textures/"
+EXTERNAL_ASSET_DIR=$2"Content/Art"
+UNITY_ASSET_DIR=$2"WorldBank-RBF/Assets/Textures/"
 
 # Clear prior log
 > automate.log;
@@ -23,10 +23,10 @@ echo "==============" | tee -a automate.log;
 echo "Started automation from git commit head ($(git rev-parse HEAD)):" | tee -a automate.log;
 
 # Checkout master branch since we're going to modify it
-git checkout master
+# git checkout master
 
 # Optimize all textures' sizes in asset directory
-imageoptim -a -d $EXTERNAL_ASSET_DIR
+# imageoptim -a -d $EXTERNAL_ASSET_DIR
 
 # wait
 
@@ -46,12 +46,16 @@ do
 	base_new_path="$UNITY_ASSET_DIR$dir";
 	new_path="$base_new_path/$file_no_ext.png";
 
-	# # Create desination dir if missing
-	# mkdir -p $base_new_path;
+	# Create desination dir if missing
+	mkdir -p $base_new_path;
 
-	# # Move file
-	# mv $f $new_path && git add -N $new_path;
-	# echo "Moved $f to $new_path" | tee -a automate.log;
+	if [[ $file_no_ext == *"layer"* ]] && [[ ${#file_no_ext} == 6 ]]; then
+		convert $f -crop 4096x4096 $new_path;
+		echo "Split '$f' and moved tiles to $base_new_path" | tee -a automate.log;
+	else
+		mv $f $new_path && git add -N $new_path;
+		echo "Moved $f to $new_path" | tee -a automate.log;
+	fi
 
 done  
 
@@ -65,3 +69,4 @@ echo "\\\==============" | tee -a automate.log;
 
 # Image tiling; for use later
 # -crop 256x256 -set filename:tile "%%[fx:page.x/256]_%%[fx:page.y/256]" +repage +adjoin convert/tile-%%[filename:tile].png
+
