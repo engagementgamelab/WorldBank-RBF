@@ -85,10 +85,6 @@ public class Models {
 
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> fb04610aee5138fdf442ec1211f6af1344267f09
     public class Scenario {
 
         public string symbol { get; set; }
@@ -101,10 +97,6 @@ public class Models {
 
     }
 
-<<<<<<< HEAD
-=======
-   
->>>>>>> fb04610aee5138fdf442ec1211f6af1344267f09
     public class NPC {
 
         public string symbol { get; set; }
@@ -201,8 +193,4 @@ public class Models {
     public class ParallaxZoomTrigger : ParallaxElement {
         public float zoomTarget { get; set; }
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> fb04610aee5138fdf442ec1211f6af1344267f09
 }
