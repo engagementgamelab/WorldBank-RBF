@@ -27,7 +27,9 @@ public class PlayerManager : MonoBehaviour {
     }
 
     public static bool _isAuthenticated;
-    public static long _userId;
+    public static string _userId;
+
+    private static Models.Plan _userCurrentPlan;
 
     public void Authenticate() {
 
@@ -42,14 +44,25 @@ public class PlayerManager : MonoBehaviour {
 
     public void AuthCallback(Dictionary<string, object> response) {
 
-        // Set user info
-        // Models.User user = JsonReader.Deserialize<Models.User>(response["user"].ToString());
+        System.Text.StringBuilder output = new System.Text.StringBuilder();
+        
+        JsonWriter writer = new JsonWriter (output);
+        
+        writer.Write(response["user"]);
 
-        // Debug.Log(response["user"].ToString());
-        // _userId = user._id;
+        Debug.Log("user: " + output.ToString());
+
+        // Debug.Log(response["user"].ToObject<Models.User>());
+
+        // Set user info
+        Models.User user = JsonReader.Deserialize<Models.User>(output.ToString());
+
+        Debug.Log(user.ToString());
+
+        _userId = user._id;
         _isAuthenticated = Convert.ToBoolean(response["auth"]);
 
-        // PlayerData.UnlockImplementation("unlockable_incentivise_improvement");
+        PlayerData.UnlockImplementation("unlockable_incentivise_improvement");
 
     }
 
@@ -57,8 +70,11 @@ public class PlayerManager : MonoBehaviour {
 
         Dictionary<string, object> saveFields = new Dictionary<string, object>();
 
+        _userCurrentPlan = new Models.Plan();
+        _userCurrentPlan.unlocks = data;
+        
         saveFields.Add("user_id", _userId);
-        saveFields.Add("unlocks", data);
+        saveFields.Add("plan", _userCurrentPlan);
 
         // Save user info
         // NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/save/", saveFields);

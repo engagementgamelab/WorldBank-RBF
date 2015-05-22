@@ -12,6 +12,8 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using JsonFx.Json;
 
 /// <summary>
 /// Game data models.
@@ -40,6 +42,17 @@ public class Models {
         public Dictionary<string, Dictionary<string, Scenario>> phase_two { get; set; }
 
     }
+
+    public class User {
+
+        public string _id { get; set; }
+        // public DateTime last_accessed { get; set; }
+        // public string location { get; set; }
+        public string username { get; set; }
+        public Plan plan { get; set; }
+
+    }
+
 
     [System.Serializable]
     public class Character {
@@ -72,6 +85,10 @@ public class Models {
 
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fb04610aee5138fdf442ec1211f6af1344267f09
     public class Scenario {
 
         public string symbol { get; set; }
@@ -84,6 +101,10 @@ public class Models {
 
     }
 
+<<<<<<< HEAD
+=======
+   
+>>>>>>> fb04610aee5138fdf442ec1211f6af1344267f09
     public class NPC {
 
         public string symbol { get; set; }
@@ -103,6 +124,14 @@ public class Models {
     public class Dialogue {
 
         public Dictionary<string, string> dialogue { get; set; }
+
+    }
+    
+    [JsonOptIn]
+    public class Plan {
+
+        [JsonMember]
+        public string[] unlocks { get; set; }
 
     }
 
@@ -170,4 +199,8 @@ public class Models {
     public class ParallaxZoomTrigger : ParallaxElement {
         public float zoomTarget { get; set; }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> fb04610aee5138fdf442ec1211f6af1344267f09
 }
