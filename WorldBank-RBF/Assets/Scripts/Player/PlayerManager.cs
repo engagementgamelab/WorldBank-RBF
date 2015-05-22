@@ -38,7 +38,7 @@ public class PlayerManager : MonoBehaviour {
         authFields.Add("email", "johnny@elab.emerson.edu");
         authFields.Add("password", "password");
 
-        // NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/auth/", authFields, AuthCallback);
+        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/auth/", authFields, AuthCallback);
         
     }
 
@@ -62,8 +62,6 @@ public class PlayerManager : MonoBehaviour {
         _userId = user._id;
         _isAuthenticated = Convert.ToBoolean(response["auth"]);
 
-        PlayerData.UnlockImplementation("unlockable_incentivise_improvement");
-
     }
 
     public void SaveData(string[] data) {
@@ -77,6 +75,6 @@ public class PlayerManager : MonoBehaviour {
         saveFields.Add("plan", _userCurrentPlan);
 
         // Save user info
-        // NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/save/", saveFields);
+        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/save/", saveFields, null, true);
     }
 }

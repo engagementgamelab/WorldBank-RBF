@@ -1,3 +1,14 @@
+/* 
+World Bank RBF
+Created by Engagement Lab, 2015
+==============
+ DialogueManager.cs
+ Unity networking manager.
+
+ Created by Johnny Richardson on 4/3/15.
+==============
+*/
+
 using UnityEngine;
 using System;
 using System.Collections;
@@ -26,13 +37,17 @@ public class NetworkManager : MonoBehaviour {
         }
     }
 
-    public void GetURL(string url, string enumCallback) {
+    public void GetURL(string url, Action<string> responseHandler=null) {
         
-        StartCoroutine(WaitForRequest(url));
+        
+        if(responseHandler == null)
+            StartCoroutine(WaitForRequest(url));
+        else
+            StartCoroutine(WaitForRequest(url, responseHandler));
 
     }
 
-    public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> response=null) {
+    public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> response=null, bool rawPost=false) {
 
         WWWForm form = new WWWForm();
 
@@ -64,8 +79,11 @@ public class NetworkManager : MonoBehaviour {
 
             form.AddField(field.Key, formFieldVal);
         }
-
-        StartCoroutine(WaitForForm(url, form, response));
+    
+        if(rawPost)
+            StartCoroutine(WaitForForm(url, form.data, response));
+        else
+            StartCoroutine(WaitForForm(url, null, response, form));
         
     }
 
@@ -89,27 +107,43 @@ public class NetworkManager : MonoBehaviour {
         }
     }
 
-    public void GetJSON (string url) {
-        GetURL(url, "GetJSONResponse");
-    }
-
-    IEnumerator WaitForRequest(string url)
+    IEnumerator WaitForRequest(string url, Action<string> responseAction=null)
      {
         WWW www = new WWW(url);
 
         yield return www;
-
         // check for errors
-        if (www.error == null)
-            Debug.Log("WWW Ok!: " + www.text);
+        if (www.error == null) 
+        {
+            if(responseAction != null)
+            {
+                responseAction(www.text);
+                yield return null;
+            }
+            else
+                Debug.Log("WWW Ok!: " + www.text);
+        }
         else
-            Debug.Log("WWW Error: "+ www.error);
-
+        {
+            string exceptionMsg = "WaitForRequest unknown error.";
+            
+            throw new Exception(exceptionMsg);
+        }
      }
 
-    IEnumerator WaitForForm(string url, WWWForm form, Action<Dictionary<string, object>> responseAction=null)
+    IEnumerator WaitForForm(string url, byte[] formData=null, Action<Dictionary<string, object>> responseAction=null, WWWForm form=null)
      {
-        WWW www = new WWW(url, form);
+        WWW www; 
+
+        Dictionary<string, string> postHeader = new Dictionary<string, string>();
+        postHeader.Add("Content-Type", "text/json");
+
+        if(form == null && formData != null)
+           www = new WWW(url, formData, postHeader);
+        else if(form != null)
+           www = new WWW(url, form);
+        else
+            throw new Exception("WaitForForm: both form and form byte data not specified.");
         
         yield return www;
 
@@ -139,19 +173,4 @@ public class NetworkManager : MonoBehaviour {
         }
      }
 
-
-    IEnumerator GetJSONResponse(WWW www)
-     {
-         yield return www;
-     
-         // check for errors
-         if (www.error == null)
-         {
-             string strRes = www.text;
-
-             Debug.Log("WWW Ok!: " + strRes);
-         } else {
-             Debug.Log("WWW Error: "+ www.error);
-         }    
-     }
 }

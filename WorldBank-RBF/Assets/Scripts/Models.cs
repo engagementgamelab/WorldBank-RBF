@@ -118,6 +118,8 @@ public class Models {
         public string dialogue { get; set; }
         public string[] unlocks { get; set; }
         public Dictionary<string, object> feedback { get; set; }
+        
+        public bool hasDialogue { get { return dialogue != null; } }
 
     }
 

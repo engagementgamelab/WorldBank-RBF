@@ -9,6 +9,7 @@ Created by Engagement Lab, 2015
 ==============
 */
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,6 @@ public class PlayerData : MonoBehaviour {
 
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
 
-		if(unlockRef == null)
-			return;
-
 		// Add this unlockable to the player's unlocks inventory
 		playerImplementations.Add(unlockRef);
 
@@ -39,7 +37,7 @@ public class PlayerData : MonoBehaviour {
 		else
 			playerUnlockCounts.Add(strSymbol, 1);
 
-		PlayerManager.Instance.SaveData(playerUnlockCounts.Keys.ToArray());
+		// PlayerManager.Instance.SaveData(playerUnlockCounts.Keys.ToArray());
 
 	}
 
