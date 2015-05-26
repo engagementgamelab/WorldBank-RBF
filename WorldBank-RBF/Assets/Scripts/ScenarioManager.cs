@@ -11,10 +11,12 @@ Created by Engagement Lab, 2015
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using JsonFx.Json;
 
 public class ScenarioManager : MonoBehaviour {
 
+	public static List<string> currentAdvisorOptions;
 	public static List<string> currentCardOptions;
 
 	// Use this for initialization
@@ -66,6 +68,7 @@ public class ScenarioManager : MonoBehaviour {
 
 		Models.Scenario scenario = DataManager.GetScenarioBySymbol("card_template");
 
+		currentAdvisorOptions = scenario.characters.Select(x => x.Key).ToList();
 		currentCardOptions = new List<string>(scenario.starting_options);
 
 		DialogManager.instance.CreateScenarioDialog(scenario);

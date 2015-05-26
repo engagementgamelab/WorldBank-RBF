@@ -16,6 +16,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Threading;
+using System.Linq;
 
 public class DialogManager : MonoBehaviour {
 
@@ -169,11 +170,20 @@ public class DialogManager : MonoBehaviour {
 			Models.Advisor advisor = scenario.characters[strAdvisorSymbol];
 			scenarioDialog.Content = advisor.dialogue;
 
+			if(advisor.narrowsNpcs)
+			{
+				foreach(string npc_symbol in advisor.narrows)
+					ScenarioManager.currentAdvisorOptions.Remove(npc_symbol);
+
+			}
+
 			if(advisor.unlocks != null)
 			{
 				foreach(string option in advisor.unlocks)
 					ScenarioManager.currentCardOptions.Add(option);
 			}
+
+			ScenarioManager.currentAdvisorOptions.Remove(strAdvisorSymbol);
 		}
 
 		List<GenericButton> btnListAdvisors = new List<GenericButton>();
@@ -184,18 +194,25 @@ public class DialogManager : MonoBehaviour {
 		// TODO: Button creation itself ought to be a discrete method. This is all needlessly complex.
 
 		// Create buttons for all advisors
-		foreach(string characterSymbol in new List<string>(scenario.characters.Keys)) {
+		foreach(string characterSymbol in ScenarioManager.currentAdvisorOptions) {
 
-			// Show an advisor only if they have dialogue
+			// Show an advisor option only if they have dialogue (not for feedback only)
 			if(!scenario.characters[characterSymbol].hasDialogue)
 				continue;
 
+			// // Show this advisor option only if they are meant to show on initial dialogue (advisor option not selected yet)
+			// if(!scenario.characters[characterSymbol].showAtStart && strAdvisorSymbol == null)
+			// 	continue;
+
+
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
+
+			Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
 			
-			btnChoice.Text = DataManager.GetDataForCharacter(characterSymbol).display_name;
+			btnChoice.Text = charRef.display_name;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => CreateScenarioDialog(scenario, characterSymbol));
+			btnChoice.Button.onClick.AddListener (() => CreateScenarioDialog(scenario, charRef.symbol));
 
 			btnListAdvisors.Add(btnChoice);
 		}
@@ -205,7 +222,7 @@ public class DialogManager : MonoBehaviour {
 
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 			
-			btnChoice.Text = option;
+			btnChoice.Text = "Option: " + option;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
 			

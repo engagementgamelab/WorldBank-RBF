@@ -40,6 +40,7 @@ public class Models {
         public Unlockable[] unlockables { get; set; }
         public Dictionary<string, NPC[]> phase_one { get; set; }
         public Dictionary<string, Dictionary<string, Scenario>> phase_two { get; set; }
+        public Dictionary<string, object> phase_two_matrix { get; set; }
 
     }
 
@@ -92,7 +93,9 @@ public class Models {
         public string initiating_npc { get; set; }
         public string initiating_dialogue { get; set; }
         public string[] starting_options { get; set; }
+        public string[] starting_options_affects { get; set; }
         public string[] final_options { get; set; }
+        public string[] final_options_affects { get; set; }
         public Dictionary<string, Advisor> characters { get; set; }
 
     }
@@ -108,9 +111,13 @@ public class Models {
     public class Advisor {
 
         public string dialogue { get; set; }
+        public string[] narrows { get; set; }
         public string[] unlocks { get; set; }
+        public string[] unlocks_affects { get; set; }
         public Dictionary<string, object> feedback { get; set; }
+        public bool initial { get; set; }
         
+        public bool narrowsNpcs { get { return narrows != null && narrows.Length > 0; } }
         public bool hasDialogue { get { return dialogue != null; } }
 
     }
