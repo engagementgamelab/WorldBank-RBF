@@ -75,11 +75,12 @@ public class MaterialsManager {
 		try {
 			Color c = tex.GetPixel (0, 0);
 		} catch (UnityException e) {
+			Debug.LogError (e);
 			return false;
 		}
 		int w = tex.width;
 		int h = tex.height;
-		int resolution = 8;
+		int resolution = 16;
 		for (int i = 0; i < w; i += resolution) {
 			for (int j = 0; j < h; j += resolution) {
 				if (tex.GetPixel (i, j).a > 0f) {

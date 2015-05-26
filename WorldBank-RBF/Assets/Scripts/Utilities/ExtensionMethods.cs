@@ -8,6 +8,24 @@ using System.Linq;
 public static class ExtensionMethods {
 	
 	/**
+	 *	float
+	 */
+
+	public static float RoundToDecimal (this float fl, int decimalPlace) {
+		float a = decimalPlace * 10f;
+		return Mathf.Round (fl * a) / a;
+	}
+
+	/**
+	 *	Vector2
+	 */
+
+	public static bool Equals (this Vector2 vector2, Vector2 otherVector2) {
+		return vector2.x == otherVector2.x && 
+			   vector2.y == otherVector2.y;
+	}
+
+	/**
 	 *	Vector3
 	 */
 	 
@@ -32,6 +50,18 @@ public static class ExtensionMethods {
 		lineRenderer.SetVertexCount(positions.Count);
 		for (int i = 0; i < positions.Count; i ++) {
 			lineRenderer.SetPosition (i, positions[i]);
+		}
+	}
+
+	/**
+	 *	Layers
+	 */
+
+	public static void SetLayerRecursively (this GameObject gameObject, string layerName) {
+		gameObject.layer = LayerMask.NameToLayer (layerName);
+		Transform parent = gameObject.transform;
+		foreach (Transform child in parent) {
+			SetLayerRecursively (child.gameObject, layerName);
 		}
 	}
 

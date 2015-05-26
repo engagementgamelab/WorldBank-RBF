@@ -41,7 +41,7 @@ GameObject:
   - 4: {fileID: 415562}
   - 108: {fileID: 10813282}
   m_Layer: 0
-  m_Name: DirectionalExclusive
+  m_Name: ParallaxLighting2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,7 +57,7 @@ GameObject:
   - 4: {fileID: 492730}
   - 108: {fileID: 10864432}
   m_Layer: 0
-  m_Name: DirectionalInclusive
+  m_Name: ParallaxLighting1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,7 +124,7 @@ Light:
   serializedVersion: 6
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: .800000012
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -140,7 +140,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_Lightmapping: 4
   m_BounceIntensity: 1
   m_ShadowRadius: 0
@@ -156,7 +156,7 @@ Light:
   serializedVersion: 6
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: .800000012
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -172,7 +172,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 256
   m_Lightmapping: 4
   m_BounceIntensity: 1
   m_ShadowRadius: 0
@@ -189,8 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e61ab22d61c49adbc834316808fa44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inclusive: {fileID: 10864432}
-  exclusive: {fileID: 10813282}
+  lighting1: {fileID: 10864432}
+  lighting2: {fileID: 10813282}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

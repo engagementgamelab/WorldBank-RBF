@@ -68,7 +68,7 @@ public class MainCamera : MB {
 			zoom = Mathf.Clamp (value, 0, 15);
 			float y = -Mathf.Tan (FOV / 2f * Mathf.Deg2Rad) * zoom;
 			//Transform.SetPosition (new Vector3 (Position.x, y, zoom)); 		// Zoom to bottom
-			Transform.SetPosition (new Vector3 (Position.x, Position.y, 0)); // Zoom to middle
+			Transform.SetPosition (new Vector3 (Position.x, Position.y, zoom)); // Zoom to middle
 			XMin = y * Aspect;
 			Positioner.XMin = XMin;
 		}
@@ -123,8 +123,9 @@ public class MainCamera : MB {
 		if (delta != 0) {
 			Zoom += delta;
 		}*/
-
-		Zoom = Mathf.Lerp (Zoom, TargetZoom, ZoomVelocity * Time.deltaTime);
+		/*if (!Mathf.Approximately (Zoom, TargetZoom)) {
+			Zoom = Mathf.Lerp (Zoom, TargetZoom, ZoomVelocity * Time.deltaTime);
+		}*/
 	}
 
 	public void ZoomToPercentage (float p, float velocity=-1) {

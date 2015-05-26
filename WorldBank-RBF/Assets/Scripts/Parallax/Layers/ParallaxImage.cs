@@ -51,7 +51,12 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 	[ExposeInWindow, HideInInspector] public Texture2D texture = null;
 	Texture2D cachedTexture = null;
 	public Texture2D Texture {
-		get { return cachedTexture; }
+		get { 
+			if (cachedTexture == null) {
+				cachedTexture = (Texture2D)Material.mainTexture;
+			}
+			return cachedTexture; 
+		}
 		set { 
 			if (cachedTexture == value) return;
 			cachedTexture = value;
@@ -102,6 +107,7 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 
 	void Reset () {
 		Transform.Reset ();
+		if (Parent != null) gameObject.layer = Parent.gameObject.layer;
 		if (Forward) Transform.SetLocalPositionZ (-0.01f);
 	}
 }

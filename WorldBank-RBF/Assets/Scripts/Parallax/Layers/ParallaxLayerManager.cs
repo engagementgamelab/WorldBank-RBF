@@ -25,6 +25,9 @@ public class ParallaxLayerManager : MonoBehaviour {
 
 	[HideInInspector]
 	public List<ParallaxLayer> layers = new List<ParallaxLayer> ();
+	public List<ParallaxLayer> Layers {
+		get { return layers; }
+	}
 
 	[SerializeField] int layerCount = 1;
 	[ExposeInWindow, ExposeProperty]
@@ -37,7 +40,12 @@ public class ParallaxLayerManager : MonoBehaviour {
 	}
 
 	public ParallaxLayer FurthestLayer {
-		get { return layers[layers.Count-1]; }
+		get { 
+			if (layers == null || layers.Count == 0) {
+				return null;
+			}
+			return layers[layers.Count-1]; 
+		}
 	}
 
 	void RefreshLayers () {

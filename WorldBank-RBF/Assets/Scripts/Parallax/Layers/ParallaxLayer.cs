@@ -62,6 +62,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		image.Transform.Reset ();
 		image.Transform.SetLocalPositionX (images.Count-1);
 		image.LayerPosition = (int)Position.z;
+		image.gameObject.layer = gameObject.layer;
 	}
 
 	public void AddNpc (ParallaxNpc npc) {
@@ -69,6 +70,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		npc.Parent = Transform;
 		npc.Transform.Reset ();
 		npc.LayerPosition = (int)Position.z;
+		npc.gameObject.layer = gameObject.layer;
 	}
 
 	public void RemoveNpc (ParallaxNpc npc) {
@@ -81,6 +83,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		zoomTrigger.Parent = Transform;
 		zoomTrigger.Transform.Reset ();
 		zoomTrigger.LayerPosition = (int)Position.z;
+		zoomTrigger.gameObject.layer = gameObject.layer;
 	}
 
 	public void RemoveZoomTrigger (ParallaxZoomTrigger zoomTrigger) {

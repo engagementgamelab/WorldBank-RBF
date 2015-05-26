@@ -181,6 +181,7 @@ public class ParallaxDesigner : EditorWindow {
 
     void Save () {
         objectDrawer.Save (savePath);
+        EditorUtility.DisplayDialog ("Save successful", "The parallax scene '" + fileName + "' was successfully saved.", "OK");
     }
 
     void SaveAs () {

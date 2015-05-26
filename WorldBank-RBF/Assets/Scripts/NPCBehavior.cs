@@ -62,14 +62,14 @@ public class NPCBehavior : MB {
 	}
 
 	public void OnClick () {
-		FocusLevel level = NPCFocusBehavior.Instance.FocusLevel;
+		/*FocusLevel level = NPCFocusBehavior.Instance.FocusLevel;
 		if (level == FocusLevel.Default) {
 			// NPCFocusBehavior.Instance.SetFocus (NPC, FocusLevel.Preview);
 			DialogManager.instance.OpenIntroDialog(npcRef, this);
 		} else if (level == FocusLevel.Dialog) {
 			DialogManager.instance.CloseCharacterDialog ();
 			CloseDialog ();
-		}
+		}*/
 	}
 
 	public void CloseDialog (bool zoomOut=false) {

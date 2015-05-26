@@ -49,7 +49,7 @@ public class LineOfSight : MB {
 		);
 	}
 
-	void Update () {
+	/*void Update () {
 		if (!ZoomEnabled) return;
 		if (CastRaysOnLayer (LayerController.DepthLayers[0]).Count > 0) {
 			if (!overForegroundObject) {
@@ -82,5 +82,5 @@ public class LineOfSight : MB {
 			}
 		}
 		return raysHit;
-	}
+	}*/
 }

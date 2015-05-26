@@ -8,7 +8,7 @@ public class ParallaxElement : ParallaxImage {
 		get { return true; }
 	}
 
-	float xPosition = 0;
+	[SerializeField, HideInInspector] float xPosition = 0;
 	[ExposeInWindow, ExposeProperty] public float XPosition {
 		get { return xPosition; }
 		set {
@@ -17,7 +17,7 @@ public class ParallaxElement : ParallaxImage {
 		}
 	}
 
-	float yPosition = 0;
+	[SerializeField, HideInInspector] float yPosition = 0;
 	[ExposeInWindow, ExposeProperty] public float YPosition {
 		get { return yPosition; }
 		set { 
@@ -56,6 +56,34 @@ public class ParallaxElement : ParallaxImage {
 		}
 	}
 
+	float scale = 0f;
+	public float Scale {
+		get { return scale; }
+		set {
+			scale = Mathf.Lerp (ScaleConstraints.x, ScaleConstraints.y, value);
+			LocalScale = new Vector3 (scale, scale, 1f);
+			LocalPosition = new Vector3 (
+				XPosition - ColliderXPosition * (scale-1f), 
+				YPosition - ColliderYPosition * (scale-1f), 
+				0f);
+		}
+	}
+
+	Vector2 scaleConstraints;
+	Vector2 ScaleConstraints {
+		get {
+			if (scaleConstraints == null || scaleConstraints.Equals (Vector2.zero)) {
+				// MinScale, MaxScale
+				scaleConstraints = new Vector2 (1f, 2.32f - 1.31f * ColliderHeight);
+			}
+			return scaleConstraints;
+		}
+	}
+
+	public float GetPositionAtScale (float scale) {
+		return Position.x + ColliderXPosition * 4f * (Mathf.Lerp (ScaleConstraints.x, ScaleConstraints.y, scale));
+	}
+
 	public virtual void Reset () {
 		texture = null;
 		Texture = null;
@@ -65,5 +93,6 @@ public class ParallaxElement : ParallaxImage {
 		ColliderYPosition = 0;
 		ColliderWidth = 1;
 		ColliderHeight = 1;
+		scaleConstraints = Vector2.zero;
 	}
 }

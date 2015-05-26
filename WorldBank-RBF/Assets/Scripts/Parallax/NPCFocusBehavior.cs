@@ -4,7 +4,7 @@ using System.Collections;
 public enum FocusLevel {
 	Null,
 	Default = 0,
-	Preview = 25,
+	Preview = 50,
 	Dialog = 100
 }
 
@@ -25,13 +25,150 @@ public class NPCFocusBehavior : MonoBehaviour {
 		}
 	}
 
+	float focus = 0f;
+	float targetFocus = 0f;
+	float speed = 2.5f;
+	ParallaxNpc npc;
+
 	FocusLevel focusLevel = FocusLevel.Default;
 	public FocusLevel FocusLevel {
 		get { return focusLevel; }
+		set { 
+			focusLevel = value; 
+			targetFocus = (float)focusLevel / 100f;
+			StartCoroutine (CoFocus ());
+		}
 	}
+
+	MainCamera mainCamera = null;
+	MainCamera MainCamera {
+		get {
+			if (mainCamera == null) {
+				mainCamera = MainCamera.Instance;
+			}
+			return mainCamera;
+		}
+	}
+
+	CameraPositioner cameraPositioner = null;
+	CameraPositioner CameraPositioner {
+		get { 
+			if (cameraPositioner == null) {
+				cameraPositioner = MainCamera.Positioner; 
+			}
+			return cameraPositioner;
+		}
+	}
+
+	float startCamPosition = 0f;
+	float endCamPosition = 0f;
+	float npcDialogSeparation = 0.33f;
 	
-	bool focused = false;
+	// bool focused = false;
 	bool focusing = false;
+
+	public void OnClickNpc (ParallaxNpc npc) {
+		this.npc = npc;
+		ParallaxLayerLightController.Instance.AssignLayers (npc.gameObject);
+		FocusCamera ();		
+		IterateFocusLevel ();
+	}
+
+	void FocusCamera () {
+		// CameraPositioner.DragEnabled = false;
+		startCamPosition = CameraPositioner.Position.x;
+		if (npc == null) {
+			endCamPosition = startCamPosition;
+			return;
+		}
+		float viewportOffset = 0.5f + npcDialogSeparation * 0.5f;
+		Debug.Log (viewportOffset);
+		// Debug.Log ((float)Screen.width * viewportOffset);
+		// float offset = CameraPositioner.Position.x - ScreenPositionHandler.ScreenToWorld (new Vector2 ((float)Screen.width * viewportOffset, 0)).x;
+		// Debug.Log (Camera.main.ScreenToWorldPoint (new Vector3 ((float)Screen.width * viewportOffset, 0, 0).x));
+		// float offset = CameraPositioner.Position.x - ScreenPositionHandler.ViewportToWorld (new Vector3 (viewportOffset, 0, 0)).x;
+		// Debug.Log (offset);
+		endCamPosition = npc.GetPositionAtScale (targetFocus);
+
+		// endCamPosition = npc.Position.x;
+		// endCamPosition = (ScreenPositionHandler.ViewportToWorld (new Vector3 (0.5f + (npcDialogSeparation * 0.5f), 0, 0)).x);
+		// endCamPosition = ScreenPositionHandler.ViewportToWorld (new Vector3 (viewportOffset, 0, 0)).x;
+		// float offset = 
+		// float offset = ScreenPositionHandler.ViewportToWorld (new Vector3 (viewportOffset, 0, 0)).x;
+		// Debug.Log (offset);
+		// Debug.Log ((ScreenPositionHandler.ViewportToWorld (new Vector3 (offset), 0, 0))).x);
+		// Debug.Log (endCamPosition);
+		// Debug.Log (npc.Position.x);
+		// endCamPosition = (npc.FacingLeft)
+		// 	? 
+		// 	:
+	}
+
+	void IterateFocusLevel () {
+		if (FocusLevel == FocusLevel.Default) {
+			FocusLevel = FocusLevel.Preview;
+		} else if (FocusLevel == FocusLevel.Preview) {
+			FocusLevel = FocusLevel.Dialog;
+		} else if (FocusLevel == FocusLevel.Dialog) {
+			FocusLevel = FocusLevel.Default;
+		}
+	}
+
+	IEnumerator CoFocus () {
+
+		if (focusing) yield break;
+		focusing = true;
+
+		while (!Mathf.Approximately (focus, targetFocus)) {
+			focus = (Mathf.Abs (focus - targetFocus) < 0.005f)
+				? targetFocus
+				: Mathf.Lerp (focus, targetFocus, speed * Time.deltaTime);
+			ParallaxLayerLightController.Instance.Lighting1Intensity = Mathf.Abs (focus-1);
+			npc.Scale = focus;
+			MainCamera.Zoom = focus * 2f;
+
+			float progress = focus;
+			if (targetFocus >= 0.5f) {
+				progress = focus * 2f;
+			}
+			if (targetFocus >= 1f) {
+				progress = 1f;
+			}
+			if (targetFocus <= 0f) {
+				progress = focus;
+			}
+			CameraPositioner.Transform.SetLocalPositionX (
+				Mathf.Lerp (startCamPosition, endCamPosition, progress));
+			yield return null;
+		}
+
+		focusing = false;
+		// CameraPositioner.DragEnabled = true;
+	}
+
+	/*class FocusAction {
+
+		public bool triggered = false;
+		public readonly float totalDuration;
+		public readonly float triggerAt;
+		public readonly float duration; // percentage of total duration
+		public readonly System.Action<float> action;
+
+		public FocusAction (float totalDuration, float triggerAt, float duration, System.Action<float> action) {
+			triggered = false;
+			this.totalDuration = totalDuration;
+			this.triggerAt = triggerAt;
+			this.duration = duration;
+			this.action = action;
+		}
+
+		public void SetProgress (float progress) {
+			if (progress >= triggerAt && !triggered) {
+				action (totalDuration * duration);
+				triggered = true;
+			}
+		}
+	}*/
 	
 	// TODO: Make this work with ParallaxNpc instead
 
@@ -158,28 +295,4 @@ public class NPCFocusBehavior : MonoBehaviour {
 
 		FinishFocusOut ();
 	}*/
-
-	class FocusAction {
-
-		public bool triggered = false;
-		public readonly float totalDuration;
-		public readonly float triggerAt;
-		public readonly float duration; // percentage of total duration
-		public readonly System.Action<float> action;
-
-		public FocusAction (float totalDuration, float triggerAt, float duration, System.Action<float> action) {
-			triggered = false;
-			this.totalDuration = totalDuration;
-			this.triggerAt = triggerAt;
-			this.duration = duration;
-			this.action = action;
-		}
-
-		public void SetProgress (float progress) {
-			if (progress >= triggerAt && !triggered) {
-				action (totalDuration * duration);
-				triggered = true;
-			}
-		}
-	}
 }
