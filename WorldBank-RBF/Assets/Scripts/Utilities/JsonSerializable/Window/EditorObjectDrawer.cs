@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
+
+// Run only if inside editor
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,25 +17,37 @@ public class EditorObjectDrawer<T> where T : UnityEngine.Object {
 		get { return target; }
 		set {
 			target = value;
-            if (target == null) {
-                serializedTarget = null;
-            } else {
-                serializedTarget = new SerializedObject (target);
-                properties = ExposeProperties.GetProperties (target);
-            }
+            #if UNITY_EDITOR
+                if (target == null) {
+                    serializedTarget = null;
+                } else {
+                    serializedTarget = new SerializedObject (target);
+                    properties = ExposeProperties.GetProperties (target);
+                }
+            #endif
 		}
 	}
 
+
+#if UNITY_EDITOR
     SerializedObject serializedTarget = null;
     protected SerializedObject SerializedTarget {
     	get { return serializedTarget; }
     }
+#endif
 
     public bool Selected {
-    	get { return Target != null && serializedTarget != null; }
+    	get { return Target != null 
+                #if UNITY_EDITOR
+                    && serializedTarget != null
+                #endif
+               ;
+            }
     }
 
+#if UNITY_EDITOR
     PropertyField[] properties;
+#endif
 
     public void Save (string fileName="") {
 	    ModelSerializer.Save (Target, fileName);
@@ -41,6 +58,7 @@ public class EditorObjectDrawer<T> where T : UnityEngine.Object {
 	}
 
 	public void DrawObjectProperties (GUILayoutOption[] options) {
+        #if UNITY_EDITOR
 		if (Selected) {
     		serializedTarget.Update ();
             Dictionary<MemberInfo, Attribute> members = GetMembersWithWindowAttribute (Target.GetType ());
@@ -55,6 +73,9 @@ public class EditorObjectDrawer<T> where T : UnityEngine.Object {
             }
             serializedTarget.ApplyModifiedProperties ();
     	}
+        #else
+            return;
+        #endif
 	}
 
     Dictionary<MemberInfo, Attribute> GetMembersWithWindowAttribute (System.Type type) {
@@ -74,26 +95,35 @@ public class EditorObjectDrawer<T> where T : UnityEngine.Object {
     }
 
     void SetTargetFromSelection () {
-    	
-    	UnityEngine.Object[] objects = Selection.objects;
-    	if (objects.Length == 0) {
-    		Target = null;
-    		return;
-    	}
 
-    	for (int i = 0; i < objects.Length; i ++) {
-    		
-    		GameObject go = objects[i] as GameObject;
-    		if (go == null) {
-    			continue;
-    		}
+        #if UNITY_EDITOR
+          
+            UnityEngine.Object[] objects = Selection.objects;
+            if (objects.Length == 0) {
+                Target = null;
+                return;
+            }
 
-    		T obj = go.GetScript<T> ();
-    		if (obj != null) {
-    			Target = obj;
-    			return;
-    		}
-    	}
-    	Target = null;
+            for (int i = 0; i < objects.Length; i ++) {
+                
+                GameObject go = objects[i] as GameObject;
+                if (go == null) {
+                    continue;
+                }
+
+                T obj = go.GetScript<T> ();
+                if (obj != null) {
+                    Target = obj;
+                    return;
+                }
+            }
+            Target = null;
+
+        #else
+
+            return;
+
+        #endif
+        
     }
 }

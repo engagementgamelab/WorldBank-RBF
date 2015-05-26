@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Run only if inside editor
+#if UNITY_EDITOR
+
+using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Collections;
@@ -49,3 +52,5 @@ public class TextureLoader {
         }
     }
 }
+
+#endif

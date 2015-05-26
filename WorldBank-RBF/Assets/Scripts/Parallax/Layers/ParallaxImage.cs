@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
+// Run only if inside editor
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections;
 
 /**

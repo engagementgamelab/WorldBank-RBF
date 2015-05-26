@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Run only if inside editor
+#if UNITY_EDITOR
+
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
@@ -203,4 +206,4 @@ public class ParallaxDesigner : EditorWindow {
         }
     }
 }
-
+#endif
