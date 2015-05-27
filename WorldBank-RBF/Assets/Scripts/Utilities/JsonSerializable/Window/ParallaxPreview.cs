@@ -51,6 +51,7 @@ public class ParallaxPreview : EditorWindow {
             return;
         }
 
+        if (previewCamera == null) return;
         previewCamera.transform.SetPositionX (xPos);
         previewCamera.transform.SetPositionZ (zPos);
 

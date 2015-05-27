@@ -92,7 +92,7 @@ public class ParallaxElement : ParallaxImage {
 
 	public virtual void Reset () {
 		texture = null;
-		Texture = null;
+		_Texture = null;
 		XPosition = 0;
 		YPosition = 0;
 		ColliderXPosition = 0;

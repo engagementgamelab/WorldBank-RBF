@@ -15,7 +15,7 @@ using System.Collections;
 
 [RequireComponent (typeof (MeshRenderer), typeof (MeshFilter))]
 [JsonSerializable (typeof (Models.ParallaxImage))]
-public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
+public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefreshable {
 
 	[HideInInspector] public int index;
 	public int Index {
@@ -31,8 +31,8 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 			layerPosition = 4000 - (int)value;
 
 			// Prevents z fighting
-			if (Material != null) {
-				Material.renderQueue = layerPosition;
+			if (_Material != null) {
+				_Material.renderQueue = layerPosition;
 			}
 		}
 	}
@@ -43,20 +43,20 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 
 	#if UNITY_EDITOR
 	public string TexturePath {
-		get { return AssetDatabase.GetAssetPath (Texture); }
+		get { return AssetDatabase.GetAssetPath (_Texture); }
 		set { 
-			Texture = AssetDatabase.LoadAssetAtPath (value, typeof (Texture2D)) as Texture2D;
-			texture = Texture;
+			_Texture = AssetDatabase.LoadAssetAtPath (value, typeof (Texture2D)) as Texture2D;
+			texture = _Texture;
 		}
 	}
 	#endif
 
-	[ExposeInWindow, HideInInspector] public Texture2D texture = null;
+	/*[ExposeInWindow] public Texture2D texture = null;
 	Texture2D cachedTexture = null;
 	public Texture2D Texture {
 		get { 
 			if (cachedTexture == null) {
-				cachedTexture = (Texture2D)Material.mainTexture;
+				cachedTexture = (Texture2D)_Material.mainTexture;
 			}
 			return cachedTexture; 
 		}
@@ -64,34 +64,19 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 			if (cachedTexture == value) return;
 			cachedTexture = value;
 			if (cachedTexture != null) {
-				Material = MaterialsManager.CreateMaterialFromTexture (cachedTexture, cachedTexture.format.HasAlpha ());
+				_Material = MaterialsManager.CreateMaterialFromTexture (cachedTexture, cachedTexture.format.HasAlpha ());
 				if (MaterialsManager.TextureIsBlank (Texture)) {
 					gameObject.SetActive (false);
 				} else {
 					gameObject.SetActive (true);
 				}
 			} else {
-				Material = MaterialsManager.Blank;
+				_Material = MaterialsManager.Blank;
 			}
-			if (Material != null)
-				Material.renderQueue = LayerPosition;
+			if (_Material != null)
+				_Material.renderQueue = LayerPosition;
 		}
-	}
-
-	Material Material {
-		get { return MeshRenderer.sharedMaterial; }
-		set { MeshRenderer.sharedMaterial = value; }
-	}
-
-	MeshRenderer meshRenderer = null;
-	MeshRenderer MeshRenderer {
-		get {
-			if (meshRenderer == null) {
-				meshRenderer = transform.GetComponent<MeshRenderer> ();
-			}
-			return meshRenderer;
-		}
-	}
+	}*/
 
 	public float LocalPositionX {
 		get { return LocalPosition.x; }
@@ -99,12 +84,14 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 	}
 
 	public void Init () {
-		Texture = null;
+		_Texture = null;
+		SetRenderQueue ();
 		Reset ();
 	}
 
-	public void Refresh () {
-		Texture = texture;
+	public override void Refresh () {
+		base.Refresh ();
+		SetRenderQueue ();
 		Reset ();
 	}
 
@@ -112,5 +99,10 @@ public class ParallaxImage : MB, IEditorPoolable, IEditorRefreshable {
 		Transform.Reset ();
 		if (Parent != null) gameObject.layer = Parent.gameObject.layer;
 		if (Forward) Transform.SetLocalPositionZ (-0.01f);
+	}
+
+	void SetRenderQueue () {
+		if (_Material != null)
+			_Material.renderQueue = LayerPosition;
 	}
 }

@@ -47,7 +47,7 @@ public class TextureLoader {
         foreach (string texturePath in textures) {
             ParallaxImage image = EditorObjectPool.Create<ParallaxImage> ();
             string path = "Assets" + texturePath.Remove (0, Application.dataPath.Length);
-            image.Texture = AssetDatabase.LoadAssetAtPath (path, typeof (Texture2D)) as Texture2D;
+            image._Texture = AssetDatabase.LoadAssetAtPath (path, typeof (Texture2D)) as Texture2D;
             layer.AddImage (image);
         }
     }
