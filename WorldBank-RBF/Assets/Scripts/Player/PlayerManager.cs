@@ -50,8 +50,6 @@ public class PlayerManager : MonoBehaviour {
         
         writer.Write(response["user"]);
 
-        Debug.Log("user: " + output.ToString());
-
         // Debug.Log(response["user"].ToObject<Models.User>());
 
         // Set user info
@@ -62,6 +60,7 @@ public class PlayerManager : MonoBehaviour {
         _userId = user._id;
         _isAuthenticated = Convert.ToBoolean(response["auth"]);
 
+        // PlayerData.UnlockImplementation("unlockable_use_ngo");
     }
 
     public void SaveData(string[] data) {
@@ -70,6 +69,7 @@ public class PlayerManager : MonoBehaviour {
 
         _userCurrentPlan = new Models.Plan();
         _userCurrentPlan.unlocks = data;
+        _userCurrentPlan.pbc = true;
         
         saveFields.Add("user_id", _userId);
         saveFields.Add("plan", _userCurrentPlan);

@@ -50,6 +50,7 @@ public class Models {
         // public DateTime last_accessed { get; set; }
         // public string location { get; set; }
         public string username { get; set; }
+        public string current_scenario { get; set; }
         public Plan plan { get; set; }
 
     }
@@ -133,7 +134,13 @@ public class Models {
     public class Plan {
 
         [JsonMember]
+        public string name { get; set; }
+        [JsonMember]
         public string[] unlocks { get; set; }
+        [JsonMember]
+        public bool pbc { get; set; }
+        [JsonMember]
+        public bool autonomy { get; set; }
 
     }
 

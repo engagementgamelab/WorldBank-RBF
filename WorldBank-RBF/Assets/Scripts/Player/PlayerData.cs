@@ -37,7 +37,7 @@ public class PlayerData : MonoBehaviour {
 		else
 			playerUnlockCounts.Add(strSymbol, 1);
 
-		// PlayerManager.Instance.SaveData(playerUnlockCounts.Keys.ToArray());
+		PlayerManager.Instance.SaveData(playerUnlockCounts.Keys.ToArray());
 
 	}
 

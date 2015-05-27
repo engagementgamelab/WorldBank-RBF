@@ -28,11 +28,6 @@ public class ScenarioManager : MonoBehaviour {
         NetworkManager.Instance.GetURL(DataManager.config.serverRoot + "/plan/all/", PlansRetrieved);
 
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 
     public void PlansRetrieved(string response) {
@@ -52,7 +47,7 @@ public class ScenarioManager : MonoBehaviour {
 			btnChoice.Button.onClick.RemoveAllListeners();
 
 			// string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
-			btnChoice.Button.onClick.AddListener (() => OpenDialog());
+			btnChoice.Button.onClick.AddListener (() => GetScenarioForPlan(choice));
 			// btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, npc, false));
 
 			btnList.Add(btnChoice);
@@ -61,6 +56,25 @@ public class ScenarioManager : MonoBehaviour {
 		// BackButtonDelegate del = delegate { OpenSpeechDialog(currNpc, "Initial", npc, true); };
 
 		DialogManager.instance.CreateChoiceDialog("Choose Plan:", btnList);
+
+    }
+
+    private void GetScenarioForPlan(string planId) {
+
+        Dictionary<string, object> saveFields = new Dictionary<string, object>();
+        
+        saveFields.Add("user_id", PlayerManager._userId);
+        saveFields.Add("plan_id", planId);
+
+        // Save user info
+        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/scenario/", saveFields, AssignScenario);
+
+    }
+
+    public void AssignScenario(Dictionary<string, object> response) {
+
+    	// Set scene context from current scenario
+    	DataManager.currentSceneContext = response["current_scenario"].ToString();
 
     }
 
