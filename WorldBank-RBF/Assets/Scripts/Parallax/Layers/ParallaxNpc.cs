@@ -10,6 +10,9 @@ public class ParallaxNpc : ParallaxElement, IClickable {
 
 	[ExposeInWindow] public string symbol;
 	[ExposeInWindow] public bool facingLeft = false;
+	public bool FacingLeft {
+		get { return facingLeft; }
+	}
 
 	public override void Reset () {
 		base.Reset ();
@@ -19,15 +22,4 @@ public class ParallaxNpc : ParallaxElement, IClickable {
 	public void OnClick (ClickSettings clickSettings) {
 		NPCFocusBehavior.Instance.OnClickNpc (this);
 	}
-
-	// lighting example
-	/*void OnGUI () {
-		if (Index != 0) return;
-		if (GUILayout.Button ("fade out")) {
-			ParallaxLayerLightController.Instance.FadeOutOtherLayers (gameObject);
-		}	
-		if (GUILayout.Button ("fade in")) {
-			ParallaxLayerLightController.Instance.FadeInOtherLayers (gameObject);
-		}
-	}*/
 }

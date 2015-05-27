@@ -1,4 +1,7 @@
-﻿using UnityEditor;
+﻿// Run only if inside editor
+#if UNITY_EDITOR
+
+using UnityEditor;
 using UnityEngine;
 using System;
 using System.Collections;
@@ -186,3 +189,5 @@ public class PropertyField
 		return false;
 	}
 }
+
+#endif

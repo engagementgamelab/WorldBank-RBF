@@ -5,14 +5,11 @@ using System.Collections.Generic;
 
 public class GenericDialogBox : MB {
 
-	public CanvasRenderer canvasRenderer;
 	public Text text;
 
-	public Transform verticalGroup;
 	public Transform choiceGroup;
-	
-	bool open = false;
-	
+	public Transform verticalChoiceGroup;
+		
 	string content = "";
 	public string Content {
 		get { return content; }
@@ -22,7 +19,7 @@ public class GenericDialogBox : MB {
 		}
 	}
 
-	public void Open () {
+	public void Open (Transform parent=null) {
 				
 		Vector3 position = Vector3.one;
 		float aspect = 1f / MainCamera.Instance.Aspect;
@@ -40,9 +37,10 @@ public class GenericDialogBox : MB {
 		}
 
 		Position = Vector3.zero;
-		verticalGroup.localScale = Vector3.one;
 		Transform.localScale = Vector3.one;
-		open = true;
+
+		if(parent != null)
+			Transform.SetParent(parent);
 
 		StartCoroutine (CoRotate());
 	}
@@ -54,16 +52,18 @@ public class GenericDialogBox : MB {
 		// callback?
 	}
 
-	public void AddButtons(List<NPCDialogButton> btnChoices) {
+	public void AddButtons(List<GenericButton> btnChoices, bool vertical=false) {
 
-		NPCDialogButton[] remove = choiceGroup.GetComponentsInChildren<NPCDialogButton>();
+		Transform group = vertical ? verticalChoiceGroup : choiceGroup;
 
-		foreach (NPCDialogButton child in remove)
-			ObjectPool.Destroy<NPCDialogButton> (child.transform);
+		GenericButton[] remove = group.GetComponentsInChildren<GenericButton>();
+
+		foreach (GenericButton child in remove)
+			ObjectPool.Destroy<GenericButton> (child.transform);
 
 		if(btnChoices != null) {
-			foreach(NPCDialogButton btnChoice in btnChoices) {
-				btnChoice.transform.SetParent(choiceGroup);
+			foreach(GenericButton btnChoice in btnChoices) {
+				btnChoice.transform.SetParent(group);
 				btnChoice.transform.localScale = Vector3.one;
 				btnChoice.transform.localPosition = Vector3.zero;
 				btnChoice.transform.localEulerAngles = Vector3.zero;
@@ -84,10 +84,12 @@ public class GenericDialogBox : MB {
 		float startRotation = 2.5f;
 		float endRotation = 5f;
 
-		while (open) {
+		yield return null;
+
+/*		while (open) {
 			float eTime = startTime - Time.time;
 			Transform.rotation = Quaternion.Euler (0, startRotation + Mathf.PingPong (eTime, endRotation), 0);
 			yield return null;
-		}
+		}*/
 	}
 }

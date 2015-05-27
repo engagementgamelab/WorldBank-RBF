@@ -80,8 +80,14 @@ public class ParallaxElement : ParallaxImage {
 		}
 	}
 
+	Vector3 startPosition;
+
+	void OnEnable () {
+		startPosition = Position;
+	}
+
 	public float GetPositionAtScale (float scale) {
-		return Position.x + ColliderXPosition * 4f * (Mathf.Lerp (ScaleConstraints.x, ScaleConstraints.y, scale));
+		return startPosition.x + ColliderXPosition * 4f * (Mathf.Lerp (ScaleConstraints.x, ScaleConstraints.y, scale));
 	}
 
 	public virtual void Reset () {

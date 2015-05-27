@@ -58,7 +58,7 @@ public class ParallaxLayerLightController : MonoBehaviour {
 		foreach (ParallaxLayer layer in layers) {
 			layer.gameObject.SetLayerRecursively ("ParallaxLighting1");
 		}
-		highlight.SetLayerRecursively ("ParallaxLighting2");
+		if (highlight != null) highlight.SetLayerRecursively ("ParallaxLighting2");
 	}
 
 	void Fade (Light light, float from, float to, float duration, System.Action onEnd=null) {

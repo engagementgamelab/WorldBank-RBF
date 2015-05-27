@@ -24,6 +24,31 @@
       "symbol": "two_women",
       "display_name": "Women waiting for ferry",
       "description": "At the far end of the market there are two women in elaborate dress. You don’t know where they are from, but they are certainly not from this region, nor do they look like they came from Capitol City. Very ornamental and expensive, their dresses pop and glide in different directions and both are wearing wild headpieces. You feel a sense of royalty from them."
+    },
+    {
+      "symbol": "dep_minister_of_health",
+      "display_name": "Dep. Minister of Health",
+      "description": "description"
+    },
+    {
+      "symbol": "coach",
+      "display_name": "Coach",
+      "description": "description"
+    },
+    {
+      "symbol": "third_party_verifier",
+      "display_name": "Third Party Verifier",
+      "description": "description"
+    },
+    {
+      "symbol": "health_provider_1",
+      "display_name": "Health Provider 1",
+      "description": "description"
+    },
+    {
+      "symbol": "health_provider_2",
+      "display_name": "Health Provider 2",
+      "description": "description"
     }
   ],
   "cities": [
@@ -76,6 +101,18 @@
       "cost": 4
     }
   ],
+  "indicator_affects": {
+    "indicator_affects_example_1": {
+      "indicator_1": -3,
+      "indicator_2": 2,
+      "indicator_3": 0
+    },
+    "indicator_affects_example_2": {
+      "indicator_1": 2,
+      "indicator_2": -1,
+      "indicator_3": 1
+    }
+  },
   "phase_one": {
     "crup": [
       {
@@ -337,15 +374,27 @@
           "conference",
           "comply_with_ministry"
         ],
+        "starting_options_affects": [
+          "example_1",
+          "example_2"
+        ],
         "final_options": [
           "comply_with_ministry",
           "authorize_push_back",
           "clarify_roles"
         ],
+        "final_options_affects": [
+          "example_1",
+          "example_2",
+          "example_1"
+        ],
         "characters": {
           "dep_minister_of_health": {
             "dialogue": "We are very interested in making sure the providers are doing what they say, and we have the staff available to review, so why not?",
-            "unlocks": "Narrows to third-party verifier and Coach",
+            "narrows": [
+              "third_party_verifier",
+              "coach"
+            ],
             "feedback": {
               "clarify_roles": "All right, I understand. I'll inform the staff here."
             }
@@ -353,13 +402,22 @@
           "coach": {
             "dialogue": "Duplicating efforts seems to be hampering the health providers. I'd either clarify everyone's roles for them, or empower health providers to push back somehow.",
             "unlocks": [
-              "separation of rolls",
-              "give providers authority to push back"
+              "separation_of_rolls",
+              "authorize_push_back"
+            ],
+            "unlocks_affects": [
+              "example_1",
+              "example_2"
             ]
           },
           "third_party_verifier": {
             "dialogue": "I didn't know about this. If the Ministry is doubling our verification efforts, it could prove very confusing to the providers.",
-            "unlocks": "separation of roles"
+            "unlocks": [
+              "separation_of_rolls"
+            ],
+            "unlocks_affects": [
+              "example_2"
+            ]
           },
           "health_provider_1": {
             "dialogue": "Honestly, we've been ignoring the ministry's requests. We've got too much actual work to worry about."
@@ -375,6 +433,7 @@
     },
     "scenario_2": {},
     "scenario_3": {},
+    "scenario_4": {},
     "tactics": {
       "tactic_1": {
         "symbol": "tactic",
@@ -412,6 +471,51 @@
           }
         }
       }
+    }
+  },
+  "phase_two_matrix": {
+    "pbc_yes": {
+      "hospital_autonomy_yes": {
+        "scenario_2": {
+          "option_1_yes": [
+            "card_a",
+            "card_b"
+          ],
+          "option_1_no": [
+            "card_c",
+            "card_d"
+          ],
+          "option_2_yes": [
+            "card_a",
+            "card_b"
+          ],
+          "option_2_no": [
+            "card_c",
+            "card_d"
+          ],
+          "option_3_yes": [
+            "card_a",
+            "card_b"
+          ],
+          "option_3_no": [
+            "card_c",
+            "card_d"
+          ],
+          "option_4_yes": [
+            "card_a",
+            "card_b"
+          ],
+          "option_4_no": [
+            "card_a",
+            "card_b"
+          ]
+        }
+      },
+      "hospital_autonomy_no": "scenario_4"
+    },
+    "pbc_no": {
+      "hospital_autonomy_yes": "scenario_1",
+      "hospital_autonomy_no": "scenario_3"
     }
   },
   "unlockables": [

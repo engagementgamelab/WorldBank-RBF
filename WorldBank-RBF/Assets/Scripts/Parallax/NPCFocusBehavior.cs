@@ -62,9 +62,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 
 	float startCamPosition = 0f;
 	float endCamPosition = 0f;
-	float npcDialogSeparation = 0.33f;
-	
-	// bool focused = false;
+	float npcDialogSeparation = 0.45f; // % of screen
 	bool focusing = false;
 
 	public void OnClickNpc (ParallaxNpc npc) {
@@ -75,33 +73,22 @@ public class NPCFocusBehavior : MonoBehaviour {
 	}
 
 	void FocusCamera () {
-		// CameraPositioner.DragEnabled = false;
+		
+		CameraPositioner.DragEnabled = false;
 		startCamPosition = CameraPositioner.Position.x;
+		
 		if (npc == null) {
 			endCamPosition = startCamPosition;
 			return;
 		}
-		float viewportOffset = 0.5f + npcDialogSeparation * 0.5f;
-		Debug.Log (viewportOffset);
-		// Debug.Log ((float)Screen.width * viewportOffset);
-		// float offset = CameraPositioner.Position.x - ScreenPositionHandler.ScreenToWorld (new Vector2 ((float)Screen.width * viewportOffset, 0)).x;
-		// Debug.Log (Camera.main.ScreenToWorldPoint (new Vector3 ((float)Screen.width * viewportOffset, 0, 0).x));
-		// float offset = CameraPositioner.Position.x - ScreenPositionHandler.ViewportToWorld (new Vector3 (viewportOffset, 0, 0)).x;
-		// Debug.Log (offset);
-		endCamPosition = npc.GetPositionAtScale (targetFocus);
 
-		// endCamPosition = npc.Position.x;
-		// endCamPosition = (ScreenPositionHandler.ViewportToWorld (new Vector3 (0.5f + (npcDialogSeparation * 0.5f), 0, 0)).x);
-		// endCamPosition = ScreenPositionHandler.ViewportToWorld (new Vector3 (viewportOffset, 0, 0)).x;
-		// float offset = 
-		// float offset = ScreenPositionHandler.ViewportToWorld (new Vector3 (viewportOffset, 0, 0)).x;
-		// Debug.Log (offset);
-		// Debug.Log ((ScreenPositionHandler.ViewportToWorld (new Vector3 (offset), 0, 0))).x);
-		// Debug.Log (endCamPosition);
-		// Debug.Log (npc.Position.x);
-		// endCamPosition = (npc.FacingLeft)
-		// 	? 
-		// 	:
+		float npcPosition = npc.GetPositionAtScale (1f);
+		float viewportOffset = 0.5f + npcDialogSeparation * 0.5f;
+		float offset = CameraPositioner.Position.x - ScreenPositionHandler.ViewportToWorld (
+			new Vector3 (viewportOffset, 0, npc.Position.z)).x;
+		endCamPosition = (npc.FacingLeft)
+			? npcPosition + offset
+			: npcPosition - offset;
 	}
 
 	void IterateFocusLevel () {
@@ -111,6 +98,13 @@ public class NPCFocusBehavior : MonoBehaviour {
 			FocusLevel = FocusLevel.Dialog;
 		} else if (FocusLevel == FocusLevel.Dialog) {
 			FocusLevel = FocusLevel.Default;
+		}
+	}
+
+	void OnEndFocus () {
+		if (FocusLevel == FocusLevel.Default) {
+			CameraPositioner.DragEnabled = true;
+			ParallaxLayerLightController.Instance.AssignLayers ();
 		}
 	}
 
@@ -125,8 +119,9 @@ public class NPCFocusBehavior : MonoBehaviour {
 				: Mathf.Lerp (focus, targetFocus, speed * Time.deltaTime);
 			ParallaxLayerLightController.Instance.Lighting1Intensity = Mathf.Abs (focus-1);
 			npc.Scale = focus;
-			MainCamera.Zoom = focus * 2f;
+			MainCamera.Zoom = focus * Mathf.Pow (1.25f, 3f);
 
+			// TODO: make this more generic
 			float progress = focus;
 			if (targetFocus >= 0.5f) {
 				progress = focus * 2f;
@@ -137,162 +132,13 @@ public class NPCFocusBehavior : MonoBehaviour {
 			if (targetFocus <= 0f) {
 				progress = focus;
 			}
+
 			CameraPositioner.Transform.SetLocalPositionX (
 				Mathf.Lerp (startCamPosition, endCamPosition, progress));
 			yield return null;
 		}
 
 		focusing = false;
-		// CameraPositioner.DragEnabled = true;
+		OnEndFocus ();
 	}
-
-	/*class FocusAction {
-
-		public bool triggered = false;
-		public readonly float totalDuration;
-		public readonly float triggerAt;
-		public readonly float duration; // percentage of total duration
-		public readonly System.Action<float> action;
-
-		public FocusAction (float totalDuration, float triggerAt, float duration, System.Action<float> action) {
-			triggered = false;
-			this.totalDuration = totalDuration;
-			this.triggerAt = triggerAt;
-			this.duration = duration;
-			this.action = action;
-		}
-
-		public void SetProgress (float progress) {
-			if (progress >= triggerAt && !triggered) {
-				action (totalDuration * duration);
-				triggered = true;
-			}
-		}
-	}*/
-	
-	// TODO: Make this work with ParallaxNpc instead
-
-	/*LayerImage npc;
-	float zoomBeforeFocus;
-	float focusPercentage = 0f;
-
-	public void SetFocus (LayerImage npc, FocusLevel level=FocusLevel.Null, bool openNext=true) {
-
-		if (!InitFocusIn (npc)) return;
-		if (level == FocusLevel.Null) {
-			Debug.Log ("level: " + level + "; focusLevel: " + focusLevel);
-			if (focusLevel == FocusLevel.Default) {
-				zoomBeforeFocus = MainCamera.Instance.Zoom;
-			} else if (focusLevel == FocusLevel.Preview)  {
-				focusLevel = FocusLevel.Dialog;
-			} else if (focusLevel == FocusLevel.Dialog) {
-				focusLevel = FocusLevel.Default;
-			}
-		} else {
-			focusLevel = level;
-		}
-		// StartCoroutine (CoFocusIn ((float)focusLevel / 100f));
-		if(!openNext)
-			StartCoroutine (CoFocusOut ());
-		else if (focusLevel == FocusLevel.Default || focusLevel == FocusLevel.Preview) {
-			StartCoroutine (CoFocusOut ());
-		} else {
-			StartCoroutine (CoFocusIn ((float)focusLevel / 100f));
-		}
-	}
-
-	bool InitFocusIn (LayerImage npc) {
-		if (focusing) return false;
-		this.npc = npc;
-		focusing = true;
-		
-		return true;
-	}
-
-	public void FocusOut () {
-		if (InitFocusOut ()) {
-			StartCoroutine (CoFocusOut ());
-		}
-	}
-
-	bool InitFocusOut () {
-		if (focusing) return false;
-		focusing = true;
-		return true;
-	}
-
-	void FinishFocusIn (float percentage, bool openNext=true) {
-		if (Mathf.Approximately (percentage, 1f) && npc.Behavior != null && openNext) {
-			npc.Behavior.OpenDialog ();
-		}
-		focusing = false;
-	}
-
-	void FinishFocusOut () {
-		MainCamera.Instance.ZoomVelocity = 3f;
-		MainCamera.Instance.Positioner.DragEnabled = true;
-		MainCamera.Instance.LineOfSight.ZoomEnabled = true;
-		focusing = false;
-	}
-
-	IEnumerator CoFocusIn (float percentage, bool openNext=true) {
-		
-		float duration = 1.25f;
-		float eTime = 0f;
-
-		float center = npc.Position.x - (npc.XOffset * npc.Transform.lossyScale.x);
-		float middle = npc.Position.y - (npc.ColliderCenterY * npc.Transform.lossyScale.x);
-		float offset = (npc.ColliderWidth + NPCDialogBox.width) / 2f;
-		float xPosition = npc.FacingLeft ? center - offset : center + offset;
-		Vector3 highlightPosition = new Vector3 (center, middle, npc.Position.z);
-
-		MainCamera.Instance.Positioner.DragEnabled = false;
-		MainCamera.Instance.LineOfSight.ZoomEnabled = false;
-
-		FocusAction[] focusActions = new FocusAction[] {
-			new FocusAction (1f, 0.1f, 0.9f,  (float t) => npc.ScaleToPercentage (percentage, t)),
-			new FocusAction (1f, 0f,   0.75f, (float t) => MainCamera.Instance.MoveToTarget (xPosition, t)),
-			new FocusAction (1f, 0.1f, 0.9f,  (float t) => MainCamera.Instance.ZoomToPercentage (percentage, 2.5f)),
-			new FocusAction (1f, 0f,   0.75f, (float t) => DirectionalLightController.Instance.FadeToPercentage (percentage, t)),
-			new FocusAction (1f, 0.5f, 1f,    (float t) => NPCHighlight.Instance.Activate (highlightPosition, percentage, t))
-		};
-	
-		while (eTime < duration) {
-			eTime += Time.deltaTime;
-			float p = eTime / duration;
-			for (int i = 0; i < focusActions.Length; i ++) {
-				focusActions[i].SetProgress (p);
-			}
-			yield return null;
-		}
-
-		FinishFocusIn (percentage, openNext);
-	}
-
-	IEnumerator CoFocusOut () {
-		
-		float duration = 1.25f;
-		float eTime = 0f;
-
-		FocusAction[] focusActions = new FocusAction[] {
-			new FocusAction (1f, 0.1f, 0.9f,  (float t) => npc.ScaleToPercentage (0f, t)),
-			new FocusAction (1f, 0.1f, 0.9f,  (float t) => MainCamera.Instance.ZoomTo (zoomBeforeFocus, 2.5f)),
-			new FocusAction (1f, 0f,   0.75f, (float t) => DirectionalLightController.Instance.FadeToPercentage (0f, t)),
-			new FocusAction (1f, 0f,   0.5f,  (float t) => NPCHighlight.Instance.Deactivate (t))
-		};
-
-		while (eTime < duration) {
-			eTime += Time.deltaTime;
-			float p = eTime / duration;
-			for (int i = 0; i < focusActions.Length; i ++) {
-				focusActions[i].SetProgress (p);
-			}
-			yield return null;
-		}
-
-		MainCamera.Instance.Positioner.DragEnabled = true;
-		MainCamera.Instance.LineOfSight.ZoomEnabled = true;
-
-		FinishFocusOut ();
-	}*/
 }

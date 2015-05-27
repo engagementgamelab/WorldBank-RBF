@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Run only if inside editor
+#if UNITY_EDITOR
+
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
@@ -24,7 +27,8 @@ public class ParallaxPreview : EditorWindow {
 
     void OnEnable () {
     	FindCamera ();
-        xMax = ParallaxLayerManager.Instance.FurthestLayer.RightMax;
+        ParallaxLayer furthestLayer = ParallaxLayerManager.Instance.FurthestLayer;
+        xMax = (furthestLayer == null) ? 0f : ParallaxLayerManager.Instance.FurthestLayer.RightMax;
     }
 
     void Update () {
@@ -77,3 +81,5 @@ public class ParallaxPreview : EditorWindow {
         }
     }
 }
+
+#endif

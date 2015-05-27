@@ -16,6 +16,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Threading;
+using System.Linq;
 
 public class DialogManager : MonoBehaviour {
 
@@ -40,8 +41,9 @@ public class DialogManager : MonoBehaviour {
 	}
 
 	// Variable Definitions
+	public Transform uiCanvasRoot;
 	public Button btnPrefab;
-	public NPCDialogBox dialogBox;
+	public GenericDialogBox dialogBox;
 	public ScenarioDialog scenarioDialog;
 
 	public delegate void BackButtonDelegate();
@@ -98,92 +100,140 @@ public class DialogManager : MonoBehaviour {
 		}
 	}*/
 
+	private void CloseAll() {
+
+		if(dialogBox != null)	
+			dialogBox.Close();
+
+		if(scenarioDialog != null)	
+			scenarioDialog.Close();
+
+	}
+
 	/// <summary>
 	/// Generate a dialog with text and choice buttons
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	public void CreateChoiceDialog(string strDialogTxt, List<NPCDialogButton> btnChoices, BackButtonDelegate backEvent, NPCBehavior npc) {
+	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, BackButtonDelegate backEvent=null, NPCBehavior npc=null) {
 
 		if (dialogBox == null) {
-			dialogBox = CreateNPCDialog (strDialogTxt, npc);
+			// if(npc == null)
+				dialogBox = CreateGenericDialog (strDialogTxt);
+			// else
+			// 	dialogBox = CreateNPCDialog (strDialogTxt, npc);
 		} else {
 			dialogBox.Content = strDialogTxt;
 		}
 
-		Transform choiceGroup = dialogBox.choiceGroup;
-		NPCDialogButton[] remove = choiceGroup.GetComponentsInChildren<NPCDialogButton>();
-
-		foreach (NPCDialogButton child in remove)
-			ObjectPool.Destroy<NPCDialogButton> (child.transform);
-
-		if(btnChoices != null) {
-			foreach(NPCDialogButton btnChoice in btnChoices) {
-				btnChoice.transform.SetParent(choiceGroup);
-				btnChoice.transform.localScale = Vector3.one;
-				btnChoice.transform.localPosition = Vector3.zero;
-				btnChoice.transform.localEulerAngles = Vector3.zero;
-			}
-		}
+		dialogBox.AddButtons(btnChoices, true);
 		
 		// Setup back button
-		Button backButton = dialogBox.backButton;
+	/*	Button backButton = dialogBox.backButton;
 
 		backButton.onClick.RemoveAllListeners ();
 		backButton.onClick.AddListener(() => backEvent());
 
 		if(choiceGroup.childCount > 0)
-			choiceGroup.gameObject.SetActive (true);
+			choiceGroup.gameObject.SetActive (true);*/
 	}
 
 	/// <summary>
-	/// Generate an NPC dialog with text
+	/// Generate a generic dialog with text
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	/// <param name="npcInstance">Instance of NPCBehavior for this NPC</param>
-	public NPCDialogBox CreateNPCDialog(string strDialogTxt, NPCBehavior npc) {
+	public GenericDialogBox CreateGenericDialog(string strDialogTxt) {
 
-	    dialogBox = ObjectPool.Instantiate<NPCDialogBox> ();
-	    dialogBox.Open (npc);
+	    dialogBox = ObjectPool.Instantiate<GenericDialogBox> ();
+	    dialogBox.Open();
 	    dialogBox.Content = strDialogTxt;
 	    return dialogBox;
 	}
 
+
 	/// <summary>
 	/// Generate a Scenario dialog for the specified scenario
 	/// </summary>
-	/// <param name="strSymbol">The symbol of the scenario</param>
+	/// <param name="scenario">The instance of the scenario</param>
 	/// <param name="strAdvisorSymbol">The symbol of the advisor who is talking (optional)</param>
-	public ScenarioDialog CreateScenarioDialog(string strSymbol, string strAdvisorSymbol=null) {
+	public ScenarioDialog CreateScenarioDialog(Models.Scenario scenario, string strAdvisorSymbol=null) {
 
-		Models.Scenario scenario = DataManager.GetScenarioBySymbol(strSymbol);
+		// Close all diags
+		CloseAll();
 
 	    scenarioDialog = ObjectPool.Instantiate<ScenarioDialog>();
-	    // scenarioDialog.Open();
 
 	    // Get initial dialogue or an advisor's?
 	    if(strAdvisorSymbol == null)
 		    scenarioDialog.Content = scenario.initiating_dialogue;
 		else
-			scenarioDialog.Content = scenario.characters[strAdvisorSymbol].dialogue;
+		{
+			Models.Advisor advisor = scenario.characters[strAdvisorSymbol];
+			scenarioDialog.Content = advisor.dialogue;
 
-		List<NPCDialogButton> btnList = new List<NPCDialogButton>();
+			if(advisor.narrowsNpcs)
+			{
+				foreach(string npc_symbol in advisor.narrows)
+					ScenarioManager.currentAdvisorOptions.Remove(npc_symbol);
 
-		// Create buttons for all advisors
-		foreach(string characterSymbol in new List<string>(scenario.characters.Keys)) {
+			}
 
-			NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton>();
-			
-			btnChoice.Text = characterSymbol;
+			if(advisor.unlocks != null)
+			{
+				foreach(string option in advisor.unlocks)
+					ScenarioManager.currentCardOptions.Add(option);
+			}
 
-			btnChoice.Button.onClick.RemoveAllListeners();
-
-			btnChoice.Button.onClick.AddListener (() => CreateScenarioDialog(strSymbol, characterSymbol));
-			// btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, npc, false));
-
-			btnList.Add(btnChoice);
+			ScenarioManager.currentAdvisorOptions.Remove(strAdvisorSymbol);
 		}
 
-		scenarioDialog.AddButtons(btnList);
+		List<GenericButton> btnListAdvisors = new List<GenericButton>();
+		List<GenericButton> btnListOptions = new List<GenericButton>();
+
+		List<string> choiceOptionsText = ScenarioManager.currentCardOptions;
+
+		// TODO: Button creation itself ought to be a discrete method. This is all needlessly complex.
+
+		// Create buttons for all advisors
+		foreach(string characterSymbol in ScenarioManager.currentAdvisorOptions) {
+
+			// Show an advisor option only if they have dialogue (not for feedback only)
+			if(!scenario.characters[characterSymbol].hasDialogue)
+				continue;
+
+			// // Show this advisor option only if they are meant to show on initial dialogue (advisor option not selected yet)
+			// if(!scenario.characters[characterSymbol].showAtStart && strAdvisorSymbol == null)
+			// 	continue;
+
+
+			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
+
+			Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
+			
+			btnChoice.Text = charRef.display_name;
+
+			btnChoice.Button.onClick.RemoveAllListeners();
+			btnChoice.Button.onClick.AddListener (() => CreateScenarioDialog(scenario, charRef.symbol));
+
+			btnListAdvisors.Add(btnChoice);
+		}
+
+		// Create buttons for all options if not speaking to advisor
+		foreach(string option in choiceOptionsText) {
+
+			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
+			
+			btnChoice.Text = "Option: " + option;
+
+			btnChoice.Button.onClick.RemoveAllListeners();
+			
+			if(option == "Back")
+				btnChoice.Button.onClick.AddListener (() => CreateScenarioDialog(scenario));
+
+			btnListOptions.Add(btnChoice);
+		}
+
+		scenarioDialog.AddButtons(btnListAdvisors);
+		scenarioDialog.AddButtons(btnListOptions, true);
 	    
 	    return scenarioDialog;
 
@@ -196,7 +246,7 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="npcInstance">Instance of NPCBehavior for this NPC</param>
 	public void OpenIntroDialog(Models.NPC currNpc, NPCBehavior npcInstance) {
 
-		NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton> ();
+		GenericButton btnChoice = ObjectPool.Instantiate<GenericButton> ();
 		
 		btnChoice.Text = "Learn More";
 
@@ -206,7 +256,7 @@ public class DialogManager : MonoBehaviour {
 		CreateChoiceDialog(
 
 			DataManager.GetDataForCharacter(currNpc.character).description, 
-			new List<NPCDialogButton>(){ btnChoice },
+			new List<GenericButton>(){ btnChoice },
 			delegate { CloseCharacterDialog(false); },
 			npcInstance
 
@@ -264,7 +314,7 @@ public class DialogManager : MonoBehaviour {
 			}
 		}
 
-		List<NPCDialogButton> btnList = new List<NPCDialogButton>();
+		List<GenericButton> btnList = new List<GenericButton>();
 
 		foreach(string choice in currentDialogueChoices) {
 			CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
@@ -272,7 +322,7 @@ public class DialogManager : MonoBehaviour {
 
 			string choiceName = textInfo.ToTitleCase(choice);
 
-			NPCDialogButton btnChoice = ObjectPool.Instantiate<NPCDialogButton>();
+			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 			btnChoice.Text = choiceName;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
@@ -297,7 +347,7 @@ public class DialogManager : MonoBehaviour {
 
 	public void CloseCharacterDialog (bool openNext=true) {
 		if (dialogBox != null) {
-			dialogBox.Close (openNext);
+			dialogBox.Close ();
 			dialogBox = null;
 		}
 	}
