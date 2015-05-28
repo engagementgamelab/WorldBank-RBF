@@ -44,14 +44,19 @@ public class AnimatedQuadTexture : MB {
 
 	[SerializeField] int frameCount = 1;
 	[SerializeField] int frame = 1;
-	[SerializeField] float speed = 1f;
+	[Range (0, 10f), SerializeField] float speed = 1f;
 	[SerializeField] bool animating = false;
+	[SerializeField] bool useInterval = false;
+	[SerializeField] float intervalMin = 0f;
+	[SerializeField] float intervalMax = 0f;
 	float xScale;
+	float pauseTime;
 
 	void Awake () {
 		SetScale ();
 		SetOffset ();
 		_Texture = texture;
+		animating = false;
 		StartAnimating ();
 	}
 
@@ -69,51 +74,93 @@ public class AnimatedQuadTexture : MB {
 	}
 
 	public void StartAnimating () {
-		if (!animating) animating = true;
-		#if UNITY_EDITOR
-		if (EditorState.InEditMode) {
-			return;
+		if (animating) return;
+		animating = true;
+		if (useInterval) {
+			UpdatePauseTime ();
+			#if UNITY_EDITOR
+			if (EditorState.InEditMode) return;
+			#endif
+			StartCoroutine (CoPause ());
+		} else {
+			#if UNITY_EDITOR
+			if (EditorState.InEditMode) return;
+			#endif
+			StartCoroutine (CoAnimate ());
 		}
-		#endif
-		StartCoroutine (CoAnimate ());
 	}
 
 	public void StopAnimating () {
 		animating = false;
 	}
 
+	IEnumerator CoPause () {
+		
+		float time = pauseTime;
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			yield return null;
+		}
+
+		StartCoroutine (CoAnimate ());
+	}
+
 	IEnumerator CoAnimate () {
-			
+		
 		float position = 0f;
-		int prevFrame = 0;
 
 		while (animating) {
 			position += Time.deltaTime * speed;
 			if (position >= 1f) {
-				IterateFrame ();
+				animating = !IterateFrame ();
 				position = 0;
 			}
 			yield return null;
 		}
+
+		StartAnimating ();
 	}
 
-	void IterateFrame () {
+	bool IterateFrame () {
 		if (frame < frameCount-1) {
 			frame ++;
 		} else {
 			frame = 0;
 		}
 		SetOffset ();
+		
+		// Returns true if first frame was reached
+		return frame == 0;
+	}
+
+	void UpdatePauseTime () {
+		pauseTime = Random.Range (intervalMin, intervalMax);
 	}
 
 	#if UNITY_EDITOR
 	float _position = 0f;
+	float _pausePosition = 0f;
+	bool _pauseComplete = false;
 	public void Animate (float deltaTime) {
 		if (!EditorState.InEditMode) return;
-		_position += deltaTime * speed;
-		if (_position >= 1f) {
-			IterateFrame ();
-			_position = 0;
+		if (useInterval) {
+			if (!_pauseComplete) {
+				_pausePosition += deltaTime;
+			}
+			if (_pausePosition >= pauseTime) {
+				UpdatePauseTime ();
+				_pauseComplete = true;
+				_pausePosition = 0f;
+			}
+		}
+		if (!useInterval || _pauseComplete) {
+			_position += deltaTime * speed;
+			if (_position >= 1f) {
+				_pauseComplete = !IterateFrame ();
+				_position = 0;
+			}
 		}
 	}
 	#endif

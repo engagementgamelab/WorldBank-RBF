@@ -31,6 +31,8 @@ public class AnimatedQuadTextureEditor : Editor {
 
 	bool animating = false;
 	float startTime;
+	[SerializeField] float minLim = 0f;
+	[SerializeField] float maxLim = 20f;
 
 	void OnEnable () {
 		startTime = (float)EditorApplication.timeSinceStartup;
@@ -51,7 +53,8 @@ public class AnimatedQuadTextureEditor : Editor {
 			SerializedTarget.FindProperty ("frameCount"));
 
 		DrawRunStop ();
-		bool speedUpdated = DrawSpeedProperty ();
+		bool speedUpdated = DrawFloatProperty ("speed");
+		DrawIntervalRange ();
 
 		serializedTarget.ApplyModifiedProperties ();
 
@@ -59,6 +62,7 @@ public class AnimatedQuadTextureEditor : Editor {
 			Target.Refresh ();
 			Target.SetScale ();
 		}
+
 		if (frameCountUpdated) Target.SetScale ();
 		if (frameUpdated) Target.SetOffset ();
 	}
@@ -80,6 +84,24 @@ public class AnimatedQuadTextureEditor : Editor {
 				Target.StartAnimating ();
 			}
 		}
+	}
+
+	void DrawIntervalRange () {
+		SerializedProperty useInterval = SerializedTarget.FindProperty ("useInterval");
+		useInterval.boolValue = EditorGUILayout.Toggle ("Random interval", useInterval.boolValue);
+		if (!useInterval.boolValue) return;
+		EditorGUILayout.BeginHorizontal ();
+		SerializedProperty min = SerializedTarget.FindProperty ("intervalMin");
+		SerializedProperty max = SerializedTarget.FindProperty ("intervalMax");
+		float minv = min.floatValue;
+		float maxv = max.floatValue;
+		GUILayout.Label (min.floatValue.RoundToDecimal (1).ToString (), new GUILayoutOption[] { GUILayout.Width (20) });
+		EditorGUILayout.MinMaxSlider (ref minv, ref maxv, minLim, maxLim);
+		GUILayout.Label (max.floatValue.RoundToDecimal (1).ToString (), new GUILayoutOption[] { GUILayout.Width (20) });
+		EditorGUILayout.EndHorizontal ();
+		min.floatValue = minv;
+		max.floatValue = maxv;
+		EditorGUILayout.HelpBox ("When 'random interval' is enabled, the animation pauses for some amount of time between animation cycles. The number on the left is the minimum amount of time (in seconds) that the animation will pause. The number on the right is the maximum amount of time it will pause.", MessageType.Info);
 	}
 
 	bool DrawTextureProperty () {
@@ -129,11 +151,11 @@ public class AnimatedQuadTextureEditor : Editor {
 		return initialFrame != editFrame;
 	}
 
-	bool DrawSpeedProperty () {
-		SerializedProperty speed = SerializedTarget.FindProperty ("speed");
-		float initialSpeed = speed.floatValue;
-		EditorGUILayout.PropertyField (speed, EmptyOptions);
-		float editSpeed = speed.floatValue;
-		return initialSpeed != editSpeed;
+	bool DrawFloatProperty (string name, float min=-1, float max=-1) {
+		SerializedProperty val = SerializedTarget.FindProperty (name);
+		float initialValue = val.floatValue;
+		EditorGUILayout.PropertyField (val, EmptyOptions);
+		float editValue = val.floatValue;
+		return initialValue != editValue;
 	}
 }
