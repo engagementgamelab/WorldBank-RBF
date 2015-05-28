@@ -46,7 +46,7 @@ public class ParallaxElement : ParallaxImage {
 		set { Collider.SetSizeY (value); }
 	}
 
-	BoxCollider collider = null;
+	new BoxCollider collider = null;
 	BoxCollider Collider {
 		get {
 			if (collider == null) {
@@ -69,10 +69,10 @@ public class ParallaxElement : ParallaxImage {
 		}
 	}
 
-	Vector2 scaleConstraints;
+	Vector2 scaleConstraints = Vector2.zero;
 	Vector2 ScaleConstraints {
 		get {
-			if (scaleConstraints == null || scaleConstraints.Equals (Vector2.zero)) {
+			if (scaleConstraints.Equals (Vector2.zero)) {
 				// MinScale, MaxScale
 				scaleConstraints = new Vector2 (1f, 2.32f - 1.31f * ColliderHeight);
 			}

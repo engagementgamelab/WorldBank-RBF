@@ -51,33 +51,6 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 	}
 	#endif
 
-	/*[ExposeInWindow] public Texture2D texture = null;
-	Texture2D cachedTexture = null;
-	public Texture2D Texture {
-		get { 
-			if (cachedTexture == null) {
-				cachedTexture = (Texture2D)_Material.mainTexture;
-			}
-			return cachedTexture; 
-		}
-		set { 
-			if (cachedTexture == value) return;
-			cachedTexture = value;
-			if (cachedTexture != null) {
-				_Material = MaterialsManager.CreateMaterialFromTexture (cachedTexture, cachedTexture.format.HasAlpha ());
-				if (MaterialsManager.TextureIsBlank (Texture)) {
-					gameObject.SetActive (false);
-				} else {
-					gameObject.SetActive (true);
-				}
-			} else {
-				_Material = MaterialsManager.Blank;
-			}
-			if (_Material != null)
-				_Material.renderQueue = LayerPosition;
-		}
-	}*/
-
 	public float LocalPositionX {
 		get { return LocalPosition.x; }
 		set { Transform.SetLocalPositionX (value); }

@@ -108,8 +108,6 @@ public class MainCamera : MB {
 		}
 	}
 
-	bool moving = false;
-	float speed = 10;
 	const float MIN_ZOOM = 0f;
 	const float MAX_ZOOM = 12f;
 
@@ -135,9 +133,5 @@ public class MainCamera : MB {
 	public void ZoomTo (float target, float velocity=-1) {
 		TargetZoom = target;
 		if (velocity != -1) ZoomVelocity = velocity;
-	}
-
-	public void MoveToTarget (float target, float duration=-1) {
-		Positioner.MoveToTarget (target, duration);
 	}
 }

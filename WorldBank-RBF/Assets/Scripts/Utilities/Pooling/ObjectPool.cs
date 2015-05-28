@@ -104,7 +104,7 @@ public class ObjectPool : MonoBehaviour {
 		try {
 			go = Instantiate (Resources.Load ("Prefabs/" + prefabName)) as GameObject;
 		} catch (System.Exception e) {
-			throw new System.Exception ("The prefab '" + prefabName + "' was not found in the Resources/Prefabs folder.");
+			throw new System.Exception ("The prefab '" + prefabName + "' was not found in the Resources/Prefabs folder.", e);
 		}
 		#if UNITY_EDITOR
 		if (go == null)

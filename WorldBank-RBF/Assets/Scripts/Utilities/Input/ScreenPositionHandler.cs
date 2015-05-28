@@ -28,6 +28,15 @@ public static class ScreenPositionHandler {
 		return Camera.main.ViewportToWorldPoint (a);
 	}
 
+	public static Vector3 ViewportToWorldRelative (Vector3 a) {
+		Vector3 camPosition = Camera.main.transform.position;
+		Vector3 viewPosition = ScreenPositionHandler.ViewportToWorld (a);
+		return new Vector3 (
+			viewPosition.x - camPosition.x,
+			viewPosition.y - camPosition.y,
+			viewPosition.z);
+	}
+
 	public static float AngleDifference (float a, float b) {
 		float c = Mathf.Abs (a - b);
 		if (c > 180) {

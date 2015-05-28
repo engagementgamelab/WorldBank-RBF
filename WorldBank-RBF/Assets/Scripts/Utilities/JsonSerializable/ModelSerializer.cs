@@ -274,7 +274,6 @@ public class ModelSerializer {
                 string.Format ("{0} does not have a JsonSerializableAttribute \n{1}", obj.GetType (), e));
             throw;
         }
-        return null;
     }
 
     static bool IsFundamental (System.Type type) {

@@ -1,42 +1,108 @@
-﻿using UnityEngine;
+﻿#define SHOW_SETTINGS
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class CameraPositioner : MB {
 
-	class InertialScroll {
+	public class CameraDrag {
 
-		public float AverageVelocity {
-			get {
-				if (velocities.Count == 0) return 0;
-				float[] vs = new float[velocities.Count];
-				velocities.CopyTo (vs, 0);
-				float total = 0;
-				for (int i = 0; i < vs.Length; i ++) {
-					total += vs[i];
+		bool enabled = true;
+		public bool Enabled {
+			get { return enabled; }
+			set { enabled = value; }
+		}
+
+		float MouseViewportX {
+			get { return ScreenPositionHandler.ViewportToWorldRelative (
+					MouseController.MousePositionViewport).x;
+			}
+		}
+
+		float PositionerX {
+			get { return positioner.XPosition; }
+			set { positioner.XPosition = value; }
+		}
+
+		float speed = 0.6f;
+		public float Speed {
+			get { return speed; }
+			set { speed = value; }
+		}
+
+		public int Smoothing {
+			get { return smoothing.Capacity; }
+			set { 
+				smoothing.Capacity = value;
+				velocity.Capacity = value;
+			}
+		}
+
+		float damping = 0.7f;
+		public float Damping {
+			get { return damping; }
+			set { damping = Mathf.Clamp (value, 0f, 0.95f); }
+		}
+
+		public bool Dragging {
+			get { return dragging; }
+		}
+
+		CameraPositioner positioner;
+		LowPassFilter smoothing = new LowPassFilter (6);
+		LowPassFilter velocity = new LowPassFilter (6);
+		float startDragWorld;
+		float startDragViewport;
+		bool dragging = false;
+		bool dragReleased = false;
+		float releaseVelocity = 0f;
+
+		float target;
+
+		public CameraDrag (CameraPositioner positioner) {
+			this.positioner = positioner;
+		}
+		
+		public void OnDragDown () {
+			if (!Enabled || dragging) return;
+			dragging = true;
+			dragReleased = false;
+			startDragWorld = PositionerX;
+			startDragViewport = MouseViewportX;
+		}
+
+		public void OnDrag () {
+			if (dragging) {
+				smoothing.Add (startDragViewport - MouseViewportX);
+				float startPosition = PositionerX;
+				PositionerX = startDragWorld + smoothing.Average * speed;
+				velocity.Add (PositionerX - startPosition);
+			}
+
+			if (dragReleased) {
+				PositionerX += releaseVelocity * 10f * Time.deltaTime;
+				releaseVelocity *= Damping;
+				if (Mathf.Abs (releaseVelocity) <= 0.01f) {
+					Stop ();
 				}
-				return total / (float)vs.Length;
 			}
 		}
 
-		public readonly float multiplier = 100f;
-		public readonly float damping = 6f;
-
-		Queue<float> velocities = new Queue<float> ();
-		int maxVelocityCount = 6;
-
-		public void AddVelocity (float v) {
-			if (velocities.Count+1 > maxVelocityCount) {
-				velocities.Dequeue ();
+		public void OnDragUp () {
+			if (!dragReleased ) {
+				dragReleased = true;
+				dragging = false;
+				releaseVelocity = velocity.Average;
+				smoothing.Reset ();
+				velocity.Reset ();
 			}
-			velocities.Enqueue (v);
 		}
-	}
 
-	bool dragEnabled = true;
-	public bool DragEnabled {
-		get { return dragEnabled; }
-		set { dragEnabled = value; }
+		void Stop () {
+			dragging = false;
+			dragReleased = false;
+			smoothing.Reset ();
+		}
 	}
 	
 	float xMin;
@@ -48,108 +114,65 @@ public class CameraPositioner : MB {
 		}
 	}
 
-	float speed = 10;
-	float scrollSpeed = 200f;
-	float maxSpeed = 2f;
-	Vector3 startDragPosition;
-	Vector3 startDrag;
-	bool dragging = false;
-	bool moving = false;
-	InertialScroll inertialScroll = new InertialScroll ();
+	public float XPosition {
+		get { return Position.x; }
+		set { Transform.SetPositionX (Mathf.Max (XMin, value)); }
+	}
+
+	CameraDrag drag;
+	public CameraDrag Drag {
+		get {
+			if (drag == null) {
+				drag = new CameraDrag (this);
+			}
+			return drag;
+		}
+	}
 
 	void Awake () {
 		Events.instance.AddListener<DragDownEvent> (OnDragDownEvent);
 		Events.instance.AddListener<DragUpEvent> (OnDragUpEvent);
 	}
 
-	void OnDestroy() {
-		Events.instance.RemoveListener<DragDownEvent> (OnDragDownEvent);
-		Events.instance.RemoveListener<DragUpEvent> (OnDragUpEvent);
-    }
-
-	// TODO: This can be cleaned up
-	IEnumerator CoDrag () {
-		
-		float prevX = Position.x;
-		float velocity = 0f;
-
-		InertialScroll dragScroll = new InertialScroll ();
-
-		while (dragging) {
-			
-			// Positioning
-			Vector3 w1 = ScreenPositionHandler.ViewportToWorld (startDrag);
-			Vector3 w2 = ScreenPositionHandler.ViewportToWorld (MouseController.MousePositionViewport);
-			float deltaX = (w1.x - w2.x);
-			dragScroll.AddVelocity (deltaX);
-			Transform.SetPositionX (Mathf.Max (XMin, Position.x + dragScroll.AverageVelocity));
-			startDrag = MouseController.MousePositionViewport;
-			
-			// Inertia
-			float currX = Position.x;
-			velocity = (currX - prevX) * Time.deltaTime;
-			inertialScroll.AddVelocity (velocity);
-			prevX = currX;
-			yield return null;
-		}
-
-		float inertia = dragScroll.AverageVelocity;
-		while (inertia != 0 && !dragging && !moving) {
-			Transform.SetPositionX (
-				Mathf.Max (
-					XMin,
-					Position.x + inertia * inertialScroll.multiplier * Time.deltaTime
-				)
-			);
-			inertia += -inertia * inertialScroll.damping * Time.deltaTime;
-			if (Mathf.Abs (inertia) <= 0.0005f) {
-				inertia = 0;
-			}
-			yield return null;
-		}
-	}
-
 	void Update () {
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			Transform.SetPositionX (Mathf.Max (XMin, Position.x - 0.5f));
-		}
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			Transform.SetPositionX (Mathf.Max (XMin, Position.x + 0.5f));
-		}
-	}
-
-	public void MoveToTarget (float target, float duration=-1) {
-		if (moving) return;
-		moving = true;
-		StartCoroutine (CoMove (Position.x, target, duration));
-	}
-
-	IEnumerator CoMove (float start, float end, float duration=-1) {
-
-		float distance = Mathf.Abs (start - end);
-		float time = (duration == -1) ? distance / speed : duration;
-		float eTime = 0;
-
-		while (eTime < time) {
-			eTime += Time.deltaTime;
-			float newPosition = Mathf.SmoothStep (start, end, eTime / time);
-			Transform.SetPositionX (Mathf.Max (XMin, newPosition));
-			yield return null;
-		}
-
-		moving = false;
+		Drag.OnDrag ();
 	}
 
 	void OnDragDownEvent (DragDownEvent e) {
-		if (DragEnabled && !dragging) {
-			startDragPosition = Position;
-			startDrag = MouseController.MousePositionViewport;
-			dragging = true;
-			StartCoroutine (CoDrag ());
-		}
+		Drag.OnDragDown ();
 	}
 
 	void OnDragUpEvent (DragUpEvent e) {
-		dragging = false;
+		Drag.OnDragUp ();
 	}
+
+	#if SHOW_SETTINGS
+	bool showSettings = false;
+	void OnGUI () {
+		GUI.color = Color.black;
+		showSettings = GUILayout.Toggle (showSettings, "Show drag settings");
+		if (!showSettings) return;
+		Drag.Speed = DrawFloatSlider (Drag.Speed, 0.1f, 5f, "speed");
+		Drag.Smoothing = DrawIntSlider (Drag.Smoothing, 1, 20, "smoothing");
+		Drag.Damping = DrawFloatSlider (Drag.Damping, 0f, 0.95f, "damping", 2);
+	}
+
+	float DrawFloatSlider (float value, float min, float max, string label, int decimalPlaces=1) {
+		GUILayout.BeginHorizontal ();
+		GUILayout.Label (label, new GUILayoutOption[] { GUILayout.Width (80f)});
+		float returnValue = GUILayout.HorizontalSlider (value, min, max, new GUILayoutOption[] { GUILayout.Width (120f)});
+		GUILayout.Label (value.RoundToDecimal (decimalPlaces).ToString (), new GUILayoutOption[] { GUILayout.Width (40f)});
+		GUILayout.EndHorizontal ();
+		return returnValue;
+	}
+
+	int DrawIntSlider (int value, int min, int max, string label) {
+		GUILayout.BeginHorizontal ();
+		GUILayout.Label (label, new GUILayoutOption[] { GUILayout.Width (80f)});
+		int returnValue = (int)GUILayout.HorizontalSlider (value, min, max, new GUILayoutOption[] { GUILayout.Width (120f)});
+		GUILayout.Label (value.ToString (), new GUILayoutOption[] { GUILayout.Width (40f)});
+		GUILayout.EndHorizontal ();
+		return returnValue;
+	}
+	#endif
 }

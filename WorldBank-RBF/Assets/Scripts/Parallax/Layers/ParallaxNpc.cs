@@ -2,7 +2,7 @@
 using System.Collections;
 
 [JsonSerializable (typeof (Models.ParallaxNpc))]
-public class ParallaxNpc : ParallaxElement, IClickable {
+public class ParallaxNpc : ParallaxElement, 	IClickable {
 
 	public InputLayer[] IgnoreLayers { 
 		get { return new InputLayer[] { InputLayer.UI }; }
@@ -20,6 +20,7 @@ public class ParallaxNpc : ParallaxElement, IClickable {
 	}
 
 	public void OnClick (ClickSettings clickSettings) {
+		//TODO: pause a couple frames & check for drag
 		NPCFocusBehavior.Instance.OnClickNpc (this);
 	}
 }

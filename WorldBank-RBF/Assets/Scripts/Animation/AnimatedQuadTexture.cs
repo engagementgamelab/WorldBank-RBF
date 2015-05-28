@@ -66,7 +66,12 @@ public class AnimatedQuadTexture : MB {
 	}
 
 	public void SetOffset () {
-		if (_Material != null) _Material.mainTextureOffset = new Vector2 (xScale * (float)frame, 0f);
+		if (_Material == null) return;
+		if (frameCount == 1) {
+			_Material.mainTextureOffset = Vector2.zero;
+		} else {
+			_Material.mainTextureOffset = new Vector2 (xScale * (float)frame, 0f);
+		}
 	}
 
 	public virtual void Refresh () {

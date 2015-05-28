@@ -28,7 +28,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 	float focus = 0f;
 	float targetFocus = 0f;
 	float speed = 2.5f;
-	ParallaxNpc npc;
+	ParallaxNpc npc = null;
 
 	FocusLevel focusLevel = FocusLevel.Default;
 	public FocusLevel FocusLevel {
@@ -66,15 +66,18 @@ public class NPCFocusBehavior : MonoBehaviour {
 	bool focusing = false;
 
 	public void OnClickNpc (ParallaxNpc npc) {
-		this.npc = npc;
-		ParallaxLayerLightController.Instance.AssignLayers (npc.gameObject);
-		FocusCamera ();		
-		IterateFocusLevel ();
+		if (FocusLevel == FocusLevel.Default && this.npc != null) return;
+		if (!CameraPositioner.Drag.Dragging) {
+			this.npc = npc;
+			ParallaxLayerLightController.Instance.AssignLayers (npc.gameObject);
+			FocusCamera ();		
+			IterateFocusLevel ();
+		}
 	}
 
 	void FocusCamera () {
 		
-		CameraPositioner.DragEnabled = false;
+		CameraPositioner.Drag.Enabled = (FocusLevel == FocusLevel.Dialog);
 		startCamPosition = CameraPositioner.Position.x;
 		
 		if (npc == null) {
@@ -84,11 +87,12 @@ public class NPCFocusBehavior : MonoBehaviour {
 
 		float npcPosition = npc.GetPositionAtScale (1f);
 		float viewportOffset = 0.5f + npcDialogSeparation * 0.5f;
-		float offset = CameraPositioner.Position.x - ScreenPositionHandler.ViewportToWorld (
+		float offset = ScreenPositionHandler.ViewportToWorldRelative (
 			new Vector3 (viewportOffset, 0, npc.Position.z)).x;
+
 		endCamPosition = (npc.FacingLeft)
-			? npcPosition + offset
-			: npcPosition - offset;
+			? npcPosition - offset
+			: npcPosition + offset;
 	}
 
 	void IterateFocusLevel () {
@@ -103,8 +107,8 @@ public class NPCFocusBehavior : MonoBehaviour {
 
 	void OnEndFocus () {
 		if (FocusLevel == FocusLevel.Default) {
-			CameraPositioner.DragEnabled = true;
 			ParallaxLayerLightController.Instance.AssignLayers ();
+			npc = null;
 		}
 	}
 
@@ -121,7 +125,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 			npc.Scale = focus;
 			MainCamera.Zoom = focus * Mathf.Pow (1.25f, 3f);
 
-			// TODO: make this more generic
+			// TODO: clean this up
 			float progress = focus;
 			if (targetFocus >= 0.5f) {
 				progress = focus * 2f;
@@ -129,12 +133,10 @@ public class NPCFocusBehavior : MonoBehaviour {
 			if (targetFocus >= 1f) {
 				progress = 1f;
 			}
-			if (targetFocus <= 0f) {
-				progress = focus;
+			if (targetFocus > 0f) {
+				CameraPositioner.Transform.SetLocalPositionX (
+					Mathf.Lerp (startCamPosition, endCamPosition, progress));
 			}
-
-			CameraPositioner.Transform.SetLocalPositionX (
-				Mathf.Lerp (startCamPosition, endCamPosition, progress));
 			yield return null;
 		}
 
@@ -142,3 +144,4 @@ public class NPCFocusBehavior : MonoBehaviour {
 		OnEndFocus ();
 	}
 }
+

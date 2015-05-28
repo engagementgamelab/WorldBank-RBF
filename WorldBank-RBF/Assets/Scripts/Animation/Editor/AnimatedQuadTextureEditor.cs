@@ -53,7 +53,7 @@ public class AnimatedQuadTextureEditor : Editor {
 			SerializedTarget.FindProperty ("frameCount"));
 
 		DrawRunStop ();
-		bool speedUpdated = DrawFloatProperty ("speed");
+		DrawFloatProperty ("speed");
 		DrawIntervalRange ();
 
 		serializedTarget.ApplyModifiedProperties ();
