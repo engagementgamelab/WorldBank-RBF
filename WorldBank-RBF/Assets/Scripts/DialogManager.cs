@@ -146,7 +146,9 @@ public class DialogManager : MonoBehaviour {
 	    dialogBox = ObjectPool.Instantiate<GenericDialogBox> ();
 	    dialogBox.Open();
 	    dialogBox.Content = strDialogTxt;
+
 	    return dialogBox;
+
 	}
 
 
@@ -155,10 +157,11 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="scenario">The instance of the scenario</param>
 	/// <param name="strAdvisorSymbol">The symbol of the advisor who is talking (optional)</param>
-	public ScenarioDialog CreateScenarioDialog(Models.Scenario scenario, string strAdvisorSymbol=null) {
+	public ScenarioDialog CreateScenarioDialog(Models.ScenarioCard scenario, string strAdvisorSymbol=null, bool closeAll=true) {
 
 		// Close all diags
-		CloseAll();
+		if(closeAll)
+			CloseAll();
 
 	    scenarioDialog = ObjectPool.Instantiate<ScenarioDialog>();
 
@@ -228,6 +231,8 @@ public class DialogManager : MonoBehaviour {
 			
 			if(option == "Back")
 				btnChoice.Button.onClick.AddListener (() => CreateScenarioDialog(scenario));
+			else
+				btnChoice.Button.onClick.AddListener (() => ScenarioManager.GetNextCard());
 
 			btnListOptions.Add(btnChoice);
 		}

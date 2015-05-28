@@ -13,7 +13,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 using System.Collections;
-using System.Timers;
 using Extensions;
 
 public class NPCBehavior : MB {

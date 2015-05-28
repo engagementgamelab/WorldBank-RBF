@@ -140,13 +140,13 @@ public class DataManager {
     }
 
     /// <summary>
-    /// Get the phase two scenario specified by the symbol input.
+    /// Get the phase two scenario specified by the index input.
     /// </summary>
-    /// <param name="strSymbol">Symbol of the scenario</param>
+    /// <param name="cardIndex">Index of the scenario card</param>
     /// <returns>The Models.Scenario for the symbol matching the input</returns>
-    public static Models.Scenario GetScenarioBySymbol(string strSymbol) {
+    public static Models.ScenarioCard GetScenarioCardByIndex(int cardIndex) {
 
-        Models.Scenario scenarioRef = gameData.phase_two[currentSceneContext][strSymbol];
+        Models.ScenarioCard scenarioRef = gameData.phase_two.scenario_1[cardIndex];
         
         return scenarioRef;
     }

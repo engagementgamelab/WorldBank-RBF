@@ -9,6 +9,7 @@ Created by Engagement Lab, 2015
 ==============
 */
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,15 @@ using JsonFx.Json;
 
 public class ScenarioManager : MonoBehaviour {
 
+	public Text scenarioLabel;
+
 	public static List<string> currentAdvisorOptions;
 	public static List<string> currentCardOptions;
+
+	private static int currentCardIndex;
+
+	private static TimerUtils.RandomCooldown tacticCardCooldown;
+	private static int[] tacticCardIntervals = new int[3] {30, 45, 60};
 
 	// Use this for initialization
 	void Start () {
@@ -29,7 +37,6 @@ public class ScenarioManager : MonoBehaviour {
 
 	}
 
-
     public void PlansRetrieved(string response) {
 
     	string[] planIDs = JsonReader.Deserialize<string[]>(response);
@@ -40,24 +47,56 @@ public class ScenarioManager : MonoBehaviour {
 
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 
-			Debug.Log(btnChoice);
-
 			btnChoice.Text = choice;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
-
-			// string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
 			btnChoice.Button.onClick.AddListener (() => GetScenarioForPlan(choice));
-			// btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, npc, false));
 
 			btnList.Add(btnChoice);
 		}
 
-		// BackButtonDelegate del = delegate { OpenSpeechDialog(currNpc, "Initial", npc, true); };
-
 		DialogManager.instance.CreateChoiceDialog("Choose Plan:", btnList);
 
     }
+
+    public void AssignScenario(Dictionary<string, object> response) {
+
+    	tacticCardCooldown = new TimerUtils.RandomCooldown(tacticCardIntervals, OpenDialog);
+
+    	// Set scene context from current scenario
+    	DataManager.currentSceneContext = response["current_scenario"].ToString();
+
+    	scenarioLabel.text = DataManager.currentSceneContext.Replace("_", " ");
+    	scenarioLabel.gameObject.SetActive(true);
+
+    	OpenDialog();
+
+    }
+
+	public static void OpenDialog() {
+
+		currentCardIndex = 0;
+
+		Models.ScenarioCard scenario = DataManager.GetScenarioCardByIndex(currentCardIndex);
+
+		currentAdvisorOptions = scenario.characters.Select(x => x.Key).ToList();
+		currentCardOptions = new List<string>(scenario.starting_options);
+
+		DialogManager.instance.CreateScenarioDialog(scenario);
+
+		tacticCardCooldown.Pause();
+
+	}
+
+	public static void GetNextCard() {
+
+		currentCardIndex++;
+
+		OpenDialog();
+
+		tacticCardCooldown.Resume();
+
+	}
 
     private void GetScenarioForPlan(string planId) {
 
@@ -70,22 +109,4 @@ public class ScenarioManager : MonoBehaviour {
         NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/scenario/", saveFields, AssignScenario);
 
     }
-
-    public void AssignScenario(Dictionary<string, object> response) {
-
-    	// Set scene context from current scenario
-    	DataManager.currentSceneContext = response["current_scenario"].ToString();
-
-    }
-
-	public void OpenDialog() {
-
-		Models.Scenario scenario = DataManager.GetScenarioBySymbol("card_template");
-
-		currentAdvisorOptions = scenario.characters.Select(x => x.Key).ToList();
-		currentCardOptions = new List<string>(scenario.starting_options);
-
-		DialogManager.instance.CreateScenarioDialog(scenario);
-
-	}
 }
