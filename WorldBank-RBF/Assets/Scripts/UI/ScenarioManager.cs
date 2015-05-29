@@ -25,7 +25,7 @@ public class ScenarioManager : MonoBehaviour {
 	private static int currentCardIndex;
 
 	private static TimerUtils.RandomCooldown tacticCardCooldown;
-	private static int[] tacticCardIntervals = new int[3] {30, 45, 60};
+	private static int[] tacticCardIntervals = new int[3] {10, 20, 30};
 
 	// Use this for initialization
 	void Start () {
@@ -37,7 +37,11 @@ public class ScenarioManager : MonoBehaviour {
 
 	}
 
-    public void PlansRetrieved(string response) {
+    /// <summary>
+    /// Callback that handles all display for plans after they are retrieved.
+    /// </summary>
+    /// <param name="response">Textual response from /plan/all/ endpoint.</param>
+    private void PlansRetrieved(string response) {
 
     	string[] planIDs = JsonReader.Deserialize<string[]>(response);
 
@@ -59,30 +63,20 @@ public class ScenarioManager : MonoBehaviour {
 
     }
 
-    public void AssignScenario(Dictionary<string, object> response) {
-
-    	tacticCardCooldown = new TimerUtils.RandomCooldown(tacticCardIntervals, OpenDialog);
-
-    	// Set scene context from current scenario
-    	DataManager.currentSceneContext = response["current_scenario"].ToString();
-
-    	scenarioLabel.text = DataManager.currentSceneContext.Replace("_", " ");
-    	scenarioLabel.gameObject.SetActive(true);
-
-    	OpenDialog();
-
-    }
-
-	public static void OpenDialog() {
+	public static void OpenDialog(bool isTactic=false) {
 
 		currentCardIndex = 0;
 
-		Models.ScenarioCard scenario = DataManager.GetScenarioCardByIndex(currentCardIndex);
+		if(!isTactic) {
+		
+			Models.ScenarioCard scenario = DataManager.GetScenarioCardByIndex(currentCardIndex);
 
-		currentAdvisorOptions = scenario.characters.Select(x => x.Key).ToList();
-		currentCardOptions = new List<string>(scenario.starting_options);
+			currentAdvisorOptions = scenario.characters.Select(x => x.Key).ToList();
+			currentCardOptions = new List<string>(scenario.starting_options);
 
-		DialogManager.instance.CreateScenarioDialog(scenario);
+			DialogManager.instance.CreateScenarioDialog(scenario);
+		
+		}
 
 		tacticCardCooldown.Pause();
 
@@ -98,8 +92,13 @@ public class ScenarioManager : MonoBehaviour {
 
 	}
 
+    /// <summary>
+    /// Calls API endpoint for handling scenario assignment given a plan ID.
+    /// </summary>
+    /// <param name="plandId">The plan ID that will trigger a scenario assignment.</param>
     private void GetScenarioForPlan(string planId) {
 
+    	// Create dict for POST
         Dictionary<string, object> saveFields = new Dictionary<string, object>();
         
         saveFields.Add("user_id", PlayerManager._userId);
@@ -107,6 +106,25 @@ public class ScenarioManager : MonoBehaviour {
 
         // Save user info
         NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/scenario/", saveFields, AssignScenario);
+
+    }
+
+    /// <summary>
+    /// Callback that handles assigning the player a scenario after it is set on server-side.
+    /// </summary>
+    /// <param name="response">Dictionary response from /user/scenario/ endpoint.</param>
+    private void AssignScenario(Dictionary<string, object> response) {
+
+    	tacticCardCooldown = new TimerUtils.RandomCooldown(tacticCardIntervals, OpenDialog);
+
+    	// Set scene context from current scenario
+    	DataManager.currentSceneContext = response["current_scenario"].ToString();
+
+    	// Debug
+    	scenarioLabel.text = DataManager.currentSceneContext.Replace("_", " ");
+    	scenarioLabel.gameObject.SetActive(true);
+
+    	OpenDialog();
 
     }
 }
