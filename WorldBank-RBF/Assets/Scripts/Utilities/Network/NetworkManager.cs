@@ -15,6 +15,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.IO;
+using System.Text;
 using JsonFx.Json;
  
 // TODO: This needs lots of cleanup
@@ -49,42 +50,40 @@ public class NetworkManager : MonoBehaviour {
 
     public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> response=null, bool rawPost=false) {
 
-        WWWForm form = new WWWForm();
+        if(rawPost) {
 
-        foreach(KeyValuePair<string, object> field in fields)
-        {
-            string formFieldVal = null;
+            System.Text.StringBuilder output = new System.Text.StringBuilder();
+            
+            JsonWriter writer = new JsonWriter (output);
+            
+            writer.Write(fields);
 
-            // If the field passed in is not a string (likely a model object), serialize to json string
-            if(field.Value.GetType() != typeof(string))
+            Debug.Log(output.ToString());
+         
+            StartCoroutine(WaitForForm(url, Encoding.UTF8.GetBytes(output.ToString()), response));
+
+        }
+        else {
+
+            WWWForm form = new WWWForm();
+            
+            foreach(KeyValuePair<string, object> field in fields)
             {
-                System.Text.StringBuilder output = new System.Text.StringBuilder();
-                
-                JsonWriter writer = new JsonWriter (output);
-                
-                writer.Write(field.Value);
-                formFieldVal = output.ToString();
-                
-                Debug.Log(formFieldVal);
-            }
-            else
-            {
+                string formFieldVal = null;
+
+                // If the field passed in is not a string (likely a model object), serialize to json string
                 try {
                     formFieldVal = field.Value.ToString();
+                    form.AddField(field.Key, formFieldVal);
                 }
                 catch(Exception e) {
-                    throw new Exception("Unable to coerce form field " + field.Value + "to string");
+                    throw new Exception("Unable to coerce form field " + field.Value + " to string");
                 }
             }
 
-            form.AddField(field.Key, formFieldVal);
-        }
-    
-        if(rawPost)
-            StartCoroutine(WaitForForm(url, form.data, response));
-        else
             StartCoroutine(WaitForForm(url, null, response, form));
-        
+
+        }
     }
 
     public string DownloadDataFromURL(string url) {
@@ -136,7 +135,7 @@ public class NetworkManager : MonoBehaviour {
         WWW www; 
 
         Dictionary<string, string> postHeader = new Dictionary<string, string>();
-        postHeader.Add("Content-Type", "text/json");
+        postHeader.Add("Content-Type", "application/json");
 
         if(form == null && formData != null)
            www = new WWW(url, formData, postHeader);

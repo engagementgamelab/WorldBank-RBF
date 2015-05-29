@@ -39,7 +39,7 @@ public class Models {
         public City[] cities { get; set; }
         public Unlockable[] unlockables { get; set; }
         public Dictionary<string, NPC[]> phase_one { get; set; }
-        public Dictionary<string, Dictionary<string, Scenario>> phase_two { get; set; }
+        public PhaseTwo phase_two { get; set; }
         public Dictionary<string, object> phase_two_matrix { get; set; }
 
     }
@@ -50,6 +50,7 @@ public class Models {
         // public DateTime last_accessed { get; set; }
         // public string location { get; set; }
         public string username { get; set; }
+        public string current_scenario { get; set; }
         public Plan plan { get; set; }
 
     }
@@ -86,7 +87,17 @@ public class Models {
 
     }
 
-    public class Scenario {
+    public class PhaseTwo { 
+
+        public ScenarioCard[] scenario_1 { get; set; }
+        public ScenarioCard[] scenario_2 { get; set; }
+        public ScenarioCard[] scenario_3 { get; set; }
+        public ScenarioCard[] scenario_4 { get; set; }
+        public TacticCard[] tactics { get; set; }
+
+    }
+
+    public class ScenarioCard {
 
         public string symbol { get; set; }
         public string name { get; set; }
@@ -97,6 +108,17 @@ public class Models {
         public string[] final_options { get; set; }
         public string[] final_options_affects { get; set; }
         public Dictionary<string, Advisor> characters { get; set; }
+
+    }
+
+    public class TacticCard : ScenarioCard {
+
+        public string tactic_name { get; set; }
+        public string investigate { get; set; }
+        public int cooldown { get; set; }
+        public Dictionary<string, Dictionary<string, string>> new_options { get; set; }
+        public Dictionary<string, Dictionary<string, string>> feedback { get; set; }
+        public string results { get; set; }
 
     }
 
@@ -133,7 +155,13 @@ public class Models {
     public class Plan {
 
         [JsonMember]
+        public string name { get; set; }
+        [JsonMember]
         public string[] unlocks { get; set; }
+        [JsonMember]
+        public bool pbc { get; set; }
+        [JsonMember]
+        public bool autonomy { get; set; }
 
     }
 
