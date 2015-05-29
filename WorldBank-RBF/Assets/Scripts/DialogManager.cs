@@ -44,7 +44,7 @@ public class DialogManager : MonoBehaviour {
 	public Transform uiCanvasRoot;
 	public Button btnPrefab;
 	public GenericDialogBox dialogBox;
-	public ScenarioDialog scenarioDialog;
+	public ScenarioCardDialog scenarioDialog;
 
 	public delegate void BackButtonDelegate();
 
@@ -157,13 +157,14 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="scenario">The instance of the scenario</param>
 	/// <param name="strAdvisorSymbol">The symbol of the advisor who is talking (optional)</param>
-	public ScenarioDialog CreateScenarioDialog(Models.ScenarioCard scenario, string strAdvisorSymbol=null, bool closeAll=true) {
+	public ScenarioCardDialog CreateScenarioDialog(Models.ScenarioCard scenario, string strAdvisorSymbol=null, bool closeAll=true) {
 
 		// Close all diags
 		if(closeAll)
 			CloseAll();
 
-	    scenarioDialog = ObjectPool.Instantiate<ScenarioDialog>();
+	    scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>();
+	    scenarioDialog.card = scenario;
 
 	    // Get initial dialogue or an advisor's?
 	    if(strAdvisorSymbol == null)
@@ -189,57 +190,11 @@ public class DialogManager : MonoBehaviour {
 			ScenarioManager.currentAdvisorOptions.Remove(strAdvisorSymbol);
 		}
 
-		List<GenericButton> btnListAdvisors = new List<GenericButton>();
-		List<GenericButton> btnListOptions = new List<GenericButton>();
-
-		List<string> choiceOptionsText = ScenarioManager.currentCardOptions;
-
-		// TODO: Button creation itself ought to be a discrete method. This is all needlessly complex.
-
-		// Create buttons for all advisors
-		foreach(string characterSymbol in ScenarioManager.currentAdvisorOptions) {
-
-			// Show an advisor option only if they have dialogue (not for feedback only)
-			if(!scenario.characters[characterSymbol].hasDialogue)
-				continue;
-
-			// // Show this advisor option only if they are meant to show on initial dialogue (advisor option not selected yet)
-			// if(!scenario.characters[characterSymbol].showAtStart && strAdvisorSymbol == null)
-			// 	continue;
-
-
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
-
-			Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
-			
-			btnChoice.Text = charRef.display_name;
-
-			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => CreateScenarioDialog(scenario, charRef.symbol));
-
-			btnListAdvisors.Add(btnChoice);
-		}
+		scenarioDialog.AddAdvisors(ScenarioManager.currentAdvisorOptions);
 
 		// Create buttons for all options if not speaking to advisor
-		foreach(string option in choiceOptionsText) {
+		scenarioDialog.AddOptions(ScenarioManager.currentCardOptions);
 
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
-			
-			btnChoice.Text = "Option: " + option;
-
-			btnChoice.Button.onClick.RemoveAllListeners();
-			
-			if(option == "Back")
-				btnChoice.Button.onClick.AddListener (() => CreateScenarioDialog(scenario));
-			else
-				btnChoice.Button.onClick.AddListener (() => ScenarioManager.GetNextCard());
-
-			btnListOptions.Add(btnChoice);
-		}
-
-		scenarioDialog.AddButtons(btnListAdvisors);
-		scenarioDialog.AddButtons(btnListOptions, true);
-	    
 	    return scenarioDialog;
 
 	}

@@ -55,8 +55,6 @@ public class Models {
 
     }
 
-
-    [System.Serializable]
     public class Character {
 
         public string symbol { get; set; }
@@ -65,7 +63,6 @@ public class Models {
 
     }
 
-    [System.Serializable]
     public class City {
 
         public string symbol { get; set; }
@@ -87,6 +84,7 @@ public class Models {
 
     }
 
+    // This a little ugly, but helps me keep phase two data strongly typed (since these siblings are multiple types)
     public class PhaseTwo { 
 
         public ScenarioCard[] scenario_1 { get; set; }
@@ -94,6 +92,12 @@ public class Models {
         public ScenarioCard[] scenario_3 { get; set; }
         public ScenarioCard[] scenario_4 { get; set; }
         public TacticCard[] tactics { get; set; }
+
+        // This is slow but we'll only call it when obtaining scenario data, so maybe once per session
+        public ScenarioCard[] GetScenario(string propertyName)
+        {
+            return (ScenarioCard[])this.GetType().GetProperty(propertyName).GetValue(this, null);
+        }
 
     }
 
@@ -116,8 +120,8 @@ public class Models {
         public string tactic_name { get; set; }
         public string investigate { get; set; }
         public int cooldown { get; set; }
-        public Dictionary<string, Dictionary<string, string>> new_options { get; set; }
-        public Dictionary<string, Dictionary<string, string>> feedback { get; set; }
+        public Dictionary<string, string> new_options { get; set; }
+        public Dictionary<string, string> feedback { get; set; }
         public string results { get; set; }
 
     }
@@ -165,34 +169,31 @@ public class Models {
 
     }
 
-    /*
-    public class UnlocksConverter : JsonConverter {
+    public class GameDataConverter : JsonConverter {
+
         public override bool CanConvert (Type type) {
-            return type == typeof(Bounds);
+
+            bool convertible = type == typeof(string);
+
+            return convertible;
         }
         
-        public override string[] ReadJson (Type objectType, object value) {
+        public override object ReadJson (Type objectType, Dictionary<string,object> value) {
 
-            string[] convertedVal;
+            return new GameData();
 
-            if(value.GetType().IsArray)
-            {
-                convertedVal = ((IEnumerable)value).Cast<object>()
-                                                 .Select(x => x.ToString())
-                                                 .ToArray();
-            }
-            else
-                unlocksVal = new string[] { value.ToString() };
-
-            return convertedVal;
         }
         
-        public override string[] WriteJson (Type type, string[] value) {
-            return value;
+        public override Dictionary<string,object> WriteJson (Type type, object value) {
+            
+            Dictionary<string,object> dict = new Dictionary<string, object>();
+
+            return dict;
+
         }
+
     }
-    */
-
+    
     public class Scene {
         public string cityName { get; set; }
         public int LayerCount { get; set; }

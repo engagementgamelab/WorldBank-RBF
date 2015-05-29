@@ -51,10 +51,17 @@ public class DataManager {
             return;
 
         try {
-            gameData = JsonReader.Deserialize<Models.GameData>(data);
+
+            System.Text.StringBuilder output = new System.Text.StringBuilder();
+            // _readerSettings.AddTypeConverter (new Models.GameDataConverter());
+
+            JsonReader reader = new JsonReader(data, _readerSettings);
+
+            
+            gameData = reader.Deserialize<Models.GameData>();
         }
-        catch(Exception e) {
-            throw new Exception("Unable to set game data: " + e);
+        catch(JsonDeserializationException e) {
+            throw new Exception("Unable to set game data: " + e.Message);
         }
 
         // create/save to file in Assets/Resources/Config/
@@ -146,7 +153,7 @@ public class DataManager {
     /// <returns>The Models.Scenario for the symbol matching the input</returns>
     public static Models.ScenarioCard GetScenarioCardByIndex(int cardIndex) {
 
-        Models.ScenarioCard scenarioRef = gameData.phase_two.scenario_1[cardIndex];
+        Models.ScenarioCard scenarioRef = gameData.phase_two.GetScenario(currentSceneContext)[cardIndex];
         
         return scenarioRef;
     }
