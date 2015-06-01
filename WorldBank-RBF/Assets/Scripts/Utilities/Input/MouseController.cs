@@ -31,11 +31,11 @@ public class MouseController : MonoBehaviour {
 
 	void Awake () {
 		int[] layers = LayerController.Layers;
+		dragManager = new DragManager (layers);
 		clickManager = new ClickManager (layers);
 
 		// if(enableLayers)
 		// {
-			dragManager = new DragManager (layers);
 			releaseManager = new ReleaseManager (layers);
 
 		// }

@@ -12,7 +12,7 @@ public class NPCDialogBox : MB {
 	public Transform verticalGroup;
 	public Transform choiceGroup;
 	bool open = false;
-	NPCBehavior npc;
+	ParallaxNpc npc;
 
 	string content = "";
 	public string Content {
@@ -23,7 +23,7 @@ public class NPCDialogBox : MB {
 		}
 	}
 
-	public void Open (NPCBehavior npc) {
+	public void Open (ParallaxNpc npc) {
 		
 		this.npc = npc;
 		Vector3 position = npc.Position;
@@ -52,7 +52,7 @@ public class NPCDialogBox : MB {
 	public void Close (bool openNext) {
 		// NPCFocusBehavior.Instance.FocusOut ();
 		// npc.OnClick ();
-		npc.CloseDialog (openNext);
+		// npc.CloseDialog (openNext);
 		npc = null;
 		ObjectPool.Destroy<NPCDialogBox> (Transform);
 		open = false;

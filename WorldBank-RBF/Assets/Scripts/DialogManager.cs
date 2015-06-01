@@ -10,6 +10,7 @@ Created by Engagement Lab, 2015
 */
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -28,7 +29,7 @@ public class DialogManager : MonoBehaviour {
 		get {
 
 			if(_instance == null) {
-				_instance = GameObject.FindObjectOfType<DialogManager>();
+				_instance = (DialogManager)GameObject.FindObjectOfType<DialogManager>();
 
 				// Do not destroy on new scene
 				DontDestroyOnLoad(_instance.gameObject);
@@ -114,7 +115,7 @@ public class DialogManager : MonoBehaviour {
 	/// Generate a dialog with text and choice buttons
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, BackButtonDelegate backEvent=null, NPCBehavior npc=null) {
+	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, BackButtonDelegate backEvent=null) {
 
 		if (dialogBox == null) {
 			// if(npc == null)
@@ -150,7 +151,6 @@ public class DialogManager : MonoBehaviour {
 	    return dialogBox;
 
 	}
-
 
 	/// <summary>
 	/// Generate a Scenario dialog for the specified scenario
@@ -203,23 +203,20 @@ public class DialogManager : MonoBehaviour {
 	/// Open intro dialog for a given character
 	/// </summary>
 	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
-	/// <param name="npcInstance">Instance of NPCBehavior for this NPC</param>
-	public void OpenIntroDialog(Models.NPC currNpc, NPCBehavior npcInstance) {
+	public void OpenIntroDialog(Models.NPC currNpc) {
 
 		GenericButton btnChoice = ObjectPool.Instantiate<GenericButton> ();
 		
 		btnChoice.Text = "Learn More";
 
 		btnChoice.Button.onClick.RemoveAllListeners ();
-		btnChoice.Button.onClick.AddListener(() => npcInstance.DialogFocus());
+		// btnChoice.Button.onClick.AddListener(() => npcInstance.DialogFocus());
 
 		CreateChoiceDialog(
 
 			DataManager.GetDataForCharacter(currNpc.character).description, 
 			new List<GenericButton>(){ btnChoice },
-			delegate { CloseCharacterDialog(false); },
-			npcInstance
-
+			delegate { CloseCharacterDialog(false); }
 		);
 
 	}
@@ -230,7 +227,10 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
 	/// <param name="strDialogueKey">The key corresponding to the dialogue to show</param>
 	/// <param name="returning">Specify whether player is returning to previous dialog</param>
-	public void OpenSpeechDialog(Models.NPC currNpc, string strDialogueKey, NPCBehavior npc, bool returning=false) {
+	public void OpenSpeechDialog(Models.NPC currNpc, string strDialogueKey, bool returning=false) {
+
+		if (returning && currentDialogueChoices == null)
+			throw new Exception ("You are trying to return to the previous dialog, but none exists");
 
 		string strDialogTxt = currNpc.dialogue[strDialogueKey]["text"];
 		
@@ -289,7 +289,7 @@ public class DialogManager : MonoBehaviour {
 
 			string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
 			btnChoice.Button.onClick.AddListener (() => currentDialogueChoices.Remove(t));
-			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, npc, false));
+			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, false));
 
 			btnList.Add(btnChoice);
 		}
@@ -299,10 +299,14 @@ public class DialogManager : MonoBehaviour {
 		if (strDialogueKey == "Initial") {
 			del = CloseCharacterDialog;
 		} else {
-			del = delegate { OpenSpeechDialog(currNpc, "Initial", npc, true); };
+			del = delegate { OpenSpeechDialog(currNpc, "Initial", true); };
 		}
 
-		CreateChoiceDialog(strToDisplay, btnList, del, npc);
+		CreateChoiceDialog(strToDisplay, btnList, del);
+	}
+
+	public void OpenSpeechDialog(string symbol, string strDialogueKey, bool returning=false) {
+		OpenSpeechDialog (NpcManager.GetNpc (symbol), strDialogueKey, returning);
 	}
 
 	public void CloseCharacterDialog (bool openNext=true) {

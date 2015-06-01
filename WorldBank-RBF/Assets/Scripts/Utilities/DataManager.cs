@@ -115,12 +115,12 @@ public class DataManager {
     /// Get data for NPC with name specified, or all NPCs in current city.
     /// </summary>
     /// <returns>(Optional) Symbol of the character to get NPC data for; if not used all NPCs in current city are returned.</returns>
-    public static Models.NPC[] GetNPCsForCity(string strSelector=null)    {
+    public static Models.NPC[] GetNPCsForCity(string strSelector=null) {
         
-        if(strSelector == null)
+        if(strSelector == null) {
             return gameData.phase_one[currentSceneContext];
-        else {
-            
+        } else {
+
             Models.NPC[] npcRef = new Models.NPC[] { Array.Find(gameData.phase_one[currentSceneContext], row => row.character == strSelector) };
 
             if(npcRef == null)

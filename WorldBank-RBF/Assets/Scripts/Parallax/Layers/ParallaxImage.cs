@@ -10,7 +10,7 @@ using System.Collections;
   *	ParallaxImage
   *		> ParallaxElement
   *			> ParallaxNpc
-  *			> ParallaxForeground
+  *			> ParallaxZoomTrigger
   */
 
 [RequireComponent (typeof (MeshRenderer), typeof (MeshFilter))]
