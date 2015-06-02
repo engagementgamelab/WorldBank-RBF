@@ -18,6 +18,7 @@ using JsonFx.Json;
 public class ScenarioManager : MonoBehaviour {
 
 	public Text scenarioLabel;
+	public Text cardLabel;
 
 	public static List<string> currentAdvisorOptions;
 	public static List<string> currentCardOptions;
@@ -25,7 +26,15 @@ public class ScenarioManager : MonoBehaviour {
 	private static int currentCardIndex;
 
 	private static TimerUtils.RandomCooldown tacticCardCooldown;
-	private static int[] tacticCardIntervals = new int[3] {10, 20, 30};
+	private static TimerUtils.Cooldown tacticInvestigateCooldown;
+	
+	public static List<string> tacticCardOptions  = new List<string> { "Investigate", "Observe" };
+	private static int[] tacticCardIntervals = new int[3] {3, 3, 3};
+
+	private bool openTacticCard;
+	private string tacticState;
+
+	private TacticCardDialog currentTacticCard;
 
 	// Use this for initialization
 	void Start () {
@@ -34,6 +43,19 @@ public class ScenarioManager : MonoBehaviour {
 
         // Get plans
         NetworkManager.Instance.GetURL(DataManager.config.serverRoot + "/plan/all/", PlansRetrieved);
+
+		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
+
+	}
+
+	void Update () {
+
+		if(openTacticCard)
+		{
+			OpenDialog(true);
+			openTacticCard = false;
+		}
+		
 
 	}
 
@@ -63,26 +85,43 @@ public class ScenarioManager : MonoBehaviour {
 
     }
 
-	public static void OpenDialog(bool isTactic=false) {
-
-		currentCardIndex = 0;
+	public void OpenDialog(bool isTactic=false, string dialogState="open") {
 
 		if(!isTactic) {
 		
-			Models.ScenarioCard scenario = DataManager.GetScenarioCardByIndex(currentCardIndex);
+			Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex);
 
-			currentAdvisorOptions = scenario.characters.Select(x => x.Key).ToList();
-			currentCardOptions = new List<string>(scenario.starting_options);
+			currentAdvisorOptions = card.characters.Select(x => x.Key).ToList();
+			currentCardOptions = new List<string>(card.starting_options);
 
-			DialogManager.instance.CreateScenarioDialog(scenario);
+			DialogManager.instance.CreateScenarioDialog(card);
+
+	    	// Debug
+	    	cardLabel.text = card.symbol;
+	    	cardLabel.gameObject.SetActive(true);
 		
+		}
+		else {
+
+			if(tacticState == "open")
+			{
+				Models.TacticCard card = DataManager.GetTacticCardByName(DataManager.tacticNames[0]);
+				currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
+			}
+			else 
+			{
+    			// Show tactic card
+    			currentTacticCard.Enable();
+
+				currentTacticCard.GetResultOptions();
+			}
 		}
 
 		tacticCardCooldown.Pause();
 
 	}
 
-	public static void GetNextCard() {
+	public void GetNextCard() {
 
 		currentCardIndex++;
 
@@ -90,6 +129,13 @@ public class ScenarioManager : MonoBehaviour {
 
 		tacticCardCooldown.Resume();
 
+	}
+
+	private bool QueueTacticCard() {
+
+		openTacticCard = true;
+
+		return true;
 	}
 
     /// <summary>
@@ -115,16 +161,48 @@ public class ScenarioManager : MonoBehaviour {
     /// <param name="response">Dictionary response from /user/scenario/ endpoint.</param>
     private void AssignScenario(Dictionary<string, object> response) {
 
-    	tacticCardCooldown = new TimerUtils.RandomCooldown(tacticCardIntervals, OpenDialog);
+    	tacticCardCooldown = new TimerUtils.RandomCooldown(tacticCardIntervals);
 
     	// Set scene context from current scenario
     	DataManager.currentSceneContext = response["current_scenario"].ToString();
 
     	// Debug
-    	scenarioLabel.text = DataManager.currentSceneContext.Replace("_", " ");
+    	scenarioLabel.text = DataManager.currentSceneContext.Replace("_", " ") + ": ";
     	scenarioLabel.gameObject.SetActive(true);
 
     	OpenDialog();
+
+    }
+
+    // Callback for ScenarioEvent
+    private void OnScenarioEvent(ScenarioEvent e) {
+
+    	switch(e.eventType) {
+    		case "cooldown":
+    			tacticState = "open";
+				QueueTacticCard();
+				break;
+    		case "next":
+    			GetNextCard();
+    			break;
+    		case "investigate":
+    			tacticState = "options";
+
+    			// Hide tactic card for now
+    			currentTacticCard.Disable();
+    			
+    			if(tacticInvestigateCooldown == null)
+	    			tacticInvestigateCooldown = new TimerUtils.Cooldown();
+    			
+    			tacticInvestigateCooldown.Init(5, new ScenarioEvent(ScenarioEvent.TACTIC_RESULTS));
+    			break;
+	   		case "tactic_results":
+				QueueTacticCard();
+    			break;
+	   		case "tactic_closed":
+	   			tacticCardCooldown.Resume();
+    			break;
+    	}
 
     }
 }

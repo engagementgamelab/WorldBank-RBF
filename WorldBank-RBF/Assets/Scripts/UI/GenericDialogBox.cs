@@ -52,7 +52,19 @@ public class GenericDialogBox : MB {
 		// callback?
 	}
 
-	public void AddButtons(List<GenericButton> btnChoices, bool vertical=false) {
+	public void Disable() {
+
+		gameObject.SetActive(false);
+
+	}
+
+	public void Enable() {
+
+		gameObject.SetActive(true);
+
+	}
+
+	public virtual void RemoveButtons(bool vertical=false) {
 
 		Transform group = vertical ? verticalChoiceGroup : choiceGroup;
 
@@ -60,6 +72,14 @@ public class GenericDialogBox : MB {
 
 		foreach (GenericButton child in remove)
 			ObjectPool.Destroy<GenericButton> (child.transform);
+
+	}
+
+	public void AddButtons(List<GenericButton> btnChoices, bool vertical=false) {
+
+		RemoveButtons(vertical);
+
+		Transform group = vertical ? verticalChoiceGroup : choiceGroup;
 
 		if(btnChoices != null) {
 			foreach(GenericButton btnChoice in btnChoices) {

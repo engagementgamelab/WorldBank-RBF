@@ -15,18 +15,20 @@ using System.Collections.Generic;
 
 public class ScenarioCardDialog : GenericDialogBox {
 
-	public Models.ScenarioCard card;
+	public Models.ScenarioCard data;
 
+	public List<GenericButton> btnListOptions = new List<GenericButton>();
 	private List<GenericButton> btnListAdvisors = new List<GenericButton>();
-	private List<GenericButton> btnListOptions = new List<GenericButton>();
 
 	public void AddAdvisors(List<string> advisors) {
+
+		RemoveButtons();
 
 		// Create buttons for all advisors
 		foreach(string characterSymbol in advisors) {
 
 			// Show an advisor option only if they have dialogue (not for feedback only)
-			if(!card.characters[characterSymbol].hasDialogue)
+			if(!data.characters[characterSymbol].hasDialogue)
 				continue;
 
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
@@ -36,7 +38,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 			btnChoice.Text = charRef.display_name;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => DialogManager.instance.CreateScenarioDialog(card, charRef.symbol));
+			btnChoice.Button.onClick.AddListener (() => DialogManager.instance.CreateScenarioDialog(data, charRef.symbol));
 
 			btnChoice.gameObject.SetActive(true);
 			btnListAdvisors.Add(btnChoice);
@@ -46,8 +48,10 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 	}
 
-	public void AddOptions(List<string> options) {
+	public virtual void AddOptions(List<string> options) {
 	
+		RemoveButtons(true);
+
 		foreach(string option in options) {
 
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
@@ -57,9 +61,10 @@ public class ScenarioCardDialog : GenericDialogBox {
 			btnChoice.Button.onClick.RemoveAllListeners();
 			
 			if(option == "Back")
-				btnChoice.Button.onClick.AddListener (() => DialogManager.instance.CreateScenarioDialog(card));
+				btnChoice.Button.onClick.AddListener (() => DialogManager.instance.CreateScenarioDialog(data));
 			else
-				btnChoice.Button.onClick.AddListener (() => ScenarioManager.GetNextCard());
+				btnChoice.Button.onClick.AddListener (() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT)));
+				// ScenarioManager.GetNextCard()
 
 			btnListOptions.Add(btnChoice);
 		}

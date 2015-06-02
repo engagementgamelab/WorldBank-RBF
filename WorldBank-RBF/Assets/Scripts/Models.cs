@@ -117,7 +117,10 @@ public class Models {
 
     public class TacticCard : ScenarioCard {
 
+        public string symbol { get; set; }
+        public string name { get; set; }
         public string tactic_name { get; set; }
+        public string initiating_dialogue { get; set; }
         public string investigate { get; set; }
         public int cooldown { get; set; }
         public Dictionary<string, string> new_options { get; set; }
