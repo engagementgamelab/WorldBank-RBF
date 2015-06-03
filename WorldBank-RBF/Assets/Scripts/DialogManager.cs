@@ -169,8 +169,10 @@ public class DialogManager : MonoBehaviour {
 	    scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>();
 	    scenarioDialog.data = scenario;
 
-	    scenarioDialog.transform.SetParent(uiCanvasRoot);
+	    // scenarioDialog.transform.SetParent(uiCanvasRoot);
 	    scenarioDialog.transform.SetAsFirstSibling();
+
+	    scenarioDialog.Header = scenario.name;
 
 	    // Get initial dialogue or an advisor's?
 	    if(strAdvisorSymbol == null)

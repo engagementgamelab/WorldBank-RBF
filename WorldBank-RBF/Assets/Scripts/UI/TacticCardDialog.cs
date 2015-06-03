@@ -17,11 +17,12 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 	public Models.TacticCard data;
 
-	public List<GenericButton> btnListOptions = new List<GenericButton>();
-
 	private string selectedOption;
+	private TimerUtils.Cooldown investigateCooldown;
 
 	public override void AddOptions(List<string> options) {
+
+		List<GenericButton> btnListOptions = new List<GenericButton>();
 	
 		foreach(string option in options) {
 
@@ -35,8 +36,10 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 			if(option == "Observe")
 				btnChoice.Button.onClick.AddListener (() => GetFeedback("observe"));
-			else
-				btnChoice.Button.onClick.AddListener (() => Events.instance.Raise(new ScenarioEvent(optionName.ToLower())));
+			else if(option == "Investigate") {
+				btnChoice.Button.onClick.AddListener (() => StartInvestigate());
+				btnChoice.Button.onClick.AddListener (() => Events.instance.Raise(new ScenarioEvent("Investigate")));
+			}			
 
 			btnListOptions.Add(btnChoice);
 		}
@@ -46,6 +49,8 @@ public class TacticCardDialog : ScenarioCardDialog {
 	}
     
     public void GetResultOptions() {
+
+		List<GenericButton> btnListOptions = new List<GenericButton>();
 
     	Content = data.investigate;
 	
@@ -67,6 +72,17 @@ public class TacticCardDialog : ScenarioCardDialog {
 		AddButtons(btnListOptions);
 
     }
+
+    private void StartInvestigate() {
+
+    	Disable();
+
+		investigateCooldown = new TimerUtils.Cooldown();
+		
+		investigateCooldown.Init(data.cooldown, new ScenarioEvent(ScenarioEvent.TACTIC_RESULTS));
+
+    }
+
     
     private void GetFeedback(string optionChosen) {
 

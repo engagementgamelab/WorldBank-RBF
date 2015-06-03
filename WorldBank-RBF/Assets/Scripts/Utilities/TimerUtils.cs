@@ -24,21 +24,31 @@ namespace TimerUtils {
 	    public System.Timers.Timer aTimer;
 
 	    private GameEvent instanceCallback;
+		private static System.Random random = new System.Random();
+
 
 	    /// <summary>
 	    /// Initializes a new instance of the <see cref="Cooldown"/> class, given a double.
 	    /// </summary>
 		public Cooldown() {	}
 
-		public void Init(double cooldown, GameEvent callback) {
+		public void Init(int[] cooldowns, GameEvent callback) {
 
-	        aTimer = new System.Timers.Timer(cooldown * 1000);
+			int currentCooldown = 0;
+
+			if(cooldowns.Length == 1)
+			    currentCooldown = cooldowns[0] * 1000;
+	        else
+				currentCooldown = cooldowns[random.Next(0, cooldowns.Length)] * 1000;
 
 	        instanceCallback = callback;
+	        
+			aTimer = new System.Timers.Timer(currentCooldown);
 
 	        aTimer.Elapsed += OnTimedEvent;
 	        aTimer.Enabled = true;
 
+			Debug.Log("Timer Started with cooldown of " + (currentCooldown / 1000) + "s");
 		}
 
 		public void Pause() {
@@ -57,6 +67,15 @@ namespace TimerUtils {
 
 		}
 
+		public void Restart() {
+
+			Debug.Log("Timer Restarted");
+
+			aTimer.Stop();
+			aTimer.Start();
+
+		}
+
 		public virtual void OnTimedEvent(object sender, ElapsedEventArgs eventArgs)
 		{
             try {
@@ -69,27 +88,6 @@ namespace TimerUtils {
 			aTimer.Stop();
 		}
 
-
-	}
-	
-    /// <summary>
-    /// Create a random cooldown
-    /// </summary>
-	public class RandomCooldown : Cooldown {
-
-		private static System.Random random = new System.Random();
-
-	    /// <summary>
-	    /// Initializes a new instance of the <see cref="RandomCooldown"/> class, given a set of ints.
-	    /// </summary>
-	    /// <param name="possibleIntervals">A set of possible ints for a cooldown, in seconds.</param>
-	    /// <param name="callback">The callback to run at the end of the cooldown.</param>
-		public RandomCooldown(int[] possibleIntervals, Func<bool> callback=null) : base() {
-
-			// TODO: change to TimerEvent
-			Init(possibleIntervals[random.Next(0, possibleIntervals.Length)], new ScenarioEvent(ScenarioEvent.COOLDOWN));
-
-		}
 
 	}
 
