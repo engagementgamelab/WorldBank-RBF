@@ -17,23 +17,22 @@ using System.Collections.Generic;
 namespace TimerUtils {
 	
     /// <summary>
-    /// Create a random cooldown
+    /// Create a cooldown
     /// </summary>
-	public class RandomCooldown {
+	public class Cooldown {
 
-	    private static System.Timers.Timer aTimer;
-		private static System.Random random = new System.Random();
+	    public System.Timers.Timer aTimer;
 
-		private Action instanceCallback;
+	    private GameEvent instanceCallback;
 
 	    /// <summary>
-	    /// Initializes a new instance of the <see cref="RandomCooldown"/> class, given a set of ints.
+	    /// Initializes a new instance of the <see cref="Cooldown"/> class, given a double.
 	    /// </summary>
-	    /// <param name="possibleIntervals">A set of possible ints for a cooldown, in seconds.</param>
-	    /// <param name="callback">The callback to run at the end of the cooldown.</param>
-		public RandomCooldown(int[] possibleIntervals, Action callback) {
+		public Cooldown() {	}
 
-	        aTimer = new System.Timers.Timer(possibleIntervals[random.Next(0, possibleIntervals.Length)] * 1000);
+		public void Init(double cooldown, GameEvent callback) {
+
+	        aTimer = new System.Timers.Timer(cooldown * 1000);
 
 	        instanceCallback = callback;
 
@@ -58,15 +57,37 @@ namespace TimerUtils {
 
 		}
 
-		private void OnTimedEvent(object sender, ElapsedEventArgs eventArgs)
+		public virtual void OnTimedEvent(object sender, ElapsedEventArgs eventArgs)
 		{
-
             try {
-       			instanceCallback();
+            	Events.instance.Raise(instanceCallback);
             }
             catch(Exception e) {
-                throw new Exception("No callback registered for RandomCooldown()!");
+                throw new Exception("No callback registered for cooldown!");
             }
+
+			aTimer.Stop();
+		}
+
+
+	}
+	
+    /// <summary>
+    /// Create a random cooldown
+    /// </summary>
+	public class RandomCooldown : Cooldown {
+
+		private static System.Random random = new System.Random();
+
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="RandomCooldown"/> class, given a set of ints.
+	    /// </summary>
+	    /// <param name="possibleIntervals">A set of possible ints for a cooldown, in seconds.</param>
+	    /// <param name="callback">The callback to run at the end of the cooldown.</param>
+		public RandomCooldown(int[] possibleIntervals, Func<bool> callback=null) : base() {
+
+			// TODO: change to TimerEvent
+			Init(possibleIntervals[random.Next(0, possibleIntervals.Length)], new ScenarioEvent(ScenarioEvent.COOLDOWN));
 
 		}
 

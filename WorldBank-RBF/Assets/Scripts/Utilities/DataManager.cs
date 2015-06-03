@@ -13,6 +13,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using JsonFx.Json;
 
 public class DataManager {
@@ -22,7 +23,11 @@ public class DataManager {
     private static JsonReaderSettings _readerSettings = new JsonReaderSettings();
 
     public static Models.GameConfig config;
+    public static List<string> tacticNames;
+
     private static Models.GameData gameData;
+
+    private static Models.ScenarioCard[] currentScenario;
 
     /// <summary>
     /// Set global game config data, such as API endpoints, given a valid input string
@@ -59,6 +64,10 @@ public class DataManager {
 
             
             gameData = reader.Deserialize<Models.GameData>();
+
+            // Store current tactic names in a list
+            tacticNames = gameData.phase_two.tactics.Select(tactic => tactic.tactic_name).ToList();
+
         }
         catch(JsonDeserializationException e) {
             throw new Exception("Unable to set game data: " + e.Message);
@@ -71,7 +80,6 @@ public class DataManager {
                 outfile.Write(data);
             }
         #endif
-
     }
 
     /// <summary>
@@ -147,15 +155,30 @@ public class DataManager {
     }
 
     /// <summary>
-    /// Get the phase two scenario specified by the index input.
+    /// Get the phase two scenario card specified by the index input.
     /// </summary>
     /// <param name="cardIndex">Index of the scenario card</param>
-    /// <returns>The Models.Scenario for the symbol matching the input</returns>
+    /// <returns>The Models.ScenarioCard for the symbol matching the input</returns>
     public static Models.ScenarioCard GetScenarioCardByIndex(int cardIndex) {
 
-        Models.ScenarioCard scenarioRef = gameData.phase_two.GetScenario(currentSceneContext)[cardIndex];
+        if(currentScenario == null)
+            currentScenario =  gameData.phase_two.GetScenario(currentSceneContext);
+
+        Models.ScenarioCard scenarioRef = currentScenario[cardIndex];
         
         return scenarioRef;
+    }
+
+    /// <summary>
+    /// Get the phase two tactic card specified by the tactic's name.
+    /// </summary>
+    /// <param name="cardName">Index of the scenario card</param>
+    /// <returns>The Models.TacticCard for the symbol matching the input</returns>
+    public static Models.TacticCard GetTacticCardByName(string cardName) {
+
+        Models.TacticCard tacticRef = gameData.phase_two.tactics.FirstOrDefault(card => card.tactic_name == cardName);
+        
+        return tacticRef;
     }
 
     /// <summary>

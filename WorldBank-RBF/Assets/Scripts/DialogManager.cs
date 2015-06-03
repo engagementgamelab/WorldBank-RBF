@@ -45,9 +45,11 @@ public class DialogManager : MonoBehaviour {
 	public Transform uiCanvasRoot;
 	public Button btnPrefab;
 	public GenericDialogBox dialogBox;
-	public ScenarioCardDialog scenarioDialog;
 
 	public delegate void BackButtonDelegate();
+
+	private ScenarioCardDialog scenarioDialog;
+	private TacticCardDialog tacticDialog;
 
 	private StringBuilder builder = new StringBuilder();
 
@@ -157,6 +159,7 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="scenario">The instance of the scenario</param>
 	/// <param name="strAdvisorSymbol">The symbol of the advisor who is talking (optional)</param>
+	/// <param name="closeAll">Close all open dialogs first (optional, true by default)</param>
 	public ScenarioCardDialog CreateScenarioDialog(Models.ScenarioCard scenario, string strAdvisorSymbol=null, bool closeAll=true) {
 
 		// Close all diags
@@ -164,7 +167,10 @@ public class DialogManager : MonoBehaviour {
 			CloseAll();
 
 	    scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>();
-	    scenarioDialog.card = scenario;
+	    scenarioDialog.data = scenario;
+
+	    scenarioDialog.transform.SetParent(uiCanvasRoot);
+	    scenarioDialog.transform.SetAsFirstSibling();
 
 	    // Get initial dialogue or an advisor's?
 	    if(strAdvisorSymbol == null)
@@ -190,12 +196,31 @@ public class DialogManager : MonoBehaviour {
 			ScenarioManager.currentAdvisorOptions.Remove(strAdvisorSymbol);
 		}
 
+		// Create buttons for all advisors
 		scenarioDialog.AddAdvisors(ScenarioManager.currentAdvisorOptions);
 
 		// Create buttons for all options if not speaking to advisor
 		scenarioDialog.AddOptions(ScenarioManager.currentCardOptions);
 
 	    return scenarioDialog;
+
+	}
+
+	/// <summary>
+	/// Generate a Tactic card dialog for the specified tactic
+	/// </summary>
+	public TacticCardDialog CreateTacticDialog(Models.TacticCard tactic) {
+
+	    tacticDialog = ObjectPool.Instantiate<TacticCardDialog>();
+	    tacticDialog.data = tactic;
+
+	    tacticDialog.transform.SetParent(uiCanvasRoot);
+
+	    tacticDialog.Content = tactic.initiating_dialogue;
+
+		tacticDialog.AddOptions(ScenarioManager.tacticCardOptions);
+
+	    return tacticDialog;
 
 	}
 
