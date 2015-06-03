@@ -27,7 +27,11 @@ public abstract class ItemGroup {
 	public abstract void Initialize (Inventory inventory);
 	public abstract void Add (InventoryItem item=null);
 	public abstract void Add (List<InventoryItem> newItems);
-	public abstract void Remove (InventoryItem item=null);
+	public abstract InventoryItem Remove (InventoryItem item=null);
+	public abstract void Transfer (ItemGroup toGroup, InventoryItem item);
+	public abstract void SetItemOrder (InventoryItem item, int position);
+	public abstract void MoveItemUp (InventoryItem item);
+	public abstract void MoveItemDown (InventoryItem item);
 }
 
 public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
@@ -54,11 +58,36 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 		}
 	}
 
-	public override void Remove (InventoryItem item=null) {
-		if (Empty) return;
-		if (item == null) 
+	public override InventoryItem Remove (InventoryItem item=null) {
+		if (Empty) return null;
+		InventoryItem removedItem = (item == null)
+			? removedItem = items[0]
+			: removedItem = item;
+		if (item == null) {
 			items.RemoveAt (0);
-		else 
+		} else {
 			items.Remove (item);
+		}
+		return removedItem;
+	}
+
+	// Moves item from this group to another group
+	public override void Transfer (ItemGroup toGroup, InventoryItem item) {
+		Remove (item);
+		toGroup.Add (item);
+	}
+
+	public override void SetItemOrder (InventoryItem item, int position) {
+		position = Mathf.Clamp (position, 0, Count-1);
+		items.Remove (item);
+		items.Insert (position, item);
+	}
+
+	public override void MoveItemUp (InventoryItem item) {
+		SetItemOrder (item, items.IndexOf (item)-1);
+	}
+
+	public override void MoveItemDown (InventoryItem item) {
+		SetItemOrder (item, items.IndexOf (item)+1);
 	}
 }

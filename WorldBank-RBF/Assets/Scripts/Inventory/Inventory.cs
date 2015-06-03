@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -22,11 +23,17 @@ public class Inventory {
 		Get<T> ().Remove (item);
 	}
 
+	// Moves 'item' from this inventory to another inventory
+	public void Transfer<T, U> (Inventory inventory, InventoryItem item) where T : ItemGroup where U : ItemGroup {
+		Get<T> ().Remove (item);
+		inventory.Get<U> ().Add (item);
+	}
+
 	public T Get<T> () where T : ItemGroup {
-		ItemGroup group;
-		if (groups.TryGetValue (typeof (T), out group)) {
-			return group as T;
+		try {
+			return (T)groups[typeof (T)];
+		} catch {
+			throw new Exception ("The ItemGroup '" + typeof (T) + "' does not exist in the inventory");
 		}
-		return null;
 	}
 }
