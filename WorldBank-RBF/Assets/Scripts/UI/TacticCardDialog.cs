@@ -20,7 +20,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 	private string selectedOption;
 	private TimerUtils.Cooldown investigateCooldown;
 
-	public override void AddOptions(List<string> options) {
+	/*public override void AddOptions(List<string> options) {
 
 		List<GenericButton> btnListOptions = new List<GenericButton>();
 	
@@ -46,7 +46,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 		AddButtons(btnListOptions);
 
-	}
+	}*/
     
     public void GetResultOptions() {
 
@@ -69,11 +69,11 @@ public class TacticCardDialog : ScenarioCardDialog {
 			btnListOptions.Add(btnChoice);
 		}
 
-		AddButtons(btnListOptions);
+		AddButtons(btnListOptions, false, choiceGroup);
 
     }
 
-    private void StartInvestigate() {
+    public void StartInvestigate() {
 
     	Disable();
 
@@ -81,14 +81,14 @@ public class TacticCardDialog : ScenarioCardDialog {
 		
 		investigateCooldown.Init(data.cooldown, new ScenarioEvent(ScenarioEvent.TACTIC_RESULTS));
 
+		Events.instance.Raise(new ScenarioEvent("Investigate"));
+
     }
 
     
-    private void GetFeedback(string optionChosen) {
+    public void GetFeedback(string optionChosen) {
 
     	Content = data.feedback[optionChosen];
-
-    	RemoveButtons();
 
 		GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 		btnChoice.Text = "Close";
@@ -100,7 +100,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 													)
 											 );
 
-		AddButtons(new List<GenericButton> { btnChoice });
+		AddButtons<GenericButton>(new List<GenericButton> { btnChoice });
 
     }
 

@@ -179,23 +179,6 @@ public class DialogManager : MonoBehaviour {
 		    scenarioDialog.Content = scenario.initiating_dialogue;
 		else
 		{
-			Models.Advisor advisor = scenario.characters[strAdvisorSymbol];
-			scenarioDialog.Content = advisor.dialogue;
-
-			if(advisor.narrowsNpcs)
-			{
-				foreach(string npc_symbol in advisor.narrows)
-					ScenarioManager.currentAdvisorOptions.Remove(npc_symbol);
-
-			}
-
-			if(advisor.unlocks != null)
-			{
-				foreach(string option in advisor.unlocks)
-					ScenarioManager.currentCardOptions.Add(option);
-			}
-
-			ScenarioManager.currentAdvisorOptions.Remove(strAdvisorSymbol);
 		}
 
 		// Create buttons for all advisors
@@ -216,11 +199,15 @@ public class DialogManager : MonoBehaviour {
 	    tacticDialog = ObjectPool.Instantiate<TacticCardDialog>();
 	    tacticDialog.data = tactic;
 
-	    tacticDialog.transform.SetParent(uiCanvasRoot);
+		tacticDialog.transform.SetAsFirstSibling();
+
+	    // tacticDialog.transform.SetParent(uiCanvasRoot);
 
 	    tacticDialog.Content = tactic.initiating_dialogue;
 
-		tacticDialog.AddOptions(ScenarioManager.tacticCardOptions);
+	    tacticDialog.RemoveButtons<GenericButton>(tacticDialog.choiceGroup);
+
+		// tacticDialog.AddOptions(ScenarioManager.tacticCardOptions);
 
 	    return tacticDialog;
 
