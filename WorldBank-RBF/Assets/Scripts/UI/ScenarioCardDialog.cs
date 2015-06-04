@@ -17,7 +17,6 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 	public Models.ScenarioCard data;
 
-	public List<GenericButton> btnListOptions = new List<GenericButton>();
 	private List<GenericButton> btnListAdvisors = new List<GenericButton>();
 
 	public void AddAdvisors(List<string> advisors) {
@@ -44,17 +43,21 @@ public class ScenarioCardDialog : GenericDialogBox {
 			btnListAdvisors.Add(btnChoice);
 		}
 		
-		AddButtons(btnListAdvisors);
+		// AddButtons(btnListAdvisors);
 
 	}
 
 	public virtual void AddOptions(List<string> options) {
+
+		List<GenericButton> btnListOptions = new List<GenericButton>();
 	
 		RemoveButtons(true);
 
 		foreach(string option in options) {
 
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
+			OptionButton btnChoice = ObjectPool.Instantiate<OptionButton>();
+
+			// Debug.Log("Option: " + btnChoice);
 			
 			btnChoice.Text = "Option: " + option;
 
@@ -69,7 +72,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 			btnListOptions.Add(btnChoice);
 		}
 
-		AddButtons(btnListOptions, true);
+		AddButtons(btnListOptions);
 	}
     
 }

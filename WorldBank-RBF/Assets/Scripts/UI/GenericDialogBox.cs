@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class GenericDialogBox : MB {
 
 	public Text text;
+	public Text header;
 
 	public Transform choiceGroup;
 	public Transform verticalChoiceGroup;
@@ -16,6 +17,13 @@ public class GenericDialogBox : MB {
 		set {
 			content = value;
 			text.text = content;
+		}
+	}
+
+	public string Header {
+		get { return header.text; }
+		set {
+			header.text = value;
 		}
 	}
 

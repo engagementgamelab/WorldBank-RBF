@@ -25,8 +25,7 @@ public class ScenarioManager : MonoBehaviour {
 
 	private static int currentCardIndex;
 
-	private static TimerUtils.RandomCooldown tacticCardCooldown;
-	private static TimerUtils.Cooldown tacticInvestigateCooldown;
+	private static TimerUtils.Cooldown tacticCardCooldown;
 	
 	public static List<string> tacticCardOptions  = new List<string> { "Investigate", "Observe" };
 	private static int[] tacticCardIntervals = new int[3] {3, 3, 3};
@@ -85,7 +84,11 @@ public class ScenarioManager : MonoBehaviour {
 
     }
 
-	public void OpenDialog(bool isTactic=false, string dialogState="open") {
+    /// <summary>
+    /// Open either a scenario or tactic card dialog.
+    /// </summary>
+    /// <param name="isTactic">Is this card for a tactic? (Default: false)</param>
+	public void OpenDialog(bool isTactic=false) {
 
 		if(!isTactic) {
 		
@@ -115,19 +118,21 @@ public class ScenarioManager : MonoBehaviour {
 
 				currentTacticCard.GetResultOptions();
 			}
-		}
 
-		tacticCardCooldown.Pause();
+			// Pause tactic card cooldown
+			tacticCardCooldown.Pause();
+		}
 
 	}
 
+    /// <summary>
+    /// Increment card index and open next scenario card.
+    /// </summary>
 	public void GetNextCard() {
 
 		currentCardIndex++;
 
 		OpenDialog();
-
-		tacticCardCooldown.Resume();
 
 	}
 
@@ -161,7 +166,8 @@ public class ScenarioManager : MonoBehaviour {
     /// <param name="response">Dictionary response from /user/scenario/ endpoint.</param>
     private void AssignScenario(Dictionary<string, object> response) {
 
-    	tacticCardCooldown = new TimerUtils.RandomCooldown(tacticCardIntervals);
+		tacticCardCooldown = new TimerUtils.Cooldown();
+		tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
 
     	// Set scene context from current scenario
     	DataManager.currentSceneContext = response["current_scenario"].ToString();
@@ -174,34 +180,31 @@ public class ScenarioManager : MonoBehaviour {
 
     }
 
-    // Callback for ScenarioEvent
+    /// <summary>
+    // Callback for ScenarioEvent, filtering for type of event
+    /// </summary>
     private void OnScenarioEvent(ScenarioEvent e) {
 
     	switch(e.eventType) {
-    		case "cooldown":
-    			tacticState = "open";
-				QueueTacticCard();
-				break;
+
     		case "next":
     			GetNextCard();
     			break;
-    		case "investigate":
-    			tacticState = "options";
 
-    			// Hide tactic card for now
-    			currentTacticCard.Disable();
-    			
-    			if(tacticInvestigateCooldown == null)
-	    			tacticInvestigateCooldown = new TimerUtils.Cooldown();
-    			
-    			tacticInvestigateCooldown.Init(5, new ScenarioEvent(ScenarioEvent.TACTIC_RESULTS));
-    			break;
+    		case "tactic_open":
+    			tacticState = "open";
+				QueueTacticCard();
+				break;
+
 	   		case "tactic_results":
+    			tacticState = "options";
 				QueueTacticCard();
     			break;
+
 	   		case "tactic_closed":
-	   			tacticCardCooldown.Resume();
+	   			tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
     			break;
+
     	}
 
     }

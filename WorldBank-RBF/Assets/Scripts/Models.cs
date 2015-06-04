@@ -122,7 +122,7 @@ public class Models {
         public string tactic_name { get; set; }
         public string initiating_dialogue { get; set; }
         public string investigate { get; set; }
-        public int cooldown { get; set; }
+        public int[] cooldown { get; set; }
         public Dictionary<string, string> new_options { get; set; }
         public Dictionary<string, string> feedback { get; set; }
         public string results { get; set; }
