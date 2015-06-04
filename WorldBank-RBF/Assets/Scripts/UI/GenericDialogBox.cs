@@ -72,25 +72,26 @@ public class GenericDialogBox : MB {
 
 	}
 
-	public virtual void RemoveButtons(bool vertical=false) {
+	public virtual void RemoveButtons<T>(Transform group) where T : MonoBehaviour {
 
-		Transform group = vertical ? verticalChoiceGroup : choiceGroup;
+		T[] remove = group.GetComponentsInChildren<T>();
 
-		GenericButton[] remove = group.GetComponentsInChildren<GenericButton>();
-
-		foreach (GenericButton child in remove)
-			ObjectPool.Destroy<GenericButton> (child.transform);
+		foreach (T child in remove)
+			ObjectPool.Destroy<T> (child.transform);
 
 	}
 
-	public void AddButtons(List<GenericButton> btnChoices, bool vertical=false) {
-
-		RemoveButtons(vertical);
+	public void AddButtons<T>(List<T> btnChoices, bool vertical=false, Transform groupOverride=null) where T: MonoBehaviour {
 
 		Transform group = vertical ? verticalChoiceGroup : choiceGroup;
 
+		if(groupOverride != null)
+			group = groupOverride;
+
+		RemoveButtons<T>(group);
+
 		if(btnChoices != null) {
-			foreach(GenericButton btnChoice in btnChoices) {
+			foreach(T btnChoice in btnChoices) {
 				btnChoice.transform.SetParent(group);
 				btnChoice.transform.localScale = Vector3.one;
 				btnChoice.transform.localPosition = Vector3.zero;
