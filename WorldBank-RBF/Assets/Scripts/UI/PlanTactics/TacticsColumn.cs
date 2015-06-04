@@ -1,39 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class TacticsColumn : MB {
+public class TacticsColumn : Column {
 
-	public RectTransform content;
-	Inventory inventory;
-	PlanTacticGroup _tactics;
+	List<UITactic> uiTactics;
 
-	void Awake () {
-		inventory = new Inventory ();
-
-		// testing
-		_tactics = new PlanTacticGroup ();
-		inventory.Add (_tactics);
-		_tactics.Add (new PlanTacticItem (null, 1));
-		_tactics.Add (new PlanTacticItem (null, 2));
-		_tactics.Add (new PlanTacticItem (null, 3));
-
-		SetTactics (_tactics);
+	public List<UITactic> Init (PlanTacticGroup tactics, TacticPriorityGroup priorities) {
+		ObjectPool.DestroyAll<UITactic> ();
+		uiTactics = new List<UITactic> ();
+		List<UITactic> priorityUITactics = new List<UITactic> ();
+		foreach (PlanTacticItem tactic in tactics.Items) {
+			CreateUITactic (tactic);
+		}
+		foreach (PlanTacticItem tactic in priorities.Items) {
+			priorityUITactics.Add (CreateUITactic (tactic));
+		}
+		return priorityUITactics;
 	}
 
-	public void SetTactics (PlanTacticGroup tactics) {
-		ObjectPool.DestroyAll<UITactic> ();
-		foreach (PlanTacticItem tactic in tactics.Items) {
-			UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
-			uiTactic.SetContent (tactic.Title);
-			uiTactic.Parent = content;
-			uiTactic.Transform.Reset ();
+	public PlanTacticGroup GetTactics () {
+		PlanTacticGroup group = new PlanTacticGroup ();
+		foreach (Transform child in content.transform) {
+			UITactic tactic = child.GetScript<UITactic> ();
+			if (tactic != null && tactic.Tactic != null) {
+				tactic.Tactic.Priority = -1;
+				group.Add (tactic.Tactic);
+			}
+		}
+		return group;
+	}
+
+	public void ResetTactics () {
+		if (uiTactics == null) return;
+		foreach (UITactic uiTactic in uiTactics) {
+			uiTactic.OnClickRemove ();
 		}
 	}
 
-	public void DragTactic (UITactic uiTactic) {
-		uiTactic.Parent = null;
-		UITacticPlaceholder placeholder = ObjectPool.Instantiate<UITacticPlaceholder> ();
-		placeholder.Parent = content;
-		placeholder.Transform.Reset ();
+	UITactic CreateUITactic (PlanTacticItem tactic) {
+		UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
+		uiTactic.Init (this, content, tactic);
+		uiTactics.Add (uiTactic);
+		return uiTactic;
 	}
 }

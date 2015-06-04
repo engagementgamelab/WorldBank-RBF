@@ -107,7 +107,7 @@ public class DataManager {
     /// </summary>
     /// <param name="strCityName">Name of the city</param>
     /// <returns>The Models.City for the given city</returns>
-    public static Models.City GetCityInfo(string strCityName)    {
+    public static Models.City GetCityInfo(string strCityName) {
         
         foreach(Models.City city in gameData.cities)
         {
@@ -145,8 +145,9 @@ public class DataManager {
     /// <param name="strSymbol">Symbol of the unlockable</param>
     /// <returns>The Models.Unlockable for the symbol matching the input</returns>
     public static Models.Unlockable GetUnlockableBySymbol(string strSymbol) {
-
-        Models.Unlockable unlockRef = new Models.Unlockable[] { Array.Find(gameData.unlockables, unlockable => unlockable.symbol == strSymbol) }[0];
+        
+        Models.Unlockable unlockRef = new Models.Unlockable[] { 
+            Array.Find(gameData.unlockables, unlockable => unlockable.symbol == strSymbol) }[0];
 
         if(unlockRef == null)
             throw new Exception("Unable to find Unlockable with symbol '" + strSymbol + "'! Uh oh.");

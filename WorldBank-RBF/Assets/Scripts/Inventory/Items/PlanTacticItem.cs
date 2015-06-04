@@ -4,8 +4,19 @@ using System.Collections;
 public class PlanTacticItem : InventoryItem {
 	
 	public override string Name { get { return "Plan Tactic"; } }
+	
 	public string Title {
 		get { return model.title; }
+	}
+
+	public string Symbol {
+		get { return model.symbol; }
+	}
+
+	int priority = -1;
+	public int Priority {
+		get { return priority; }
+		set { priority = value; }
 	}
 
 	Models.Unlockable model;

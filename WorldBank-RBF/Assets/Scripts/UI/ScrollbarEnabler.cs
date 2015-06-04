@@ -100,7 +100,6 @@ public class ScrollbarEnabler : MonoBehaviour {
 
 	void OnRectTransformDimensionsChange () {
 		enableScrollbar = container.rect.height < content.rect.height;
-		Debug.Log (enableScrollbar);
 	}
 
 	void SetScrollbarActive (bool active) {

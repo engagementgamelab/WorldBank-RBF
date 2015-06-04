@@ -32,6 +32,7 @@ public abstract class ItemGroup {
 	public abstract void SetItemOrder (InventoryItem item, int position);
 	public abstract void MoveItemUp (InventoryItem item);
 	public abstract void MoveItemDown (InventoryItem item);
+	public abstract void Print ();
 }
 
 public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
@@ -89,5 +90,11 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 
 	public override void MoveItemDown (InventoryItem item) {
 		SetItemOrder (item, items.IndexOf (item)+1);
+	}
+
+	public override void Print () {
+		foreach (InventoryItem item in Items) {
+			Debug.Log (item.Name);
+		}
 	}
 }
