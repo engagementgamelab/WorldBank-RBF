@@ -57,7 +57,6 @@ public class AnimatedQuadTexture : MB {
 		SetOffset ();
 		_Texture = texture;
 		animating = false;
-		StartAnimating ();
 	}
 
 	public void SetScale () {

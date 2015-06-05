@@ -72,7 +72,8 @@ public class MaterialsManager {
 	}
 
 	public static bool TextureIsBlank (Texture2D tex) {
-		try {
+		return false;
+		/*try {
 			Color c = tex.GetPixel (0, 0);
 		} catch (UnityException e) {
 			Debug.LogError (e);
@@ -88,6 +89,6 @@ public class MaterialsManager {
 				}
 			}
 		}
-		return true;
+		return true;*/
 	}
 }
