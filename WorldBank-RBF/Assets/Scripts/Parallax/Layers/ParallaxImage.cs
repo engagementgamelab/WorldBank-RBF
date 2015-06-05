@@ -65,7 +65,6 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 	public override void Refresh () {
 		base.Refresh ();
 		SetRenderQueue ();
-		Reset ();
 	}
 
 	void Reset () {

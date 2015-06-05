@@ -74,7 +74,7 @@ public class AnimatedQuadTexture : MB {
 	}
 
 	public virtual void Refresh () {
-		_Texture = texture;
+		if (texture != null) _Texture = texture;
 	}
 
 	public void StartAnimating () {
@@ -82,12 +82,12 @@ public class AnimatedQuadTexture : MB {
 		animating = true;
 		if (useInterval) {
 			UpdatePauseTime ();
-			#if UNITY_EDITOR
+			#if PREVIEW_ANIMATIONS && UNITY_EDITOR
 			if (EditorState.InEditMode) return;
 			#endif
 			StartCoroutine (CoPause ());
 		} else {
-			#if UNITY_EDITOR
+			#if PREVIEW_ANIMATIONS && UNITY_EDITOR
 			if (EditorState.InEditMode) return;
 			#endif
 			StartCoroutine (CoAnimate ());
@@ -143,7 +143,7 @@ public class AnimatedQuadTexture : MB {
 		pauseTime = Random.Range (intervalMin, intervalMax);
 	}
 
-	#if UNITY_EDITOR
+	#if PREVIEW_ANIMATIONS && UNITY_EDITOR
 	float _position = 0f;
 	float _pausePosition = 0f;
 	bool _pauseComplete = false;
