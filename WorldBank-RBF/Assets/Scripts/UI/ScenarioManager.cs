@@ -102,6 +102,13 @@ public class ScenarioManager : MonoBehaviour {
 	    	// Debug
 	    	cardLabel.text = card.symbol;
 	    	cardLabel.gameObject.SetActive(true);
+
+	    	if(currentTacticCard != null)
+	    	{
+		    	currentTacticCard.transform.SetAsFirstSibling();
+				currentTacticCard.gameObject.SetActive(false);
+				currentTacticCard.gameObject.SetActive(true);		    	
+	    	}
 		
 		}
 		else {

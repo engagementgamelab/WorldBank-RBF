@@ -199,8 +199,6 @@ public class DialogManager : MonoBehaviour {
 	    tacticDialog = ObjectPool.Instantiate<TacticCardDialog>();
 	    tacticDialog.data = tactic;
 
-		tacticDialog.transform.SetAsFirstSibling();
-
 	    // tacticDialog.transform.SetParent(uiCanvasRoot);
 
 	    tacticDialog.Content = tactic.initiating_dialogue;

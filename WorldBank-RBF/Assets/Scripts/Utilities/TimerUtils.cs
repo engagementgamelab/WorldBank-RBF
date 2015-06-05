@@ -21,41 +21,49 @@ namespace TimerUtils {
     /// </summary>
 	public class Cooldown {
 
-	    public System.Timers.Timer aTimer;
+	    public Timer aTimer;
 
 	    private GameEvent instanceCallback;
 		private static System.Random random = new System.Random();
 
+		private int currentCooldown = 0;
+		private int elapsedSeconds = 0;
 
 	    /// <summary>
 	    /// Initializes a new instance of the <see cref="Cooldown"/> class, given a double.
 	    /// </summary>
 		public Cooldown() {	}
 
-		public void Init(int[] cooldowns, GameEvent callback) {
+		public int Init(int[] cooldowns, GameEvent callback) {
 
-			int currentCooldown = 0;
+			elapsedSeconds = 0;
 
 			if(cooldowns.Length == 1)
-			    currentCooldown = cooldowns[0] * 1000;
+			    currentCooldown = cooldowns[0];
 	        else
-				currentCooldown = cooldowns[random.Next(0, cooldowns.Length)] * 1000;
+				currentCooldown = cooldowns[random.Next(0, cooldowns.Length)];
 
 	        instanceCallback = callback;
 	        
-			aTimer = new System.Timers.Timer(currentCooldown);
+			aTimer = new Timer(1000);
 
+			aTimer.AutoReset = true;
 	        aTimer.Elapsed += OnTimedEvent;
 	        aTimer.Enabled = true;
 
-			Debug.Log("Timer Started with cooldown of " + (currentCooldown / 1000) + "s");
+			// aTimer.Start();
+
+			Debug.Log("Timer Started with cooldown of " + currentCooldown + "s");
+
+			// Get determined cooldown
+			return currentCooldown;
 		}
 
 		public void Pause() {
 
 			Debug.Log("Timer Paused");
 
-			aTimer.Enabled = false;
+			// aTimer.Enabled = false;
 
 		}
 
@@ -76,16 +84,28 @@ namespace TimerUtils {
 
 		}
 
-		public virtual void OnTimedEvent(object sender, ElapsedEventArgs eventArgs)
+		private void OnTimedEvent(object sender, ElapsedEventArgs eventArgs)
 		{
-            try {
-            	Events.instance.Raise(instanceCallback);
-            }
-            catch(Exception e) {
-                throw new Exception("No callback registered for cooldown!");
-            }
 
-			aTimer.Stop();
+			elapsedSeconds += 1;
+
+			Debug.Log("Timer Tick: " + elapsedSeconds + "s");
+
+			Events.instance.Raise(new GameEvents.TimerTick(elapsedSeconds));
+
+			if(elapsedSeconds == currentCooldown) {
+
+	            try {
+	            	Events.instance.Raise(instanceCallback);
+	            }
+	            catch(Exception e) {
+	                throw new Exception("No callback registered for cooldown!");
+	            }
+				
+				aTimer.Stop();
+	            
+	        }
+
 		}
 
 
