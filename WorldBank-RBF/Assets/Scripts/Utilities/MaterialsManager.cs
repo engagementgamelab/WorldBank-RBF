@@ -75,9 +75,9 @@ public class MaterialsManager {
 
 	public static bool TextureIsBlank (Texture2D tex) {
 		
-		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+		/*#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 		return false;
-		#endif
+		#endif*/
 		
 		try {
 			Color c = tex.GetPixel (0, 0);

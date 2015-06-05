@@ -56,6 +56,15 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		set { Transform.SetLocalPositionX (value); }
 	}
 
+	[SerializeField, HideInInspector] float xOffset = 0;
+	public float XOffset {
+		get { return xOffset; }
+		set { 
+			xOffset = value;
+			LocalPositionX = xOffset;
+		}
+	}
+
 	public void Init () {
 		_Texture = null;
 		SetRenderQueue ();
@@ -65,12 +74,14 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 	public override void Refresh () {
 		base.Refresh ();
 		SetRenderQueue ();
+		Reset ();
 	}
 
 	void Reset () {
 		Transform.Reset ();
 		if (Parent != null) gameObject.layer = Parent.gameObject.layer;
 		if (Forward) Transform.SetLocalPositionZ (-0.01f);
+		Transform.SetLocalPositionX (XOffset);
 	}
 
 	void SetRenderQueue () {

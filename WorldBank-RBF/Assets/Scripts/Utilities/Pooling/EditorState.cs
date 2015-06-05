@@ -30,7 +30,7 @@ public class EditorState : MonoBehaviour {
 	public static bool InEditMode {
 		get {
 			if (Instance == null) {
-				Debug.LogWarning ("An object is referencing EditorState but it does not exist in the scene. Please create an instance of it.");
+				// Debug.LogWarning ("An object is referencing EditorState but it does not exist in the scene. Please create an instance of it.");
 				return false;
 			}
 			return Instance.inEditMode;
