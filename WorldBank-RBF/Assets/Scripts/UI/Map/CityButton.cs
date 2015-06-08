@@ -14,16 +14,6 @@ public class CityButton : MB {
 		}
 	}
 
-	Transform currentCityIndicator = null;
-	Transform CurrentCityIndicator {
-		get {
-			if (currentCityIndicator == null) {
-				currentCityIndicator = Transform.GetChild (0);
-			}
-			return currentCityIndicator;
-		}
-	}
-
 	[SerializeField] bool unlocked = false;
 	public bool Unlocked {
 		get { return unlocked; }
@@ -38,8 +28,12 @@ public class CityButton : MB {
 		get { return currentCity; }
 		set { 
 			currentCity = value;
-			CurrentCityIndicator.gameObject.SetActive (currentCity);
 		}
+	}
+
+	public bool Interactable {
+		get { return Button.interactable; }
+		set { Button.interactable = value; }
 	}
 
 	public string symbol;

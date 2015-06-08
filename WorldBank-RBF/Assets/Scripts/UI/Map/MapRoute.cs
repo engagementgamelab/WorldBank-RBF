@@ -34,7 +34,17 @@ public class MapRoute : MB {
 		}
 	}
 
+	public string[] Cities {
+		get { return new string[] { city1, city2 }; }
+	}
+
 	public int cost = 1;
+	public int Cost {
+		get { return cost; }
+	}
+	
+	public string city1;
+	public string city2;
 
 	void Awake () {
 		Text.text = cost.ToString ();

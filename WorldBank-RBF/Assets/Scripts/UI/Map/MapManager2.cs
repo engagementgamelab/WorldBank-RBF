@@ -22,7 +22,7 @@ public class MapManager2 : MB {
 		Canvas.enabled = false;
 	}
 
-	void OnGUI () {
+	/*void OnGUI () {
 		GUILayout.BeginHorizontal ();
 		if (GUILayout.Button ("Open")) {
 			Open ();
@@ -31,5 +31,5 @@ public class MapManager2 : MB {
 			Close ();
 		}
 		GUILayout.EndHorizontal ();
-	}
+	}*/
 }

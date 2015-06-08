@@ -11,6 +11,14 @@ public class PrioritizationChart : MonoBehaviour {
 		Close ();
 	}
 
+	void OnEnable () {
+		Open ();
+	}
+
+	void OnDisable () {
+		Close ();
+	}
+
 	public void Open () {
 		if (open) return;
 		tacticsColumn.gameObject.SetActive (true);
@@ -30,7 +38,7 @@ public class PrioritizationChart : MonoBehaviour {
 		open = false;
 	}
 
-	void OnGUI () {
+	/*void OnGUI () {
 		GUILayout.BeginHorizontal ();
 		if (GUILayout.Button ("Open")) {
 			Open ();
@@ -39,5 +47,5 @@ public class PrioritizationChart : MonoBehaviour {
 			Close ();
 		}
 		GUILayout.EndHorizontal ();
-	}
+	}*/
 }

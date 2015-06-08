@@ -26,4 +26,12 @@ public class DayCounter : MB {
 	void Awake () {
 		Count = 15;
 	}
+
+	public bool RemoveDays (int count) {
+		if (Count >= count) {
+			Count -= count;
+			return true;
+		}
+		return false;
+	}
 }
