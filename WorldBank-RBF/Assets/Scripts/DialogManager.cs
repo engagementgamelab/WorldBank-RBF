@@ -205,7 +205,7 @@ public class DialogManager : MonoBehaviour {
 
 	    tacticDialog.RemoveButtons<GenericButton>(tacticDialog.choiceGroup);
 
-		// tacticDialog.AddOptions(ScenarioManager.tacticCardOptions);
+		tacticDialog.Init();
 
 	    return tacticDialog;
 
