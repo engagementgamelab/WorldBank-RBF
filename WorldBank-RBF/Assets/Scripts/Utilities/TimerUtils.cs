@@ -21,7 +21,7 @@ namespace TimerUtils {
     /// </summary>
 	public class Cooldown {
 
-	    public Timer aTimer;
+	    private Timer aTimer;
 
 	    private GameEvent instanceCallback;
 		private static System.Random random = new System.Random();
@@ -51,12 +51,16 @@ namespace TimerUtils {
 	        aTimer.Elapsed += OnTimedEvent;
 	        aTimer.Enabled = true;
 
-			// aTimer.Start();
-
 			Debug.Log("Timer Started with cooldown of " + currentCooldown + "s");
 
 			// Get determined cooldown
 			return currentCooldown;
+		}
+
+		public void Stop() {
+
+			aTimer.Stop();
+
 		}
 
 		public void Pause() {

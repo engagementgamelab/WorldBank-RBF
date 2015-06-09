@@ -29,6 +29,7 @@ public class ScenarioManager : MonoBehaviour {
 	
 	public static List<string> tacticCardOptions  = new List<string> { "Investigate", "Observe" };
 	private static int[] tacticCardIntervals = new int[3] {3, 3, 3};
+	private List<string> tacticsAvailable;
 
 	private bool openTacticCard;
 	private string tacticState;
@@ -51,8 +52,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		if(openTacticCard)
 		{
-			OpenDialog(true);
 			openTacticCard = false;
+			OpenDialog(true);
 		}
 		
 
@@ -115,8 +116,15 @@ public class ScenarioManager : MonoBehaviour {
 
 			if(tacticState == "open")
 			{
-				Models.TacticCard card = DataManager.GetTacticCardByName(DataManager.tacticNames[0]);
+				int tacticIndex = new System.Random().Next(0, tacticsAvailable.Count);
+
+				Models.TacticCard card = DataManager.GetTacticCardByName(tacticsAvailable[tacticIndex]);
 				currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
+
+				tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
+
+				if(tacticsAvailable.Count == 0)
+					tacticCardCooldown.Stop();
 			}
 			else 
 			{
@@ -178,6 +186,9 @@ public class ScenarioManager : MonoBehaviour {
 
     	// Set scene context from current scenario
     	DataManager.currentSceneContext = response["current_scenario"].ToString();
+
+    	// Set tactics that are a part of this plan
+    	tacticsAvailable = ((IEnumerable)response["tactics"]).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
 
     	// Debug
     	scenarioLabel.text = DataManager.currentSceneContext.Replace("_", " ") + ": ";

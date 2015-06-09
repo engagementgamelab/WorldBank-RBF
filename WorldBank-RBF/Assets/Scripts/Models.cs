@@ -40,7 +40,6 @@ public class Models {
         public Unlockable[] unlockables { get; set; }
         public Dictionary<string, NPC[]> phase_one { get; set; }
         public PhaseTwo phase_two { get; set; }
-        public Dictionary<string, object> phase_two_matrix { get; set; }
 
     }
 
@@ -161,14 +160,13 @@ public class Models {
     public class Plan {
 
         [JsonMember]
+        public string _id { get; set; }
+        [JsonMember]
         public string name { get; set; }
         [JsonMember]
+        public int score { get; set; }
+        [JsonMember]
         public string[] unlocks { get; set; }
-        [JsonMember]
-        public bool pbc { get; set; }
-        [JsonMember]
-        public bool autonomy { get; set; }
-
     }
 
     public class GameDataConverter : JsonConverter {

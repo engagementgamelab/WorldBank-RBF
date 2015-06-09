@@ -178,7 +178,10 @@ public class DataManager {
     public static Models.TacticCard GetTacticCardByName(string cardName) {
 
         Models.TacticCard tacticRef = gameData.phase_two.tactics.FirstOrDefault(card => card.tactic_name == cardName);
-        
+
+        if(tacticRef == null)
+            throw new Exception("Unable to find TacticCard with tactic name '" + cardName + "'! Damn.");
+                
         return tacticRef;
     }
 

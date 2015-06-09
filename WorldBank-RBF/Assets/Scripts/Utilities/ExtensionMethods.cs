@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using System.ComponentModel;
 
 public static class ExtensionMethods {
 	
@@ -263,29 +264,39 @@ public static class ExtensionMethods {
 
 	/**
 	 * Dictionary Converters
+	 * TODO: Comments
 	**/
-
-    public static IDictionary<string, object> AsDictionary(this object source, BindingFlags bindingAttr = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
+    public static IDictionary<string, object> ToDictionary(this object source)
     {
-        return source.GetType().GetProperties(bindingAttr).ToDictionary
-        (
-            propInfo => propInfo.Name,
-            propInfo => propInfo.GetValue(source, null)
-        );
-
+        return source.ToDictionary<object>();
     }
 
-    public static T ToObject<T>(this IDictionary<string, object> source)
-        where T : class, new()
+    public static IDictionary<string, T> ToDictionary<T>(this object source)
     {
-            T someObject = new T();
-            Type someObjectType = someObject.GetType();
+        if (source == null)
+            ThrowExceptionWhenSourceArgumentIsNull();
 
-            foreach (KeyValuePair<string, object> item in source)
-            {
-                someObjectType.GetProperty(item.Key).SetValue(someObject, item.Value, null);
-            }
-
-            return someObject;
+        var dictionary = new Dictionary<string, T>();
+        foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source))
+            AddPropertyToDictionary<T>(property, source, dictionary);
+        return dictionary;
     }
+
+    private static void AddPropertyToDictionary<T>(PropertyDescriptor property, object source, Dictionary<string, T> dictionary)
+    {
+        object value = property.GetValue(source);
+        if (IsOfType<T>(value))
+            dictionary.Add(property.Name, (T)value);
+    }
+
+    private static bool IsOfType<T>(object value)
+    {
+        return value is T;
+    }
+
+    private static void ThrowExceptionWhenSourceArgumentIsNull()
+    {
+        throw new ArgumentNullException("source", "Unable to convert object to a dictionary. The source object is null.");
+    }
+
 }
