@@ -125,7 +125,6 @@ public class Models {
         public int[] cooldown { get; set; }
         public Dictionary<string, string> new_options { get; set; }
         public Dictionary<string, string> feedback { get; set; }
-        public string results { get; set; }
 
     }
 

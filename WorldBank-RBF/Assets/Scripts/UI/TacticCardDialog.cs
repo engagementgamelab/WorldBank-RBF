@@ -21,8 +21,12 @@ public class TacticCardDialog : ScenarioCardDialog {
 	public Image tooltipClockImg;
 	public Image tooltipDoneImg;
 	public Text tooltipTxt;
+	
+	public RectTransform actionsPanel;
 
 	public Animator animatorTactic;
+
+	public float openCloseDuration;
 
 	private string selectedOption;
 	private TimerUtils.Cooldown investigateCooldown;
@@ -32,42 +36,13 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 	private bool open = false;
 	private bool close = true;
+	private bool finished = false;
 
 	private Transform cardContainer;
-
-	/*public override void AddOptions(List<string> options) {
-
-		List<GenericButton> btnListOptions = new List<GenericButton>();
-	
-		foreach(string option in options) {
-
-			string optionName = option;
-
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
-			
-			btnChoice.Text = optionName;
-
-			btnChoice.Button.onClick.RemoveAllListeners();
-
-			if(option == "Observe")
-				btnChoice.Button.onClick.AddListener (() => GetFeedback("observe"));
-			else if(option == "Investigate") {
-				btnChoice.Button.onClick.AddListener (() => StartInvestigate());
-				btnChoice.Button.onClick.AddListener (() => Events.instance.Raise(new ScenarioEvent("Investigate")));
-			}			
-
-			btnListOptions.Add(btnChoice);
-		}
-
-		AddButtons(btnListOptions);
-
-	}*/
 
 	void Start() {
 
 		cardContainer = transform.GetChild(0);
-
-		StartCoroutine(Init());
 
 	}
 
@@ -75,39 +50,55 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 		 tooltipTxt.text = cooldownElapsed + "s";
 		 
-		 if(close) {
+		if(close) {
 		  	if(cardContainer.localPosition.x > -Screen.width)
-				cardContainer.Translate(-1500.0f * Time.deltaTime * Vector3.right);
-			// else
-			// 	ObjectPool.Destroy<TacticCardDialog>(transform);
-
+				cardContainer.Translate(-(Screen.width / openCloseDuration) * Time.deltaTime * Vector3.right);
 		}
-		 else if(open && cardContainer.localPosition.x < 0)
-		 	cardContainer.Translate(1500.0f * Time.deltaTime * Vector3.right);
+		else if(open && cardContainer.localPosition.x < 0)
+			cardContainer.Translate((Screen.width / openCloseDuration) * Time.deltaTime * Vector3.right);
 		
 	}
 
-	public void Animate() {
+	public void Init() {
 
+		if(cardContainer == null)
+			cardContainer = transform.GetChild(0);
+
+		cardContainer.localPosition = new Vector3(-Screen.width, 0, cardContainer.localPosition.z);
+
+		open = false;
+		close = true;
+
+		// Show default icon
+		tooltipDoneImg.gameObject.SetActive(false);
+		tooltipAlertImg.gameObject.SetActive(true);
+
+		// Show actions
+		actionsPanel.gameObject.SetActive(true);
+		choiceGroup.gameObject.SetActive(false);
+		
+		// Show tooltip
+		tooltipDoneImg.transform.parent.gameObject.SetActive(true);
+
+	}
+
+	public void Animate(bool isFinished=false) {
+
+		// Set to close
 		if(open) {
 			close = true;
 			open = false;
+
+			finished = isFinished;
+			
+			if(finished)
+				tooltipDoneImg.transform.parent.gameObject.SetActive(false);
 		}
+		// Set to open
 		else if(close) {
 			open = true;
 			close = false;
 		}
-
-	}
-
-	private IEnumerator Init() {
-
-		transform.SetAsFirstSibling();
-	    transform.GetChild(0).localPosition = new Vector3(-Screen.width, 0, 0);
-		
-		yield return new WaitForSeconds(2);
-
-		// animatorTactic.enabled = true;
 
 	}
     
@@ -139,13 +130,18 @@ public class TacticCardDialog : ScenarioCardDialog {
 		tooltipClockImg.gameObject.SetActive(false);
 		tooltipTxt.gameObject.SetActive(false);
 
+		// Show choices
+		actionsPanel.gameObject.SetActive(false);
+		choiceGroup.gameObject.SetActive(true);
+
     }
 
     public void StartInvestigate() {
 
     	// Disable();
 
-		investigateCooldown = new TimerUtils.Cooldown();
+    	if(investigateCooldown == null)
+			investigateCooldown = new TimerUtils.Cooldown();
 		
 	 	cooldownTotal = investigateCooldown.Init(data.cooldown, new ScenarioEvent(ScenarioEvent.TACTIC_RESULTS));
 
@@ -174,9 +170,8 @@ public class TacticCardDialog : ScenarioCardDialog {
 		btnChoice.Text = "Close";
 
 		btnChoice.Button.onClick.RemoveAllListeners();
-		btnChoice.Button.onClick.AddListener (() => Animate());
-		// btnChoice.Button.onClick.AddListener (() => animatorTactic.Play("TacticClose"));
-		// btnChoice.Button.onClick.AddListener (() => ObjectPool.Destroy<TacticCardDialog>(transform));
+
+		btnChoice.Button.onClick.AddListener (() => Animate(true));
 		btnChoice.Button.onClick.AddListener (() => Events.instance.Raise(
 														new ScenarioEvent(ScenarioEvent.TACTIC_CLOSED)
 													)
@@ -184,8 +179,9 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 		AddButtons<GenericButton>(new List<GenericButton> { btnChoice });
 
-		// 
-
+		// Show choices
+		actionsPanel.gameObject.SetActive(false);
+		choiceGroup.gameObject.SetActive(true);
     }
 
     /// <summary>

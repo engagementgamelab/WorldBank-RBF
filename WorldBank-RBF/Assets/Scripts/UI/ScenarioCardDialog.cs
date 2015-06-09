@@ -108,6 +108,8 @@ public class ScenarioCardDialog : GenericDialogBox {
 		AddOptions(ScenarioManager.currentCardOptions);
 
 		conferenceAnimator.Play("ConferenceHide");
+		conferencePanel.GetComponent<CanvasGroup>().interactable = false;
+		conferencePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
 	}
     
