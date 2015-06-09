@@ -75,7 +75,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 		// Show actions
 		actionsPanel.gameObject.SetActive(true);
-		choiceGroup.gameObject.SetActive(false);
+		activeBox.horizontalGroup.gameObject.SetActive(false);
 		
 		// Show tooltip
 		tooltipDoneImg.transform.parent.gameObject.SetActive(true);
@@ -132,7 +132,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 		// Show choices
 		actionsPanel.gameObject.SetActive(false);
-		choiceGroup.gameObject.SetActive(true);
+		activeBox.horizontalGroup.gameObject.SetActive(true);
 
     }
 
@@ -181,7 +181,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 		// Show choices
 		actionsPanel.gameObject.SetActive(false);
-		choiceGroup.gameObject.SetActive(true);
+		activeBox.horizontalGroup.gameObject.SetActive(true);
     }
 
     /// <summary>

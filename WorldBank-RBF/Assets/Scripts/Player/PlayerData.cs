@@ -91,9 +91,12 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	// TODO: just for testing -- don't keep this
-	static void PopulateTestTactics () {
+	public static void PopulateTestTactics () {
 		PlanTacticGroup.Add (new PlanTacticItem (null, 1));
 		PlanTacticGroup.Add (new PlanTacticItem (null, 2));
 		PlanTacticGroup.Add (new PlanTacticItem (null, 3));
+		PlanTacticGroup.Add (new PlanTacticItem (null, 4));
+		PlanTacticGroup.Add (new PlanTacticItem (null, 5));
+		PlanTacticGroup.Add (new PlanTacticItem (null, 6));
 	}
 }

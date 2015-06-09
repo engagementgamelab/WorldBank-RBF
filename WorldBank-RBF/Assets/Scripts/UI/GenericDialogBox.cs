@@ -26,7 +26,7 @@ public class GenericDialogBox : MB {
 
 	public UIDialogBox screenSpaceBox;
 	public UIDialogBox worldSpaceBox;
-	UIDialogBox activeBox = null;
+	public UIDialogBox activeBox = null;
 
 	/*void OnGUI () {
 		if (GUILayout.Button ("Open world")) {
