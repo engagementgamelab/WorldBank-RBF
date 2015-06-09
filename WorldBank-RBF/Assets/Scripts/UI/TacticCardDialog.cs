@@ -132,7 +132,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 			btnListOptions.Add(btnChoice);
 		}
 
-		AddButtons(btnListOptions, false, choiceGroup);
+		AddButtons(btnListOptions, false, HorizontalGroup);
 		
 		// Show done icon
 		tooltipDoneImg.gameObject.SetActive(true);
