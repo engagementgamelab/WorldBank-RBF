@@ -19,6 +19,7 @@ public class ScenarioManager : MonoBehaviour {
 
 	public Text scenarioLabel;
 	public Text cardLabel;
+	public RectTransform endPanel;
 
 	public static List<string> currentAdvisorOptions;
 	public static List<string> currentCardOptions;
@@ -34,6 +35,7 @@ public class ScenarioManager : MonoBehaviour {
 	private bool openTacticCard;
 	private string tacticState;
 
+	private ScenarioCardDialog currentScenarioCard;
 	private TacticCardDialog currentTacticCard;
 
 	// Use this for initialization
@@ -98,7 +100,7 @@ public class ScenarioManager : MonoBehaviour {
 			currentAdvisorOptions = card.characters.Select(x => x.Key).ToList();
 			currentCardOptions = new List<string>(card.starting_options);
 
-			DialogManager.instance.CreateScenarioDialog(card);
+		 	currentScenarioCard = DialogManager.instance.CreateScenarioDialog(card);
 
 	    	// Debug
 	    	cardLabel.text = card.symbol;
@@ -141,13 +143,19 @@ public class ScenarioManager : MonoBehaviour {
 	}
 
     /// <summary>
-    /// Increment card index and open next scenario card.
+    /// Increment card index and open next scenario card, or end the scenario.
     /// </summary>
 	public void GetNextCard() {
 
-		currentCardIndex++;
+		if(DataManager.ScenarioLength()-1 > currentCardIndex) {
+			currentCardIndex++;
+			OpenDialog();
+		}
+		else {
+			ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
 
-		OpenDialog();
+			endPanel.gameObject.SetActive(true);
+		}
 
 	}
 
@@ -184,8 +192,10 @@ public class ScenarioManager : MonoBehaviour {
 		tacticCardCooldown = new TimerUtils.Cooldown();
 		tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
 
+		Debug.Log("Scenario: " + response["current_scenario"].ToString());
+
     	// Set scene context from current scenario
-    	DataManager.currentSceneContext = response["current_scenario"].ToString();
+    	DataManager.currentSceneContext = "scenario_3";
 
     	// Set tactics that are a part of this plan
     	tacticsAvailable = ((IEnumerable)response["tactics"]).Cast<object>().Select(obj => obj.ToString()).ToList<string>();

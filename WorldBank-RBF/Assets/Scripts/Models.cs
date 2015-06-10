@@ -93,7 +93,7 @@ public class Models {
         public ScenarioCard[] scenario_4 { get; set; }
         public TacticCard[] tactics { get; set; }
 
-        // This is slow but we'll only call it when obtaining scenario data, so maybe once per session
+        // This is slow but we'll only call it when obtaining a scenario card
         public ScenarioCard[] GetScenario(string propertyName)
         {
             return (ScenarioCard[])this.GetType().GetProperty(propertyName).GetValue(this, null);
@@ -167,7 +167,7 @@ public class Models {
         [JsonMember]
         public int score { get; set; }
         [JsonMember]
-        public string[] unlocks { get; set; }
+        public string[] tactics { get; set; }
     }
 
     public class GameDataConverter : JsonConverter {

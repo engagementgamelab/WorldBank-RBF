@@ -100,12 +100,12 @@ GameObject:
   - 114: {fileID: 11441290}
   - 114: {fileID: 11431474}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Button Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &112756
 GameObject:
   m_ObjectHideFlags: 1
@@ -252,6 +252,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 437222}
   - 114: {fileID: 11418144}
+  - 114: {fileID: 11473644}
   m_Layer: 0
   m_Name: TacticCardDialog
   m_TagString: Untagged
@@ -463,7 +464,6 @@ GameObject:
   - 224: {fileID: 22464358}
   - 223: {fileID: 22353552}
   - 114: {fileID: 11479310}
-  - 114: {fileID: 11436620}
   - 222: {fileID: 22296146}
   - 114: {fileID: 11427966}
   - 95: {fileID: 9579122}
@@ -616,10 +616,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c725d13a51844d2f8fb2e78e673cdf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 11494812}
-  header: {fileID: 11470184}
-  choiceGroup: {fileID: 22423166}
-  verticalChoiceGroup: {fileID: 0}
+  screenSpaceBox: {fileID: 11473644}
+  worldSpaceBox: {fileID: 0}
+  activeBox: {fileID: 11473644}
   conferencePanel: {fileID: 22454848}
   conferenceButtonGroup: {fileID: 22449814}
   conferenceAnimator: {fileID: 9539718}
@@ -629,7 +628,7 @@ MonoBehaviour:
   tooltipTxt: {fileID: 11447670}
   actionsPanel: {fileID: 22495572}
   animatorTactic: {fileID: 9528642}
-  openCloseDuration: 1
+  openCloseDuration: 1.5
 --- !u!114 &11421716
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -839,21 +838,6 @@ MonoBehaviour:
   m_Spacing: -151.100006
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
---- !u!114 &11436620
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 189880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7db63d2ca5644f598c886f63b1c80e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: {fileID: 11494812}
-  header: {fileID: 0}
-  choiceGroup: {fileID: 22427756}
-  verticalChoiceGroup: {fileID: 0}
 --- !u!114 &11440428
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1382,6 +1366,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11473644
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 152206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23d2f6c5b07b4b15905308174d33abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 11494812}
+  header: {fileID: 11470184}
+  horizontalGroup: {fileID: 22423166}
+  verticalGroup: {fileID: 0}
 --- !u!114 &11473930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1453,10 +1452,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7db63d2ca5644f598c886f63b1c80e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
-  header: {fileID: 0}
-  choiceGroup: {fileID: 0}
-  verticalChoiceGroup: {fileID: 0}
+  screenSpaceBox: {fileID: 0}
+  worldSpaceBox: {fileID: 0}
+  activeBox: {fileID: 0}
 --- !u!114 &11488112
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -10,7 +10,7 @@ public class PrioritizationChart : MonoBehaviour {
 	void Awake () {
 		Close ();
 		
-		// PlayerData.PopulateTestTactics ();
+		PlayerData.PopulateTestTactics ();
 	}
 
 	void OnEnable () {

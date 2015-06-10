@@ -170,6 +170,8 @@ public class DataManager {
         return scenarioRef;
     }
 
+    public static int ScenarioLength() { return gameData.phase_two.GetScenario(currentSceneContext).Length; }
+
     /// <summary>
     /// Get the phase two tactic card specified by the tactic's name.
     /// </summary>

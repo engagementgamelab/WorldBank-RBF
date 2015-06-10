@@ -48,14 +48,16 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 	void Update() {
 
-		 tooltipTxt.text = cooldownElapsed + "s";
+		tooltipTxt.text = cooldownElapsed + "s";
+		
+		float step = (openCloseDuration * 1000f) * Time.deltaTime;
+		float targetX = close ? -Screen.width : 0;
 		 
-		if(close) {
-		  	if(cardContainer.localPosition.x > -Screen.width)
-				cardContainer.Translate(-(Screen.width / openCloseDuration) * Time.deltaTime * Vector3.right);
-		}
-		else if(open && cardContainer.localPosition.x < 0)
-			cardContainer.Translate((Screen.width / openCloseDuration) * Time.deltaTime * Vector3.right);
+		// if(close)
+		// else if(open && cardContainer.localPosition.x < 0)
+		// 	cardContainer.Translate((Screen.width / openCloseDuration) * Time.deltaTime * Vector3.right);
+
+		cardContainer.localPosition = Vector3.MoveTowards(cardContainer.localPosition, new Vector3(targetX, 0, 0), step);
 		
 	}
 

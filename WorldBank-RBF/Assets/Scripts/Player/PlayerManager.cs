@@ -56,25 +56,24 @@ public class PlayerManager : MonoBehaviour {
         // Set user info
         Models.User user = JsonReader.Deserialize<Models.User>(output.ToString());
 
-        Debug.Log(user.ToString());
-
         _userId = user._id;
         _isAuthenticated = Convert.ToBoolean(response["auth"]);
-
-        // PlayerData.UnlockImplementation("unlockable_use_ngo");
+        
     }
 
-    public void SaveData(string[] data) {
+    public void SaveData(string[] data, Action<Dictionary<string, object>> response=null) {
 
         Dictionary<string, object> saveFields = new Dictionary<string, object>();
 
         _userCurrentPlan = new Models.Plan();
+        _userCurrentPlan.name = "My Plan";
+        _userCurrentPlan.tactics = data;
         
         saveFields.Add("user_id", _userId);
         saveFields.Add("plan", _userCurrentPlan);
 
         // Save user info
-        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/save/", saveFields, null, true);
+        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/save/", saveFields, response, true);
     }
 
 }
