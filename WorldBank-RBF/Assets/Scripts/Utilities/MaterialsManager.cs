@@ -9,6 +9,7 @@ public class MaterialsManager {
 
 	public static Material CreateMaterialFromTexture (Texture2D texture, bool transparent=true) {
 		
+		#if !UNITY_EDITOR_OSX && !UNITY_STANDALONE_OSX
 		#if UNITY_EDITOR
 		string path = "Assets/Materials/";
 		Material material = AssetDatabase.LoadAssetAtPath (path + texture.name + ".mat", typeof (Material)) as Material;
@@ -20,6 +21,7 @@ public class MaterialsManager {
 		if (material != null) {
 			return material;
 		}
+		#endif
 		#endif
 
 		Shader shader = Shader.Find ("Standard");
@@ -39,14 +41,14 @@ public class MaterialsManager {
 		m.SetFloat ("_Glossiness", 0);
 		m.mainTexture = texture;
 		
-		#if UNITY_EDITOR
+		#if UNITY_EDITOR && !UNITY_EDITOR_OSX && !UNITY_STANDALONE_OSX
 		AssetDatabase.CreateAsset (m, path + texture.name + ".mat");
 		#endif
 
 		return m;
 	}
 
-	public static void PrepareMaterialsForBuild () {
+	/*public static void PrepareMaterialsForBuild () {
 		#if UNITY_EDITOR && !UNITY_WEBPLAYER
 		string path = Application.dataPath + "/Resources/Materials";
 		if (!Directory.Exists (path)) {
@@ -65,13 +67,16 @@ public class MaterialsManager {
 			AssetDatabase.Refresh ();
 		}
 		#endif
-	}
+	}*/
 
 	public static Material Blank {
 		get { return Resources.Load ("Materials/Blank.mat") as Material; }
 	}
 
 	public static bool TextureIsBlank (Texture2D tex) {
+		
+		if (!tex.format.HasAlpha ()) return false;
+		
 		try {
 			Color c = tex.GetPixel (0, 0);
 		} catch (UnityException e) {

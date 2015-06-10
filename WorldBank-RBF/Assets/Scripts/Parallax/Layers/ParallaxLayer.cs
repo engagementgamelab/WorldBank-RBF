@@ -60,7 +60,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		images.Add (image);
 		image.Parent = Transform;
 		image.Transform.Reset ();
-		image.Transform.SetLocalPositionX (images.Count-1);
+		image.XOffset = images.Count-1;
 		image.LayerPosition = (int)Position.z;
 		image.gameObject.layer = gameObject.layer;
 	}

@@ -17,35 +17,94 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 	public Models.TacticCard data;
 
-	public List<GenericButton> btnListOptions = new List<GenericButton>();
+	public Image tooltipAlertImg;
+	public Image tooltipClockImg;
+	public Image tooltipDoneImg;
+	public Text tooltipTxt;
+	
+	public RectTransform actionsPanel;
+
+	public Animator animatorTactic;
+
+	public float openCloseDuration;
 
 	private string selectedOption;
+	private TimerUtils.Cooldown investigateCooldown;
 
-	public override void AddOptions(List<string> options) {
-	
-		foreach(string option in options) {
+	private int cooldownTotal = 0;
+	private int cooldownElapsed = 0;
 
-			string optionName = option;
+	private bool open = false;
+	private bool close = true;
+	private bool finished = false;
 
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
-			
-			btnChoice.Text = optionName;
+	private Transform cardContainer;
 
-			btnChoice.Button.onClick.RemoveAllListeners();
+	void Start() {
 
-			if(option == "Observe")
-				btnChoice.Button.onClick.AddListener (() => GetFeedback("observe"));
-			else
-				btnChoice.Button.onClick.AddListener (() => Events.instance.Raise(new ScenarioEvent(optionName.ToLower())));
+		cardContainer = transform.GetChild(0);
 
-			btnListOptions.Add(btnChoice);
+	}
+
+	void Update() {
+
+		 tooltipTxt.text = cooldownElapsed + "s";
+		 
+		if(close) {
+		  	if(cardContainer.localPosition.x > -Screen.width)
+				cardContainer.Translate(-(Screen.width / openCloseDuration) * Time.deltaTime * Vector3.right);
 		}
+		else if(open && cardContainer.localPosition.x < 0)
+			cardContainer.Translate((Screen.width / openCloseDuration) * Time.deltaTime * Vector3.right);
+		
+	}
 
-		AddButtons(btnListOptions);
+	public void Init() {
+
+		if(cardContainer == null)
+			cardContainer = transform.GetChild(0);
+
+		cardContainer.localPosition = new Vector3(-Screen.width, 0, cardContainer.localPosition.z);
+
+		open = false;
+		close = true;
+
+		// Show default icon
+		tooltipDoneImg.gameObject.SetActive(false);
+		tooltipAlertImg.gameObject.SetActive(true);
+
+		// Show actions
+		actionsPanel.gameObject.SetActive(true);
+		activeBox.horizontalGroup.gameObject.SetActive(false);
+		
+		// Show tooltip
+		tooltipDoneImg.transform.parent.gameObject.SetActive(true);
+
+	}
+
+	public void Animate(bool isFinished=false) {
+
+		// Set to close
+		if(open) {
+			close = true;
+			open = false;
+
+			finished = isFinished;
+			
+			if(finished)
+				tooltipDoneImg.transform.parent.gameObject.SetActive(false);
+		}
+		// Set to open
+		else if(close) {
+			open = true;
+			close = false;
+		}
 
 	}
     
     public void GetResultOptions() {
+
+		List<GenericButton> btnListOptions = new List<GenericButton>();
 
     	Content = data.investigate;
 	
@@ -64,27 +123,73 @@ public class TacticCardDialog : ScenarioCardDialog {
 			btnListOptions.Add(btnChoice);
 		}
 
-		AddButtons(btnListOptions);
+		AddButtons(btnListOptions, false, HorizontalGroup);
+		
+		// Show done icon
+		tooltipDoneImg.gameObject.SetActive(true);
+		tooltipClockImg.gameObject.SetActive(false);
+		tooltipTxt.gameObject.SetActive(false);
+
+		// Show choices
+		actionsPanel.gameObject.SetActive(false);
+		activeBox.horizontalGroup.gameObject.SetActive(true);
 
     }
+
+    public void StartInvestigate() {
+
+    	// Disable();
+
+    	if(investigateCooldown == null)
+			investigateCooldown = new TimerUtils.Cooldown();
+		
+	 	cooldownTotal = investigateCooldown.Init(data.cooldown, new ScenarioEvent(ScenarioEvent.TACTIC_RESULTS));
+
+		Events.instance.Raise(new ScenarioEvent("Investigate"));
+
+		// Show cooldown text
+		tooltipDoneImg.gameObject.SetActive(false);
+		tooltipAlertImg.gameObject.SetActive(false);
+		tooltipClockImg.gameObject.SetActive(true);
+		tooltipTxt.gameObject.SetActive(true);
+
+		// Listen for cooldown tick
+		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
+
+		// animatorTactic.Play("TacticClose");
+		Animate();
+
+    }
+
     
-    private void GetFeedback(string optionChosen) {
+    public void GetFeedback(string optionChosen) {
 
     	Content = data.feedback[optionChosen];
-
-    	RemoveButtons();
 
 		GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 		btnChoice.Text = "Close";
 
 		btnChoice.Button.onClick.RemoveAllListeners();
-		btnChoice.Button.onClick.AddListener (() => Close());
+
+		btnChoice.Button.onClick.AddListener (() => Animate(true));
 		btnChoice.Button.onClick.AddListener (() => Events.instance.Raise(
 														new ScenarioEvent(ScenarioEvent.TACTIC_CLOSED)
 													)
 											 );
 
-		AddButtons(new List<GenericButton> { btnChoice });
+		AddButtons<GenericButton>(new List<GenericButton> { btnChoice });
+
+		// Show choices
+		actionsPanel.gameObject.SetActive(false);
+		activeBox.horizontalGroup.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    // Callback for TimerTick, filtering for type of event
+    /// </summary>
+    private void OnCooldownTick(GameEvents.TimerTick e) {
+
+    	cooldownElapsed = cooldownTotal - e.secondsElapsed;
 
     }
 

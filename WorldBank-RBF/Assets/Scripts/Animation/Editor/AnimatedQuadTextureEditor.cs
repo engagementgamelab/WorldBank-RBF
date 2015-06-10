@@ -68,9 +68,11 @@ public class AnimatedQuadTextureEditor : Editor {
 	}
 
 	void Update () {
+		#if PREVIEW_ANIMATIONS && UNITY_EDITOR
 		float deltaTime = (float)EditorApplication.timeSinceStartup - startTime;
 		startTime = (float)EditorApplication.timeSinceStartup;
 		if (animating) Target.Animate (deltaTime);
+		#endif
 	}
 
 	void DrawRunStop () {

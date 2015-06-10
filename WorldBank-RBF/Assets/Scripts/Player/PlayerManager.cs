@@ -8,6 +8,7 @@ using JsonFx.Json;
  
 // TODO: This needs lots of cleanup
 public class PlayerManager : MonoBehaviour {
+    
     protected PlayerManager() {}
     private static PlayerManager _instance = null;
         
@@ -68,8 +69,6 @@ public class PlayerManager : MonoBehaviour {
         Dictionary<string, object> saveFields = new Dictionary<string, object>();
 
         _userCurrentPlan = new Models.Plan();
-        _userCurrentPlan.unlocks = data;
-        _userCurrentPlan.pbc = true;
         
         saveFields.Add("user_id", _userId);
         saveFields.Add("plan", _userCurrentPlan);
@@ -77,4 +76,5 @@ public class PlayerManager : MonoBehaviour {
         // Save user info
         NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/save/", saveFields, null, true);
     }
+
 }

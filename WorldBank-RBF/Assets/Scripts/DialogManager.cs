@@ -117,18 +117,18 @@ public class DialogManager : MonoBehaviour {
 	/// Generate a dialog with text and choice buttons
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, BackButtonDelegate backEvent=null) {
+	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, BackButtonDelegate backEvent=null, bool worldSpace=false) {
 
 		if (dialogBox == null) {
 			// if(npc == null)
-				dialogBox = CreateGenericDialog (strDialogTxt);
+				dialogBox = CreateGenericDialog (strDialogTxt, worldSpace);
 			// else
 			// 	dialogBox = CreateNPCDialog (strDialogTxt, npc);
 		} else {
 			dialogBox.Content = strDialogTxt;
 		}
 
-		dialogBox.AddButtons(btnChoices, true);
+		dialogBox.AddButtons(btnChoices, !worldSpace);
 		
 		// Setup back button
 	/*	Button backButton = dialogBox.backButton;
@@ -144,10 +144,10 @@ public class DialogManager : MonoBehaviour {
 	/// Generate a generic dialog with text
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	public GenericDialogBox CreateGenericDialog(string strDialogTxt) {
+	public GenericDialogBox CreateGenericDialog(string strDialogTxt, bool worldSpace) {
 
 	    dialogBox = ObjectPool.Instantiate<GenericDialogBox> ();
-	    dialogBox.Open();
+	    dialogBox.Open(null, worldSpace);
 	    dialogBox.Content = strDialogTxt;
 
 	    return dialogBox;
@@ -169,31 +169,16 @@ public class DialogManager : MonoBehaviour {
 	    scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>();
 	    scenarioDialog.data = scenario;
 
-	    scenarioDialog.transform.SetParent(uiCanvasRoot);
+	    // scenarioDialog.transform.SetParent(uiCanvasRoot);
 	    scenarioDialog.transform.SetAsFirstSibling();
+
+	    scenarioDialog.Header = scenario.name;
 
 	    // Get initial dialogue or an advisor's?
 	    if(strAdvisorSymbol == null)
 		    scenarioDialog.Content = scenario.initiating_dialogue;
 		else
 		{
-			Models.Advisor advisor = scenario.characters[strAdvisorSymbol];
-			scenarioDialog.Content = advisor.dialogue;
-
-			if(advisor.narrowsNpcs)
-			{
-				foreach(string npc_symbol in advisor.narrows)
-					ScenarioManager.currentAdvisorOptions.Remove(npc_symbol);
-
-			}
-
-			if(advisor.unlocks != null)
-			{
-				foreach(string option in advisor.unlocks)
-					ScenarioManager.currentCardOptions.Add(option);
-			}
-
-			ScenarioManager.currentAdvisorOptions.Remove(strAdvisorSymbol);
 		}
 
 		// Create buttons for all advisors
@@ -214,11 +199,13 @@ public class DialogManager : MonoBehaviour {
 	    tacticDialog = ObjectPool.Instantiate<TacticCardDialog>();
 	    tacticDialog.data = tactic;
 
-	    tacticDialog.transform.SetParent(uiCanvasRoot);
+	    // tacticDialog.transform.SetParent(uiCanvasRoot);
 
 	    tacticDialog.Content = tactic.initiating_dialogue;
 
-		tacticDialog.AddOptions(ScenarioManager.tacticCardOptions);
+	    tacticDialog.RemoveButtons<GenericButton>(tacticDialog.HorizontalGroup);
+
+		tacticDialog.Init();
 
 	    return tacticDialog;
 
@@ -327,7 +314,7 @@ public class DialogManager : MonoBehaviour {
 			del = delegate { OpenSpeechDialog(currNpc, "Initial", true); };
 		}
 
-		CreateChoiceDialog(strToDisplay, btnList, del);
+		CreateChoiceDialog(strToDisplay, btnList, del, true);
 	}
 
 	public void OpenSpeechDialog(string symbol, string strDialogueKey, bool returning=false) {

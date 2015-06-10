@@ -99,6 +99,14 @@
       "enabled": false,
       "unlocked": false,
       "cost": 4
+    },
+    {
+      "symbol": "capitol",
+      "display_name": "Capitol City",
+      "description": "About this city",
+      "enabled": true,
+      "unlocked": true,
+      "cost": 1
     }
   ],
   "indicator_affects": {
@@ -372,12 +380,10 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
-          "example_1",
-          "example_2"
+          "example_1"
         ],
         "final_options": [
           "comply_with_ministry",
@@ -438,7 +444,6 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
@@ -506,7 +511,6 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
@@ -572,7 +576,6 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
@@ -640,7 +643,6 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
@@ -706,7 +708,6 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "Card 2",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
@@ -772,7 +773,6 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "Card 3",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
@@ -838,7 +838,6 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
@@ -904,7 +903,6 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
@@ -972,7 +970,6 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
@@ -1038,7 +1035,6 @@
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
-          "conference",
           "comply_with_ministry"
         ],
         "starting_options_affects": [
@@ -1101,11 +1097,38 @@
     "tactics": [
       {
         "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_use_ngo",
+        "tactic_name": "unlockable_more_autonomy",
         "name": "Tactic card name",
         "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
         "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "cooldown": null,
+        "cooldown": [
+          5,
+          5,
+          10
+        ],
+        "new_options": {
+          "information_campaign": "Information Campaign",
+          "transportation_vouchers": "Add travel vouchers",
+          "increase_budget": "Increase budget for travelling nurses"
+        },
+        "feedback": {
+          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
+          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
+          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_card_1",
+        "tactic_name": "unlockable_incentivise_improvement",
+        "name": "Tactic card name",
+        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
+        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "cooldown": [
+          5,
+          5,
+          10
+        ],
         "new_options": {
           "information_campaign": "Information Campaign",
           "transportation_vouchers": "Add travel vouchers",
@@ -1121,11 +1144,87 @@
       },
       {
         "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_use_ngo",
+        "tactic_name": "unlockable_voucher_management",
         "name": "Tactic card name",
         "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
         "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "cooldown": null,
+        "cooldown": [
+          5,
+          5,
+          10
+        ],
+        "new_options": {
+          "information_campaign": "Information Campaign",
+          "transportation_vouchers": "Add travel vouchers",
+          "increase_budget": "Increase budget for travelling nurses"
+        },
+        "feedback": {
+          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
+          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
+          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "observe": "OK, we'll wait and see if anything changes."
+        },
+        "results": "This is what I found out!"
+      },
+      {
+        "symbol": "tactic_card_1",
+        "tactic_name": "unlockable_outreach_campaign",
+        "name": "Tactic card name",
+        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
+        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "cooldown": [
+          5,
+          5,
+          10
+        ],
+        "new_options": {
+          "information_campaign": "Information Campaign",
+          "transportation_vouchers": "Add travel vouchers",
+          "increase_budget": "Increase budget for travelling nurses"
+        },
+        "feedback": {
+          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
+          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
+          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "observe": "OK, we'll wait and see if anything changes."
+        },
+        "results": "This is what I found out!"
+      },
+      {
+        "symbol": "tactic_card_1",
+        "tactic_name": "unlockable_incentivise_health",
+        "name": "Tactic card name",
+        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
+        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "cooldown": [
+          5,
+          5,
+          10
+        ],
+        "new_options": {
+          "information_campaign": "Information Campaign",
+          "transportation_vouchers": "Add travel vouchers",
+          "increase_budget": "Increase budget for travelling nurses"
+        },
+        "feedback": {
+          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
+          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
+          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "observe": "OK, we'll wait and see if anything changes."
+        },
+        "results": "This is what I found out!"
+      },
+      {
+        "symbol": "tactic_card_1",
+        "tactic_name": "unlockable_fruit_1",
+        "name": "Tactic card name",
+        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
+        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "cooldown": [
+          5,
+          5,
+          10
+        ],
         "new_options": {
           "information_campaign": "Information Campaign",
           "transportation_vouchers": "Add travel vouchers",
@@ -1141,16 +1240,13 @@
       }
     ]
   },
-  "phase_two_matrix": {
-    "pbc_true": {
-      "autonomy_true": "scenario_2",
-      "autonomy_false": "scenario_4"
-    },
-    "pbc_false": {
-      "autonomy_true": "scenario_1",
-      "autonomy_false": "scenario_3"
+  "routes": [
+    {
+      "symbol": "malcom_to_kibari",
+      "enabled": true,
+      "cost": 3
     }
-  },
+  ],
   "unlockables": [
     {
       "symbol": "unlockable_incentivise_improvement",
@@ -1176,6 +1272,18 @@
         "More more info"
       ],
       "title": "Incentivising health providers to follow standard protocols (quality of care)",
+      "priority": 1,
+      "type": "quality_of_care"
+    },
+    {
+      "symbol": "unlockable_more_autonomy",
+      "description": [
+        "Info",
+        "More info",
+        "More more info"
+      ],
+      "title": "Give providers more autonomy to procure supplies or personnel",
+      "priority": 1,
       "type": "professionalism"
     },
     {
@@ -1190,9 +1298,42 @@
       "type": "professionalism"
     },
     {
+      "symbol": "unlockable_outreach_campaign",
+      "description": [
+        "Info",
+        "More info",
+        "More more info"
+      ],
+      "title": "Outreach campaign to promote and provide public health services",
+      "priority": 2,
+      "type": "professionalism"
+    },
+    {
+      "symbol": "unlockable_awareness_campaign",
+      "description": [
+        "Info",
+        "More info",
+        "More more info"
+      ],
+      "title": "Awareness raising campaign to explain how the new system works.",
+      "priority": 3,
+      "type": "professionalism"
+    },
+    {
+      "symbol": "unlockable_voucher_management",
+      "description": [
+        "Info",
+        "More info",
+        "More more info"
+      ],
+      "title": "Contract a voucher management agency to provide poorest community members with service vouchers (health strategy)",
+      "priority": 2,
+      "type": "health"
+    },
+    {
       "symbol": "unlockable_corruption_crackdown",
       "title": "Something",
-      "description": "(pbc option)",
+      "description": "something",
       "unlocked": [
         "malcom"
       ],
@@ -1201,7 +1342,7 @@
     {
       "symbol": "unlockable_hire_private_shipping_company",
       "title": "Something",
-      "description": "(pbc option)",
+      "description": "something",
       "unlocked": [
         "malcom"
       ],
@@ -1210,7 +1351,7 @@
     {
       "symbol": "unlockable_contract_ngo_to_administer_plan",
       "title": "Something",
-      "description": "(pbc option)",
+      "description": "something",
       "unlocked": [
         "malcom"
       ],
@@ -1219,7 +1360,7 @@
     {
       "symbol": "unlockable_route_malcom_to_kibari",
       "title": "Something",
-      "description": "(pbc option)",
+      "description": "something",
       "unlocked": [
         "malcom"
       ],
@@ -1228,7 +1369,7 @@
     {
       "symbol": "unlockable_fruit_1",
       "title": "Something",
-      "description": "(pbc option)",
+      "description": "something",
       "unlocked": [
         "malcom"
       ],
@@ -1237,7 +1378,7 @@
     {
       "symbol": "unlockable_plan_traveling_nurses",
       "title": "Something",
-      "description": "(pbc option)",
+      "description": "something",
       "unlocked": [
         "malcom"
       ],

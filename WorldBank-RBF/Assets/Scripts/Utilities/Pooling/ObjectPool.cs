@@ -156,7 +156,13 @@ public class ObjectPool : MonoBehaviour {
 	}
 
 	public static T Instantiate<T> (Vector3 position = new Vector3 ()) where T : MonoBehaviour {
-		return GetPool<T> ().CreateInstance (position).GetScript<T> () as T;
+
+		ObjectPool thisPool = GetPool<T> ();
+		Transform thisInstance = thisPool.CreateInstance (position);
+		T returnType = thisInstance.GetScript<T> ();
+
+		return returnType as T;
+		
 	}
 
 	public static MonoBehaviour Instantiate (string typeName) {

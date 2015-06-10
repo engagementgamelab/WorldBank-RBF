@@ -17,12 +17,16 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 	public Models.ScenarioCard data;
 
-	public List<GenericButton> btnListOptions = new List<GenericButton>();
+	public Transform conferencePanel;
+	public Transform conferenceButtonGroup;
+	public Animator conferenceAnimator;
+
 	private List<GenericButton> btnListAdvisors = new List<GenericButton>();
+	
 
 	public void AddAdvisors(List<string> advisors) {
 
-		RemoveButtons();
+		// RemoveButtons<GenericButton>();
 
 		// Create buttons for all advisors
 		foreach(string characterSymbol in advisors) {
@@ -38,23 +42,27 @@ public class ScenarioCardDialog : GenericDialogBox {
 			btnChoice.Text = charRef.display_name;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => DialogManager.instance.CreateScenarioDialog(data, charRef.symbol));
+			btnChoice.Button.onClick.AddListener (() => AdvisorSelected(charRef.symbol));
 
 			btnChoice.gameObject.SetActive(true);
 			btnListAdvisors.Add(btnChoice);
 		}
 		
-		AddButtons(btnListAdvisors);
+		AddButtons<GenericButton>(btnListAdvisors, false, conferenceButtonGroup);
 
 	}
 
 	public virtual void AddOptions(List<string> options) {
+
+		List<OptionButton> btnListOptions = new List<OptionButton>();
 	
-		RemoveButtons(true);
+		// RemoveButtons<OptionButton>();
 
 		foreach(string option in options) {
 
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
+			OptionButton btnChoice = ObjectPool.Instantiate<OptionButton>();
+
+			// Debug.Log("Option: " + btnChoice);
 			
 			btnChoice.Text = "Option: " + option;
 
@@ -69,7 +77,40 @@ public class ScenarioCardDialog : GenericDialogBox {
 			btnListOptions.Add(btnChoice);
 		}
 
-		AddButtons(btnListOptions, true);
+		AddButtons<OptionButton>(btnListOptions);
+	}
+
+	private void AdvisorSelected(string strAdvisorSymbol) {
+
+		Models.Advisor advisor = data.characters[strAdvisorSymbol];
+		
+		Content = advisor.dialogue;
+
+		if(advisor.narrowsNpcs)
+		{
+			foreach(string npc_symbol in advisor.narrows)
+				ScenarioManager.currentAdvisorOptions.Remove(npc_symbol);
+
+		}
+
+		if(advisor.unlocks != null)
+		{
+			foreach(string option in advisor.unlocks)
+				ScenarioManager.currentCardOptions.Add(option);
+		}
+
+		ScenarioManager.currentAdvisorOptions.Remove(strAdvisorSymbol);
+
+		// Create buttons for all advisors
+		AddAdvisors(ScenarioManager.currentAdvisorOptions);
+
+		// Create buttons for all options if not speaking to advisor
+		AddOptions(ScenarioManager.currentCardOptions);
+
+		conferenceAnimator.Play("ConferenceHide");
+		conferencePanel.GetComponent<CanvasGroup>().interactable = false;
+		conferencePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
 	}
     
 }

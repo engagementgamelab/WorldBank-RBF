@@ -5,23 +5,49 @@ using System.Collections.Generic;
 
 public class GenericDialogBox : MB {
 
-	public Text text;
-
-	public Transform choiceGroup;
-	public Transform verticalChoiceGroup;
-		
 	string content = "";
 	public string Content {
 		get { return content; }
 		set {
 			content = value;
-			text.text = content;
+			activeBox.text.text = content;
 		}
 	}
 
-	public void Open (Transform parent=null) {
-				
-		Vector3 position = Vector3.one;
+	public string Header {
+		get { return activeBox.header.text; }
+		set { activeBox.header.text = value; }
+	}
+
+	public Transform HorizontalGroup {
+		get { return activeBox.horizontalGroup; }
+		set { activeBox.horizontalGroup = value; }
+	}
+
+	public UIDialogBox screenSpaceBox;
+	public UIDialogBox worldSpaceBox;
+	public UIDialogBox activeBox = null;
+
+	/*void OnGUI () {
+		if (GUILayout.Button ("Open world")) {
+			Open (null, true);
+		}
+
+		if (GUILayout.Button ("open screen")) {
+			Open (null, false);
+		}
+
+		if (GUILayout.Button ("close")) {
+			Close ();
+		}
+	}*/
+
+	public void Open (Transform parent=null, bool worldSpace=false) {
+
+		activeBox = worldSpace ? worldSpaceBox : screenSpaceBox;
+		activeBox.gameObject.SetActive (true);
+
+		/*Vector3 position = Vector3.one;
 		float aspect = 1f / MainCamera.Instance.Aspect;
 		float z = position.z;
 		float scale = z * 0.09f;
@@ -42,54 +68,50 @@ public class GenericDialogBox : MB {
 		if(parent != null)
 			Transform.SetParent(parent);
 
-		StartCoroutine (CoRotate());
+		StartCoroutine (CoRotate());*/
 	}
 
 	public void Close () {
-		// NPCFocusBehavior.Instance.FocusOut ();
-		// npc.OnClick ();
 		ObjectPool.Destroy<GenericDialogBox> (Transform);
-		// callback?
+		// activeBox.gameObject.SetActive (false);
 	}
 
 	public void Disable() {
-
-		gameObject.SetActive(false);
-
+		// gameObject.SetActive(false);
+		activeBox.gameObject.SetActive (false);
 	}
 
 	public void Enable() {
+		// gameObject.SetActive(true);
+		activeBox.gameObject.SetActive (true);
+	}
 
-		gameObject.SetActive(true);
+	public virtual void RemoveButtons<T>(Transform group) where T : MonoBehaviour {
+
+		T[] remove = group.GetComponentsInChildren<T>();
+
+		foreach (T child in remove)
+			ObjectPool.Destroy<T> (child.transform);
 
 	}
 
-	public virtual void RemoveButtons(bool vertical=false) {
+	public void AddButtons<T>(List<T> btnChoices, bool vertical=false, Transform groupOverride=null) where T: MonoBehaviour {
 
-		Transform group = vertical ? verticalChoiceGroup : choiceGroup;
+		Transform group = vertical ? activeBox.verticalGroup : activeBox.horizontalGroup;
 
-		GenericButton[] remove = group.GetComponentsInChildren<GenericButton>();
+		if(groupOverride != null)
+			group = groupOverride;
 
-		foreach (GenericButton child in remove)
-			ObjectPool.Destroy<GenericButton> (child.transform);
-
-	}
-
-	public void AddButtons(List<GenericButton> btnChoices, bool vertical=false) {
-
-		RemoveButtons(vertical);
-
-		Transform group = vertical ? verticalChoiceGroup : choiceGroup;
+		RemoveButtons<T>(group);
 
 		if(btnChoices != null) {
-			foreach(GenericButton btnChoice in btnChoices) {
+			foreach(T btnChoice in btnChoices) {
 				btnChoice.transform.SetParent(group);
 				btnChoice.transform.localScale = Vector3.one;
 				btnChoice.transform.localPosition = Vector3.zero;
 				btnChoice.transform.localEulerAngles = Vector3.zero;
 			}
 		}
-
 	}
 
 	float GetXPosition (bool facingLeft) {
