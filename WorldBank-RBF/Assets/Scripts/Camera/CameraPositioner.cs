@@ -1,4 +1,4 @@
-﻿#define SHOW_SETTINGS
+﻿#undef SHOW_SETTINGS
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;

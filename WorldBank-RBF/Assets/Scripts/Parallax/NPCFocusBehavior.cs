@@ -27,7 +27,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 
 	float focus = 0f;
 	float targetFocus = 0f;
-	float speed = 2.5f;
+	float speed = 1.25f;
 	ParallaxNpc npc = null;
 
 	FocusLevel focusLevel = FocusLevel.Default;
@@ -65,14 +65,39 @@ public class NPCFocusBehavior : MonoBehaviour {
 	float npcDialogSeparation = 0.45f; // % of screen
 	bool focusing = false;
 
-	public void OnClickNpc (ParallaxNpc npc) {
-		if (FocusLevel == FocusLevel.Default && this.npc != null) return;
+	public void DefaultFocus () {
+		Focus ();
+		FocusLevel = FocusLevel.Default;
+	}
+
+	public void PreviewFocus (ParallaxNpc npc) {
+		if (!InteractionsManager.Instance.HasInteractions || FocusLevel != FocusLevel.Default) return;
 		if (!CameraPositioner.Drag.Dragging) {
 			this.npc = npc;
-			ParallaxLayerLightController.Instance.AssignLayers (npc.gameObject);
-			FocusCamera ();		
-			IterateFocusLevel ();
+			Focus ();
+			FocusLevel = FocusLevel.Preview;
 		}
+	}
+
+	public void OnCloseDialog () {
+		if (FocusLevel != FocusLevel.Default) {
+			Focus ();
+			FocusLevel = FocusLevel.Default;
+		}
+	}
+
+	public void DialogFocus () {
+		if (npc == null)
+			throw new System.Exception ("An NPC has not been selected");
+		Focus ();
+		FocusLevel = FocusLevel.Dialog;
+		DialogManager.instance.CloseCharacterDialog ();
+		InteractionsManager.Instance.RemoveInteraction ();
+	}
+
+	void Focus () {
+		ParallaxLayerLightController.Instance.AssignLayers (npc.gameObject);
+		FocusCamera ();
 	}
 
 	void FocusCamera () {
@@ -95,20 +120,15 @@ public class NPCFocusBehavior : MonoBehaviour {
 			: npcPosition + offset;
 	}
 
-	void IterateFocusLevel () {
-		if (FocusLevel == FocusLevel.Default) {
-			FocusLevel = FocusLevel.Preview;
-		} else if (FocusLevel == FocusLevel.Preview) {
-			FocusLevel = FocusLevel.Dialog;
-		} else if (FocusLevel == FocusLevel.Dialog) {
-			FocusLevel = FocusLevel.Default;
-		}
-	}
-
 	void OnEndFocus () {
 		if (FocusLevel == FocusLevel.Default) {
 			ParallaxLayerLightController.Instance.AssignLayers ();
 			npc = null;
+			CameraPositioner.Drag.Enabled = true;
+		} else if (FocusLevel == FocusLevel.Preview) {
+			DialogManager.instance.OpenIntroDialog (NpcManager.GetNpc (npc.symbol), npc.FacingLeft);
+		} else if (FocusLevel == FocusLevel.Dialog) {
+			DialogManager.instance.OpenSpeechDialog (npc.symbol, "Initial");
 		}
 	}
 
@@ -117,15 +137,19 @@ public class NPCFocusBehavior : MonoBehaviour {
 		if (focusing) yield break;
 		focusing = true;
 
-		while (!Mathf.Approximately (focus, targetFocus)) {
-			focus = (Mathf.Abs (focus - targetFocus) < 0.005f)
-				? targetFocus
-				: Mathf.Lerp (focus, targetFocus, speed * Time.deltaTime);
-			ParallaxLayerLightController.Instance.Lighting1Intensity = Mathf.Abs (focus-1);
+		float startFocus = focus;
+		float endFocus = targetFocus;
+		float time = Mathf.Abs (startFocus-endFocus) * speed;
+		float eTime = 0f;
+
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			focus = Mathf.Lerp (startFocus, endFocus, Mathf.SmoothStep (0f, 1f, eTime / time));
+			ParallaxLayerLightController.Instance.Lighting1Intensity = Mathf.Abs (focus-1f);
 			npc.Scale = focus;
 			MainCamera.Zoom = focus * Mathf.Pow (1.25f, 3f);
 
-			// TODO: clean this up
+			// TODO: Clean up	
 			float progress = focus;
 			if (targetFocus >= 0.5f) {
 				progress = focus * 2f;
@@ -137,6 +161,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 				CameraPositioner.Transform.SetLocalPositionX (
 					Mathf.Lerp (startCamPosition, endCamPosition, progress));
 			}
+
 			yield return null;
 		}
 

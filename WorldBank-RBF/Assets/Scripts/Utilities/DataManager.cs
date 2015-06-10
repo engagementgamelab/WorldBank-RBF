@@ -200,5 +200,4 @@ public class DataManager {
         return gameData.characters[characterIndex];
 
     }
-    
 }

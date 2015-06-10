@@ -8,6 +8,7 @@ public class NotebookManager : MB {
 	public GameObject priorities;
 	public GameObject data;
 	public GameObject tabGroup;
+	public GameObject notebookCollider;
 
 	Dictionary<string, GameObject> canvases;
 	Dictionary<string, GameObject> Canvases {
@@ -19,6 +20,16 @@ public class NotebookManager : MB {
 				canvases.Add ("data", data);
 			}
 			return canvases;
+		}
+	}
+
+	CameraPositioner cameraPositioner = null;
+	CameraPositioner CameraPositioner {
+		get { 
+			if (cameraPositioner == null) {
+				cameraPositioner = MainCamera.Instance.Positioner; 
+			}
+			return cameraPositioner;
 		}
 	}
 
@@ -45,7 +56,7 @@ public class NotebookManager : MB {
 		if (open) {
 			open = false;
 			Close ();
-		} else {
+		} else if (NPCFocusBehavior.Instance.FocusLevel == FocusLevel.Default) {
 			open = true;
 			Open ();
 		}
@@ -61,6 +72,8 @@ public class NotebookManager : MB {
 	void Open () {
 		OpenCanvas (activeCanvas);
 		tabGroup.SetActive (true);
+		notebookCollider.SetActive (true);
+		CameraPositioner.Drag.Enabled = false;
 	}
 
 	void Close () {
@@ -68,5 +81,7 @@ public class NotebookManager : MB {
 			canvas.Value.SetActive (false);
 		}
 		tabGroup.SetActive (false);
+		notebookCollider.SetActive (false);
+		CameraPositioner.Drag.Enabled = true;
 	}
 }

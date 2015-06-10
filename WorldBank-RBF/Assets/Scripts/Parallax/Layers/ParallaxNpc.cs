@@ -34,9 +34,8 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 	}
 
 	public void OnClick (ClickSettings clickSettings) {
-		if (Scale > 0f) {
+		if (Scale > 1f) {
 			SendClickMessage ();
-			DialogManager.instance.OpenSpeechDialog (symbol, "Initial");
 		} else {
 			// Don't focus if the player ends up doing a drag
 			StartCoroutine (CoCheckForDrag ());
@@ -44,7 +43,7 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 	}
 
 	void SendClickMessage () {
-		NPCFocusBehavior.Instance.OnClickNpc (this);
+		NPCFocusBehavior.Instance.PreviewFocus (this);
 	}
 
 	IEnumerator CoCheckForDrag () {

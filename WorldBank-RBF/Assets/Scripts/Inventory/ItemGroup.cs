@@ -25,6 +25,7 @@ public abstract class ItemGroup {
 	}
 
 	public abstract void Initialize (Inventory inventory);
+	public abstract void Add (int count);
 	public abstract void Add (InventoryItem item=null);
 	public abstract void Add (List<InventoryItem> newItems);
 	public abstract InventoryItem Remove (InventoryItem item=null);
@@ -41,6 +42,12 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 
 	public override void Initialize (Inventory inventory) {
 		this.inventory = inventory;
+	}
+
+	public override void Add (int count) {
+		for (int i = 0; i < count; i ++) {
+			Add ();
+		}
 	}
 
 	public override void Add (InventoryItem item=null) {

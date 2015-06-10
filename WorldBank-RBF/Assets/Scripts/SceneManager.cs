@@ -15,6 +15,21 @@ using System.IO;
 
 public class SceneManager : MonoBehaviour {
 
+	static SceneManager instance = null;
+	static public SceneManager Instance {
+		get {
+			if (instance == null) {
+				instance = Object.FindObjectOfType (typeof (SceneManager)) as SceneManager;
+				if (instance == null) {
+					GameObject go = new GameObject ("SceneManager");
+					DontDestroyOnLoad (go);
+					instance = go.AddComponent<SceneManager>();
+				}
+			}
+			return instance;
+		}
+	}
+
 	public string sceneName;
 
 	void Awake () {

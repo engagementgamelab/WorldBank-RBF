@@ -24,6 +24,37 @@ public class GenericDialogBox : MB {
 		set { activeBox.horizontalGroup = value; }
 	}
 
+	float aspect = -1;
+	float Aspect {
+		get {
+			if (aspect == -1) {
+				aspect = (float)Screen.width / (float)Screen.height;
+			}
+			return aspect;
+		}
+	}
+
+	float xPercent = -1;
+	float XPercent {
+		get {
+			if (xPercent == -1) {
+				xPercent = 0.45f + 0.13f * Aspect;
+			}
+			return xPercent;
+		}
+	}
+
+	float offset = -1;
+	float Offset {
+		get {
+			return ScreenPositionHandler.ViewportToWorld (new Vector3 (XPercent, 0f, 10f)).x;
+		}
+	}
+
+	public Button BackButton {
+		get { return activeBox.backButton; }
+	}
+
 	public UIDialogBox screenSpaceBox;
 	public UIDialogBox worldSpaceBox;
 	public UIDialogBox activeBox = null;
@@ -42,47 +73,23 @@ public class GenericDialogBox : MB {
 		}
 	}*/
 
-	public void Open (Transform parent=null, bool worldSpace=false) {
-
+	public void Open (Transform parent=null, bool worldSpace=false, bool left=false) {
 		activeBox = worldSpace ? worldSpaceBox : screenSpaceBox;
 		activeBox.gameObject.SetActive (true);
-
-		/*Vector3 position = Vector3.one;
-		float aspect = 1f / MainCamera.Instance.Aspect;
-		float z = position.z;
-		float scale = z * 0.09f;
-		float canvasScale = 1f;
-
-		// TODO: write an actual formula to replace these hardcoded values
-		if (aspect <= 0.76f) {
-			scale = z * 0.75f;
-		} else if (aspect <= 0.81f) {
-			scale = z * 0.65f;
-		} else if (aspect <= 1f) {
-			scale = z * 0.5f;
+		if (worldSpace) {
+			SetPosition (left);
 		}
-
-		Position = Vector3.zero;
-		Transform.localScale = Vector3.one;
-
-		if(parent != null)
-			Transform.SetParent(parent);
-
-		StartCoroutine (CoRotate());*/
 	}
 
 	public void Close () {
 		ObjectPool.Destroy<GenericDialogBox> (Transform);
-		// activeBox.gameObject.SetActive (false);
 	}
 
 	public void Disable() {
-		// gameObject.SetActive(false);
 		activeBox.gameObject.SetActive (false);
 	}
 
 	public void Enable() {
-		// gameObject.SetActive(true);
 		activeBox.gameObject.SetActive (true);
 	}
 
@@ -112,6 +119,11 @@ public class GenericDialogBox : MB {
 				btnChoice.transform.localEulerAngles = Vector3.zero;
 			}
 		}
+	}
+
+	void SetPosition (bool left) {
+		// Transform.SetPositionX (left ? -Offset : Offset);
+		Transform.SetPositionX (Offset);
 	}
 
 	float GetXPosition (bool facingLeft) {

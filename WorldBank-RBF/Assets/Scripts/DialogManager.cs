@@ -117,11 +117,11 @@ public class DialogManager : MonoBehaviour {
 	/// Generate a dialog with text and choice buttons
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, BackButtonDelegate backEvent=null, bool worldSpace=false) {
+	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, BackButtonDelegate backEvent=null, bool worldSpace=false, bool left=false) {
 
 		if (dialogBox == null) {
 			// if(npc == null)
-				dialogBox = CreateGenericDialog (strDialogTxt, worldSpace);
+				dialogBox = CreateGenericDialog (strDialogTxt, worldSpace, left);
 			// else
 			// 	dialogBox = CreateNPCDialog (strDialogTxt, npc);
 		} else {
@@ -131,23 +131,21 @@ public class DialogManager : MonoBehaviour {
 		dialogBox.AddButtons(btnChoices, !worldSpace);
 		
 		// Setup back button
-	/*	Button backButton = dialogBox.backButton;
-
-		backButton.onClick.RemoveAllListeners ();
-		backButton.onClick.AddListener(() => backEvent());
-
-		if(choiceGroup.childCount > 0)
-			choiceGroup.gameObject.SetActive (true);*/
+		if (worldSpace) {
+			Button backButton = dialogBox.BackButton;
+			backButton.onClick.RemoveAllListeners ();
+			backButton.onClick.AddListener(() => backEvent());
+		}
 	}
 
 	/// <summary>
 	/// Generate a generic dialog with text
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	public GenericDialogBox CreateGenericDialog(string strDialogTxt, bool worldSpace) {
+	public GenericDialogBox CreateGenericDialog(string strDialogTxt, bool worldSpace, bool left) {
 
 	    dialogBox = ObjectPool.Instantiate<GenericDialogBox> ();
-	    dialogBox.Open(null, worldSpace);
+	    dialogBox.Open(null, worldSpace, left);
 	    dialogBox.Content = strDialogTxt;
 
 	    return dialogBox;
@@ -215,20 +213,21 @@ public class DialogManager : MonoBehaviour {
 	/// Open intro dialog for a given character
 	/// </summary>
 	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
-	public void OpenIntroDialog(Models.NPC currNpc) {
+	public void OpenIntroDialog(Models.NPC currNpc, bool left) {
 
 		GenericButton btnChoice = ObjectPool.Instantiate<GenericButton> ();
 		
 		btnChoice.Text = "Learn More";
 
 		btnChoice.Button.onClick.RemoveAllListeners ();
-		// btnChoice.Button.onClick.AddListener(() => npcInstance.DialogFocus());
+		btnChoice.Button.onClick.AddListener (() => NPCFocusBehavior.Instance.DialogFocus ());
 
 		CreateChoiceDialog(
 
 			DataManager.GetDataForCharacter(currNpc.character).description, 
 			new List<GenericButton>(){ btnChoice },
-			delegate { CloseCharacterDialog(false); }
+			CloseAndUnfocus,
+			true, left
 		);
 
 	}
@@ -309,7 +308,7 @@ public class DialogManager : MonoBehaviour {
 		BackButtonDelegate del = null;
 
 		if (strDialogueKey == "Initial") {
-			del = CloseCharacterDialog;
+			del = CloseAndUnfocus;
 		} else {
 			del = delegate { OpenSpeechDialog(currNpc, "Initial", true); };
 		}
@@ -319,6 +318,11 @@ public class DialogManager : MonoBehaviour {
 
 	public void OpenSpeechDialog(string symbol, string strDialogueKey, bool returning=false) {
 		OpenSpeechDialog (NpcManager.GetNpc (symbol), strDialogueKey, returning);
+	}
+
+	void CloseAndUnfocus () {
+		NPCFocusBehavior.Instance.DefaultFocus ();
+		CloseCharacterDialog ();
 	}
 
 	public void CloseCharacterDialog (bool openNext=true) {

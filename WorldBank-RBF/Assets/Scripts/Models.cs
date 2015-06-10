@@ -69,6 +69,7 @@ public class Models {
         public string description { get; set; }
         public bool enabled { get; set; }
         public bool unlocked { get; set; }
+        public int npc_interactions { get; set; }
         public int cost { get; set; }
 
     }
