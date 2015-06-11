@@ -63,6 +63,7 @@ public class PlayerData : MonoBehaviour {
 
 		// PlayerManager.Instance.SaveData (PlanTacticGroup.GetUniqueTacticSymbols ());
 
+		// PlayerManager.Instance.SaveData (PlanTacticGroup.GetUniqueTacticSymbols ());
 		// TODO: I think ^^this^^ replaces everything below (haven't checked w/ PlayerManager yet)
 
 		/*Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);

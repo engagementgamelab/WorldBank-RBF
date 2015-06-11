@@ -7,7 +7,9 @@ public class PrioritiesColumn : Column {
 	int slotCount = 6;
 
 	void Awake () {
+		
 		CreateTacticSlots ();
+	
 	}
 
 	public void CreateTacticSlots () {
@@ -41,4 +43,5 @@ public class PrioritiesColumn : Column {
 		}
 		return group;
 	}
+
 }

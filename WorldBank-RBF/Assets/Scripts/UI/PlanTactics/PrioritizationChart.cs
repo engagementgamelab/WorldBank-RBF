@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PrioritizationChart : MonoBehaviour {
@@ -6,6 +7,13 @@ public class PrioritizationChart : MonoBehaviour {
 	public TacticsColumn tacticsColumn;
 	public PrioritiesColumn prioritiesColumn;
 	bool open = false;
+	public Button continuePlanButton;
+	int tacticsAssigned = 0;
+
+	void Awake () {
+		// Listen for TacticSlotEvent
+		Events.instance.AddListener<TacticSlotEvent>(OnTacticEvent);
+	}
 
 	void OnEnable () {
 		Open ();
@@ -33,4 +41,18 @@ public class PrioritizationChart : MonoBehaviour {
 		prioritiesColumn.gameObject.SetActive (false);
 		open = false;
 	}
+
+    /// <summary>
+    // Callback for TacticSlotEvent, filtering for type of event
+    /// </summary>
+    void OnTacticEvent(TacticSlotEvent e) {
+
+    	if(e.slotAssigned)
+	    	tacticsAssigned++;
+    	else
+	    	tacticsAssigned--;
+
+   		continuePlanButton.gameObject.SetActive(tacticsAssigned == 6);
+
+    }
 }

@@ -177,6 +177,8 @@ public class DialogManager : MonoBehaviour {
 
 	    scenarioDialog.Header = scenario.name;
 
+	    scenarioDialog.Open();
+
 	    // Get initial dialogue or an advisor's?
 	    if(strAdvisorSymbol == null)
 		    scenarioDialog.Content = scenario.initiating_dialogue;

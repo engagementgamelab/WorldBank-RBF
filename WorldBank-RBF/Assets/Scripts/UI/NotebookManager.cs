@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,6 +10,12 @@ public class NotebookManager : MB {
 	public GameObject data;
 	public GameObject tabGroup;
 	public GameObject notebookCollider;
+
+	public RectTransform namingPanel;
+	public RectTransform feedbackPanel;
+
+	public Text scoreText;
+	public Text feedbackText;
 
 	Dictionary<string, GameObject> canvases;
 	Dictionary<string, GameObject> Canvases {
@@ -37,7 +44,9 @@ public class NotebookManager : MB {
 	string activeCanvas = "map";
 
 	void Awake () {
+
 		Close ();
+
 	}
 
 	public void OpenMap () {
@@ -62,6 +71,35 @@ public class NotebookManager : MB {
 		}
 	}
 
+	public void NamePlan() {
+
+		namingPanel.gameObject.SetActive(true);
+
+	}
+
+
+	public void SubmitPlan(Text planNameInput) {
+
+        Dictionary<string, object> formFields = new Dictionary<string, object>();
+
+        Models.Plan plan = new Models.Plan();
+
+        plan.name = planNameInput.text;
+        plan.tactics = PlayerData.PlanTacticGroup.GetUniqueTacticSymbols ();
+        
+        formFields.Add("plan", plan);
+
+		PlayerManager.Instance.SaveData (formFields, SubmitPlanCallback);
+
+	}
+
+	// Continues to phase  two
+	public void Continue() {
+
+		Application.LoadLevel("PhaseTwo");
+
+	}
+
 	void OpenCanvas (string id) {
 		foreach (var canvas in Canvases) {
 			canvas.Value.SetActive (canvas.Key == id);
@@ -83,5 +121,17 @@ public class NotebookManager : MB {
 		tabGroup.SetActive (false);
 		notebookCollider.SetActive (false);
 		CameraPositioner.Drag.Enabled = true;
+	}
+
+	// Get response from submitting a plan
+	void SubmitPlanCallback(Dictionary<string, object> response) {
+
+	 	scoreText.text = "Score: " + response["score"].ToString();
+	 	feedbackText.text = response["description"].ToString();
+
+	 	// Show feedback in data panel (allows player to continue)
+		feedbackPanel.gameObject.SetActive(true);
+		OpenData();
+
 	}
 }
