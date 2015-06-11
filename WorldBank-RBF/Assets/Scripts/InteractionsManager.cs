@@ -33,6 +33,10 @@ public class InteractionsManager : MonoBehaviour {
 
 	void Awake () {
 		inventory.Add (interactions);
+
+		// TODO: remove
+		interactions.Set (5);
+		UpdateCount ();
 	}
 
 	public void OnEnterCity (int interactionCount) {

@@ -6,6 +6,7 @@ using UnityEditor;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class TextureLoader {
 
@@ -18,8 +19,11 @@ public class TextureLoader {
 	public void LoadCityTextures (ParallaxLayerManager layerManager) {
         string loadPath = EditorUtility.OpenFolderPanel ("Load city textures", path, "");
         if (loadPath == "") return;
-        string[] folders = Directory.GetDirectories (loadPath);
-        int folderCount = folders.Length;
+        
+        List<string> folders = new List<string> (Directory.GetDirectories (loadPath));
+        folders = folders.Where (folder => folder.Contains ("layer")).ToList ();
+
+        int folderCount = folders.Count;
         layerManager.LayerCount = folderCount;
         for (int i = 0; i < folderCount; i ++) {
             ParallaxLayer layer = layerManager.layers[i];

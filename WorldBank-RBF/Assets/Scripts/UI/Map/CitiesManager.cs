@@ -79,6 +79,7 @@ public class CitiesManager : MB {
 		bool wasVisited = CurrentCity.Visit ();
 		InteractionsManager.Instance.OnEnterCity (
 			wasVisited ? 0 : CurrentCity.Model.npc_interactions);
+		ParallaxLayerManager.Instance.Load (CurrentCity.symbol);
 	}
 
 	void UpdateInteractableCities () {

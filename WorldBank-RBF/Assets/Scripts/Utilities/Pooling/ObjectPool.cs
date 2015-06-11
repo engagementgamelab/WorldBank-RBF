@@ -209,7 +209,7 @@ public class ObjectPool : MonoBehaviour {
 				if (t != null)
 					DestroyImmediate (t.gameObject);
 			}
-			poolsToDestroy.Add (pool.gameObject);
+			if (!pool == null) poolsToDestroy.Add (pool.gameObject);
 		}
 
 		// Then destroy all the pools

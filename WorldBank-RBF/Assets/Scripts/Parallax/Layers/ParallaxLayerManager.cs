@@ -39,6 +39,16 @@ public class ParallaxLayerManager : MonoBehaviour {
 		}
 	}
 
+	[SerializeField] float cameraStartPosition = 0f;
+	[ExposeInWindow, ExposeProperty]
+	public float CameraStartPosition {
+		get { return cameraStartPosition; }
+		set {
+			cameraStartPosition = value;
+			MainCamera.Instance.Positioner.XPosition = cameraStartPosition;
+		}
+	}
+
 	public ParallaxLayer FurthestLayer {
 		get { 
 			if (layers == null || layers.Count == 0) {
@@ -47,6 +57,12 @@ public class ParallaxLayerManager : MonoBehaviour {
 			return layers[layers.Count-1]; 
 		}
 	}
+
+	public void Load (string symbol) {
+		Clear ();
+		ModelSerializer.Load (this, 
+			Application.dataPath + "/Resources/Config/PhaseOne/Cities/" + symbol + ".json");
+    }
 
 	void RefreshLayers () {
         
@@ -67,6 +83,11 @@ public class ParallaxLayerManager : MonoBehaviour {
         while (layers.Count < layerCount) {
             layers.Add (EditorObjectPool.Create<ParallaxLayer> () as ParallaxLayer);
         }
+    }
+
+    void Clear () {
+    	ObjectPool.DestroyAll<ParallaxNpc> ();
+    	ObjectPool.DestroyAll<ParallaxLayer> ();
     }
 
     #if UNITY_EDITOR

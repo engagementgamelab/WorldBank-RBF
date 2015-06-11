@@ -208,6 +208,7 @@ public class Models {
         public string cityName { get; set; }
         public int LayerCount { get; set; }
         public List<object> layers { get; set; }
+        public float CameraStartPosition { get; set; }
     }
 
     public class ParallaxLayer {
