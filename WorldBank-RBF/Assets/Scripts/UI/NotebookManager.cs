@@ -11,6 +11,11 @@ public class NotebookManager : MB {
 	public GameObject tabGroup;
 	public GameObject notebookCollider;
 
+	public RectTransform feedbackPanel;
+
+	public Text scoreText;
+	public Text feedbackText;
+
 	public Button submitButton;
 
 	Dictionary<string, GameObject> canvases;
@@ -77,6 +82,13 @@ public class NotebookManager : MB {
 
 	}
 
+	// Continues to phase  two
+	public void Continue() {
+
+		Application.LoadLevel("PhaseTwo");
+
+	}
+
 	void OpenCanvas (string id) {
 		foreach (var canvas in Canvases) {
 			canvas.Value.SetActive (canvas.Key == id);
@@ -100,10 +112,14 @@ public class NotebookManager : MB {
 		CameraPositioner.Drag.Enabled = true;
 	}
 
+	// Get response from submitting a plan
 	void SubmitPlanCallback(Dictionary<string, object> response) {
 
-		Debug.Log(response["description"]);
+	 	scoreText.text = "Score: " + response["score"].ToString();
+	 	feedbackText.text = response["description"].ToString();
 
+	 	// Show feedback in data panel (allows player to continue)
+		feedbackPanel.gameObject.SetActive(true);
 		OpenData();
 
 	}
