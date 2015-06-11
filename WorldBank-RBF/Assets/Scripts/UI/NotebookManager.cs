@@ -11,12 +11,11 @@ public class NotebookManager : MB {
 	public GameObject tabGroup;
 	public GameObject notebookCollider;
 
+	public RectTransform namingPanel;
 	public RectTransform feedbackPanel;
 
 	public Text scoreText;
 	public Text feedbackText;
-
-	public Button submitButton;
 
 	Dictionary<string, GameObject> canvases;
 	Dictionary<string, GameObject> Canvases {
@@ -44,11 +43,7 @@ public class NotebookManager : MB {
 	bool open = false;
 	string activeCanvas = "map";
 
-	int tacticsAssigned = 0;
-
 	void Awake () {
-
-		Events.instance.AddListener<TacticSlotEvent>(OnTacticEvent);
 
 		Close ();
 
@@ -76,9 +71,25 @@ public class NotebookManager : MB {
 		}
 	}
 
-	public void SubmitPlan() {
+	public void NamePlan() {
 
-		PlayerManager.Instance.SaveData (PlayerData.PlanTacticGroup.GetUniqueTacticSymbols (), SubmitPlanCallback);
+		namingPanel.gameObject.SetActive(true);
+
+	}
+
+
+	public void SubmitPlan(Text planNameInput) {
+
+        Dictionary<string, object> formFields = new Dictionary<string, object>();
+
+        Models.Plan plan = new Models.Plan();
+
+        plan.name = planNameInput.text;
+        plan.tactics = PlayerData.PlanTacticGroup.GetUniqueTacticSymbols ();
+        
+        formFields.Add("plan", plan);
+
+		PlayerManager.Instance.SaveData (formFields, SubmitPlanCallback);
 
 	}
 
@@ -123,18 +134,4 @@ public class NotebookManager : MB {
 		OpenData();
 
 	}
-
-    /// <summary>
-    // Callback for TacticSlotEvent, filtering for type of event
-    /// </summary>
-    void OnTacticEvent(TacticSlotEvent e) {
-
-    	if(e.slotAssigned)
-	    	tacticsAssigned++;
-    	else
-	    	tacticsAssigned--;
-
-   		submitButton.gameObject.SetActive(tacticsAssigned == 6);
-
-    }
 }

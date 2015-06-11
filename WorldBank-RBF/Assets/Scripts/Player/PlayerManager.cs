@@ -61,16 +61,10 @@ public class PlayerManager : MonoBehaviour {
         
     }
 
-    public void SaveData(string[] data, Action<Dictionary<string, object>> response=null) {
+    public void SaveData(Dictionary<string, object> saveFields, Action<Dictionary<string, object>> response=null) {
 
-        Dictionary<string, object> saveFields = new Dictionary<string, object>();
-
-        _userCurrentPlan = new Models.Plan();
-        _userCurrentPlan.name = "My Plan";
-        _userCurrentPlan.tactics = data;
-        
+        // Insert user ID
         saveFields.Add("user_id", _userId);
-        saveFields.Add("plan", _userCurrentPlan);
 
         // Save user info
         NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/save/", saveFields, response, true);

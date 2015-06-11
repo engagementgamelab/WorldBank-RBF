@@ -63,7 +63,7 @@ public class PlayerData : MonoBehaviour {
 
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
 		PlanTacticGroup.Add (new PlanTacticItem (unlockRef));
-		PlayerManager.Instance.SaveData (PlanTacticGroup.GetUniqueTacticSymbols ());
+		// PlayerManager.Instance.SaveData (PlanTacticGroup.GetUniqueTacticSymbols ());
 		// TODO: I think ^^this^^ replaces everything below (haven't checked w/ PlayerManager yet)
 
 		/*Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);

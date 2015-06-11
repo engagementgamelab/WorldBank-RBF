@@ -67,18 +67,18 @@ public class ScenarioManager : MonoBehaviour {
     /// <param name="response">Textual response from /plan/all/ endpoint.</param>
     private void PlansRetrieved(string response) {
 
-    	string[] planIDs = JsonReader.Deserialize<string[]>(response);
+    	Dictionary<string, string>[] planData = JsonReader.Deserialize<Dictionary<string, string>[]>(response);
 
 		List<GenericButton> btnList = new List<GenericButton>();
 
-		foreach(string choice in planIDs) {
+		foreach(Dictionary<string, string> choice in planData) {
 
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 
-			btnChoice.Text = choice;
+			btnChoice.Text = choice["name"];
 
 			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => GetScenarioForPlan(choice));
+			btnChoice.Button.onClick.AddListener (() => GetScenarioForPlan(choice["id"]));
 
 			btnList.Add(btnChoice);
 		}
