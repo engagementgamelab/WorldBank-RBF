@@ -117,7 +117,7 @@ public class DialogManager : MonoBehaviour {
 	/// Generate a dialog with text and choice buttons
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, BackButtonDelegate backEvent=null, bool worldSpace=false, bool left=false) {
+	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, BackButtonDelegate backEvent=null, bool worldSpace=false, bool left=false, bool back=false) {
 
 		if (dialogBox == null) {
 			// if(npc == null)
@@ -133,9 +133,14 @@ public class DialogManager : MonoBehaviour {
 		// Setup back button
 		if (worldSpace) {
 			Button backButton = dialogBox.BackButton;
-			backButton.onClick.RemoveAllListeners ();
-			backButton.onClick.AddListener(() => backEvent());
-		}
+			if (btnChoices.Count == 0 || back) {
+				dialogBox.BackButton.gameObject.SetActive (true);
+				backButton.onClick.RemoveAllListeners ();
+				backButton.onClick.AddListener(() => backEvent());
+			} else {
+				dialogBox.BackButton.gameObject.SetActive (false);
+			}
+		} 
 	}
 
 	/// <summary>
@@ -227,7 +232,7 @@ public class DialogManager : MonoBehaviour {
 			DataManager.GetDataForCharacter(currNpc.character).description, 
 			new List<GenericButton>(){ btnChoice },
 			CloseAndUnfocus,
-			true, left
+			true, left, true
 		);
 
 	}
@@ -305,13 +310,14 @@ public class DialogManager : MonoBehaviour {
 			btnList.Add(btnChoice);
 		}
 
-		BackButtonDelegate del = null;
+		// BackButtonDelegate del = null;
+		BackButtonDelegate del = CloseAndUnfocus;
 
-		if (strDialogueKey == "Initial") {
+		/*if (strDialogueKey == "Initial") {
 			del = CloseAndUnfocus;
 		} else {
 			del = delegate { OpenSpeechDialog(currNpc, "Initial", true); };
-		}
+		}*/
 
 		CreateChoiceDialog(strToDisplay, btnList, del, true);
 	}

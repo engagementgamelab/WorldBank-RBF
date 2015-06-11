@@ -24,7 +24,7 @@ public class MapRoute : MB {
 		}
 	}
 
-	[SerializeField] bool unlocked = false;
+	bool unlocked = false;
 	public bool Unlocked {
 		get { return unlocked; }
 		set {
@@ -38,15 +38,15 @@ public class MapRoute : MB {
 		get { return new string[] { city1, city2 }; }
 	}
 
-	public int cost = 1;
+	int cost = 1;
 	public int Cost {
 		get { return cost; }
+		set { 
+			cost = value;
+			Text.text = cost.ToString ();			
+		}
 	}
 	
 	public string city1;
 	public string city2;
-
-	void Awake () {
-		Text.text = cost.ToString ();
-	}
 }

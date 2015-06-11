@@ -58,8 +58,7 @@
       "description": "Malcom [sic] is the line between more urbanized city environment and traditional farmland. The Train station runs between Mile and the Capital, and there is a ferry that departs to Valeria once a day. ",
       "enabled": true,
       "unlocked": true,
-      "npc_interactions": 3,
-      "cost": 3
+      "npc_interactions": 3
     },
     {
       "symbol": "kibari",
@@ -67,8 +66,7 @@
       "description": "Home to the prolific traditional medicine provider (Mr. Todd), this is a bustling city that isn’t as large as Zema or Malcom, but is still the center of trade and commerce for the smaller villages and towns in the central area of the region.",
       "enabled": true,
       "unlocked": false,
-      "npc_interactions": 4,
-      "cost": 4
+      "npc_interactions": 4
     },
     {
       "symbol": "valeria",
@@ -76,8 +74,7 @@
       "description": "About this city",
       "enabled": false,
       "unlocked": false,
-      "npc_interactions": 2,
-      "cost": 4
+      "npc_interactions": 2
     },
     {
       "symbol": "crup",
@@ -85,8 +82,7 @@
       "description": "Accessed initially from the Capital, Crup is a plantation-like farming village that has a deep divide between the high class owners and the workers on the plantations.",
       "enabled": true,
       "unlocked": true,
-      "npc_interactions": 4,
-      "cost": 4
+      "npc_interactions": 4
     },
     {
       "symbol": "mile",
@@ -94,8 +90,7 @@
       "description": "Positioned as a poor yet peaceful place in the mountainous southern region of the land, Mile shows many types of unique farm animals. People sustain themselves through farming the land, and value freedom and autonomy above all. Even though they are the poorest, there is a spiritual connection to their homes and the beauty of the location itself lends to a majority of content people.",
       "enabled": false,
       "unlocked": false,
-      "npc_interactions": 2,
-      "cost": 2
+      "npc_interactions": 2
     },
     {
       "symbol": "zema",
@@ -103,8 +98,7 @@
       "description": "Zema is a skin cleanser marketed by Unilever. It contains camphor, menthol, phenol and eucalyptus, among other ingredients. Originally developed as a sunburn remedy, it is popular among women as a facial cleanser and make-up remover. It can also be used for cleaning chapped, sunburned, or otherwise irritated skin.",
       "enabled": false,
       "unlocked": false,
-      "npc_interactions": 4,
-      "cost": 4
+      "npc_interactions": 4
     },
     {
       "symbol": "capitol",
@@ -112,8 +106,34 @@
       "description": "About this city",
       "enabled": true,
       "unlocked": true,
-      "npc_interactions": 0,
-      "cost": 1
+      "npc_interactions": 0
+    }
+  ],
+  "grading": [
+    {
+      "score": "14-11",
+      "grade": "A",
+      "description": "amazing. Simply stunning results! We are seeing unprecedented increases across the board. This is really going to help the country move in the right direction. I don't think there much else you could have done, and I think if we stay the course we will really make a difference in so many lives over the next three years"
+    },
+    {
+      "score": "10-8",
+      "grade": "B",
+      "description": "This is a pretty good plan. I think there might have been a better way to handle this, but I think this will do just fine! we are seeing increases across the board. With a little tweaking, we might even be able to hit our three year goals"
+    },
+    {
+      "score": "7-4",
+      "grade": "C",
+      "description": "It seems like we are somewhat around where we started. I think we will have to make signfiicant changes to the plan moving forward in order to bring up these numbers. We might even want to redirect the distribution of funds soon."
+    },
+    {
+      "score": "3-1",
+      "grade": "D",
+      "description": "It seems like the plan you suggested has made things worse. We are seeing even less services delivered than before our RBF plan was put into place. Maybe RBF isn't the right answer after all...we will still move forward with the next two years. I would recommend shifting the plan immediately and reorganizing the direction of change you put into place."
+    },
+    {
+      "score": "0-0",
+      "grade": "F",
+      "description": "There are just not enough initiatives put into place for this plan to move forward. Because of this, we weren't able to conduct an evaluation. I would recommend spending more time in the country in order to gather more information. Try visiting multiple cities and learning from many different people. You never know what you might learn."
     }
   ],
   "indicator_affects": {
@@ -1260,8 +1280,80 @@
   "routes": [
     {
       "symbol": "malcom_to_kibari",
-      "enabled": true,
+      "city1": "malcom",
+      "city2": "kibari",
+      "unlocked": true,
       "cost": 3
+    },
+    {
+      "symbol": "capitol_to_malcom",
+      "city1": "capitol",
+      "city2": "malcom",
+      "unlocked": true,
+      "cost": 2
+    },
+    {
+      "symbol": "capitol_to_crup",
+      "city1": "capitol",
+      "city2": "crup",
+      "unlocked": true,
+      "cost": 1
+    },
+    {
+      "symbol": "crup_to_kibari",
+      "city1": "crup",
+      "city2": "kibari",
+      "unlocked": false,
+      "cost": 2
+    },
+    {
+      "symbol": "malcom_to_valeria",
+      "city1": "malcom",
+      "city2": "valeria",
+      "unlocked": false,
+      "cost": 1
+    },
+    {
+      "symbol": "malcom_to_kibari",
+      "city1": "malcom",
+      "city2": "kibari",
+      "unlocked": false,
+      "cost": 2
+    },
+    {
+      "symbol": "malcom_to_mile",
+      "city1": "malcom",
+      "city2": "mile",
+      "unlocked": false,
+      "cost": 2
+    },
+    {
+      "symbol": "valeria_to_zema",
+      "city1": "valeria",
+      "city2": "zema",
+      "unlocked": false,
+      "cost": 1
+    },
+    {
+      "symbol": "zema_to_kibari",
+      "city1": "zema",
+      "city2": "kibari",
+      "unlocked": true,
+      "cost": 3
+    },
+    {
+      "symbol": "kibari_to_mile",
+      "city1": "kibari",
+      "city2": "mile",
+      "unlocked": false,
+      "cost": 1
+    },
+    {
+      "symbol": "mile_to_zema",
+      "city1": "mile",
+      "city2": "zema",
+      "unlocked": true,
+      "cost": 2
     }
   ],
   "unlockables": [

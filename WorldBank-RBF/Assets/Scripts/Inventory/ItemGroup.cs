@@ -25,9 +25,11 @@ public abstract class ItemGroup {
 	}
 
 	public abstract void Initialize (Inventory inventory);
+	public abstract void Set (int count);
 	public abstract void Add (int count);
 	public abstract void Add (InventoryItem item=null);
 	public abstract void Add (List<InventoryItem> newItems);
+	public abstract void Remove (int count);
 	public abstract InventoryItem Remove (InventoryItem item=null);
 	public abstract void Transfer (ItemGroup toGroup, InventoryItem item);
 	public abstract void SetItemOrder (InventoryItem item, int position);
@@ -42,6 +44,15 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 
 	public override void Initialize (Inventory inventory) {
 		this.inventory = inventory;
+	}
+
+	public override void Set (int count) {
+		if (count == Count) return;
+		if (Count < count) {
+			Add (count - Count);
+		} else {
+			Remove (Count - count);
+		}
 	}
 
 	public override void Add (int count) {
@@ -63,6 +74,12 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 				items.Add (newItem as T);
 			}
 			newItems.RemoveAt (0);
+		}
+	}
+
+	public override void Remove (int count) {
+		for (int i = 0; i < count; i ++) {
+			Remove ();
 		}
 	}
 

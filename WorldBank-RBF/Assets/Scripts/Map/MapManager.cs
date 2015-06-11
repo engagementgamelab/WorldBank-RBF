@@ -16,7 +16,7 @@ using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 
-
+// Deprecated 06/07
 // TODO: Tons of cleanup/docs!
 public class MapManager : MonoBehaviour {
 
@@ -258,7 +258,7 @@ public class MapManager : MonoBehaviour {
 		// Get data for selected city
 		Models.City city = DataManager.GetCityInfo(strCitySymbol);
 
-		string strCityTxt = city.description + "\n   <i><color=orange>" + city.cost + " days to travel.</color></i>";
+		string strCityTxt = city.description + "\n   <i><color=orange>";// + city.cost + " days to travel.</color></i>";
 	  
 	  	// Setup go/go back buttons
 	  	GameObject goBtnObj = cityDialog.transform.Find("Action Button").gameObject;
@@ -302,7 +302,7 @@ public class MapManager : MonoBehaviour {
  		// Set city context and go to city
 	    goBtn.onClick.AddListener(() => DataManager.SetSceneContext(city.symbol));
 	    goBtn.onClick.AddListener(() => label.text = "Loading...");
-	    goBtn.onClick.AddListener(() => StartCoroutine( UnlockRoute(city.cost) ));
+	    // goBtn.onClick.AddListener(() => StartCoroutine( UnlockRoute(city.cost) ));
 
 	    goBackBtn.onClick.AddListener(() => CloseCurrent());
 

@@ -120,6 +120,16 @@ public class DataManager {
     }
 
     /// <summary>
+    /// Get all current routes available in game data.
+    /// </summary>
+    /// <returns>An array of Models.Route.</returns>
+    public static Models.Route[] GetAllRoutes ()    {
+        
+        return gameData.routes;
+
+    }
+
+    /// <summary>
     /// Get data for NPC with name specified, or all NPCs in current city.
     /// </summary>
     /// <returns>(Optional) Symbol of the character to get NPC data for; if not used all NPCs in current city are returned.</returns>

@@ -19,7 +19,11 @@ public class InteractionsManager : MonoBehaviour {
 	}
 
 	public bool HasInteractions {
-		get { return !interactions.Empty; }
+		get { 
+			bool has = !interactions.Empty;
+			if (!has) interactionsCounter.Blink ();
+			return has;
+		}
 	}
 
 	public InteractionsCounter interactionsCounter;
@@ -31,8 +35,8 @@ public class InteractionsManager : MonoBehaviour {
 		inventory.Add (interactions);
 	}
 
-	void Start () {
-		interactions.Add (DataManager.GetCityInfo (SceneManager.Instance.sceneName).npc_interactions);
+	public void OnEnterCity (int interactionCount) {
+		interactions.Set (interactionCount);
 		UpdateCount ();
 	}
 

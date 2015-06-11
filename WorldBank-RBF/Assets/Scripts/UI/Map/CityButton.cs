@@ -4,6 +4,14 @@ using System.Collections;
 
 public class CityButton : MB {
 
+	enum State {
+		Locked,
+		Unlocked,
+		Visited
+	}
+
+	State state = State.Locked;
+
 	Button button = null;
 	Button Button {
 		get {
@@ -14,21 +22,17 @@ public class CityButton : MB {
 		}
 	}
 
-	[SerializeField] bool unlocked = false;
 	public bool Unlocked {
-		get { return unlocked; }
-		set { 
-			unlocked = value;
-			Button.interactable = unlocked;
-		}
+		get { return state == State.Unlocked || state == State.Visited; }
 	}
 
-	[SerializeField] bool currentCity = false;
+	public bool Visited {
+		get { return state == State.Visited; }
+	}
+
+	bool currentCity = false;
 	public bool CurrentCity {
 		get { return currentCity; }
-		set { 
-			currentCity = value;
-		}
 	}
 
 	public bool Interactable {
@@ -36,9 +40,40 @@ public class CityButton : MB {
 		set { Button.interactable = value; }
 	}
 
+	Models.City model;
+	public Models.City Model {
+		get {
+			if (model == null) {
+				model = DataManager.GetCityInfo (symbol);
+			}
+			return model;
+		}
+	}
+
 	public string symbol;
+	Color visitedColor = new Color (1f, 0.5f, 0f, 1f);
 
 	void Awake () {
-		Button.interactable = unlocked;
+		Button.interactable = Unlocked;
+		if (symbol == "capitol") Visit ();
+	}
+
+	public void Unlock () {
+		state = State.Unlocked;
+		Button.interactable = true;
+	}
+
+	public bool Visit () {
+		bool wasVisited = state == State.Visited;
+		currentCity = true;
+		state = State.Visited;
+		ColorBlock block = Button.colors;
+		block.normalColor = visitedColor;
+		Button.colors = block;
+		return wasVisited;
+	}
+
+	public void Leave () {
+		currentCity = false;
 	}
 }

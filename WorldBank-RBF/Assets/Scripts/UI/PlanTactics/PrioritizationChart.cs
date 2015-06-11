@@ -5,13 +5,7 @@ public class PrioritizationChart : MonoBehaviour {
 
 	public TacticsColumn tacticsColumn;
 	public PrioritiesColumn prioritiesColumn;
-	bool open = true;
-
-	void Awake () {
-		Close ();
-		
-		// PlayerData.PopulateTestTactics ();
-	}
+	bool open = false;
 
 	void OnEnable () {
 		Open ();
@@ -39,15 +33,4 @@ public class PrioritizationChart : MonoBehaviour {
 		prioritiesColumn.gameObject.SetActive (false);
 		open = false;
 	}
-
-	/*void OnGUI () {
-		GUILayout.BeginHorizontal ();
-		if (GUILayout.Button ("Open")) {
-			Open ();
-		}
-		if (GUILayout.Button ("Close")) {
-			Close ();
-		}
-		GUILayout.EndHorizontal ();
-	}*/
 }

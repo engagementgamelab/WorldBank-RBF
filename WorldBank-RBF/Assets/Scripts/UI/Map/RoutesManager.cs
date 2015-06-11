@@ -30,6 +30,16 @@ public class RoutesManager : MB {
 		}
 	}
 
+	void Start () {
+		Models.Route[] routes = DataManager.GetAllRoutes ();
+		for (int i = 0; i < routes.Length; i ++) {
+			Models.Route route = routes[i];
+			MapRoute mapRoute = FindRoute (route.city1, route.city2);
+			mapRoute.Cost = route.cost;
+			mapRoute.Unlocked = route.unlocked;
+		}
+	}
+
 	public MapRoute FindRoute (string city1, string city2) {
 		MapRoute route;
 		Terminals terminals = new Terminals (city1, city2);
