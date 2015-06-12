@@ -177,20 +177,17 @@ public class DialogManager : MonoBehaviour {
 
 	    scenarioDialog.Header = scenario.name;
 
-	    scenarioDialog.Open();
-
 	    // Get initial dialogue or an advisor's?
 	    if(strAdvisorSymbol == null)
 		    scenarioDialog.Content = scenario.initiating_dialogue;
-		else
-		{
-		}
 
 		// Create buttons for all advisors
 		scenarioDialog.AddAdvisors(ScenarioManager.currentAdvisorOptions);
 
 		// Create buttons for all options if not speaking to advisor
 		scenarioDialog.AddOptions(ScenarioManager.currentCardOptions);
+
+	    scenarioDialog.Open();
 
 	    return scenarioDialog;
 
@@ -203,8 +200,6 @@ public class DialogManager : MonoBehaviour {
 
 	    tacticDialog = ObjectPool.Instantiate<TacticCardDialog>();
 	    tacticDialog.data = tactic;
-
-	    // tacticDialog.transform.SetParent(uiCanvasRoot);
 
 	    tacticDialog.Content = tactic.initiating_dialogue;
 

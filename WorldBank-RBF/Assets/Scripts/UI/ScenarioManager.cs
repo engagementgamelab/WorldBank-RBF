@@ -41,10 +41,9 @@ public class ScenarioManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		PlayerManager.Instance.Authenticate();
-
         // Get plans
-        NetworkManager.Instance.GetURL(DataManager.config.serverRoot + "/plan/all/", PlansRetrieved);
+		if(PlayerManager.Instance.Authenticated)
+	        NetworkManager.Instance.GetURL(DataManager.config.serverRoot + "/plan/all/", PlansRetrieved);
 
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
 
@@ -52,12 +51,12 @@ public class ScenarioManager : MonoBehaviour {
 
 	void Update () {
 
+		// If a tactic card has been enqueued, open it
 		if(openTacticCard)
 		{
 			openTacticCard = false;
 			OpenDialog(true);
 		}
-		
 
 	}
 
@@ -88,61 +87,6 @@ public class ScenarioManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// Open either a scenario or tactic card dialog.
-    /// </summary>
-    /// <param name="isTactic">Is this card for a tactic? (Default: false)</param>
-	public void OpenDialog(bool isTactic=false) {
-
-		if(!isTactic) {
-		
-			Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex);
-
-			currentAdvisorOptions = card.characters.Select(x => x.Key).ToList();
-			currentCardOptions = new List<string>(card.starting_options);
-
-		 	currentScenarioCard = DialogManager.instance.CreateScenarioDialog(card);
-
-	    	// Debug
-	    	cardLabel.text = card.symbol;
-	    	cardLabel.gameObject.SetActive(true);
-
-	    	if(currentTacticCard != null)
-	    	{
-		    	currentTacticCard.transform.SetAsFirstSibling();
-				currentTacticCard.gameObject.SetActive(false);
-				currentTacticCard.gameObject.SetActive(true);		    	
-	    	}
-		
-		}
-		else {
-
-			if(tacticState == "open")
-			{
-				int tacticIndex = new System.Random().Next(0, tacticsAvailable.Count);
-
-				Models.TacticCard card = DataManager.GetTacticCardByName(tacticsAvailable[tacticIndex]);
-				currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
-
-				tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
-
-				if(tacticsAvailable.Count == 0)
-					tacticCardCooldown.Stop();
-			}
-			else 
-			{
-    			// Show tactic card
-    			currentTacticCard.Enable();
-
-				currentTacticCard.GetResultOptions();
-			}
-
-			// Pause tactic card cooldown
-			tacticCardCooldown.Pause();
-		}
-
-	}
-
-    /// <summary>
     /// Increment card index and open next scenario card, or end the scenario.
     /// </summary>
 	public void GetNextCard() {
@@ -159,7 +103,73 @@ public class ScenarioManager : MonoBehaviour {
 
 	}
 
-	private bool QueueTacticCard() {
+    /// <summary>
+    /// Open either a scenario or tactic card dialog.
+    /// </summary>
+    /// <param name="isTactic">Is this card for a tactic? (Default: false)</param>
+	public void OpenDialog(bool isTactic=false) {
+
+		// Open Scenario or Tactic Card?
+		if(!isTactic)
+			OpenScenarioCard();
+		else
+			OpenTacticCard();
+
+	}
+
+	void OpenScenarioCard() {
+
+			// Generate scenario card for the current card index
+			Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex);
+
+			// Generate advisor options
+			currentAdvisorOptions = card.characters.Select(x => x.Key).ToList();
+			currentCardOptions = new List<string>(card.starting_options);
+
+			// Create the card dialog
+		 	currentScenarioCard = DialogManager.instance.CreateScenarioDialog(card);
+
+	    	// Debug
+	    	cardLabel.text = card.symbol;
+	    	cardLabel.gameObject.SetActive(true);
+
+	    	// Temp UI stuff
+	    	if(currentTacticCard != null)
+	    	{
+		    	currentTacticCard.transform.SetAsFirstSibling();
+				currentTacticCard.gameObject.SetActive(false);
+				currentTacticCard.gameObject.SetActive(true);		    	
+	    	}
+	}
+
+	void OpenTacticCard() {
+
+		if(tacticState == "open")
+		{
+			int tacticIndex = new System.Random().Next(0, tacticsAvailable.Count);
+
+			Models.TacticCard card = DataManager.GetTacticCardByName(tacticsAvailable[tacticIndex]);
+			currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
+
+			tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
+
+			if(tacticsAvailable.Count == 0)
+				tacticCardCooldown.Stop();
+		}
+		else 
+		{
+			// Show tactic card
+			currentTacticCard.Enable();
+
+			currentTacticCard.GetResultOptions();
+		}
+
+		// Pause tactic card cooldown
+		tacticCardCooldown.Pause();
+	
+	}
+
+	bool QueueTacticCard() {
 
 		openTacticCard = true;
 
@@ -170,12 +180,12 @@ public class ScenarioManager : MonoBehaviour {
     /// Calls API endpoint for handling scenario assignment given a plan ID.
     /// </summary>
     /// <param name="plandId">The plan ID that will trigger a scenario assignment.</param>
-    private void GetScenarioForPlan(string planId) {
+    void GetScenarioForPlan(string planId) {
 
     	// Create dict for POST
         Dictionary<string, object> saveFields = new Dictionary<string, object>();
         
-        saveFields.Add("user_id", PlayerManager._userId);
+        saveFields.Add("user_id", PlayerManager.Instance.ID);
         saveFields.Add("plan_id", planId);
 
         // Save user info
@@ -187,7 +197,7 @@ public class ScenarioManager : MonoBehaviour {
     /// Callback that handles assigning the player a scenario after it is set on server-side.
     /// </summary>
     /// <param name="response">Dictionary response from /user/scenario/ endpoint.</param>
-    private void AssignScenario(Dictionary<string, object> response) {
+    void AssignScenario(Dictionary<string, object> response) {
 
 		tacticCardCooldown = new TimerUtils.Cooldown();
 		tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
@@ -211,7 +221,7 @@ public class ScenarioManager : MonoBehaviour {
     /// <summary>
     // Callback for ScenarioEvent, filtering for type of event
     /// </summary>
-    private void OnScenarioEvent(ScenarioEvent e) {
+    void OnScenarioEvent(ScenarioEvent e) {
 
     	switch(e.eventType) {
 

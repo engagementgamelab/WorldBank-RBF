@@ -731,7 +731,7 @@
       {
         "symbol": "government_overreach_on_verification2",
         "name": "Government overreach on verification",
-        "priority": 1,
+        "priority": 3,
         "initiating_npc": "provider_2",
         "initiating_dialogue": "Card 2",
         "starting_options": [
@@ -796,7 +796,7 @@
       {
         "symbol": "government_overreach_on_verification3",
         "name": "Government overreach on verification",
-        "priority": 1,
+        "priority": 2,
         "initiating_npc": "provider_2",
         "initiating_dialogue": "Card 3",
         "starting_options": [
@@ -861,7 +861,7 @@
       {
         "symbol": "government_overreach_on_verification",
         "name": "Government overreach on verification",
-        "priority": 1,
+        "priority": 4,
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
@@ -926,7 +926,7 @@
       {
         "symbol": "government_overreach_on_verification",
         "name": "Government overreach on verification",
-        "priority": 1,
+        "priority": 5,
         "initiating_npc": "provider_2",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
@@ -1264,6 +1264,29 @@
           "observe": "OK, we'll wait and see if anything changes."
         },
         "results": "This is what I found out!"
+      },
+      {
+        "symbol": "tactic_card_7",
+        "tactic_name": "unlockable_use_ngo",
+        "name": "Tactic card name",
+        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
+        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "cooldown": [
+          5,
+          5,
+          10
+        ],
+        "new_options": {
+          "information_campaign": "Information Campaign",
+          "transportation_vouchers": "Add travel vouchers",
+          "increase_budget": "Increase budget for travelling nurses"
+        },
+        "feedback": {
+          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
+          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
+          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
       }
     ]
   },
@@ -1282,77 +1305,84 @@
       "symbol": "malcom_to_kibari",
       "city1": "malcom",
       "city2": "kibari",
-      "unlocked": true,
+      "enabled": true,
       "cost": 3
     },
     {
       "symbol": "capitol_to_malcom",
       "city1": "capitol",
       "city2": "malcom",
-      "unlocked": true,
+      "enabled": true,
       "cost": 2
     },
     {
       "symbol": "capitol_to_crup",
       "city1": "capitol",
-      "city2": "crup",
-      "unlocked": true,
+      "city2": "malcom",
+      "enabled": true,
       "cost": 1
     },
     {
       "symbol": "crup_to_kibari",
       "city1": "crup",
       "city2": "kibari",
-      "unlocked": false,
+      "enabled": false,
       "cost": 2
     },
     {
       "symbol": "malcom_to_valeria",
       "city1": "malcom",
       "city2": "valeria",
-      "unlocked": false,
+      "enabled": false,
       "cost": 1
     },
     {
       "symbol": "malcom_to_kibari",
       "city1": "malcom",
       "city2": "kibari",
-      "unlocked": false,
+      "enabled": false,
       "cost": 2
     },
     {
       "symbol": "malcom_to_mile",
       "city1": "malcom",
-      "city2": "mile",
-      "unlocked": false,
+      "city2": "kibari",
+      "enabled": false,
       "cost": 2
     },
     {
       "symbol": "valeria_to_zema",
       "city1": "valeria",
       "city2": "zema",
-      "unlocked": false,
+      "enabled": false,
       "cost": 1
     },
     {
       "symbol": "zema_to_kibari",
       "city1": "zema",
       "city2": "kibari",
-      "unlocked": true,
+      "enabled": true,
+      "cost": 3
+    },
+    {
+      "symbol": "kibari_to_crup",
+      "city1": "kibari",
+      "city2": "crup",
+      "enabled": false,
       "cost": 3
     },
     {
       "symbol": "kibari_to_mile",
       "city1": "kibari",
-      "city2": "mile",
-      "unlocked": false,
+      "city2": "crup",
+      "enabled": false,
       "cost": 1
     },
     {
       "symbol": "mile_to_zema",
       "city1": "mile",
       "city2": "zema",
-      "unlocked": true,
+      "enabled": true,
       "cost": 2
     }
   ],

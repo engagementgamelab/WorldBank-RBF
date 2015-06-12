@@ -110,10 +110,11 @@ public class Models {
 
     }
 
-    public class ScenarioCard {
+    public class ScenarioCard : IComparable {
 
         public string symbol { get; set; }
         public string name { get; set; }
+        public int priority { get; set; }
         public string initiating_npc { get; set; }
         public string initiating_dialogue { get; set; }
         public string[] starting_options { get; set; }
@@ -121,6 +122,16 @@ public class Models {
         public string[] final_options { get; set; }
         public string[] final_options_affects { get; set; }
         public Dictionary<string, Advisor> characters { get; set; }
+
+        // Sort ScenarioCard by priority
+        public int CompareTo(object obj)
+        {
+            if (obj is ScenarioCard) {
+              return this.priority.CompareTo((obj as ScenarioCard).priority);
+            }
+        
+            throw new ArgumentException("Object is not a ScenarioCard");
+        }
 
     }
 

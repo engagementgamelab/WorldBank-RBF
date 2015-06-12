@@ -177,13 +177,20 @@ public class DataManager {
     public static Models.ScenarioCard GetScenarioCardByIndex(int cardIndex) {
 
         if(currentScenario == null)
+        {
             currentScenario =  gameData.phase_two.GetScenario(currentSceneContext);
+            Array.Sort(currentScenario);
+        }
 
         Models.ScenarioCard scenarioRef = currentScenario[cardIndex];
         
         return scenarioRef;
     }
 
+    /// <summary>
+    /// Get the length of the current scenario.
+    /// </summary>
+    /// <returns>Scenario length (int)</returns>
     public static int ScenarioLength() { return gameData.phase_two.GetScenario(currentSceneContext).Length; }
 
     /// <summary>

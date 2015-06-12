@@ -27,19 +27,50 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
-    public static bool _isAuthenticated;
-    public static string _userId;
+    /// <summary>
+    /// Is player authenticated?
+    /// </summary>
+    /// <returns>Yes or no.</returns>
+    public bool Authenticated {
+        get {
+            return _isAuthenticated;
+        }
+    }
 
-    private static Models.Plan _userCurrentPlan;
+    /// <summary>
+    /// Get player's ID.
+    /// </summary>
+    /// <returns>The player's ID.</returns>
+    public string ID {
+        get {
+            return _playerId;
+        }
+    }
 
-    public void Authenticate() {
+    private bool _isAuthenticated;
+    private string _playerId;
+
+    private Models.Plan _userCurrentPlan;
+
+    public void Authenticate(string email, string pass) {
 
         Dictionary<string, object> authFields = new Dictionary<string, object>();
 
-        authFields.Add("email", "johnny@elab.emerson.edu");
-        authFields.Add("password", "password");
+        authFields.Add("email", email);
+        authFields.Add("password", pass);
 
         NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/auth/", authFields, AuthCallback);
+        
+    }
+
+    public void Register(string email, string pass, string passConfirm) {
+
+        Dictionary<string, object> registerFields = new Dictionary<string, object>();
+
+        registerFields.Add("email", email);
+        registerFields.Add("password", pass);
+
+        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/create/", registerFields);
         
     }
 
@@ -51,12 +82,12 @@ public class PlayerManager : MonoBehaviour {
         
         writer.Write(response["user"]);
 
-        // Debug.Log(response["user"].ToObject<Models.User>());
+        Debug.Log("User authenticated: " + response["user"]);
 
         // Set user info
         Models.User user = JsonReader.Deserialize<Models.User>(output.ToString());
 
-        _userId = user._id;
+        _playerId = user._id;
         _isAuthenticated = Convert.ToBoolean(response["auth"]);
         
     }
@@ -64,7 +95,7 @@ public class PlayerManager : MonoBehaviour {
     public void SaveData(Dictionary<string, object> saveFields, Action<Dictionary<string, object>> response=null) {
 
         // Insert user ID
-        saveFields.Add("user_id", _userId);
+        saveFields.Add("user_id", _playerId);
 
         // Save user info
         NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/save/", saveFields, response, true);

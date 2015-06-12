@@ -51,6 +51,10 @@ public class PlayerData : MonoBehaviour {
 	private static List<Models.Unlockable> playerImplementations = new List<Models.Unlockable>();
 	private static Dictionary<string, int> playerUnlockCounts = new Dictionary<string, int>();
 
+	void Awake () {
+		PlayerData.PopulateTestTactics ();
+	}
+
 	/// <summary>
 	/// Unlocks the specified implementation for player and increments its unlock count
 	/// </summary>
@@ -59,27 +63,7 @@ public class PlayerData : MonoBehaviour {
 
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
 		PlanTacticGroup.Add (new PlanTacticItem (unlockRef));
-		Events.instance.Raise (new UnlockImplementationEvent ());
-
-		// PlayerManager.Instance.SaveData (PlanTacticGroup.GetUniqueTacticSymbols ());
-
-		// PlayerManager.Instance.SaveData (PlanTacticGroup.GetUniqueTacticSymbols ());
-		// TODO: I think ^^this^^ replaces everything below (haven't checked w/ PlayerManager yet)
-
-		/*Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
-
-		// Add this unlockable to the player's unlocks inventory
-		playerImplementations.Add(unlockRef);
-
-		// If player already unlocked this one, increment the unlock count
-		// Otherwise, set count to 1
-		if(playerUnlockCounts.ContainsKey(strSymbol))
-			playerUnlockCounts[strSymbol]++;
-		else
-			playerUnlockCounts.Add(strSymbol, 1);
-
-		PlayerManager.Instance.SaveData(playerUnlockCounts.Keys.ToArray());*/
-
+		
 	}
 
 	public static void SetTactics (PlanTacticGroup tacticGroup) {
@@ -88,5 +72,15 @@ public class PlayerData : MonoBehaviour {
 
 	public static void SetPriorities (TacticPriorityGroup priorityGroup) {
 		tacticPriorityGroup = priorityGroup;
+	}
+
+	// TODO: just for testing -- don't keep this
+	public static void PopulateTestTactics () {
+		/*PlanTacticGroup.Add (new PlanTacticItem (null, 1));
+		PlanTacticGroup.Add (new PlanTacticItem (null, 2));
+		PlanTacticGroup.Add (new PlanTacticItem (null, 3));
+		PlanTacticGroup.Add (new PlanTacticItem (null, 4));
+		PlanTacticGroup.Add (new PlanTacticItem (null, 5));
+		PlanTacticGroup.Add (new PlanTacticItem (null, 6));*/
 	}
 }
