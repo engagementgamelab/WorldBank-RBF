@@ -4,13 +4,19 @@ using System.Collections;
 
 public class CityButton : MB {
 
-	enum State {
+	public enum State {
 		Locked,
 		Unlocked,
-		Visited
+		Visiting,
+		ExtraDayUnlocked,
+		StayingExtraDay,
+		PassThrough
 	}
 
 	State state = State.Locked;
+	public State CityState {
+		get { return state; }
+	}
 
 	Button button = null;
 	Button Button {
@@ -22,17 +28,8 @@ public class CityButton : MB {
 		}
 	}
 
-	public bool Unlocked {
-		get { return state == State.Unlocked || state == State.Visited; }
-	}
-
-	public bool Visited {
-		get { return state == State.Visited; }
-	}
-
-	bool currentCity = false;
-	public bool CurrentCity {
-		get { return currentCity; }
+	public bool Clickable {
+		get { return state != State.Locked; }
 	}
 
 	public bool Interactable {
@@ -50,30 +47,65 @@ public class CityButton : MB {
 		}
 	}
 
+	CityInfoBox infoBox;
+	CityInfoBox InfoBox {
+		get {
+			if (infoBox == null) {
+				infoBox = GameObject.Find ("CityInfoBox").GetScript<CityInfoBox> ();
+			}
+			return infoBox;
+		}
+	}
+
 	public string symbol;
 	Color visitedColor = new Color (1f, 0.5f, 0f, 1f);
 
 	void Awake () {
-		Button.interactable = Unlocked;
-		if (symbol == "capitol") Visit ();
+		Button.interactable = false;
+		Button.onClick.AddListener (HandleClick);
+		if (symbol == "capitol") {
+			state = State.PassThrough;
+			Button.interactable = true;
+		}
+	}
+
+	public void UpdateState (bool currentCity) {
+		if (state == State.Locked) return;
+		if (currentCity) {
+			bool hasInteractions = InteractionsManager.Instance.HasInteractions;
+			switch (state) {
+				case State.Visiting:
+					if (!hasInteractions) 
+						state = State.ExtraDayUnlocked;
+					break;
+				case State.ExtraDayUnlocked:
+				case State.StayingExtraDay:
+					if (!hasInteractions)
+						state = State.PassThrough;
+					break;
+			}
+		}
+	}
+
+	public void HandleClick () {
+		if (state == State.Locked) return;
+		InfoBox.Open (this);
+	}
+
+	public void Visit () {
+		if (state == State.Unlocked)
+			state = State.Visiting;
+	}
+
+	public void StayExtraDay () {
+		if (state == State.ExtraDayUnlocked)
+			state = State.StayingExtraDay;
 	}
 
 	public void Unlock () {
-		state = State.Unlocked;
-		Button.interactable = true;
-	}
-
-	public bool Visit () {
-		bool wasVisited = state == State.Visited;
-		currentCity = true;
-		state = State.Visited;
-		ColorBlock block = Button.colors;
-		block.normalColor = visitedColor;
-		Button.colors = block;
-		return wasVisited;
-	}
-
-	public void Leave () {
-		currentCity = false;
+		if (state == State.Locked) {
+			state = State.Unlocked;
+			Button.interactable = true;
+		}
 	}
 }

@@ -31,6 +31,7 @@ public abstract class ItemGroup {
 	public abstract void Add (List<InventoryItem> newItems);
 	public abstract void Remove (int count);
 	public abstract InventoryItem Remove (InventoryItem item=null);
+	public abstract void Clear ();
 	public abstract void Transfer (ItemGroup toGroup, InventoryItem item);
 	public abstract void SetItemOrder (InventoryItem item, int position);
 	public abstract void MoveItemUp (InventoryItem item);
@@ -94,6 +95,10 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 			items.Remove (item);
 		}
 		return removedItem;
+	}
+
+	public override void Clear () {
+		items.Clear ();
 	}
 
 	// Moves item from this group to another group

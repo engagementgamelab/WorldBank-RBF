@@ -10,10 +10,10 @@ public class CurrentCityIndicator : MB {
 
 	bool pulsing = false;
 
-	public void Move (Vector3 to) {
+	public void Move (Vector3 to, System.Action onEnd=null) {
 		if (moving) return;
 		moving = true;
-		StartCoroutine (CoMove (Position, to));
+		StartCoroutine (CoMove (Position, to, onEnd));
 	}
 
 	void OnEnable () {
@@ -34,7 +34,7 @@ public class CurrentCityIndicator : MB {
 		}
 	}
 
-	IEnumerator CoMove (Vector3 startPosition, Vector3 endPosition) {
+	IEnumerator CoMove (Vector3 startPosition, Vector3 endPosition, System.Action onEnd) {
 		
 		float time = 1f;
 		float eTime = 0f;
@@ -47,5 +47,6 @@ public class CurrentCityIndicator : MB {
 		}
 
 		moving = false;
+		if (onEnd != null) onEnd ();
 	}
 }

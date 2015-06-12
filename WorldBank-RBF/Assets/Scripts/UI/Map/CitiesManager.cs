@@ -41,57 +41,96 @@ public class CitiesManager : MB {
 	}
 
 	string currentCitySymbol = "capitol";
+	public string CurrentCitySymbol {
+		get { return currentCitySymbol; }
+	}
 
 	public CityInfoBox cityInfoBox;
 	public RoutesManager routesManager;
 	public DayCounter dayCounter;
 	public CurrentCityIndicator currentCityIndicator;
+	public GameObject extraDayPrompt;
+	bool initialized = false;
 
 	void Start () {
+		UpdateUnlockedCities ();
+		initialized = true;
+	}
+
+	void OnEnable () {
+		if (!initialized) return;
+		UpdateUnlockedCities ();
+		foreach (var city in Cities) {
+			city.Value.UpdateState (IsCurrentCity (city.Value.symbol));
+		}
+	}
+
+	public bool IsCurrentCity (string symbol) {
+		return symbol == currentCitySymbol;
+	}
+
+	public bool CanVisitCity (string symbol) {
+		return !currentCityIndicator.Moving 
+			&& dayCounter.Count >= RouteCost (currentCitySymbol, symbol);
+	}
+
+	public void StayExtraDay (string symbol) {
+		dayCounter.RemoveDays (1);
+		CurrentCity.StayExtraDay ();
+		InteractionsManager.Instance.OnStayExtraDay (symbol);
+		NotebookManager.Instance.Close ();
+	}
+
+	public void VisitCity (string symbol) {
+		dayCounter.RemoveDays (RouteCost (currentCitySymbol, symbol));
+		currentCitySymbol = symbol;
+		CurrentCity.Visit ();
+		InteractionsManager.Instance.OnEnterCity (CurrentCity.Model.npc_interactions);
+		MoveIndicator (OnVisit);
+	}
+
+	public void TravelToCity (string symbol) {
+		dayCounter.RemoveDays (RouteCost (currentCitySymbol, symbol));
+		currentCitySymbol = symbol;
+		InteractionsManager.Instance.OnEnterCity (0);
+		MoveIndicator (OnTravel);
+	}
+	
+	void UpdateUnlockedCities () {
 		Models.City[] models = DataManager.GetAllCities ();
 		for (int i = 0; i < models.Length; i ++) {
 			Models.City model = models[i];
-			if (model.unlocked) Cities[model.symbol].Unlock ();
+			string symbol = model.symbol;
+			if (model.unlocked && CanVisitCity (symbol)) 
+				Cities[symbol].Unlock ();
 		}
-	}
-
-	public void OnClickCity (CityButton button) {
-		cityInfoBox.Open (button);
-	}
-
-	public bool RequestVisitCity (string symbol) {
-		if (currentCityIndicator.Moving) return false;
-		MapRoute route = routesManager.FindRoute (currentCitySymbol, symbol);
-		if (dayCounter.RemoveDays (route.Cost)) {
-			Cities[currentCitySymbol].Leave ();
-			currentCitySymbol = symbol;
-			VisitCity ();
-			UpdateInteractableCities ();
-			MoveIndicator ();
-			return true;
-		} else {
-			Debug.Log ("MOTHERFUNKER!!! out of DAYS!!!!!");
-			return false;
-		}
-	}
-
-	void VisitCity () {
-		bool wasVisited = CurrentCity.Visit ();
-		InteractionsManager.Instance.OnEnterCity (
-			wasVisited ? 0 : CurrentCity.Model.npc_interactions);
-		ParallaxLayerManager.Instance.Load (CurrentCity.symbol);
 	}
 
 	void UpdateInteractableCities () {
 		foreach (var city in Cities) {
 			city.Value.Interactable = 
-				city.Value.Unlocked 
+				city.Value.Clickable 
 				&& routesManager.RouteExists (city.Key, currentCitySymbol)
-				|| city.Value.CurrentCity;
+				|| IsCurrentCity (city.Value.symbol);
 		}
 	}
 
-	void MoveIndicator () {
-		currentCityIndicator.Move (CurrentCity.Position);
+	void MoveIndicator (System.Action onArrive) {
+		currentCityIndicator.Move (CurrentCity.Position, onArrive);
+	}
+
+	void OnVisit () {
+		UpdateInteractableCities ();
+		ParallaxLayerManager.Instance.Load (currentCitySymbol);
+		NotebookManager.Instance.Close ();
+	}
+
+	void OnTravel () {
+		UpdateInteractableCities ();
+	}
+
+	int RouteCost (string city1, string city2) {
+		if (!routesManager.RouteExists (city1, city2)) return 0;
+		return routesManager.FindRoute (city1, city2).Cost;
 	}
 }

@@ -30,6 +30,21 @@ public class NotebookManager : MB {
 		}
 	}
 
+	static NotebookManager instance = null;
+	static public NotebookManager Instance {
+		get {
+			if (instance == null) {
+				instance = Object.FindObjectOfType (typeof (NotebookManager)) as NotebookManager;
+				if (instance == null) {
+					GameObject go = new GameObject ("NotebookManager");
+					DontDestroyOnLoad (go);
+					instance = go.AddComponent<NotebookManager>();
+				}
+			}
+			return instance;
+		}
+	}
+
 	CameraPositioner cameraPositioner = null;
 	CameraPositioner CameraPositioner {
 		get { 
@@ -40,13 +55,18 @@ public class NotebookManager : MB {
 		}
 	}
 
-	bool open = false;
+	bool startOpen = true;
+	bool open = true;
 	string activeCanvas = "map";
 
 	void Awake () {
-
-		Close ();
-
+		if (startOpen) {
+			open = false;
+			Open ();
+		} else {
+			open = true;
+			Close ();
+		}
 	}
 
 	public void OpenMap () {
@@ -63,12 +83,30 @@ public class NotebookManager : MB {
 
 	public void ToggleNotebook () {
 		if (open) {
-			open = false;
 			Close ();
 		} else if (NPCFocusBehavior.Instance.FocusLevel == FocusLevel.Default) {
-			open = true;
 			Open ();
 		}
+	}
+
+	public void Open () {
+		if (open) return;
+		OpenCanvas (activeCanvas);
+		tabGroup.SetActive (true);
+		notebookCollider.SetActive (true);
+		CameraPositioner.Drag.Enabled = false;
+		open = true;
+	}
+
+	public void Close () {
+		if (!open || CitiesManager.Instance.CurrentCitySymbol == "capitol") return;
+		foreach (var canvas in Canvases) {
+			canvas.Value.SetActive (false);
+		}
+		tabGroup.SetActive (false);
+		notebookCollider.SetActive (false);
+		CameraPositioner.Drag.Enabled = true;
+		open = false;
 	}
 
 	public void NamePlan() {
@@ -105,22 +143,6 @@ public class NotebookManager : MB {
 			canvas.Value.SetActive (canvas.Key == id);
 		}
 		activeCanvas = id;
-	}
-
-	void Open () {
-		OpenCanvas (activeCanvas);
-		tabGroup.SetActive (true);
-		notebookCollider.SetActive (true);
-		CameraPositioner.Drag.Enabled = false;
-	}
-
-	void Close () {
-		foreach (var canvas in Canvases) {
-			canvas.Value.SetActive (false);
-		}
-		tabGroup.SetActive (false);
-		notebookCollider.SetActive (false);
-		CameraPositioner.Drag.Enabled = true;
 	}
 
 	// Get response from submitting a plan

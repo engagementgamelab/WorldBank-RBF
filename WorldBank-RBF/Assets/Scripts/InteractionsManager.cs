@@ -33,14 +33,15 @@ public class InteractionsManager : MonoBehaviour {
 
 	void Awake () {
 		inventory.Add (interactions);
-
-		// TODO: remove
-		interactions.Set (5);
-		UpdateCount ();
 	}
 
 	public void OnEnterCity (int interactionCount) {
 		interactions.Set (interactionCount);
+		UpdateCount ();
+	}
+
+	public void OnStayExtraDay (string citySymbol) {
+		interactions.Set (GetExtraDayInteractionCount (citySymbol));
 		UpdateCount ();
 	}
 
@@ -53,5 +54,16 @@ public class InteractionsManager : MonoBehaviour {
 
 	void UpdateCount () {
 		interactionsCounter.Count = interactions.Count;
+	}
+
+	void OnGUI () {
+		if (GUILayout.Button ("0 interactions")) {
+			interactions.Clear ();
+			UpdateCount ();
+		}
+	}
+
+	int GetExtraDayInteractionCount (string citySymbol) {
+		return DataManager.GetCityNPCCount (citySymbol) - DataManager.GetCityInfo (citySymbol).npc_interactions;
 	}
 }

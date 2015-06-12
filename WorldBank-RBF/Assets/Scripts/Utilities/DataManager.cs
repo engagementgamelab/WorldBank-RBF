@@ -149,6 +149,10 @@ public class DataManager {
         
     }
 
+    public static int GetCityNPCCount (string citySymbol) {
+        return gameData.phase_one[citySymbol].Length;
+    }
+
     /// <summary>
     /// Get a reference to a particular Unlockable given its symbol
     /// </summary>

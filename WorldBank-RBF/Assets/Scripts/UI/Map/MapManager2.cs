@@ -21,15 +21,4 @@ public class MapManager2 : MB {
 	void Close () {
 		Canvas.enabled = false;
 	}
-
-	/*void OnGUI () {
-		GUILayout.BeginHorizontal ();
-		if (GUILayout.Button ("Open")) {
-			Open ();
-		}
-		if (GUILayout.Button ("Close")) {
-			Close ();
-		}
-		GUILayout.EndHorizontal ();
-	}*/
 }
