@@ -46,7 +46,10 @@ public class SceneManager : MonoBehaviour {
 		if(!PlayerManager.Instance.Authenticated)
 		{
 			ObjectPool.Instantiate<PlayerLoginUI>();
-			// PlayerManager.Instance.Authenticate();
+			
+			#if UNITY_EDITOR
+				PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
+			#endif
 		}
 	}
 
@@ -84,7 +87,12 @@ public class SceneManager : MonoBehaviour {
 
 		}
 		// Fallback: load game data from local config
-		catch {
+		catch(System.Exception e) {
+
+			// If in editor, always throw so we catch issues
+			#if UNITY_EDITOR
+				throw new System.Exception("Unable to obtain game data due to error '" + e + "'");
+			#endif
  
 	        TextAsset dataJson = (TextAsset)Resources.Load("data", typeof(TextAsset));
 			StringReader strData = new StringReader(dataJson.text);

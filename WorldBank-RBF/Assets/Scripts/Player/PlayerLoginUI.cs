@@ -25,7 +25,7 @@ public class PlayerLoginUI : MB {
 	GameObject btnRegister;
 	GameObject btnNewUser;
 
-	/*void Start() {
+	void Start() {
 
 		// Ensure UI is under our canvas
 		transform.SetParent(GameObject.FindGameObjectsWithTag("CanvasRoot")[0].transform);
@@ -37,7 +37,10 @@ public class PlayerLoginUI : MB {
 		btnRegister = transform.Find("RegisterButton").gameObject;
 		btnNewUser = transform.Find("NewUserButton").gameObject;
 
-	}*/
+		// Listen for cooldown tick
+		Events.instance.AddListener<PlayerFormEvent>(OnFormEvent);
+
+	}
 
 	public void Login() {
 
@@ -61,5 +64,11 @@ public class PlayerLoginUI : MB {
 
 
 	}
+
+    private void OnFormEvent(PlayerFormEvent e) {
+
+    	txtError.gameObject.SetActive(true);
+
+    }
 
 }

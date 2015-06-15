@@ -76,6 +76,9 @@ public class PlayerManager : MonoBehaviour {
 
     public void AuthCallback(Dictionary<string, object> response) {
 
+        if(response["error"] != null)            
+            Events.instance.Raise(new PlayerFormEvent(response["error"].ToString()));
+
         System.Text.StringBuilder output = new System.Text.StringBuilder();
         
         JsonWriter writer = new JsonWriter (output);

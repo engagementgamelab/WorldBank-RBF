@@ -86,6 +86,8 @@ public class NetworkManager : MonoBehaviour {
         }
     }
 
+
+
     public string DownloadDataFromURL(string url) {
 
         WebClient client = new WebClient();
@@ -108,6 +110,8 @@ public class NetworkManager : MonoBehaviour {
 
     IEnumerator WaitForRequest(string url, Action<string> responseAction=null)
      {
+        Debug.Log("Requesting: " + url);
+
         WWW www = new WWW(url);
 
         yield return www;

@@ -26,6 +26,7 @@ public class DataManager {
     public static List<string> tacticNames;
 
     private static Models.GameData gameData;
+    private static Models.GameDataTest gameDataTest;
 
     private static Models.ScenarioCard[] currentScenario;
 
@@ -61,12 +62,13 @@ public class DataManager {
             // _readerSettings.AddTypeConverter (new Models.GameDataConverter());
 
             JsonReader reader = new JsonReader(data, _readerSettings);
-
             
             gameData = reader.Deserialize<Models.GameData>();
+            // gameDataTest = reader.Deserialize<Models.GameDataTest>();
 
             // Store current tactic names in a list
-            tacticNames = gameData.phase_two.tactics.Select(tactic => tactic.tactic_name).ToList();
+            if(gameData.phase_two.tactics != null && gameData.phase_two.tactics.Length > 0)
+                tacticNames = gameData.phase_two.tactics.Select(tactic => tactic.tactic_name).ToList();
 
         }
         catch(JsonDeserializationException e) {
