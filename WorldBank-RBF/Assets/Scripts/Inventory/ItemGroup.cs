@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public delegate void OnUpdateCount ();
+public delegate void OnEmpty ();
+
 public abstract class ItemGroup {
 
 	public abstract string Name { get; }
@@ -24,6 +27,9 @@ public abstract class ItemGroup {
 		get { return items.Count == 0; }
 	}
 
+	public OnUpdateCount onUpdateCount;
+	public OnEmpty onEmpty;
+
 	public abstract void Initialize (Inventory inventory);
 	public abstract void Set (int count);
 	public abstract void Add (int count);
@@ -36,6 +42,8 @@ public abstract class ItemGroup {
 	public abstract void SetItemOrder (InventoryItem item, int position);
 	public abstract void MoveItemUp (InventoryItem item);
 	public abstract void MoveItemDown (InventoryItem item);
+	protected abstract void SendUpdateCountMessage ();
+	protected abstract void SendEmptyMessage ();
 	public abstract void Print ();
 }
 
@@ -68,6 +76,7 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	}
 
 	public override void Add (List<InventoryItem> newItems) {
+		
 		while (newItems.Count > 0) {
 			InventoryItem newItem = newItems[0];
 			if (newItem != null) {
@@ -76,6 +85,8 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 			}
 			newItems.RemoveAt (0);
 		}
+
+		SendUpdateCountMessage ();
 	}
 
 	public override void Remove (int count) {
@@ -85,6 +96,7 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	}
 
 	public override InventoryItem Remove (InventoryItem item=null) {
+		
 		if (Empty) return null;
 		InventoryItem removedItem = (item == null)
 			? removedItem = items[0]
@@ -94,6 +106,10 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 		} else {
 			items.Remove (item);
 		}
+
+		SendUpdateCountMessage ();
+		if (Empty) SendEmptyMessage ();
+		
 		return removedItem;
 	}
 
@@ -119,6 +135,14 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 
 	public override void MoveItemDown (InventoryItem item) {
 		SetItemOrder (item, items.IndexOf (item)+1);
+	}
+
+	protected override void SendUpdateCountMessage () {
+		if (onUpdateCount != null) onUpdateCount ();
+	}
+
+	protected override void SendEmptyMessage () {
+		if (onEmpty != null) onEmpty ();
 	}
 
 	public override void Print () {

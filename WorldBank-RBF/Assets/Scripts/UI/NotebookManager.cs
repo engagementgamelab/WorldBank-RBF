@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +10,8 @@ public class NotebookManager : MB {
 	public GameObject data;
 	public GameObject tabGroup;
 	public GameObject notebookCollider;
+	public DayCounter dayCounter;
+	public CitiesManager citiesManager;
 
 	public RectTransform namingPanel;
 	public RectTransform feedbackPanel;
@@ -35,11 +37,6 @@ public class NotebookManager : MB {
 		get {
 			if (instance == null) {
 				instance = Object.FindObjectOfType (typeof (NotebookManager)) as NotebookManager;
-				if (instance == null) {
-					GameObject go = new GameObject ("NotebookManager");
-					DontDestroyOnLoad (go);
-					instance = go.AddComponent<NotebookManager>();
-				}
 			}
 			return instance;
 		}
@@ -55,12 +52,32 @@ public class NotebookManager : MB {
 		}
 	}
 
-	bool startOpen = true;
+	bool CanCloseNotebook {
+		get {
+			return (
+				open
+				&& citiesManager.CurrentCitySymbol != "capitol"
+				&& state != State.MakingPlan
+			);
+		}
+	}
+
+	public enum State {
+		Traveling, MakingPlan
+	}
+
+	State state = State.Traveling;
+
+	public bool MakingPlan {
+		get { return state == State.MakingPlan; }
+	}
+
+	bool openAtStart = true;
 	bool open = true;
 	string activeCanvas = "map";
 
-	void Awake () {
-		if (startOpen) {
+	void Start () {
+		if (openAtStart) {
 			open = false;
 			Open ();
 		} else {
@@ -91,6 +108,8 @@ public class NotebookManager : MB {
 
 	public void Open () {
 		if (open) return;
+		UpdateState ();
+		SetActiveCanvasOnOpen ();
 		OpenCanvas (activeCanvas);
 		tabGroup.SetActive (true);
 		notebookCollider.SetActive (true);
@@ -99,7 +118,7 @@ public class NotebookManager : MB {
 	}
 
 	public void Close () {
-		if (!open || CitiesManager.Instance.CurrentCitySymbol == "capitol") return;
+		if (!CanCloseNotebook) return;
 		foreach (var canvas in Canvases) {
 			canvas.Value.SetActive (false);
 		}
@@ -131,18 +150,29 @@ public class NotebookManager : MB {
 
 	}
 
-	// Continues to phase  two
-	public void Continue() {
-
-		Application.LoadLevel("PhaseTwo");
-
-	}
-
 	void OpenCanvas (string id) {
 		foreach (var canvas in Canvases) {
 			canvas.Value.SetActive (canvas.Key == id);
 		}
 		activeCanvas = id;
+	}
+
+	void SetActiveCanvasOnOpen () {
+		if (state == State.MakingPlan)
+			activeCanvas = "priorities";
+	}
+
+	void UpdateState () {
+		if (!dayCounter.HasDays && !InteractionsManager.Instance.HasInteractions) {
+			state = State.MakingPlan;
+		}
+	}
+
+	// Continues to phase  two
+	public void Continue() {
+
+		Application.LoadLevel("PhaseTwo");
+
 	}
 
 	// Get response from submitting a plan

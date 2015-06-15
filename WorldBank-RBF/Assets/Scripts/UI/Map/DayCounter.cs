@@ -14,24 +14,39 @@ public class DayCounter : MB {
 		}
 	}
 
-	int count = 0;
 	public int Count {
-		get { return count; }
-		set {
-			count = value;
-			Text.text = "Days: " + count;
-		}
+		get { return days.Count; }
 	}
 
+	public bool HasDays {
+		get { return !initialized || !days.Empty; }
+	}
+
+	Inventory inventory = new Inventory ();
+	DayGroup days = new DayGroup ();
+	bool initialized = false;
+
 	void Awake () {
-		Count = 15;
+		inventory.Add (days);
+		days.onUpdateCount += OnUpdateCount;
+		days.onEmpty += OnEmpty;
+		days.Add (2);
+		initialized = true;
 	}
 
 	public bool RemoveDays (int count) {
-		if (Count >= count) {
-			Count -= count;
+		if (days.Count >= count) {
+			days.Remove (count);
 			return true;
 		}
 		return false;
+	}
+
+	void OnUpdateCount () {
+		Text.text = "Days: " + days.Count;
+	}
+
+	void OnEmpty () {
+
 	}
 }

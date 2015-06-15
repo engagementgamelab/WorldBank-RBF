@@ -157,6 +157,7 @@ public class ParallaxDesigner : EditorWindow {
 
     void New () {
         EditorObjectPool.Clear ();
+        DestroyLayers ();
         Target.Reset ();
         fileName = "";
         savePath = "";
@@ -201,10 +202,22 @@ public class ParallaxDesigner : EditorWindow {
     void Load () {
         string loadPath = EditorUtility.OpenFilePanel ("Load a city", PATH, "json");
         if (loadPath != "") {
+            New ();
             objectDrawer.Load (loadPath);
             fileName = Path.GetFileName (loadPath);
             savePath = loadPath;
         }
+    }
+    
+    void DestroyLayers () {
+        DestroyImmediate (GameObject.Find ("ParallaxLayerPool"));
+        DestroyImmediate (GameObject.Find ("ParallaxImagePool"));
+        DestroyImmediate (GameObject.Find ("ParallaxNpcPool"));
+        ParallaxLayer[] layers = FindObjectsOfType (typeof (ParallaxLayer)) as ParallaxLayer[];
+        int layerCount = layers.Length;
+        for (int i = 0; i < layerCount; i ++) {
+            DestroyImmediate (layers[i]);
+        }   
     }
 }
 #endif

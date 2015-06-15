@@ -42,6 +42,16 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		UpdateTransform ();
 	}
 
+	public void Destroy () {
+		EditorObjectPool.Destroy (images);
+		EditorObjectPool.Destroy (npcs);
+		EditorObjectPool.Destroy (zoomTriggers);
+		images.Clear ();
+		npcs.Clear ();
+		zoomTriggers.Clear ();
+		ObjectPool.Destroy<ParallaxLayer> (Transform);
+	}
+
 	void UpdateTransform () {
 		Vector3 target = ScreenPositionHandler.ViewportToWorld (new Vector3 (0, 0.5f, 0));
 		target.z = (Index+1) * layerSeparation + LocalSeparation;

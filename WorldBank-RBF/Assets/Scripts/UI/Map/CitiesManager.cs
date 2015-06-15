@@ -9,11 +9,6 @@ public class CitiesManager : MB {
 		get {
 			if (instance == null) {
 				instance = Object.FindObjectOfType (typeof (CitiesManager)) as CitiesManager;
-				if (instance == null) {
-					GameObject go = new GameObject ("CitiesManager");
-					DontDestroyOnLoad (go);
-					instance = go.AddComponent<CitiesManager>();
-				}
 			}
 			return instance;
 		}
@@ -71,7 +66,7 @@ public class CitiesManager : MB {
 		return symbol == currentCitySymbol;
 	}
 
-	public bool CanVisitCity (string symbol) {
+	bool CanVisitCity (string symbol) {
 		return !currentCityIndicator.Moving 
 			&& dayCounter.Count >= RouteCost (currentCitySymbol, symbol);
 	}
@@ -112,8 +107,9 @@ public class CitiesManager : MB {
 		foreach (var city in Cities) {
 			city.Value.Interactable = 
 				city.Value.Clickable 
+				&& CanVisitCity (city.Key)
 				&& routesManager.RouteExists (city.Key, currentCitySymbol)
-				|| IsCurrentCity (city.Value.symbol);
+				|| IsCurrentCity (city.Value.symbol) && dayCounter.HasDays;
 		}
 	}
 

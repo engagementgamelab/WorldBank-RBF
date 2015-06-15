@@ -59,9 +59,14 @@ public class ParallaxLayerManager : MonoBehaviour {
 	}
 
 	public void Load (string symbol) {
-		Clear ();
+		Clear ();		
 		ModelSerializer.Load (this, 
 			Application.dataPath + "/Resources/Config/PhaseOne/Cities/" + symbol + ".json");
+    }
+
+    void Clear () {
+		foreach (ParallaxLayer layer in layers)
+			layer.Destroy ();    	
     }
 
 	void RefreshLayers () {
@@ -85,13 +90,6 @@ public class ParallaxLayerManager : MonoBehaviour {
         }
     }
 
-    void Clear () {
-    	ObjectPool.DestroyAll<ParallaxNpc> ();
-    	ObjectPool.DestroyAll<ParallaxImage> ();
-    	// ObjectPool.DestroyAll<ParallaxLayer> ();
-    	// layerCount = 0;
-    	// layers.Clear ();
-    }
 
     #if UNITY_EDITOR
 	public void Reset () {

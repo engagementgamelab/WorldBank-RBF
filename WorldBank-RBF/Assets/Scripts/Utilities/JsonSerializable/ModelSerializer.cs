@@ -207,7 +207,6 @@ public class ModelSerializer {
         var IListRef = typeof (List<>);
         Type[] IListParam = {itemType};
         object result = Activator.CreateInstance (IListRef.MakeGenericType (IListParam));
-        Debug.Log (memberName + ", " + models.Count);
 
         for (int i = 0; i < models.Count; i ++) {
             object obj;
