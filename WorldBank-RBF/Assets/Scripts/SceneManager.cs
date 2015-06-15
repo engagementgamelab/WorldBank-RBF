@@ -41,12 +41,16 @@ public class SceneManager : MonoBehaviour {
 		SetGameData();
 
 		DataManager.SetSceneContext(sceneName);
+
+		// Authenticate player -- user/pass is hard-coded for now
+		if(!PlayerManager.Instance.Authenticated)
+		{
+			ObjectPool.Instantiate<PlayerLoginUI>();
+			// PlayerManager.Instance.Authenticate();
+		}
 	}
 
 	void Start () {
-
-		// Authenticate player -- user/pass is hard-coded for now
-		PlayerManager.Instance.Authenticate();
 
 	}
 
