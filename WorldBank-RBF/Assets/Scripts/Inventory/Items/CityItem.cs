@@ -2,5 +2,12 @@
 using System.Collections;
 
 public class CityItem : InventoryItem {
-	public override string Name { get { return "City"; } }
+	
+	string cityName;
+	public override string Name { get { return cityName; } }
+
+	public CityItem () {}
+	public CityItem (string cityName) {
+		this.cityName = cityName;
+	}
 }

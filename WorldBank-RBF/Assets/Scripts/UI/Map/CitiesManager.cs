@@ -98,7 +98,8 @@ public class CitiesManager : MB {
 		for (int i = 0; i < models.Length; i ++) {
 			Models.City model = models[i];
 			string symbol = model.symbol;
-			if (model.unlocked && CanVisitCity (symbol)) 
+			if ((model.unlocked || PlayerData.CityGroup.HasCity (symbol))
+				&& CanVisitCity (symbol)) 
 				Cities[symbol].Unlock ();
 		}
 	}

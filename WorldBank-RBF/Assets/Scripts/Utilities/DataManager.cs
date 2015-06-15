@@ -130,6 +130,23 @@ public class DataManager {
     }
 
     /// <summary>
+    /// Get a reference to a particular route in the game, given its name
+    /// </summary>
+    /// <param name="strCityName">Name of the route</param>
+    /// <returns>The Models.Route for the given route</returns>
+    public static Models.Route GetRouteInfo(string strRouteName) {
+        
+        foreach(Models.Route route in gameData.routes)
+        {
+            if(route.symbol == strRouteName)
+                return route;
+        }
+
+        return null;
+
+    }
+
+    /// <summary>
     /// Get data for NPC with name specified, or all NPCs in current city.
     /// </summary>
     /// <returns>(Optional) Symbol of the character to get NPC data for; if not used all NPCs in current city are returned.</returns>

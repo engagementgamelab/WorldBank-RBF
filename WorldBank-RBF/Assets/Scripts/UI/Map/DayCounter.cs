@@ -29,8 +29,7 @@ public class DayCounter : MB {
 	void Awake () {
 		inventory.Add (days);
 		days.onUpdateCount += OnUpdateCount;
-		days.onEmpty += OnEmpty;
-		days.Add (2);
+		days.Add (15);
 		initialized = true;
 	}
 
@@ -44,9 +43,5 @@ public class DayCounter : MB {
 
 	void OnUpdateCount () {
 		Text.text = "Days: " + days.Count;
-	}
-
-	void OnEmpty () {
-
 	}
 }

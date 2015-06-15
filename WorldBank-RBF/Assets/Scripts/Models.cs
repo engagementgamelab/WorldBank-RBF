@@ -90,6 +90,7 @@ public class Models {
         public string[] description { get; set; }
         public string type { get; set; }
         public int priority { get; set; }
+        public string[] unlocked { get; set; }
 
     }
 

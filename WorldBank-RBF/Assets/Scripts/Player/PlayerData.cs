@@ -23,6 +23,8 @@ public class PlayerData : MonoBehaviour {
 				inventory = new Inventory ();
 				inventory.Add (PlanTacticGroup);
 				inventory.Add (TacticPriorityGroup);
+				inventory.Add (RouteGroup);
+				inventory.Add (CityGroup);
 			}
 			return inventory;
 		}
@@ -48,12 +50,29 @@ public class PlayerData : MonoBehaviour {
 		}
 	}
 
+	private static RouteGroup routeGroup;
+	public static RouteGroup RouteGroup {
+		get {
+			if (routeGroup == null) {
+				routeGroup = new RouteGroup ();
+			}
+			return routeGroup;
+		}
+	}
+
+	private static CityGroup cityGroup;
+	public static CityGroup CityGroup {
+		get {
+			if (cityGroup == null) {
+				cityGroup = new CityGroup ();
+			}
+			return cityGroup;
+		}
+	}
+
 	private static List<Models.Unlockable> playerImplementations = new List<Models.Unlockable>();
 	private static Dictionary<string, int> playerUnlockCounts = new Dictionary<string, int>();
 
-	void Awake () {
-		PlayerData.PopulateTestTactics ();
-	}
 
 	/// <summary>
 	/// Unlocks the specified implementation for player and increments its unlock count
@@ -62,8 +81,15 @@ public class PlayerData : MonoBehaviour {
 	public static void UnlockImplementation (string strSymbol) {
 
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
-		PlanTacticGroup.Add (new PlanTacticItem (unlockRef));
-		
+		if (strSymbol.Contains ("unlockable_route_")) {
+			RouteItem route = new RouteItem (unlockRef);
+			RouteGroup.Add (route);
+			CityGroup.AddUnique (route.route.city1);
+			CityGroup.AddUnique (route.route.city2);
+		} else {
+			PlanTacticGroup.Add (new PlanTacticItem (unlockRef));
+		}
+
 	}
 
 	public static void SetTactics (PlanTacticGroup tacticGroup) {
@@ -72,15 +98,5 @@ public class PlayerData : MonoBehaviour {
 
 	public static void SetPriorities (TacticPriorityGroup priorityGroup) {
 		tacticPriorityGroup = priorityGroup;
-	}
-
-	// TODO: just for testing -- don't keep this
-	public static void PopulateTestTactics () {
-		/*PlanTacticGroup.Add (new PlanTacticItem (null, 1));
-		PlanTacticGroup.Add (new PlanTacticItem (null, 2));
-		PlanTacticGroup.Add (new PlanTacticItem (null, 3));
-		PlanTacticGroup.Add (new PlanTacticItem (null, 4));
-		PlanTacticGroup.Add (new PlanTacticItem (null, 5));
-		PlanTacticGroup.Add (new PlanTacticItem (null, 6));*/
 	}
 }

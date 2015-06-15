@@ -31,7 +31,14 @@ public class RoutesManager : MB {
 	}
 
 	void Start () {
-		Models.Route[] routes = DataManager.GetAllRoutes ();
+		UpdateRoutes (DataManager.GetAllRoutes ());
+	}
+
+	void OnEnable () {
+		UpdateRoutes (PlayerData.RouteGroup.Routes);
+	}
+
+	void UpdateRoutes (Models.Route[] routes) {
 		for (int i = 0; i < routes.Length; i ++) {
 			Models.Route route = routes[i];
 			MapRoute mapRoute = FindRoute (route.city1, route.city2);
