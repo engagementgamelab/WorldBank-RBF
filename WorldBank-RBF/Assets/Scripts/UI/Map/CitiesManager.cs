@@ -54,6 +54,7 @@ public class CitiesManager : MB {
 
 	void Start () {
 		UpdateUnlockedCities ();
+		UpdateInteractableCities ();
 		initialized = true;
 	}
 
@@ -63,6 +64,7 @@ public class CitiesManager : MB {
 		foreach (var city in Cities) {
 			city.Value.UpdateState (IsCurrentCity (city.Value.symbol));
 		}
+		UpdateInteractableCities ();
 	}
 
 	public bool IsCurrentCity (string symbol) {
@@ -85,14 +87,14 @@ public class CitiesManager : MB {
 		dayCounter.RemoveDays (RouteCost (currentCitySymbol, symbol));
 		currentCitySymbol = symbol;
 		CurrentCity.Visit ();
-		InteractionsManager.Instance.OnEnterCity (CurrentCity.Model.npc_interactions);
+		InteractionsManager.Instance.OnVisitCity (currentCitySymbol);
 		MoveIndicator (OnVisit);
 	}
 
 	public void TravelToCity (string symbol) {
 		dayCounter.RemoveDays (RouteCost (currentCitySymbol, symbol));
 		currentCitySymbol = symbol;
-		InteractionsManager.Instance.OnEnterCity (0);
+		InteractionsManager.Instance.OnTravelToCity ();
 		MoveIndicator (OnTravel);
 	}
 	

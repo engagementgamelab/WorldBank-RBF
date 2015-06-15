@@ -58,6 +58,7 @@ public class DialogManager : MonoBehaviour {
 	private double[] currentDialogueOpacity;
 	private List<string> currentDialogueText;
 	private List<string> currentDialogueChoices;
+	private List<Models.NPC> talkedToNpcs = new List<Models.NPC> ();
 
 	void Awake() {
 
@@ -222,17 +223,19 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
 	public void OpenIntroDialog(Models.NPC currNpc, bool left) {
 
-		GenericButton btnChoice = ObjectPool.Instantiate<GenericButton> ();
+		List<GenericButton> btnChoices = new List<GenericButton> ();
 		
-		btnChoice.Text = "Learn More";
+		if (!talkedToNpcs.Contains (currNpc)) {
+			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton> ();
+			btnChoice.Text = "Learn More";
+			btnChoice.Button.onClick.RemoveAllListeners ();
+			btnChoice.Button.onClick.AddListener (() => OpenDialog (currNpc));
+			btnChoices.Add (btnChoice);
+		}
 
-		btnChoice.Button.onClick.RemoveAllListeners ();
-		btnChoice.Button.onClick.AddListener (() => NPCFocusBehavior.Instance.DialogFocus ());
-
-		CreateChoiceDialog(
-
+		CreateChoiceDialog (
 			DataManager.GetDataForCharacter(currNpc.character).description, 
-			new List<GenericButton>(){ btnChoice },
+			btnChoices,
 			CloseAndUnfocus,
 			true, left, true
 		);
@@ -326,6 +329,11 @@ public class DialogManager : MonoBehaviour {
 
 	public void OpenSpeechDialog(string symbol, string strDialogueKey, bool returning=false) {
 		OpenSpeechDialog (NpcManager.GetNpc (symbol), strDialogueKey, returning);
+	}
+
+	void OpenDialog (Models.NPC currNpc) {
+		NPCFocusBehavior.Instance.DialogFocus ();
+		talkedToNpcs.Add (currNpc);
 	}
 
 	void CloseAndUnfocus () {

@@ -87,7 +87,10 @@ public class ParallaxLayerManager : MonoBehaviour {
 
     void Clear () {
     	ObjectPool.DestroyAll<ParallaxNpc> ();
-    	ObjectPool.DestroyAll<ParallaxLayer> ();
+    	ObjectPool.DestroyAll<ParallaxImage> ();
+    	// ObjectPool.DestroyAll<ParallaxLayer> ();
+    	// layerCount = 0;
+    	// layers.Clear ();
     }
 
     #if UNITY_EDITOR
