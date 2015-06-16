@@ -72,7 +72,7 @@ public class NotebookManager : MB {
 		get { return state == State.MakingPlan; }
 	}
 
-	bool openAtStart = true;
+	bool openAtStart = false;
 	bool open = true;
 	string activeCanvas = "map";
 
