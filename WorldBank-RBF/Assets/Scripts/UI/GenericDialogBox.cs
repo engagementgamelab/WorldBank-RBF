@@ -34,20 +34,23 @@ public class GenericDialogBox : MB {
 		}
 	}
 
-	float xPercent = -1;
-	float XPercent {
+	float rPercent = -1;
+	float RPercent {
 		get {
-			if (xPercent == -1) {
-				xPercent = 0.45f + 0.13f * Aspect;
+			if (rPercent == -1) {
+				rPercent = 0.45f + 0.13f * Aspect;
 			}
-			return xPercent;
+			return rPercent;
 		}
 	}
 
-	float offset = -1;
-	float Offset {
+	float lPercent = -1;
+	float LPercent {
 		get {
-			return ScreenPositionHandler.ViewportToWorld (new Vector3 (XPercent, 0f, 10f)).x;
+			if (lPercent == -1) {
+				lPercent = 0.55f - 0.13f * Aspect;
+			}
+			return lPercent;
 		}
 	}
 
@@ -59,26 +62,10 @@ public class GenericDialogBox : MB {
 	public UIDialogBox worldSpaceBox;
 	public UIDialogBox activeBox = null;
 
-	/*void OnGUI () {
-		if (GUILayout.Button ("Open world")) {
-			Open (null, true);
-		}
-
-		if (GUILayout.Button ("open screen")) {
-			Open (null, false);
-		}
-
-		if (GUILayout.Button ("close")) {
-			Close ();
-		}
-	}*/
-
 	public void Open (Transform parent=null, bool worldSpace=false, bool left=false) {
 		activeBox = worldSpace ? worldSpaceBox : screenSpaceBox;
 		activeBox.gameObject.SetActive (true);
-		if (worldSpace) {
-			SetPosition (left);
-		}
+		if (worldSpace) SetPosition (left);
 	}
 
 	public void Close () {
@@ -122,14 +109,10 @@ public class GenericDialogBox : MB {
 	}
 
 	void SetPosition (bool left) {
-		// Transform.SetPositionX (left ? -Offset : Offset);
-		Transform.SetPositionX (Offset);
-	}
-
-	float GetXPosition (bool facingLeft) {
-		// TODO: write an actual formula to replace these hardcoded values
-		float xOffset = 11.5f;
-		return MainCamera.Instance.Positioner.Position.x + (facingLeft ? -xOffset : xOffset);
+		Transform.SetPositionX (
+			ScreenPositionHandler.ViewportToWorld (
+				new Vector3 (left ? LPercent : RPercent, 0f, 10f)).x
+		);
 	}
 
 	IEnumerator CoRotate () {

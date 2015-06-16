@@ -64,11 +64,11 @@ public class RoutesManager : MB {
 		MapRoute route;
 		Terminals terminals = new Terminals (city1, city2);
 		if (Routes.TryGetValue (terminals, out route)) {
-			return true;
+			return route.Unlocked;
 		}
 		terminals = new Terminals (city2, city1);
 		if (Routes.TryGetValue (terminals, out route)) {
-			return true;
+			return route.Unlocked;
 		}
 		return false;
 	}

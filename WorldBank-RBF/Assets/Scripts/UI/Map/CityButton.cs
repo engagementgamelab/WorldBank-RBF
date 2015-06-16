@@ -28,8 +28,8 @@ public class CityButton : MB {
 		}
 	}
 
-	public bool Clickable {
-		get { return state != State.Locked; }
+	public bool Locked {
+		get { return state == State.Locked; }
 	}
 
 	public bool Interactable {

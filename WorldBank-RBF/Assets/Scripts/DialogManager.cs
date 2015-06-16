@@ -230,7 +230,6 @@ public class DialogManager : MonoBehaviour {
 		}
 
 		Models.Character character = DataManager.GetDataForCharacter(currNpc.character);
-		Debug.Log (character.display_name);
 		CreateChoiceDialog (
 			character.description, 
 			btnChoices,

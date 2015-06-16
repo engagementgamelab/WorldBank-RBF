@@ -106,11 +106,12 @@ public class CitiesManager : MB {
 
 	void UpdateInteractableCities () {
 		foreach (var city in Cities) {
-			city.Value.Interactable = 
-				city.Value.Clickable 
+			CityButton button = city.Value;
+			button.Interactable = 
+				!button.Locked 
 				&& CanVisitCity (city.Key)
 				&& routesManager.RouteExists (city.Key, currentCitySymbol)
-				|| IsCurrentCity (city.Value.symbol) && dayCounter.HasDays;
+				|| IsCurrentCity (button.symbol) && dayCounter.HasDays;
 		}
 	}
 
