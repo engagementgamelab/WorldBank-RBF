@@ -63,7 +63,7 @@ public class PlayerManager : MonoBehaviour {
         
     }
 
-    public void Register(string email, string pass, string passConfirm) {
+    public void Register(string email, string username, string location, string pass, string passConfirm) {
 
         if(pass != passConfirm)
         {          
@@ -74,6 +74,8 @@ public class PlayerManager : MonoBehaviour {
         Dictionary<string, object> registerFields = new Dictionary<string, object>();
 
         registerFields.Add("email", email);
+        registerFields.Add("username", username);
+        registerFields.Add("location", location);
         registerFields.Add("password", pass);
 
         NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/create/", registerFields, AuthCallback);

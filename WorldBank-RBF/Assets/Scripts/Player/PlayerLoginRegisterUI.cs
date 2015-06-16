@@ -2,8 +2,8 @@
 World Bank RBF
 Created by Engagement Lab, 2015
 ==============
- PlayerLoginUI.cs
- Player login UI handling.
+ PlayerLoginRegisterUI.cs
+ Player login and registration UI handling.
 
  Created by Johnny Richardson on 6/12/15.
 ==============
@@ -13,17 +13,21 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerLoginUI : MB {
+public class PlayerLoginRegisterUI : MB {
 
 	public Text txtEmail;
+	public Text txtLocation;
+	public Text txtUsername;
 	public Text txtError;
 	public InputField inputPassword;
 	public InputField inputPasswordAgain;
 
-	GameObject objPassAgain;
-	GameObject btnLogin;
-	GameObject btnRegister;
-	GameObject btnNewUser;
+	public GameObject objNameLocation;
+	public GameObject objPassAgain;
+	public GameObject btnLogin;
+	public GameObject btnRegister;
+	public GameObject btnNewUser;
+	public GameObject btnGoBack;
 
 	/*void Start() {
 
@@ -32,11 +36,11 @@ public class PlayerLoginUI : MB {
 
 		// GetComponent<RectTransform>().anchoredPosition = new Vector2(2011f, 1f);
 
-		objPassAgain = transform.Find("PasswordAgainField").gameObject;
+		/*objPassAgain = transform.Find("PasswordAgainField").gameObject;
 		btnLogin = transform.Find("LoginButton").gameObject;
 		btnRegister = transform.Find("RegisterButton").gameObject;
 		btnNewUser = transform.Find("NewUserButton").gameObject;
-
+*/
 		// Listen for cooldown tick
 		Events.instance.AddListener<PlayerFormEvent>(OnFormEvent);
 
@@ -50,18 +54,19 @@ public class PlayerLoginUI : MB {
 
 	public void Register() {
 
-		PlayerManager.Instance.Register(txtEmail.text, inputPassword.text, inputPasswordAgain.text);
+		PlayerManager.Instance.Register(txtEmail.text, txtUsername.text, txtLocation.text, inputPassword.text, inputPasswordAgain.text);
 
 	}
 
-	public void OpenRegistration() {
+	public void ToggleRegistration(bool open) {
 
-		objPassAgain.SetActive(true);
-		btnRegister.SetActive(true);
+		objNameLocation.SetActive(open);
+		objPassAgain.SetActive(open);
+		btnRegister.SetActive(open);
+		btnGoBack.SetActive(open);
 
-		btnLogin.SetActive(false);
-		btnNewUser.SetActive(false);
-
+		btnLogin.SetActive(!open);
+		btnNewUser.SetActive(!open);
 
 	}
 

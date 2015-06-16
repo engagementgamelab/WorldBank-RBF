@@ -45,7 +45,7 @@ public class SceneManager : MonoBehaviour {
 		// Authenticate player -- user/pass is hard-coded for now
 		if(!PlayerManager.Instance.Authenticated)
 		{
-			ObjectPool.Instantiate<PlayerLoginUI>();
+			ObjectPool.Instantiate<PlayerLoginRegisterUI>();
 			
 			#if UNITY_EDITOR
 				PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
