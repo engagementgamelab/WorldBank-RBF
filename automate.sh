@@ -10,7 +10,7 @@
 # ==============
 
 EXTERNAL_ASSET_DIR=$2"Content/Art"
-UNITY_ASSET_DIR=$2"WorldBank-RBF/Assets/Textures/"
+UNITY_ASSET_DIR=$2"WorldBank-RBF/Assets/Textures"
 
 # Clear prior log
 > automate.log;
@@ -50,7 +50,7 @@ do
 	mkdir -p $base_new_path;
 
 	if [[ $file_no_ext == *"layer"* ]] && [[ ${#file_no_ext} == 6 ]]; then
-		convert $f -crop 4096x4096 $new_path;
+		convert $f -crop 2048x2048 $new_path;
 		echo "Split '$f' and moved tiles to $base_new_path" | tee -a automate.log;
 	else
 		mv $f $new_path && git add -N $new_path;

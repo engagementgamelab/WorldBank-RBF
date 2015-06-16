@@ -118,7 +118,7 @@ public class DialogManager : MonoBehaviour {
 	/// Generate a dialog with text and choice buttons
 	/// </summary>
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
-	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, BackButtonDelegate backEvent=null, bool worldSpace=false, bool left=false, bool back=false) {
+	public void CreateChoiceDialog(string strDialogTxt, List<GenericButton> btnChoices, string strHeader="", BackButtonDelegate backEvent=null, bool worldSpace=false, bool left=false, bool back=false) {
 
 		if (dialogBox == null) {
 			// if(npc == null)
@@ -129,6 +129,7 @@ public class DialogManager : MonoBehaviour {
 			dialogBox.Content = strDialogTxt;
 		}
 
+		if (strHeader != "") dialogBox.Header = strHeader;
 		dialogBox.AddButtons(btnChoices, !worldSpace);
 		
 		// Setup back button
@@ -228,9 +229,12 @@ public class DialogManager : MonoBehaviour {
 			btnChoices.Add (btnChoice);
 		}
 
+		Models.Character character = DataManager.GetDataForCharacter(currNpc.character);
+		Debug.Log (character.display_name);
 		CreateChoiceDialog (
-			DataManager.GetDataForCharacter(currNpc.character).description, 
+			character.description, 
 			btnChoices,
+			character.display_name,
 			CloseAndUnfocus,
 			true, left, true
 		);
@@ -319,7 +323,7 @@ public class DialogManager : MonoBehaviour {
 			del = delegate { OpenSpeechDialog(currNpc, "Initial", true); };
 		}*/
 
-		CreateChoiceDialog(strToDisplay, btnList, del, true);
+		CreateChoiceDialog(strToDisplay, btnList, "", del, true);
 	}
 
 	public void OpenSpeechDialog(string symbol, string strDialogueKey, bool returning=false) {

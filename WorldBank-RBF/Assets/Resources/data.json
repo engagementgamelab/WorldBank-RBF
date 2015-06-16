@@ -26,6 +26,116 @@
       "description": "At the far end of the market there are two women in elaborate dress. You don’t know where they are from, but they are certainly not from this region, nor do they look like they came from Capitol City. Very ornamental and expensive, their dresses pop and glide in different directions and both are wearing wild headpieces. You feel a sense of royalty from them."
     },
     {
+      "symbol": "plantation_owner",
+      "display_name": "Plantation Owner",
+      "description": "A well-dressed woman stands observing the plantation. She has evidently just come from the larger plantation house up the path."
+    },
+    {
+      "symbol": "clinician",
+      "display_name": "Clinician",
+      "description": "A tired looking man with a stethoscope around his neck stands in the doorway of the clinic. He appears to be a doctor of some sort."
+    },
+    {
+      "symbol": "patient",
+      "display_name": "Patient",
+      "description": "A patient sits on a chair on the deck of the clinic, waiting for her turn to be seen."
+    },
+    {
+      "symbol": "old-men-gaming",
+      "display_name": "Old Men Gaming",
+      "description": "A pair of older men sit under the shade of a palm, playing some sort of tile-laying game. The gaming set is finely crafted from polished wood, but seems old and well worn. They chat as they play."
+    },
+    {
+      "symbol": "mech_farmer",
+      "display_name": "Mech Farmer",
+      "description": "A man leans up against a large piece of advanced farming equipment smoking a cigarette. It looks like he’s taking a break."
+    },
+    {
+      "symbol": "farm_worker",
+      "display_name": "Farm Worker",
+      "description": "A woman that looks to be in her thirties crouches down among rows of fresh crops, harvesting the land’s bounty. Her movements are precise and efficient, like she has been doing this her whole life. She hums softly to herself as she works in rhythm with her motions. The only adornment on her otherwise spartan attire is a small, shabby locket dangling from her neck."
+    },
+    {
+      "symbol": "settled_refugee",
+      "display_name": "Settled Refugee",
+      "description": "You see a man in his forties reading a news magazine in the shade, slight perspiration beading along his receding hairline. The magazine looks like one from the newsstand at the train station, perhaps dropped by a careless traveler some time ago."
+    },
+    {
+      "symbol": "midwife",
+      "display_name": "Midwife",
+      "description": "A middle-aged woman walks down the path from the train station. She looks preoccupied by something, and perhaps a little angry. She carries medical texts with her, including a volume on midwifery."
+    },
+    {
+      "symbol": "nomad",
+      "display_name": "Nomad",
+      "description": "A short man sits in the shade, tuning what looks like a harp. Haven’t you seen him somewhere before?"
+    },
+    {
+      "symbol": "mrtodd",
+      "display_name": "Mr. Todd",
+      "description": "An older man stands in front of a grand domicile. He grins broadly, gesturing emphatically as he speaks to a young woman who is clearly a customer of his. \\“Burn this incense before you sleep,\\” you hear him say, \\“every night for one month. No more and no less.\\” The woman looks happy, and very grateful."
+    },
+    {
+      "symbol": "teenager",
+      "display_name": "Teenager",
+      "description": "A young woman looking to be in her teens kicks a stone down the road. You notice a rolled up flyer in her pocket that seems to be some sort of a \\“help wanted\\” notice."
+    },
+    {
+      "symbol": "nomad",
+      "display_name": "Nomad",
+      "description": "This man is clearly a merchant of some sort, with wares from all over Zariba. He calls out to people on the street, \\“Fresh fruit from Mile! Cigars from Crup! Technology from the Capitol! I have it all!\\”"
+    },
+    {
+      "symbol": "herder",
+      "display_name": "Herder",
+      "description": "A herder is wrangling a small flock of flightless birds toward the market, taking care that none wander off. You notice a medallion around his neck that looks familiar to you. Many people in this area seem to be wearing them."
+    },
+    {
+      "symbol": "nomad",
+      "display_name": "Nomad",
+      "description": "A short man sits in the shade, tuning what looks like a harp. Haven’t you seen him somewhere before?"
+    },
+    {
+      "symbol": "airship_pilot",
+      "display_name": "Airship Pilot",
+      "description": "A woman fidgets with her flight suit, tightening a loose strap and pulling her zipper a little higher. She appears to be in her late 20s, and preparing to depart soon via airship."
+    },
+    {
+      "symbol": "spoiled_twins",
+      "display_name": "Spoiled Twins",
+      "description": "A young man and woman, probably in their late teens, seem to be waiting to board an airship. They look very much alike. Probably they are brother and sister. Perhaps even twins."
+    },
+    {
+      "symbol": "grandmother_with_toddler",
+      "display_name": "Grandmother with Toddler",
+      "description": "An older woman stand with a young boy, probably her grandson. They seem a trifle lost."
+    },
+    {
+      "symbol": "nomad",
+      "display_name": "Nomad",
+      "description": "A man sits, tuning his harp. Haven’t you seen him somewhere before?"
+    },
+    {
+      "symbol": "hospital_administrator",
+      "display_name": "Hospital Administrator",
+      "description": "A woman you recognize as the hospital administrator sits at her desk, going over some of the day's paperwork."
+    },
+    {
+      "symbol": "doctor",
+      "display_name": "Doctor",
+      "description": "A middle aged man is examining a medical chart of some kind. You recognize him as a doctor both by his attire and his nametag, \\“Dr. Notega.\\”"
+    },
+    {
+      "symbol": "patient",
+      "display_name": "Patient",
+      "description": "A woman sits in the waiting room, staring into space. Either she is waiting for her turn to see the doctor, or here with someone who is currently being examined."
+    },
+    {
+      "symbol": "foreign_traveler",
+      "display_name": "Foreign Traveler",
+      "description": "Her assortment of luggage marks this woman as a traveller, and her clothes and attitude tell you she is foreign. Where could she be going?"
+    },
+    {
       "symbol": "dep_minister_of_health",
       "display_name": "Dep. Minister of Health",
       "description": "description"
@@ -137,82 +247,223 @@
     }
   ],
   "indicator_affects": {
-    "indicator_affects_example_1": {
-      "indicator_1": -3,
-      "indicator_2": 2,
+    "option_cost": "small=0",
+    "comply_with_ministry_1": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": -1
+    },
+    "authorize_providers_to_take_action_at_their_level_1": {
+      "indicator_1": 1,
+      "indicator_2": 1,
       "indicator_3": 0
     },
-    "indicator_affects_example_2": {
-      "indicator_1": 2,
+    "clarify_separation_of_functions/resonsibilities_1": {
+      "indicator_1": 1,
+      "indicator_2": 1,
+      "indicator_3": 2
+    },
+    "hold_paments_1": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 1
+    },
+    "help_build_capacity_1": {
+      "indicator_1": 1,
+      "indicator_2": 1,
+      "indicator_3": 2
+    },
+    "sanctions_1": {
+      "indicator_1": 0,
       "indicator_2": -1,
+      "indicator_3": 1
+    },
+    "warning_and_retraining": {
+      "indicator_1": 1,
+      "indicator_2": 1,
+      "indicator_3": 1
+    },
+    "terminate_contract_effective_end_of_year_1": {
+      "indicator_1": -4,
+      "indicator_2": -6,
+      "indicator_3": -5
+    },
+    "terminate_contract_effective_end_of_year_2": {
+      "indicator_1": -2,
+      "indicator_2": -4,
+      "indicator_3": -3
+    },
+    "ask_purchasing_agency_to_revise_business_plan_to_incldue_regular_meetings": {
+      "indicator_1": 1,
+      "indicator_2": 1,
+      "indicator_3": 2
+    },
+    "warning_1": {
+      "indicator_1": 1,
+      "indicator_2": 0,
+      "indicator_3": 1
+    },
+    "warning_2": {
+      "indicator_1": 1,
+      "indicator_2": 0,
+      "indicator_3": 1
+    },
+    "revise_business_plan": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "sanctions_and_retraining_on_use_of_financial_tools": {
+      "indicator_1": 2,
+      "indicator_2": 1,
       "indicator_3": 1
     }
   },
   "phase_one": {
     "crup": [
       {
-        "symbol": "malcolm_test",
-        "character": "malcolm",
+        "symbol": "crup_test",
+        "character": "Plantation Owner",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "The man extends a hand to shake and introduces himself. \"Hello,\" he says, \"I am Dr. Maramuta. I run [[this clinic]], and I’ve consulted with a number of others in the area.\""
           },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+          "This Clinic": {
+            "text": "\"Things have been very tough. In the highlands, things are done differently. The situation is not ideal, and sometimes the quick and dirty solution is better than no treatment at all. We have very little money, and we find ourselves skimping and cutting corners in order to operate.\"",
+            "unlocks": "unlockable_incentivise_providers_to_follow_protocols"
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+          "unlockable_dialogue_mrtodd": {
+            "display_name": "Ask about Mr. Todd",
+            "text": "When you press him on what is being skimped on, he backpedals a little bit. \"It's not so much that we don’t have enough money it's more that the budget has already been set by the Ministry of Health, and we don’t have the ability to purchase the medicine and supplies we need. You understand.\"",
+            "unlocks": "unlockable_grant_providers_autonomy"
           }
         }
       },
       {
-        "symbol": "malcolm_test",
-        "character": "malcolm",
+        "symbol": "mech_farmer",
+        "character": "Mech Farmer",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "He offers you a cigarette as you draw nearer, which you politely refuse. \"Suit yourself,\" he says. He explains he’s been working on the plantation for a few years now, and though the work is hard, the pay is reliable. \"I just wish they paid us [[a bit more]].\""
           },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+          "A Bit More": {
+            "text": "\"We’re lucky to get anything, of course. Most people in the highlands earn nothing and only eat what they grow. But even so, the pay does not go very far.\" He frowns, taking a puff from his cigarette. When you ask about affording health care, he laughs. \"The clinic is fine, but I would rather save my money for something else, unless it’s an emergency. You know?\"",
+            "unlocks": "unlockable_vouchers_for_services"
+          }
+        }
+      },
+      {
+        "symbol": "crup_test",
+        "character": "Old_Men_Gaming",
+        "dialogue": {
+          "Initial": {
+            "text": "You stand a little closer and are able to hear their conversation. \"Damn arthritis,\" one says, grabbing at a tile.\nThe other replies, \"You should visit Kibari and see Mr. Todd. Best medicine man in Zariba!\"\n\"I know,\" the first man says, placing his piece on the board. \"You keep saying. I might try it. The doctor at the clinic gave me some ointment and it did nothing. He told me to go to the hospital for some test, but that’s all the way in Zima.\"\n\"Trucks go back and forth to Kibari every day...\" the first man says.\n\"It’s your move,\" the other grumbles.",
+            "unlocks": "unlockable_route_crup_to_kibari"
+          }
+        }
+      },
+      {
+        "symbol": "crup_test",
+        "character": "Patient",
+        "dialogue": {
+          "Initial": {
+            "text": "The woman looks a bit exasperated, and not in the best health. When you ask her about her experience with the clinic, she offers a mostly negative account. \"We are lucky to have a clinic nearby at all,\" she says. \"But there are long waits here, and the clinic is very poor. I blame [[government incompetence]].\""
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+          "Government Incompetence": {
+            "text": "\"The government can’t get out of its own way,\" she says. \"The governor claims they are increasing the budget for health care and doing many great things for people in the highlands, but where are the results? I don’t see them. And it’s not just this, it is everything they are involved with. They cannot be trusted to keep their word. I try to have no dealings with them.\"",
+            "unlocks": "PBC"
+          }
+        }
+      },
+      {
+        "symbol": "crup_test",
+        "character": "Plantation Owner",
+        "dialogue": {
+          "Initial": {
+            "text": "She greets you in a business-like way and introduces herself. \"Yes, I do own this plantation,\" she says. \"Over a hundred people work and live here. It wasn’t easy, but I have worked hard and built a legacy for my sons to inherit when I’m gone.\""
+          },
+          "Sons": {
+            "text": "\"I have two sons. They were both born right here, at home, [[the traditional way]]. I spared no expense and hired the best midwife in Zariba. It was a great experience.\""
+          },
+          "The Traditional Way": {
+            "text": "\"Yes,\" she nods. \"In Zariba, it is customary that women give birth in their own homes with a traditional midwife in the room. I had a traditional midwife and a trained nurse in the room when I gave birth.\" When you ask about whether her employees can afford the same care, she shrugs. \"I don’t know what they do,\" she says. \"It’s not my business. Anyway they seem fine to me.\"",
+            "unlocks": "unlockable_information_campaign_to_change_cultural_customs_and_behavior"
           }
         }
       }
     ],
     "kibari": [
       {
-        "symbol": "yolanda_dialogue",
-        "character": "yolanda",
-        "dialogue": {
-          "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
-          },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
-          },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
-          }
-        }
-      },
-      {
         "symbol": "malcolm_test",
         "character": "capitolcitytraveler",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "He pauses to speak with you, nervously keeping his birds in eyeshot, and occasionally redirecting them back to the flock. \"Since you ask,\" he says, \"I am a strong believer in traditional cures. They [[seem to work]], and they're [[easy to get]].\""
           },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+          "Easy to get": {
+            "text": "\"I heard that some people travel for days to get to the hospital, only to be told they have no medicine. Who wants to do that?\""
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+          "Seem to work": {
+            "text": "He clutches his medallion. \"This is said to protect me from fevers, which kill many people in this area. I haven’t gotten sick with a fever since I put it on. Hospitals on the other hand? Who even knows what happens in them?\"",
+            "unlocks": "unlockable_information_campaign_to_explain_changes_to_system"
+          }
+        }
+      },
+      {
+        "symbol": "mr_todd",
+        "character": "Mr. Todd",
+        "dialogue": {
+          "Initial": {
+            "text": "A look of suspicion comes over his face for a moment, but it is quickly replaced with the same smile from before. \"Greetings!\" he says. \"Yes, it is true. I am Mr. Todd.\" You recognize the name. \"I would not claim to be the [[best medicine man]] in Zariba, but if that is what they say, that is what they say!\""
+          },
+          "Best Medicine Man": {
+            "text": "He chuckles. \"People come to me because I am already a part of their lives. Part of their community! They trust me, because they know when they come to see me, they will leave with the medicine they need in their hands. The hospitals and clinics you want people to visit are not good. Why would a person travel far to see a doctor who can’t even give them medicine? Ask your doctors that.\"",
+            "unlocks": "conversation_in_crup_with_clinician"
+          },
+          "What They Say": {
+            "text": "You press, and ask him what else people are saying. \"People say lots of things,\" he replies. \"For instance, those nasty rumors about what else has been going on in your hospitals. I heard some folks saying they believe hospitals are a trick to take our money, make us sicker, and degrade our whole way of life! I don’t know how those get started. People say what they they say,\" he reiterates.",
+            "unlocks": "unlockable_information_campaign_to_counter_misinformation"
+          }
+        }
+      },
+      {
+        "symbol": "nomad",
+        "character": "Nomad",
+        "dialogue": {
+          "Initial": {
+            "text": "The travelling harper nods. \"Don’t I know you from somewhere?!\" he says. \"Folks around here call me Nomad. Care to hear a song?\" His light fingers pluck out a pleasant tune. When his song ends, he looks at you [[expectantly]]."
+          },
+          "Expectantly": {
+            "text": "You drop a few appreciative coins into his hat, and he thanks you. \"And here’s a tip for you. If you’re interested in medicine, make your way to Zima for sure. But talk to the folks at the clinic in Crup before you leave Zariba. Most people in the highlands never see the inside of a hospital, but clinics are pretty common.\""
+          }
+        }
+      },
+      {
+        "symbol": "teenager",
+        "character": "Teenager",
+        "dialogue": {
+          "Initial": {
+            "text": "She extends a hand for you to shake as you come nearer. When you ask her what she thinks about hospitals, she seems mostly positive on them. \"I would go to a hospital if something was wrong with me,\" she says. \"But I’m healthy, thank goodness. A lot of other people seem to [[distrust]] the hospitals though, especially in [[this area]].\""
+          },
+          "Distrust": {
+            "text": "\"Well,\" she says, \"It is simple enough. The medicine is foreign. The hospitals are far away, and when you get there, you are treated by strangers. It is just unfamiliar, and people distrust what is not familiar. Perhaps if these hospitals hired more people from this area, that would help. People might be more willing to go to them if they could count on seeing friendly faces. And besides, we could use the work around here.\"",
+            "unlocks": "unlockable_hire_more_nurses_from_highlands_region"
+          },
+          "This Area": {
+            "text": "\"You must know where you are. We are in the heart of the highlands. People here are used to doing things the old way. That means Mr. Todd.\" She points to the lavish domicile further along the road where a well-dressed man stands."
+          }
+        }
+      },
+      {
+        "symbol": "traveling_merchant",
+        "character": "Traveling Merchant",
+        "dialogue": {
+          "Initial": {
+            "text": "When you approach him, his eyes light up. \"What can I do for you?\" he asks. \"[[Anything you need]], I have it.\""
+          },
+          "Anything You Need": {
+            "text": "You buy some trifle from him out of politeness, and after that he seems happy to share what he knows about the area. \"The people from Crup,\" he says, \"are poor, except for the plantation owner. They can only afford basic things. There is a clinic there, though,\" he says. \"In Mile, no one has any money at all, but it is on the route to the capital city, so I pass through from time to time. Zima,\" he continues, \"they have some money there. Port town. With a large hospital, too!\"",
+            "unlocks": "unlockable_route_kibari_to_mile"
           }
         }
       }
@@ -226,11 +477,11 @@
             "text": "He introduces himself enthusiastically and tells you about his work studying political science and the old Zariban empire. His friendly demeanor shifts into annoyance as he speaks about his need to get to [[Mile]] and rolls his eyes at the picture of the [[prime minister]] on the front page of his paper."
           },
           "Mile": {
-            "text": "You ask him about Mile: <i>I haven’t been down that far south in decades but I hear the life hasn’t changed much. Good people who still remember life before the the current regime took power.</i> He indicates the Prime Minister’s photo as he speaks. <i>You can take the train through mile into Zema, though the tracks have been terrible for years.</i>"
+            "text": "You ask him about Mile: \"I haven’t been down that far south in decades but I hear the life hasn’t changed much. Good people who still remember life before the the current regime took power.\" He indicates the Prime Minister’s photo as he speaks. \"You can take the train through mile into Zema, though the tracks have been terrible for years.\""
           },
           "Prime Minister": {
-            "text": "As soon as you say the words prime minister his eyes grow wide and he puts down his paper. <i>You know, ever since the new government took power, the train has gotten worse and worse. They should be investing in transport instead of inviting foreigners into the country to pillage our resources.</i> He eyes you appraisingly before continuing. <i>I will tell you this: the government is corrupt and incompetent. They are not respected in the highlands, where they still remember the old regime. They can’t keep the trains running, and they won’t be in power for long.</i>",
-            "unlocks": "unlockable_contract_ngo_to_administer_plan"
+            "text": "As soon as you say the words prime minister his eyes grow wide and he puts down his paper. \"You know, ever since the new government took power, the train has gotten worse and worse. They should be investing in transport instead of inviting foreigners into the country to pillage our resources.\" He eyes you appraisingly before continuing. \"I will tell you this, the government is corrupt and incompetent. They are not respected in the highlands, where they still remember the old regime. They can’t keep the trains running, and they won’t be in power for long.\"",
+            "unlocks": "unlockable_contract_outside_organization_to_administer_plan"
           }
         }
       },
@@ -239,14 +490,14 @@
         "character": "capital_city_traveler",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours for the next train out of the station. <i>There have been two trains heading to Mile that have already been cancelled!</i> Flustered, she mutters under her breath about being late to meet her friend."
+            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours for the next train out of the station. \"There have been two trains heading to [[Mile]] that have already been cancelled!\" Flustered, she mutters under her breath about [[being late]] to meet her friend.\""
           },
           "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been there. <i>I just need to pass through on the way to visit my friend.</i>"
+            "text": "You ask her about Mile, and she tells you she has never been there. \"I just need to pass through on the way to visit my friend.\""
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. <i>We are very close, and since he has been frustrated with his job, I want to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says.</i>  She raises her arms in exasperation. <i>This accursed train! If medical supplies don’t even reach the hospital, what are my chances?</i>",
-            "unlocks": "unlockable_hire_private_shipping_company"
+          "being late": {
+            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. \"We are very close, and since he has been frustrated with his job, I want to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says.\"  She raises her arms in exasperation. \"This accursed train! If medical supplies don’t even reach the hospital, what are my chances?\"",
+            "unlocks": "unlockable_contract_private_company_to_deliver_supplies"
           }
         }
       },
@@ -255,16 +506,16 @@
         "character": "fruit_vendor",
         "dialogue": {
           "Initial": {
-            "text": "<i>Fresh fruit!</i> she says as you approach. <i>Only the best, grown by local [[farmers]]. Try the berries! They are my [[daughter]]’s favorite.</i> She hands you a sample. <i>No charge,</i> she says.",
-            "unlocks": "unlockable_fruit_1"
+            "text": "\"Fresh fruit!\" she says as you approach. \"Only the best, grown by local [[farmers]]. Try the berries! They are my [[daughter]]’s favorite.\" She hands you a sample. \"No charge,\" she says.\"",
+            "unlocks": null
           },
           "Farmers": {
-            "text": "You ask about the farmers who grew the fruit. The woman replies in a rehearsed tone. <i>Very hardworking people. Very poor, but who needs money when you can eat what you grow? I live in the city, so I have to sell fruit to make ends meet and support my family.</i>",
-            "unclocks": "unlockable_plan_service_vouchers"
+            "text": "You ask about the farmers who grew the fruit. The woman replies in a rehearsed tone. \"Very hardworking people. Very poor, but who needs money when you can eat what you grow? I live in the city, so I have to sell fruit to make ends meet and support my family.\"",
+            "unclocks": "unlockable_vouchers_for_services"
           },
           "Daughter": {
-            "text": "<i>My daughter? She is just three, and the cutest girl you have ever seen,</i> the fruit seller beams. <i>Her grandmother is watching her so I can sell fruit here in the market. I support all three of us.</i> When you ask about the girl’s vaccinations, the woman shrugs. <i>Who has time to travel to a hospital? Keeping her fed is more important.</i>",
-            "unlocks": "unlockable_plan_traveling_nurses"
+            "text": "\"My daughter? She is just three, and the cutest girl you have ever seen,\" the fruit seller beams. \"Her grandmother is watching her so I can sell fruit here in the market. I support all three of us.\" When you ask about the girl’s vaccinations, the woman shrugs. \"Who has time to travel to a hospital? Keeping her fed is more important.\"",
+            "unlocks": "unlockable_hire_more_nurses_from_highlands_region"
           }
         }
       },
@@ -273,14 +524,14 @@
         "character": "medicine_merchant",
         "dialogue": {
           "Initial": {
-            "text": "<i>You are looking ill, my friend!</i> he says to you by way of greeting. <i>We have the cure for whatever ails you. All of our products are 100% derived from the land itself, and we never use any ingredients of foreign origin. Our medicine is the only cure that has been proven by centuries of practice here in Zariba. We are headquartered in [[Kibari]], so all our products are checked for authenticity by [[Mr. Todd]] himself!</i>"
+            "text": "\"You are looking ill, my friend!\" he says to you by way of greeting. \"We have the cure for whatever ails you. All of our products are 100% derived from the land itself, and we never use any ingredients of foreign origin. Our medicine is the only cure that has been proven by centuries of practice here in Zariba. We are headquartered in [[Kibari]], so all our products are checked for authenticity by [[Mr. Todd]] himself!\""
           },
           "Kibari": {
-            "text": "You approach the man and ask about Kibari: <i>Kibari is the heart of the highlands, and the center of commerce and traditional knowledge for the nation. From Kibari, the whole nation is open wide to you. It is easy enough to get to. Just hitch a ride with one the local farm transports. They come and go every day.</i>",
+            "text": "You approach the man and ask about Kibari: \"Kibari is the heart of the highlands, and the center of commerce and traditional knowledge for the nation. From Kibari, the whole nation is open wide to you. It is easy enough to get to. Just hitch a ride with one the local farm transports. They come and go every day.\"",
             "unlocks": "unlockable_route_malcom_to_kibari"
           },
           "Mr. Todd": {
-            "text": "As soon as you mention Mr. Todd the medicine merchant’s face lights up: <i>I might be a bit biased, but that man is everything for the local region. He is a genius who has built a business from the ground up! Literally! Everyone loves Mr. Todd. You need to meet him. I’m sure one conversation with him will change all your thoughts on foreign medicine!</i>"
+            "text": "As soon as you mention Mr. Todd the medicine merchant’s face lights up. \"I might be a bit biased, but that man is everything for the local region. He is a genius who has built a business from the ground up! Literally! Everyone loves Mr. Todd. You need to meet him. I’m sure one conversation with him will change all your thoughts on foreign medicine!\""
           }
         }
       },
@@ -289,7 +540,7 @@
         "character": "malcom_twowomen",
         "dialogue": {
           "Initial": {
-            "text": "As you approach they both turn to eye you up and down, and you feel a sense of being judged by your attire. They turn back to each other smirking, continuing their conversation: <i>This market was fun for an hour or so, but I just cannot wait to be back at the estate. Did you hear? Uncle will be renovating the outer sand gardens to make space for three new horses!</i>/n/n The second woman smiles. <i>That sounds lovely. Hopefully next spring he’ll finally put in that airship tether he’s always going on about. What time is it, dear? The ferry should be here soon!</i>",
+            "text": "As you approach they both turn to eye you up and down, and you feel a sense of being judged by your attire. They turn back to each other smirking, continuing their conversation. \n\"This market was fun for an hour or so, but I just cannot wait to be back at the estate. Did you hear? Uncle will be renovating the outer sand gardens to make space for three new horses!\"\n The second woman smiles. \"That sounds lovely. Hopefully next spring he’ll finally put in that airship tether he’s always going on about. What time is it, dear? The ferry should be here soon!\"",
             "unlocks": "unlockable_route_malcom_to_valeria"
           }
         }
@@ -297,34 +548,71 @@
     ],
     "mile": [
       {
-        "symbol": "malcolm_test",
-        "character": "malcolm",
+        "symbol": "farm_worker",
+        "character": "farm worker",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "As you step closer, she stops what she is doing and looks at you askance. \"Not that I am not thankful for an excuse to rest and talk,\" she says, \"but I have a lot of work to do. This harvest will feed my [[family]], and others in the village.\" There is a hint of [[pride]] in her voice.\""
           },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+          "Family": {
+            "text": "\"I have two sons and a daughter, a husband and a brother,\" she explains. When you ask about their health care, she shrugs, looking a little guilty. \"I barely have time to do what needs doing here, you know? Between doing my work and taking care of basic needs, who has time to think about health care, let alone visit a hospital? Taking care of basics like food and water, and a roof that does not leak is far more important. Besides, some people are [[scared]] of the hospitals.\"",
+            "unlocks": "cct"
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
+          "Pride": {
+            "text": "\"I guess I am proud of it,\" she smiles. \"My family has farmed this land for generations. Soon my children will be old enough to contribute, and carry our family on to the next generation. This makes me very happy. It’s not just about feeding ourselves.\"",
             "unlocks": "unlockable_corruption_crackdown"
+          },
+          "Scared": {
+            "text": "She looks a little unsure. \"I don’t know. People are worried about visiting them for some reason. There are rumors, you know? You hear things.\" When you press her on what she’s heard, she just shakes her head - she seems nervous. \"Things!\" she repeats.",
+            "unlocks": "Conversation in Kibari with Mr. Todd."
           }
         }
       },
       {
-        "symbol": "malcolm_test",
-        "character": "malcolm",
+        "symbol": "midwife",
+        "character": "midwife",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "When you give her the opportunity, she is all too happy to vent. She explains that she is a [[midwife]], and that she just had a job interview at the hospital in Zima. \"Or at least I [[thought I did]].\""
           },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+          "Thought I did": {
+            "text": "She is clearly still steamed about what happened at the hospital as she relates what happened. \"I travelled more than a day to get there, and did the entire interview, only to be told there were no resources available to hire me! The hospital administrator said she would love to have me on their staff, but a new position was not budgeted.\"",
+            "unlocks": "conversation_with_admin_in_zima"
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+          "Midwife": {
+            "text": "She scoffs. \"Skilled midwives such as myself who can travel are very hard to come by, and very in demand these days since most women won’t travel long distances to give birth. I can’t believe they would not hire me.\""
+          }
+        }
+      },
+      {
+        "symbol": "nomad",
+        "character": "nomad",
+        "dialogue": {
+          "Initial": {
+            "text": "He greets you with a friendly nod. \"I’ve been just about everywhere in this country, you know? I travel here and there, play my harp, busk up a meal, and then on to the next place! The people here are poor. Can’t give me much coin for my time, but that just means they need music the most. So I always stop in this town on my way to the next destination. What they lack in money they more than make up for in hospitality and spirit. Good cooks, too!\""
+          },
+          "Upon Exiting": {
+            "text": "You return to the train station and immediately it is clear that something is not right. People seem worried, or even angry, and they crowd around an information booth. It’s chaotic here, but you manage to learn that bad weather has triggered landslide to the east, and the train tracks between Mile and Zima have been destroyed. They could take weeks to repair! A group of young men tug on your shirt and grin. They say they drive a produce truck that is leaving the city right now, and for a small price, they can get you to Kibari, the heart of the highlands. \"From there,\" they say, \"you can get anywhere!\"",
+            "unlocks": "unlockable_route_kibari_to_mile"
+          }
+        }
+      },
+      {
+        "symbol": "settled_refugee",
+        "character": "settled refugee",
+        "dialogue": {
+          "Initial": {
+            "text": "He does not seem particularly bothered by your presence, and rests the magazine on his lap to speak with you. After a few minutes of idle conversation, he volunteers a little more about his past. \"I wasn’t from here originally,\" he says. \"I came here as a refugee many years ago, back during the [[old regime]].\" A frown spreads across his face. \"My village was destroyed by a [[landslide]] during a rain storm. It will never be rebuilt.\""
+          },
+          "Old Regime": {
+            "text": "\"Some people miss the old regime,\" he says, \"but they never did anything for me, you know? Democracy is fine. Honestly, I can’t even tell the difference.\" He fans himself with the news magazine and finishes his thought. \"Some people disagree, and wish they could go back. But most don’t care.\""
+          },
+          "Landslide": {
+            "text": "\"It was so terrible,\\” he says. \"Unless you have seen one, it is hard to describe. The entire village was just gone. Many people died. I lost family members. I feel lucky that I was [[able to make it]] here, and was accepted and given hospitality, even though people here do not have much. They gave all they could and more.\""
+          },
+          "Able to Make it": {
+            "text": "He nods and explains how travel is very difficult unless you can afford to buy a train ticket. \"And few can! If you can’t afford a ticket, you must walk along the tracks, and it is very dangerous. Recently, someone died making the trip to Zima, and now no one even tries it unless they are desperate, you know?\"",
+            "unlocks": "unlockable_outreach"
           }
         }
       }
@@ -335,14 +623,28 @@
         "character": "malcolm",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "\"Oh, hello,\" the woman says. \"This airship port wasn’t here the last time I came to this town, so it’s a little confusing. We’re visiting here for a little bit. My [[grandson]] always wanted to see the sand palaces.\""
           },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+          "Grandson": {
+            "text": "When you inquire about her grandson’s health, she seems a little unsure. \"I think he is vaccinated,\" she says, \"but I don’t really care for these hospitals. When I went, the nurse was very rude to me. He made me feel unwelcomed, and I had to argue with a doctor about getting a prescription for my little one.\"",
+            "unlocks": "unlockable_improve_patient_and_provider_relationship"
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+          "Prescription": {
+            "text": "\"I don’t remember exactly what the doctor said, but he kept saying that he did not need antibiotics. When I finally got him to write me a prescription, I felt like he wrote it just to shut me up. He didn’t seem to care, you know?\"",
+            "unlocks": "unlockable_incentivise_providers_to_follow_protocols"
+          }
+        }
+      },
+      {
+        "symbol": "mech_farmer",
+        "character": "Mech Farmer",
+        "dialogue": {
+          "Initial": {
+            "text": "She seems very at ease as you approach, and introduces herself as Lydia, an airship pilot. \"These airships are pretty new, so not many people can fly one. This one here is mine,\" she says with some pride, pointing to a floating craft. \"I’m about to depart on a [[personal trip]] to Zima, but I have room for a passenger if you’re heading that way.\""
+          },
+          "Personal Trip": {
+            "text": "\"I’m actually three months pregnant today,\" she offers, \"and I have an appointment at the hospital. The best doctor in Zariba is a resident there, and lucky for me, I have an airship, so getting there is no problem.\"",
+            "unlocks": "unlockable_route_valeria_to_zema"
           }
         }
       },
@@ -351,48 +653,95 @@
         "character": "malcolm",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
-          },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
-          },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+            "text": "\"Funny seeing you here,\" the harper says. \"You can call me Nomad. Most folks do. I’ve been everywhere in this country. This part of Zariba is probably the richest. Land Barons have been building palaces out of sand for hundreds of years here. Not sure how they get the sand to hold together, but it seems to work. The airships are new, though. Got to change with the times.\""
+          }
+        }
+      },
+      {
+        "symbol": "spoiled_twins",
+        "character": "Spoiled Twins",
+        "dialogue": {
+          "Initial": {
+            "text": "They stare at you for a moment when you approach, then ask who you are. When you explain yourself, they are happy to share their opinions on Zariba’s health care system. \n\"The highlands are where all the poor people live,\" the brother says.\n\"He knows that,\" his sister interrupts. \"Everyone knows that. We were both born here in Valeria, in our own house. No one likes to go to these hospitals. They’re so ugly.\"\n\"I’ve been in one. They just feel dirty, and they smell. And the staff look like street people,\" the brother agrees. \"That’s why no one wants to go to them.\"",
+            "unlocks": "unlockable_make_aesthetic_improvements"
           }
         }
       }
     ],
     "zema": [
       {
-        "symbol": "malcolm_test",
-        "character": "malcolm",
+        "symbol": "doctor",
+        "character": "doctor",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "At first, he seems too engrossed in the chart to devote his full attention to you, but once you introduce yourself, he puts it down and apologizes. \"I wish I had time for a formal sit down with you,\" he says, \"but time is tight around here. I will try to share as much as I can. This hospital works very well for the rich, since they can afford whatever tests and procedures we order, but [[poor people]] tend to shy away from us, which is a shame.\""
           },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+          "Poor People": {
+            "text": "You ask more about the poor people of the highlands and he gives a frustrated shrug. \"The majority of people in the highlands have no money. They can’t afford basic [[preventative care]]. Even if they could, I’m not sure they would purchase it.\"",
+            "unlocks": "unlockable_vouchers_for_services"
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+          "Preventative Care": {
+            "text": "It's true. This basic care ends up saving everyone money in the long run, but they don’t always understand the benefits of them. I think any changes we make to the health system need to be well publicized and very clear.\"",
+            "unlocks": "unlockable_information_campaign_to_explain_changes_to_system"
           }
         }
       },
       {
-        "symbol": "malcolm_test",
-        "character": "malcolm",
+        "symbol": "foreign_traveler",
+        "character": "foreign traveler",
         "dialogue": {
           "Initial": {
-            "text": "After a few attempts of getting her attention, she tells you how she has been waiting for hours on the next train out of the station and that there have been 2 trains heading to [[Mile]] that have already been cancelled. Flustered, she mutters under her breath about being late for her [[arrival time]]."
+            "text": "You strike up a conversation with the traveller, and she explains that she is investigating the mining industry in West Zariba for her company. \"It is a [[long journey]], and I dread the trip through the highlands.\""
           },
-          "Mile": {
-            "text": "You ask her about Mile, and she tells you she has never been and that she is just passing through on her way to visit her friend. She has heard rumors that the tracks aren’t in the safest condition."
+          "Long Journey": {
+            "text": "She looks anxious. \"I’ll not be taking the train. Instead, I am taking a private motor car. I am afraid of trains. I leave in a few hours, bound for Kibari, which I hear is the center of the Zariban Highlands. I guess it is kind of exciting.\"",
+            "unlocks": "unlockable_route_zema_to_kibari"
+          }
+        }
+      },
+      {
+        "symbol": "hospital_administrator",
+        "character": "hospital_administrator",
+        "dialogue": {
+          "Initial": {
+            "text": "She notices you, and rises to shake your hand. \"Very pleased to meet you. I’ve been expecting you, actually,\" she says. She begins a frank explanation of the hospital’s challenges. \"The worst thing has been a lack of supplies. We are frequently out of stock on basic things due to [[budget constraints]]. This has a [[trickle-down effect]] on many other hospital functions.\""
           },
-          "Arrival Time": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. They are very close, and since he has been frustrated with his job, she wants to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says. She raises her arms in an almost laughable manner and says \"this train is to blame\".",
-            "unlocks": "unlockable_corruption_crackdown"
+          "Budget Constraints": {
+            "text": "\"The root cause of the constraints is simple bureaucracy. How we spend our budget is determined by a ministry bureaucrat in the capital city who has no idea what our actual needs are. If we had the autonomy to allocate our budget nimbly, the supply issue would go away.\" [IF MIDWIFE TRUE] You bring up the midwife you met in Mile, and the administrator nods. \"Same problem. We did not have the autonomy needed to budget for that hire, so I had to turn away a qualified, needed worker.\"",
+            "unlocks": "unlockable_grant_providers_autonomy"
+          },
+          "Trickle-down Effect": {
+            "text": "\"When we don’t have the proper supplies, it looks bad to the patients, and we lose face. Not only that, the lack of basic supplies begins to wear on my staff. I am aware of some attitude problems. All of this is not conducive to treating people.\""
+          }
+        }
+      },
+      {
+        "symbol": "nurse",
+        "character": "nurse",
+        "dialogue": {
+          "Initial": {
+            "text": "Once you get him talking, the nurse seems almost relieved to have someone to complain to. \"I work harder than anyone in this facility, but compared the doctors, I get paid practically nothing! I deal with [[angry people]] every day. He just writes prescriptions.\""
+          },
+          "Angry People": {
+            "text": "The tall nurse crosses his arms. \"They get angry when I tell them they must go to the drugstore. They don’t understand anything. They think the hospital is a pharmacy. They ask stupid questions. I get tired of it. You’ve never heard of a drugstore? And then when the pharmacy doesn’t have the drugs… That is my fault TOO?\"",
+            "unlocks": "unlockable_improve_patient_and_provider_relationship"
+          }
+        }
+      },
+      {
+        "symbol": "patient_zima",
+        "character": "patient",
+        "dialogue": {
+          "Initial": {
+            "text": "She seems surprised when you sit down to talk with her. She explains that it cost her [[a lot of money]] to get here, but it was necessary since her headaches don’t go away.\n\"I have more money [[than most]],\" she continues, \"so I should be thankful, I suppose. I got vaccinations for my son, and the doctor said he is too skinny, so they gave me some protein bars.\""
+          },
+          "A Lot of Money": {
+            "text": "\"Would you believe it? The train cost me more than the medicine!\"",
+            "unlocks": "unlockable_outreach"
+          },
+          "Than Most": {
+            "text": "\"Most of my neighbors can’t afford even simple health services like vaccinations or doctors appointments.\"",
+            "unlocks": "unlockable_vouchers_for_services"
           }
         }
       }
@@ -401,130 +750,733 @@
   "phase_two": {
     "scenario_1": [
       {
-        "symbol": "government_overreach_on_verification",
-        "name": "Government overreach on verification",
-        "priority": 1,
-        "initiating_npc": "provider_2",
-        "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
+        "symbol": "bad_record_keeping",
+        "name": "Bad Record Keeping",
+        "priority": 2,
+        "initiating_npc": "third_party_berifier",
+        "initiating_dialogue": "The Clinic submitted their reports to us, but there were some inconsistancies. When we asked to see their records, they could not supply them.",
         "starting_options": [
-          "comply_with_ministry"
+          "hold_payments"
         ],
         "starting_options_affects": [
-          "example_1"
+          "hold_payments_1"
+        ],
+        "starting_options_cost": [
+          "small"
         ],
         "final_options": [
-          "comply_with_ministry",
-          "authorize_push_back",
-          "clarify_roles"
+          "hold_payments",
+          "help_build_capacity",
+          "sanctions"
         ],
         "final_options_affects": [
-          "example_1",
-          "example_2",
-          "example_1"
+          "hold_payments_1",
+          "help_build_capacity_1",
+          "sanctions_1"
+        ],
+        "final_options_cost": [
+          "small",
+          "medium",
+          "small"
         ],
         "characters": {
-          "dep_minister_of_health": {
-            "dialogue": "We are very interested in making sure the providers are doing what they say, and we have the staff available to review, so why not?",
+          "Dep_Minister_of_Health": {
+            "dialogue": "If they are not following the rules, they should not be paid. A penalty may also be in order.",
+            "unlocks": [
+              "sanctions"
+            ],
+            "unlocks_affects": [
+              "sanctions_1"
+            ]
+          },
+          "Director_Regional_Health_Services": {
+            "dialogue": "All providers in my region shoud know the requirements for keeping records. Something must be wrong. I'd talk to them.",
             "narrows": [
+              "dep_minister_of_health",
+              "director_regional_health_services",
+              "community_manater",
               "third_party_verifier",
               "coach"
-            ],
+            ]
+          },
+          "Coach": {
+            "dialogue": "I don't know why they aren't keeping records. When I spoke with them last, they said everything was fine and they didn't want my help."
+          },
+          "Third_Party_Verifier": {
             "feedback": {
-              "clarify_roles": "All right, I understand. I'll inform the staff here."
+              "Help_Build_Capacity": " I will strengthen on the spot training during the verification for them to see the mistakes they are making."
             }
           },
-          "coach": {
-            "dialogue": "Duplicating efforts seems to be hampering the health providers. I'd either clarify everyone's roles for them, or empower health providers to push back somehow.",
+          "Community_Verifier": {
+            "dialogue": "My team has had no issue keeping records. I wonder what the issue is at the clinics?"
+          },
+          "Clininic_Manager": {
+            "dialogue": "The reports we submitted are correct, I can give you my word on that. The problem is we do not have the time and resources needed to keep and collect all the records required.",
             "unlocks": [
-              "separation_of_rolls",
-              "authorize_push_back"
+              "help_build_capacity"
             ],
             "unlocks_affects": [
-              "example_1",
-              "example_2"
-            ]
-          },
-          "third_party_verifier": {
-            "dialogue": "I didn't know about this. If the Ministry is doubling our verification efforts, it could prove very confusing to the providers.",
-            "unlocks": [
-              "separation_of_rolls"
+              "help_build_capacity_1"
             ],
-            "unlocks_affects": [
-              "example_2"
-            ]
-          },
-          "health_provider_1": {
-            "dialogue": "Honestly, we've been ignoring the ministry's requests. We've got too much actual work to worry about."
-          },
-          "health_provider_2": {
             "feedback": {
-              "comply_with_ministry": "OK, we'll do our best.",
-              "authorize_push_back": "OK I'll bring it up the next time they send in their request, but they can be very firm."
+              "Hold_Payments": "We will improve things next quarter.",
+              "authorize_push_back": "We can hardly pay staff as it is! Many patients will go untreated because of this."
+            }
+          },
+          "Hospital_Administrator": {
+            "dialogue": "Perhaps they just need some more time to get used to all of this. This is all new. Cut them some slack this once, and they'll figure it out as we go."
+          }
+        }
+      },
+      {
+        "symbol": "budget_lines",
+        "name": "Budget Lines",
+        "priority": 10,
+        "initiating_npc": "hospital_administrator",
+        "initiating_dialogue": "I received a memo today going over the new national health budget. The ministry has released new hiring guidelines for all providers, but it does not match our goals.",
+        "starting_options": [
+          "comply_with_ministry_request"
+        ],
+        "starting_options_affects": [
+          "comply_with_ministry_request"
+        ],
+        "starting_options_cost": [
+          "small"
+        ],
+        "final_options": [
+          "comply_with_ministry_request",
+          "clarify_separation_of_functions/roles_and_responsibilities",
+          "Revise_business_plan"
+        ],
+        "final_options_affects": [
+          "comply_with_ministry_request",
+          "clarify_separation_of_functions/roles_and_responsibilities2",
+          "Revise_business_plan"
+        ],
+        "final_options_cost": [
+          "small",
+          "small",
+          "medium"
+        ],
+        "characters": {
+          "Dep_Minister_of_Health": {
+            "dialogue": "Our own monitors have found mismanagement of funds. They need strict guidelines to provide the necessary services.",
+            "Narrows": [
+              "dep_minister_of_health",
+              "director_Regional_health_services",
+              "coach",
+              "community_verifier"
+            ],
+            "Feedback": {
+              "clarify_separation_of_functions": "This is within the scope of regulation, which is my role. But if you think it's essential, we will step back on this."
+            }
+          },
+          "Director_Regional_Health_Services": {
+            "dialogue": "If the Ministry is claiming this is necessary, I would take it seriously. A compromise might be to re-work the business plan with Ministry oversight.",
+            "unlocks": [
+              "revise_business_plan"
+            ]
+          },
+          "Coach": {
+            "dialogue": "I have found some mismanagement of funds in the past as well. However, we are supposed to be granting autonomy.",
+            "unlocks": [
+              "clarify_separation_of_functions/roles_and_responsibilities"
+            ]
+          },
+          "Third_Party_Verifier": {
+            "dialogue": "I have noticed some inconsistencies in the data that indicate to me some funds are being mismanaged."
+          },
+          "Community_Verifier": {
+            "dialogue": "I don't understand the need for these new guidelines, but then again, I am not working in the hospital."
+          },
+          "Clininic_Manager": {
+            "dialogue": "I need to be able to hire whoever is needed. This is a return to the status quo that I do not agree with.",
+            "unlocks": [
+              "clarify_separation_of_functions/roles_and_responsibilities"
+            ]
+          },
+          "Hospital_Administrator": {
+            "Feedback": {
+              "Revise_business_plan": " I don't believe this will be constructive, but I'm willing to try.",
+              "comply_with_ministry_request": " If you insist...",
+              "sanctions": "I just put in orders for new equipment. Now I won't be able to afford to pay for them. I think you are talking this too far. It was an honest mistake."
             }
           }
         }
       },
       {
-        "symbol": "government_overreach_on_verification",
-        "name": "Government overreach on verification",
+        "symbol": "Dodging_Responsibility",
+        "name": "Dodging Responsibility",
+        "priority": 4,
+        "initiating_npc": "Coach",
+        "initiating_dialogue": "I requested a meeting with the Clinic Manager recently to go over their record-keeping practices, but it keeps getting rescheduled and canceled. I can't get a firm commitment from them. It is a little suspicious, frankly.",
+        "starting_options": [
+          "warning"
+        ],
+        "starting_options_affects": [
+          "warning_1"
+        ],
+        "starting_options_cost": [
+          "small"
+        ],
+        "final_options": [
+          "warning",
+          "revise_business_plan_to_include_regular_meetings",
+          "terminate_contract_effective_end_of_year"
+        ],
+        "final_options_affects": [
+          "warning_1",
+          "revise_business_plan_to_include_regular_meetings_1",
+          "terminate_contract_effective_end_of_year_2"
+        ],
+        "final_options_cost": [
+          "small",
+          "large"
+        ],
+        "characters": {
+          "Dep_Minister_of_Health": {
+            "dialogue": "There are other health providers in the region we could use. It seems this one is becoming more difficult to work with. It might be worth discussing their contract with the purchasing agency.",
+            "Unlocks": [
+              "terminate_contract_effective_end_of_year"
+            ],
+            "Unlocks_affects": [
+              "terminate_contract_effective_end_of_year_2"
+            ]
+          },
+          "Director_Regional_Health_Services": {
+            "dialogue": "I have experienced similar problems with this provider. It is hard to schedule their time. More regular meeting times might help.",
+            "Unlocks": [
+              "revise_business_plan_to_include_regular_meetings"
+            ],
+            "Unlocks_affects": [
+              "revise_business_plan_to_incldue_regular_meetings_1"
+            ]
+          },
+          "Coach": {
+            "feedback": {
+              "Terminate_Contract_Effective_End_of_Year": "That's pretty drastic. Let's discuss this at the end of the year. I'll make it clear to them they are on notice."
+            }
+          },
+          "Third_Party_Verifier": {
+            "dialogue": "That does sound suspicious. I'll be looking carefully at their records this quarter."
+          },
+          "Community_Verifier": {
+            "dialogue": "I would talk directly to them if I were you."
+          },
+          "Clininic_Manager": {
+            "dialogue": "I think you underestimate just how busy we have been with outreach and patient care. We are not a large staff, and our time is very precious. Maybe next month things will be slower.",
+            "feedback": {
+              "Warning": "I'm sure I'll have some time next quarter once our busiest time dies down.",
+              "Revise_Business_Plan_to_Incldue_Regular_Meetings": "That will be extremely dicey. We are tight on time as it is. I'll see what I can do, though."
+            }
+          },
+          "Hospital_Administrator": {
+            "dialogue": "I've observed the clinics we're talking about a number of times, and there's never enough time and money to go around."
+          }
+        }
+      },
+      {
+        "symbol": "government_overreach_verification",
+        "name": "Government Overreach on Verification",
         "priority": 1,
-        "initiating_npc": "provider_2",
+        "initiating_npc": "hospital_administrator",
         "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
         "starting_options": [
           "comply_with_ministry"
         ],
         "starting_options_affects": [
-          "example_1",
-          "example_2"
+          "comply_with_ministry_1"
+        ],
+        "starting_options_cost": [
+          "small"
         ],
         "final_options": [
           "comply_with_ministry",
-          "authorize_push_back",
-          "clarify_roles"
+          "authorize_providers_to_take_action_at_their_level",
+          "clarify_separation_of_functions/resonsibilities"
         ],
         "final_options_affects": [
-          "example_1",
-          "example_2",
-          "example_1"
+          "comply_with_ministry_1",
+          "Authorize_providers_to_take_action_at_their_level_1",
+          "Clarify_Separation_of_Functions/Resonsibilities_1"
+        ],
+        "final_options_cost": [
+          "small",
+          "small",
+          "medium"
         ],
         "characters": {
-          "dep_minister_of_health": {
+          "Dep_Minister_of_Health": {
             "dialogue": "We are very interested in making sure the providers are doing what they say, and we have the staff available to review, so why not?",
             "narrows": [
-              "third_party_verifier",
-              "coach"
+              "dep_minister_of_health",
+              "director_regional_health_services",
+              "community_manater",
+              "hospital_administrator",
+              "clinic_manager"
             ],
             "feedback": {
-              "clarify_roles": "All right, I understand. I'll inform the staff here."
+              "Clarify_Separation_of_Functions/Resonsibilities": "All right, I understand. I'll inform the staff here."
             }
           },
-          "coach": {
+          "Director_Regional_Health_Services": {
+            "dialogue": "I know the Minister of Health fairly well, and I can tell you that things go more smoothly if you're cooperative.",
+            "unlocks": null,
+            "unlocks_affects": null
+          },
+          "Coach": {
             "dialogue": "Duplicating efforts seems to be hampering the health providers. I'd either clarify everyone's roles for them, or empower health providers to push back somehow.",
             "unlocks": [
-              "separation_of_rolls",
-              "authorize_push_back"
+              "clarify_separation_of_functions/responsibilties",
+              "authorize_providers_to_take_action_at_their_level"
             ],
             "unlocks_affects": [
-              "example_1",
-              "example_2"
+              "clarify_separation_of_functions/resonsibilities_1",
+              "authorize_providers_to_take_action_at_their_level_1"
             ]
           },
-          "third_party_verifier": {
+          "Third_Party_Verifier": {
             "dialogue": "I didn't know about this. If the Ministry is doubling our verification efforts, it could prove very confusing to the providers.",
             "unlocks": [
-              "separation_of_rolls"
+              "clarify_separation_of_functions/responsibilties"
             ],
             "unlocks_affects": [
-              "example_2"
+              "clarify_separation_of_functions/resonsibilities_1"
             ]
           },
-          "health_provider_1": {
+          "Community_Verifier": {
+            "dialogue": "As long as these things get verified, that's all that matters to me.",
+            "unlocks": null,
+            "unlocks_affects": null
+          },
+          "Clininic_Manager": {
             "dialogue": "Honestly, we've been ignoring the ministry's requests. We've got too much actual work to worry about."
           },
-          "health_provider_2": {
+          "Hospital_Administrator": {
             "feedback": {
               "comply_with_ministry": "OK, we'll do our best.",
-              "authorize_push_back": "OK I'll bring it up the next time they send in their request, but they can be very firm."
+              "authorize_push_back": "OK I'll bring it up the next time they send in their request, however, I will need some technical support to convince the ministry decision makers."
+            }
+          }
+        }
+      },
+      {
+        "symbol": "inconsistent_indicators",
+        "name": "Inconsistent Indicators",
+        "priority": 7,
+        "initiating_npc": "dep_minister_of_health",
+        "initiating_dialogue": "We are seeing some indicators rise while others stay stagnant. Hospital births are barely rising, though checkups and vaccinination rates are improving. We need to see all indicators rising!",
+        "starting_options": null,
+        "starting_options_affects": null,
+        "starting_options_cost": null,
+        "final_options": [
+          "hire_more_outreach_staff",
+          "raise_incentives_for_faciliity_births",
+          "review_indicators_at_end_of_year"
+        ],
+        "final_options_affects": [
+          "hire_more_outreach_staff",
+          "raise_incentives_for_faciliity_births",
+          "review_indicators_at_end_of_year"
+        ],
+        "final_options_cost": [
+          "large",
+          "large",
+          "medium"
+        ],
+        "characters": {
+          "Dep_Minister_of_Health": null,
+          "Director_Regional_Health_Services": {
+            "dialogue": "I suggest hiring more outreach staff to operate in facilities near these settlements.",
+            "Unlocks": [
+              "hire_more_outreach_staff"
+            ],
+            "Unlocks_affects": [
+              "hire_more_outreach_staff"
+            ],
+            "feedback": {
+              "Hire_More_Outreach_Staff": "This makes a good deal of sense to me."
+            }
+          },
+          "Coach": {
+            "dialogue": "We've tried many strategies to improve stagnant indicators. Perhaps the indicators need to be reviewed at the end of the year?",
+            "Unlocks": [
+              "review_indicators_at_end_of_year"
+            ],
+            "Unlocks_affects": [
+              "review_indicators_at_end_of_year"
+            ],
+            "feedback": {
+              "Review_Indicators_at_End_of_Year": "It might make sense to revise goals down, or at the very least, perform another survey to make sure our population estimates were correct."
+            }
+          },
+          "Third_Party_Verifier": {
+            "dialogue": "Are you concerned about fraud? I haven't seen direct evidence of it."
+          },
+          "Community_Verifier": {
+            "dialogue": "People here are still reluctant to travel to facillities."
+          },
+          "Clininic_Manager": {
+            "dialogue": "I admit, we haven't seen as many facility births as we'd like. We're doing everything we can to change that."
+          },
+          "Hospital_Administrator": {
+            "dialogue": "Vaccinations are easier to manage. Births take more planning. More resources are likely required to make this work.",
+            "Unlocks": [
+              "raise_incentives_for_faciliity_births"
+            ],
+            "Unlocks_affects": [
+              "raise_incentives_for_faciliity_births"
+            ],
+            "feedback": {
+              "Raise_Incentives_For_Faciliity_Births": "That will make this a good deal easier for us."
+            }
+          }
+        }
+      },
+      {
+        "symbol": "lack_of_transparency",
+        "name": "Lack of Transparency",
+        "priority": 6,
+        "initiating_npc": "third_party_verifier",
+        "initiating_dialogue": "There is an ongoing issue with the Clinic Manager. They are small things, but since they have been having issues with record keeping, I looked more closely and found some forms that seem like exact duplicates of others.",
+        "starting_options": [
+          "warning",
+          "mild_sanctions"
+        ],
+        "starting_options_affects": [
+          "warning_3",
+          "mild_sanctions"
+        ],
+        "starting_options_cost": [
+          "small",
+          "small"
+        ],
+        "final_options": [
+          "warning",
+          "mild_sanctions",
+          "strong_sanctions"
+        ],
+        "final_options_affects": [
+          "warning_3",
+          "mild_sanctions",
+          "strong_sanctions"
+        ],
+        "final_options_cost": [
+          "small",
+          "small",
+          "small"
+        ],
+        "characters": {
+          "Dep_Minister_of_Health": {
+            "dialogue": "This is very distressing. I urge you to deal with this harshly."
+          },
+          "Director_Regional_Health_Services": {
+            "dialogue": "This is troubling to hear. I may begin looking into other providers for you to contract next year. ",
+            "Unlocks": [
+              "strong_sanctions"
+            ],
+            "Unlocks_affects": [
+              "strong_sanctions"
+            ]
+          },
+          "Coach": {
+            "dialogue": "This is a big deal. If these records are not accurate, we have no way of measuring progress. We need to send a very clear message. Unvalidated reports cannot be paid."
+          },
+          "Third_Party_Verifier": {
+            "feedback": {
+              "Warning": "I'll warn them. Hopefully we will see some improvement next quarter."
+            }
+          },
+          "Community_Verifier": {
+            "dialogue": "That sounds pretty suspicious."
+          },
+          "Clininic_Manager": {
+            "dialogue": "I told my staff to start keeping better records. I can talk to them again and stress its importance...",
+            "feedback": {
+              "Mild_Sanctions": "Our budget has been wearing thin as it is! I will have to fire staff because of this.",
+              "Strong_Sanctions": "This is a disaster! For such a small error? I will have to fire staff because of this, and will not be able to order needed supplies."
+            }
+          },
+          "Hospital_Administrator": {
+            "dialogue": "Don't go too hard on them. These clinics do good work."
+          }
+        }
+      },
+      {
+        "symbol": "mismanagement",
+        "name": "Mismanagement",
+        "priority": 5,
+        "initiating_npc": "coach",
+        "initiating_dialogue": "I was visiting the hospital for my mentoring visit, and they are still mismanaging funds. The business plan has clear guidlelines the Adminstrator is not sticking to.",
+        "starting_options": [
+          "warning",
+          "sanctions_and_retraining_on_use_of_financial_tools"
+        ],
+        "starting_options_affects": [
+          "warning_2",
+          "sanctions_and_retraining_on_use_of_financial_tools"
+        ],
+        "starting_options_cost": [
+          "small",
+          "medium"
+        ],
+        "final_options": [
+          "warning",
+          "sanctions_and_retraining_on_use_of_financial_tools",
+          "revise_business_plan"
+        ],
+        "final_options_affects": [
+          "warning_2",
+          "sanctions_and_retraining_on_use_of_financial_tools",
+          "revise_business_plan_1"
+        ],
+        "final_options_cost": [
+          "small",
+          "medium",
+          "medium"
+        ],
+        "characters": {
+          "Dep_Minister_of_Health": {
+            "dialogue": "I have been slammed with meetings all week, and don't really have time to discuss this right now. Sorry."
+          },
+          "Director_Regional_Health_Services": {
+            "dialogue": "Have you considered that there is a flaw in the business plan? If the Hospital Administrator is straying from it so often, it might need to be reevaluated.",
+            "Unlocks": [
+              "revise_business_plan"
+            ],
+            "Unlocks_affects": [
+              "revise_business_plan_1"
+            ]
+          },
+          "Coach": {
+            "feedback": {
+              "revise_business_plan": " I will schedule a meeting this week with the purchasing agency and begin the revision proccess for next quarter.",
+              "Sanctions_and_retraining_on_use_of_financial_tools": "I'll make some time this week for a retraining session and try to drill down on exactly how these tools should be used. I'm informing the regulator about the sanctions now."
+            }
+          },
+          "Third_Party_Verifier": {
+            "dialogue": "If i had to guess, I would say this is simple mismanagement, nothing fraudulent."
+          },
+          "Community_Verifier": {
+            "dialogue": "I'm not really sure. I haven't even been to this hospital!"
+          },
+          "Clininic_Manager": {
+            "dialogue": "When was the last time you revised the business plan?"
+          },
+          "Hospital_Administrator": {
+            "dialogue": "We need to spend money where it's needed, and as the adminsitrator of this hospital, I know where it is needed. That was the purpose of granting us automony in the first place.",
+            "feedback": {
+              "Warning": "I will do my best, but I I'm really worried things are going to start breaking down soon."
+            }
+          }
+        }
+      },
+      {
+        "symbol": "More_Transparency",
+        "name": "More Transparency",
+        "priority": 8,
+        "initiating_npc": "Coach",
+        "initiating_dialogue": "I was visiting one of the clinics in the network for my mentoring visit, and I was unhappy with their transparency. There were some records I was told were unavailable, and I was not able to meet with the staff as I wished.",
+        "starting_options": [
+          "warning",
+          "terminate_contract_at_end_of_year"
+        ],
+        "starting_options_affects": [
+          "warning_4",
+          "terminate_contract_at_end_of_year_3"
+        ],
+        "starting_options_cost": [
+          "small",
+          "medium"
+        ],
+        "final_options": [
+          "warning",
+          "terminate_contract_at_end_of_year",
+          "audit",
+          "capacity_building"
+        ],
+        "final_options_affects": [
+          "warning_4",
+          "terminate_contract_at_end_of_year_3",
+          "audit",
+          "capacity_building"
+        ],
+        "final_options_cost": [
+          "small",
+          "medium",
+          "medium",
+          "medium"
+        ],
+        "characters": {
+          "Dep_Minister_of_Health": {
+            "dialogue": "I was under the impression that the plan required transparency."
+          },
+          "Director_Regional_Health_Services": {
+            "dialogue": "This has gone far enough. We should order a total audit of all their practices.",
+            "Unlocks": [
+              "Audit"
+            ],
+            "Unlocks_affects": [
+              "audit"
+            ]
+          },
+          "Coach": {
+            "feedback": {
+              "Terminate_Contract_at_End_of_Year": "II will warn them that their contract is in danger of being terminated at the end of the year.",
+              "capacity_building": "I feel like I've been doing this for a year already, but let's see if we can't make some progress"
+            }
+          },
+          "Third_Party_Verifier": {
+            "dialogue": "Their record keeping has been spotty as well, though it has improved since last year."
+          },
+          "Community_Verifier": {
+            "dialogue": "I would talk to the provider directly on this matter."
+          },
+          "Clininic_Manager": {
+            "dialogue": "We are simply over worked here, and have little time for meetings when our patients are sick and already have long waits. The Coach should be helping us build capacity, not draining our capacity.",
+            "Unlocks": [
+              "capacity_building"
+            ],
+            "Unlocks_affects": [
+              "capacity_building"
+            ],
+            "feedback": {
+              "Audit": "Very well, I'll clear some time. I'd be interested to hear your suggestions on improving things.",
+              "Warning": "I'll try to make my staff more available next time."
+            }
+          },
+          "Hospital_Administrator": {
+            "dialogue": "I haven't been having this problem, so I'm not sure what to tell you."
+          }
+        }
+      },
+      {
+        "symbol": "poor_management",
+        "name": "Poor Management",
+        "priority": 3,
+        "initiating_npc": "third_party_verifier",
+        "initiating_dialogue": "The Clinic submitted their reports to us, but there were some inconsistancies. When we asked to see their records, they could not supply them.",
+        "starting_options": [
+          "warning_and_retraining",
+          "terminate_contract_effective_end_of_year"
+        ],
+        "starting_options_affects": [
+          "warning_and_retraining_1",
+          "terminate_contract_effective_end_of_year_1"
+        ],
+        "starting_options_cost": [
+          "small",
+          "large"
+        ],
+        "final_options": [
+          "warning_and_retraining",
+          "terminate_contract_effective_end_of_year"
+        ],
+        "final_options_affects": [
+          "warning_and_retraining_1",
+          "terminate_contract_effective_end_of_year_1"
+        ],
+        "final_options_cost": [
+          "small",
+          "large"
+        ],
+        "characters": {
+          "Dep_Minister_of_Health": {
+            "dialogue": "There are other health providers in the region we could use. This is the largest, but it doesn't mean it is the best. "
+          },
+          "Director_Regional_Health_Services": {
+            "dialogue": "The staff at the hospital have been slow to adapt new practices."
+          },
+          "Coach": {
+            "feedback": {
+              "Terminate_Contract_Effective_End_of_Year": "It seems early to terminate their contract, but let's review at year's end. In the meantime, I will be observing and offering ways to improve."
+            }
+          },
+          "Third_Party_Verifier": {
+            "dialogue": "The data we've been seeing from this provider does indicate fund mismanagement."
+          },
+          "Community_Verifier": {
+            "dialogue": "I would talk directly to them if I were you."
+          },
+          "Clininic_Manager": {
+            "dialogue": "I don't really have time to talk about this right now. Sorry."
+          },
+          "Hospital_Administrator": {
+            "dialogue": "We're doing our best here.  There are many intricacies to the business plan, and not everyone on my staff understands them. I'm sure they'll get used to it soon, though.",
+            "feedback": {
+              "Warning_and_Retraining": "Do you really think this is necessary?"
+            }
+          }
+        }
+      },
+      {
+        "symbol": "wrong_numbers",
+        "name": "Wrong Numbers",
+        "priority": 9,
+        "initiating_npc": "third_party_verifier",
+        "initiating_dialogue": "I have been reviewing the Hospital Administrator's records, and they do not check out. There is either fraud or accidental misreporting here.",
+        "starting_options": [
+          "warning",
+          "sanctions"
+        ],
+        "starting_options_affects": [
+          "warning_5",
+          "sanctions_3"
+        ],
+        "starting_options_cost": [
+          "small",
+          "small",
+          "medium"
+        ],
+        "final_options": [
+          "warning",
+          "sanctions",
+          "hold_meeting_to_retrain_on_reporting_practices"
+        ],
+        "final_options_affects": [
+          "warning_5",
+          "sanctions_3",
+          "hold_meeting_to_retrain_on_reporting_practices"
+        ],
+        "final_options_cost": [
+          "small",
+          "medium",
+          "medium",
+          "medium"
+        ],
+        "characters": {
+          "Dep_Minister_of_Health": {
+            "dialogue": "If needed, I could suspend their lisence to practice, but I don't think it will come to that."
+          },
+          "Director_Regional_Health_Services": {
+            "dialogue": "I've had some communication issues with the Hospital Adminstrator in the past, but I believe he is honest. You should talk to him directly to see what the problem is.",
+            "narrows": [
+              "dep_minister_of_health",
+              "director_regional_health_services",
+              "third_party_verifier",
+              "community_verifier",
+              "clininic_manager"
+            ]
+          },
+          "Coach": {
+            "dialogue": "This is the first time we've seen this behavior from the Hospital Administrator. I'd recommend a warning."
+          },
+          "Third_Party_Verifier": null,
+          "Community_Verifier": {
+            "dialogue": "The sample I surveyed does not align with the numbers you say they reported. Very suspicious."
+          },
+          "Clininic_Manager": {
+            "dialogue": "I don't think the hospital should get preferential treatment over my clinics. Treat them just as you would treat us."
+          },
+          "Hospital_Administrator": {
+            "dialogue": "I think my staff is confused about what to report. Frankly, I myself have been confused at times!",
+            "Unlocks": [
+              "hold_meeting_to_retrain_on_reporting_practices"
+            ],
+            "Feedback": {
+              "hold_meeting_to_retrain_on_reporting_practices": " I think that will probably help. Let me know when works for you and I'll clear some time.",
+              "warning": "I'll talk to my staff and try to settle this.",
+              "sanctions": "I just put in orders for new equipment. Now I won't be able to afford to pay for them. I think you are talking this too far. It was an honest mistake."
             }
           }
         }
@@ -1123,147 +2075,134 @@
     ],
     "tactics": [
       {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "cooldown": [
-          5,
-          5,
-          10
+        "symbol": "government_overreach_on_verification",
+        "name": "Government overreach on verification",
+        "priority": 1,
+        "initiating_npc": "provider_2",
+        "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
+        "starting_options": [
+          "comply_with_ministry"
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "feedback": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
+        "starting_options_affects": [
+          "example_1",
+          "example_2"
+        ],
+        "final_options": [
+          "comply_with_ministry",
+          "authorize_push_back",
+          "clarify_roles"
+        ],
+        "final_options_affects": [
+          "example_1",
+          "example_2",
+          "example_1"
+        ],
+        "characters": {
+          "dep_minister_of_health": {
+            "dialogue": "We are very interested in making sure the providers are doing what they say, and we have the staff available to review, so why not?",
+            "narrows": [
+              "third_party_verifier",
+              "coach"
+            ],
+            "feedback": {
+              "clarify_roles": "All right, I understand. I'll inform the staff here."
+            }
+          },
+          "coach": {
+            "dialogue": "Duplicating efforts seems to be hampering the health providers. I'd either clarify everyone's roles for them, or empower health providers to push back somehow.",
+            "unlocks": [
+              "separation_of_rolls",
+              "authorize_push_back"
+            ],
+            "unlocks_affects": [
+              "example_1",
+              "example_2"
+            ]
+          },
+          "third_party_verifier": {
+            "dialogue": "I didn't know about this. If the Ministry is doubling our verification efforts, it could prove very confusing to the providers.",
+            "unlocks": [
+              "separation_of_rolls"
+            ],
+            "unlocks_affects": [
+              "example_2"
+            ]
+          },
+          "health_provider_1": {
+            "dialogue": "Honestly, we've been ignoring the ministry's requests. We've got too much actual work to worry about."
+          },
+          "health_provider_2": {
+            "feedback": {
+              "comply_with_ministry": "OK, we'll do our best.",
+              "authorize_push_back": "OK I'll bring it up the next time they send in their request, but they can be very firm."
+            }
+          }
         }
       },
       {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_incentivise_improvement",
-        "name": "Tactic card name",
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "cooldown": [
-          5,
-          5,
-          10
+        "symbol": "government_overreach_on_verification",
+        "name": "Government overreach on verification",
+        "priority": 1,
+        "initiating_npc": "provider_2",
+        "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
+        "starting_options": [
+          "comply_with_ministry"
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "feedback": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        },
-        "results": "This is what I found out!"
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_voucher_management",
-        "name": "Tactic card name",
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "cooldown": [
-          5,
-          5,
-          10
+        "starting_options_affects": [
+          "example_1",
+          "example_2"
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "feedback": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        },
-        "results": "This is what I found out!"
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_outreach_campaign",
-        "name": "Tactic card name",
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "cooldown": [
-          5,
-          5,
-          10
+        "final_options": [
+          "comply_with_ministry",
+          "authorize_push_back",
+          "clarify_roles"
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "feedback": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        },
-        "results": "This is what I found out!"
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_incentivise_health",
-        "name": "Tactic card name",
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "cooldown": [
-          5,
-          5,
-          10
+        "final_options_affects": [
+          "example_1",
+          "example_2",
+          "example_1"
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "feedback": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        },
-        "results": "This is what I found out!"
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_fruit_1",
-        "name": "Tactic card name",
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "cooldown": [
-          5,
-          5,
-          10
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "feedback": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        },
-        "results": "This is what I found out!"
+        "characters": {
+          "dep_minister_of_health": {
+            "dialogue": "We are very interested in making sure the providers are doing what they say, and we have the staff available to review, so why not?",
+            "narrows": [
+              "third_party_verifier",
+              "coach"
+            ],
+            "feedback": {
+              "clarify_roles": "All right, I understand. I'll inform the staff here."
+            }
+          },
+          "coach": {
+            "dialogue": "Duplicating efforts seems to be hampering the health providers. I'd either clarify everyone's roles for them, or empower health providers to push back somehow.",
+            "unlocks": [
+              "separation_of_rolls",
+              "authorize_push_back"
+            ],
+            "unlocks_affects": [
+              "example_1",
+              "example_2"
+            ]
+          },
+          "third_party_verifier": {
+            "dialogue": "I didn't know about this. If the Ministry is doubling our verification efforts, it could prove very confusing to the providers.",
+            "unlocks": [
+              "separation_of_rolls"
+            ],
+            "unlocks_affects": [
+              "example_2"
+            ]
+          },
+          "health_provider_1": {
+            "dialogue": "Honestly, we've been ignoring the ministry's requests. We've got too much actual work to worry about."
+          },
+          "health_provider_2": {
+            "feedback": {
+              "comply_with_ministry": "OK, we'll do our best.",
+              "authorize_push_back": "OK I'll bring it up the next time they send in their request, but they can be very firm."
+            }
+          }
+        }
       }
     ]
   },
@@ -1358,140 +2297,198 @@
   ],
   "unlockables": [
     {
-      "symbol": "unlockable_incentivise_improvement",
-      "title": "incentivise improvement in patient/provider relations",
-      "description": [
-        "Incentivise good customer service (attitudes) through bonuses for workers",
-        "More info",
-        "More more info"
-      ],
-      "unlocked": [
-        "center_city_minister_of_health",
-        "crup_grandmother",
-        "zema_tall_tim_nurse"
-      ],
-      "priority": 2,
-      "type": "professionalism"
+      "symbol": "unlockable_dialogue_mrtodd",
+      "unlocked": null
     },
     {
-      "symbol": "unlockable_incentivise_health",
-      "description": [
-        "Info",
-        "More info",
-        "More more info"
-      ],
-      "title": "Incentivising health providers to follow standard protocols (quality of care)",
-      "priority": 1,
-      "type": "quality_of_care"
-    },
-    {
-      "symbol": "unlockable_more_autonomy",
-      "description": [
-        "Info",
-        "More info",
-        "More more info"
-      ],
-      "title": "Give providers more autonomy to procure supplies or personnel",
-      "priority": 1,
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_use_ngo",
-      "title": "Use an NGO to provide services",
-      "description": "(pbc option)",
-      "unlocked": [
-        "malcom",
-        "Jo-Jones",
-        "professor"
-      ],
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_outreach_campaign",
-      "description": [
-        "Info",
-        "More info",
-        "More more info"
-      ],
-      "title": "Outreach campaign to promote and provide public health services",
-      "priority": 2,
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_awareness_campaign",
-      "description": [
-        "Info",
-        "More info",
-        "More more info"
-      ],
-      "title": "Awareness raising campaign to explain how the new system works.",
-      "priority": 3,
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_voucher_management",
-      "description": [
-        "Info",
-        "More info",
-        "More more info"
-      ],
-      "title": "Contract a voucher management agency to provide poorest community members with service vouchers (health strategy)",
-      "priority": 2,
-      "type": "health"
-    },
-    {
-      "symbol": "unlockable_corruption_crackdown",
-      "title": "Something",
-      "description": "something",
-      "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_hire_private_shipping_company",
-      "title": "Something",
-      "description": "something",
-      "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_contract_ngo_to_administer_plan",
-      "title": "Something",
-      "description": "something",
-      "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
+      "symbol": "unlockable_dialogue_",
+      "unlocked": null
     },
     {
       "symbol": "unlockable_route_malcom_to_kibari",
-      "title": "Something",
-      "description": "something",
       "unlocked": [
         "malcom_to_kibari"
-      ],
-      "type": "professionalism"
+      ]
     },
     {
-      "symbol": "unlockable_fruit_1",
-      "title": "Something",
-      "description": "something",
+      "symbol": "unlockable_route_capital_to_malcom",
       "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
+        "capital_to_malcom"
+      ]
     },
     {
-      "symbol": "unlockable_plan_traveling_nurses",
-      "title": "Something",
-      "description": "something",
+      "symbol": "unlockable_route_capital_to_crup",
       "unlocked": [
-        "malcom"
+        "capital_to_crup"
+      ]
+    },
+    {
+      "symbol": "unlockable_route_crup_to_kibari",
+      "unlocked": [
+        "crup_to_kibari"
+      ]
+    },
+    {
+      "symbol": "unlockable_route_malcom_to_valeria",
+      "unlocked": [
+        "malcom_to_valeria"
+      ]
+    },
+    {
+      "symbol": "unlockable_route_malcom_to_mile",
+      "unlocked": [
+        "malcom_to_mile"
+      ]
+    },
+    {
+      "symbol": "unlockable_route_valeria_to_zema",
+      "unlocked": [
+        "valeria_to_zema"
+      ]
+    },
+    {
+      "symbol": "unlockable_route_zema_to_kibari",
+      "unlocked": [
+        "zema_to_kibari"
+      ]
+    },
+    {
+      "symbol": "unlockable_route_kibari_to_crup",
+      "unlocked": [
+        "kibari_to_crup"
+      ]
+    },
+    {
+      "symbol": "unlockable_route_kibari_to_mile",
+      "unlocked": [
+        "kibari_to_mile"
+      ]
+    },
+    {
+      "symbol": "unlockable_route_mile_to_zema",
+      "unlocked": [
+        "mile_to_zema"
+      ]
+    },
+    {
+      "symbol": "unlockable_incentivise_providers_to_deliver_services",
+      "title": "Incentivise Providers to Deliver Services",
+      "description": [
+        "A straightforward way to increase use of specific services, such as facility births and vaccinations, is to give bonuses to providers that deliver more of those services. This would set specific goals, and incentivise providers to reach them."
       ],
-      "type": "professionalism"
+      "type": "supply_side_resource_allocation"
+    },
+    {
+      "symbol": "unlockable_incentivise_providers_to_follow_protocols",
+      "title": "Incentivise Providers to Follow Protocols",
+      "description": [
+        "If providers are not following protocols, ordering consults and prescribing things for the wrong reasons, this is both wasteful and harmful to quality of care. This would require providers to follow protocols in order to receive incentives."
+      ],
+      "type": "supply_side_resource_allocation"
+    },
+    {
+      "symbol": "unlockable_contract_outside_organization_to_administer_plan",
+      "title": "Contract Outside Organization to Administer Plan",
+      "description": [
+        "In instances where there is poor infrastructure or the government is not a strong partner, contracting a Non-Government Organization to fill the roles of infrastructure and management to deliver services is ideal."
+      ],
+      "type": "supply_side_resource_allocation"
+    },
+    {
+      "symbol": "unlockable_contract_private_company_to_deliver_supplies",
+      "title": "Contract Private Company to Deliver Supplies",
+      "description": [
+        "If public infrastructure and traditional channels aren’t reliably delivering needed supplies, contracting a private company to deliver them would ensure things run smoothly."
+      ],
+      "type": "supply_side_resource_allocation"
+    },
+    {
+      "symbol": "unlockable_grant_providers_autonomy",
+      "title": "Grant Providers Autonomy",
+      "description": [
+        "Providers need the autonomy to order supplies and make hires that suit the needs of their local communities. Moving these crucial decisions to the ground level instead of leaving it to the Ministry or another body should improve supplies and personnel issues."
+      ],
+      "type": "supply_side_resource_allocation"
+    },
+    {
+      "symbol": "unlockable_improve_patient_and_provider_relationship",
+      "title": "Improve Patient and Provider Relationship",
+      "description": [
+        "Patients don’t go to facilities where they are mistreated or receive poor service. Improving patient/provider relationships could increase use of important services long term."
+      ],
+      "type": "behavior_knowledge_and_professionalism"
+    },
+    {
+      "symbol": "unlockable_make_aesthetic_improvements",
+      "title": "Make Aesthetic Improvements",
+      "description": [
+        "If the facilities look uncleanunsafe, or just unattractive, patients will stay away. Improvements could include proper maintenance, renovations, paint, new uniforms for staff, or other upgrades."
+      ],
+      "type": "behavior_knowledge_and_professionalism"
+    },
+    {
+      "symbol": "unlockable_hire_more_nurses_from_highlands_region",
+      "title": "Hire From Nurses From the Highlands Region",
+      "description": [
+        "If patients see familiar faces who understand their needs, they will be more likely to use and return to facilities. This would also have the upside of stimulating the economy in a poor region of the country."
+      ],
+      "type": "behavior_knowledge_and_professionalism"
+    },
+    {
+      "symbol": "unlockable_vouchers_for_services",
+      "title": "Vouchers For Services",
+      "description": [
+        "If patients see familiar faces who understand their needs, they will be more likely to use and return to facilities. This would also have the upside of stimulating the economy in a poor region of the country."
+      ],
+      "type": "demand_side_resource_allocation"
+    },
+    {
+      "symbol": "unlockable_travel_reimbursement",
+      "title": "Travel Reimbursement",
+      "description": [
+        "If patients cannot afford to travel to facilities, they cannot use services there. A voucher program for travel could help offset this cost."
+      ],
+      "type": "demand_side_resource_allocation"
+    },
+    {
+      "symbol": "unlockable_conditional_cash_transfer",
+      "title": "Conditional Cash Transfer",
+      "description": [
+        "In areas where social welfare must be delivered due to poverty or disaster, making the transfer of money or goods conditional on using health services that we wish to incentivise anyway makes sense."
+      ],
+      "type": "demand_side_resource_allocation"
+    },
+    {
+      "symbol": "unlockable_outreach",
+      "title": "Outreach",
+      "description": [
+        "When travel is difficult for patients, bringing health care workers directly to their communities through a practice known as outreach can provide services much more conveniently."
+      ],
+      "type": "demand_side_resource_allocation"
+    },
+    {
+      "symbol": "unlockable_information_campaign_to_change_cultural_customs_and_behavior",
+      "title": "Information Campaign to Change Cultural Customs and Behavior",
+      "description": [
+        "Sometimes entrenched customs or cultural behaviors such as not hand washing or giving birth in unsafe environments can harm the health of communities. An educational information campaign could help change those behaviors."
+      ],
+      "type": "demand_side_behavior_and_knowledge"
+    },
+    {
+      "symbol": "unlockable_information_campaign_to_counter_misinformation",
+      "title": "Information Campaign to Counter Misinformation",
+      "description": [
+        "An educational information campaign to combat specific misinformation about health services could help clear up misconceptions about facility care."
+      ],
+      "type": "demand_side_behavior_and_knowledge"
+    },
+    {
+      "symbol": "unlockable_information_campaign_to_explain_changes_to_system",
+      "title": "Information Campaign to Explain Changes to System",
+      "description": [
+        "If major changes are going to take place in the health system, and educational information campaign to explain these changes may be necessary to avoid confusion."
+      ],
+      "type": "demand_side_behavior_and_knowledge"
     }
   ]
 }
