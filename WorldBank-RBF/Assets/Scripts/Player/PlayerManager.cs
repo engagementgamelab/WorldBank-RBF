@@ -65,27 +65,34 @@ public class PlayerManager : MonoBehaviour {
 
     public void Register(string email, string pass, string passConfirm) {
 
+        if(pass != passConfirm)
+        {          
+            Events.instance.Raise(new PlayerFormEvent("Password and Password Confirmation do not match!"));
+            return;
+        }
+
         Dictionary<string, object> registerFields = new Dictionary<string, object>();
 
         registerFields.Add("email", email);
         registerFields.Add("password", pass);
 
-        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/create/", registerFields);
+        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/create/", registerFields, AuthCallback);
         
     }
 
     public void AuthCallback(Dictionary<string, object> response) {
 
-        // if(response["error"] != null)
-        //     Events.instance.Raise(new PlayerFormEvent(response["error"].ToString()));
+        if(response.ContainsKey("error"))  
+        {          
+            Events.instance.Raise(new PlayerFormEvent(response["error"].ToString()));
+            return;
+        }
 
         System.Text.StringBuilder output = new System.Text.StringBuilder();
         
         JsonWriter writer = new JsonWriter (output);
         
         writer.Write(response["user"]);
-
-        Debug.Log("User authenticated: " + response["user"]);
 
         // Set user info
         Models.User user = JsonReader.Deserialize<Models.User>(output.ToString());

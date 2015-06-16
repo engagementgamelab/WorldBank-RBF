@@ -67,6 +67,8 @@ public class PlayerLoginUI : MB {
 
     private void OnFormEvent(PlayerFormEvent e) {
 
+    	txtError.text = e.error;
+    	
     	txtError.gameObject.SetActive(true);
 
     }

@@ -168,11 +168,21 @@ public class NetworkManager : MonoBehaviour {
             string exceptionMsg = "WaitForForm unknown error. No response to parse and no registered callback.";
 
             if(response == null)
-               exceptionMsg = "General WWW issue: " + www.error;
-            else if(responseAction != null)
+            {
+                exceptionMsg = "General WWW issue: " + www.error;
+                throw new Exception(exceptionMsg);
+            }
+            else if(responseAction != null) 
+            {
+                responseAction(response);
+                yield return null;
+            }
+            else 
+            {
                exceptionMsg = "API Request Error: " + response["error"];
+                throw new Exception(exceptionMsg);
+            }
             
-            throw new Exception(exceptionMsg);
         }
      }
 
