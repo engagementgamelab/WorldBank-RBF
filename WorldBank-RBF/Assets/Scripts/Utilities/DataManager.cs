@@ -27,8 +27,20 @@ public class DataManager {
             #endif
         }
     }
+    
+    /// <summary>
+    /// Get/set the current scene context, which is essentially a key name used for global data lookup (e.g. a city)
+    /// </summary>
+    public static string SceneContext {
+        get {
+            return currentSceneContext;
+        }
+        set {
+            currentSceneContext = value;
+        }
+    }
 
-    public static string currentSceneContext;
+    private static string currentSceneContext;
 
     private static JsonReaderSettings _readerSettings = new JsonReaderSettings();
 
@@ -92,16 +104,6 @@ public class DataManager {
                 outfile.Write(data);
             }
         #endif
-    }
-
-    /// <summary>
-    /// Set the current scene context, which is essentially a key name used for global data lookup (e.g. a city)
-    /// </summary>
-    /// <param name="strContext">String to be used as the scene context</param>
-    public static void SetSceneContext(string strContext) {
-
-        currentSceneContext = strContext;
-
     }
 
     /// <summary>
@@ -169,8 +171,8 @@ public class DataManager {
         } else {
 
             Models.NPC[] npcRef = new Models.NPC[] { Array.Find(gameData.phase_one[currentSceneContext], row => row.character == strSelector) };
-
-            if(npcRef == null)
+            
+            if(npcRef[0] == null)
                 throw new Exception("Unable to find NPC with symbol '" + strSelector + "' for this city (" + currentSceneContext + ")! Fiddlesticks.");
             
             return npcRef;

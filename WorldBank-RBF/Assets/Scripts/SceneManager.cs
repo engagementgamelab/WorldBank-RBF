@@ -31,6 +31,11 @@ public class SceneManager : MonoBehaviour {
 	}
 
 	public string sceneName;
+	public bool phaseOne;
+
+	public delegate void AuthCallbackDelegate();
+
+	private PlayerLoginRegisterUI loginUI;
 
 	void Awake () {
 
@@ -40,17 +45,32 @@ public class SceneManager : MonoBehaviour {
 		// Set global game data if needed
 		SetGameData();
 
-		DataManager.SetSceneContext(sceneName);
+		DataManager.SceneContext = sceneName;
 
 		// Authenticate player -- user/pass is hard-coded for now
 		if(!PlayerManager.Instance.Authenticated)
 		{
-			// #if UNITY_EDITOR
-			// 	PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
-			// #endif
-			ObjectPool.Instantiate<PlayerLoginRegisterUI>();
+
+			#if UNITY_EDITOR
+				PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
+			#else
+				loginUI = ObjectPool.Instantiate<PlayerLoginRegisterUI>();
+				loginUI.Callback = UserAuthenticated;
+			#endif
 			
 		}
+	}
+	
+	public void UserAuthenticated(bool success) {
+
+		if(!success)
+			return;
+
+		if(phaseOne)
+			NotebookManager.Instance.OpenMap();
+
+		Debug.Log("Player auth successful? " + success);
+
 	}
 
 	/// <summary>

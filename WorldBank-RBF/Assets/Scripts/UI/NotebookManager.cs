@@ -77,13 +77,14 @@ public class NotebookManager : MB {
 	string activeCanvas = "map";
 
 	void Start () {
-		if (openAtStart) {
+		// Need to find a better way to approach this, but for now 
+		/*if (openAtStart) {
 			open = false;
 			Open ();
-		} else {
+		} else {*/
 			open = true;
 			Close ();
-		}
+		// }
 	}
 
 	public void OpenMap () {

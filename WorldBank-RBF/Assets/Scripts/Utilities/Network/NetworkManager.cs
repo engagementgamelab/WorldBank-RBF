@@ -77,7 +77,7 @@ public class NetworkManager : MonoBehaviour {
                     form.AddField(field.Key, formFieldVal);
                 }
                 catch(Exception e) {
-                    throw new Exception("Unable to coerce form field " + field.Value + " to string");
+                    throw new Exception("Unable to coerce form field " + field.Value + " to string for POST to " + url);
                 }
             }
 

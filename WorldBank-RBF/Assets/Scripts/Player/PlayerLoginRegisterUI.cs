@@ -29,6 +29,8 @@ public class PlayerLoginRegisterUI : MB {
 	public GameObject btnNewUser;
 	public GameObject btnGoBack;
 
+	public delegate void AuthCallback(bool success);
+
 	private bool loggedIn;
 
 	void Start() {
@@ -44,11 +46,14 @@ public class PlayerLoginRegisterUI : MB {
 		btnNewUser = transform.Find("NewUserButton").gameObject;
 */
 		// Listen for cooldown tick
+
 		Events.instance.AddListener<PlayerLoginEvent>(OnFormEvent);
 
 		transform.SetAsFirstSibling();
 
 	}
+
+	public AuthCallback Callback { get; set; }
 
 	public void Login() {
 
@@ -80,9 +85,12 @@ public class PlayerLoginRegisterUI : MB {
 	    	txtError.text = e.error;
 	    	
 	    	txtError.gameObject.SetActive(true);
+	    	Callback(false);
 	    }
-	    else
-	    	ObjectPool.Destroy(transform.gameObject);
+	    else {
+	    	ObjectPool.Destroy<PlayerLoginRegisterUI>(transform);
+	    	Callback(true);
+	    }
 
     }
 

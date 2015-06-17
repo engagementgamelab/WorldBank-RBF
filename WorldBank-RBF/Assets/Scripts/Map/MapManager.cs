@@ -300,7 +300,7 @@ public class MapManager : MonoBehaviour {
 		label.text = "Travel to " + city.display_name;
  
  		// Set city context and go to city
-	    goBtn.onClick.AddListener(() => DataManager.SetSceneContext(city.symbol));
+	    goBtn.onClick.AddListener(() => DataManager.SceneContext = city.symbol);
 	    goBtn.onClick.AddListener(() => label.text = "Loading...");
 	    // goBtn.onClick.AddListener(() => StartCoroutine( UnlockRoute(city.cost) ));
 

@@ -205,13 +205,13 @@ public class ScenarioManager : MonoBehaviour {
 		Debug.Log("Scenario: " + response["current_scenario"].ToString());
 
     	// Set scene context from current scenario
-    	DataManager.SetSceneContext(response["current_scenario"].ToString());
+    	DataManager.SceneContext = response["current_scenario"].ToString();
 
     	// Set tactics that are a part of this plan
     	tacticsAvailable = ((IEnumerable)response["tactics"]).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
 
     	// Debug
-    	scenarioLabel.text = DataManager.currentSceneContext.Replace("_", " ") + ": ";
+    	scenarioLabel.text = DataManager.SceneContext.Replace("_", " ") + ": ";
     	scenarioLabel.gameObject.SetActive(true);
 
     	OpenDialog();
