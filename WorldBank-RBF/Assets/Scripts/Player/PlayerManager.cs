@@ -67,7 +67,7 @@ public class PlayerManager : MonoBehaviour {
 
         if(pass != passConfirm)
         {          
-            Events.instance.Raise(new PlayerFormEvent("Password and Password Confirmation do not match!"));
+            Events.instance.Raise(new PlayerLoginEvent(false, "Password and Password Confirmation do not match!"));
             return;
         }
 
@@ -86,7 +86,7 @@ public class PlayerManager : MonoBehaviour {
 
         if(response.ContainsKey("error"))  
         {          
-            Events.instance.Raise(new PlayerFormEvent(response["error"].ToString()));
+            Events.instance.Raise(new PlayerLoginEvent(false, response["error"].ToString()));
             return;
         }
 
@@ -101,6 +101,10 @@ public class PlayerManager : MonoBehaviour {
 
         _playerId = user._id;
         _isAuthenticated = Convert.ToBoolean(response["auth"]);
+
+        Events.instance.Raise(new PlayerLoginEvent(true));
+
+        return;
         
     }
 

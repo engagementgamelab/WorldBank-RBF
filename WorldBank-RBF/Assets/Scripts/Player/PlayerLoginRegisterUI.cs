@@ -29,10 +29,12 @@ public class PlayerLoginRegisterUI : MB {
 	public GameObject btnNewUser;
 	public GameObject btnGoBack;
 
+	private bool loggedIn;
+
 	void Start() {
 
 		// Ensure UI is under our canvas
-		transform.SetParent(GameObject.FindGameObjectsWithTag("CanvasRoot")[0].transform);
+		// transform.SetParent(GameObject.FindGameObjectsWithTag("CanvasRoot")[0].transform);
 
 		// GetComponent<RectTransform>().anchoredPosition = new Vector2(2011f, 1f);
 
@@ -42,7 +44,9 @@ public class PlayerLoginRegisterUI : MB {
 		btnNewUser = transform.Find("NewUserButton").gameObject;
 */
 		// Listen for cooldown tick
-		Events.instance.AddListener<PlayerFormEvent>(OnFormEvent);
+		Events.instance.AddListener<PlayerLoginEvent>(OnFormEvent);
+
+		transform.SetAsFirstSibling();
 
 	}
 
@@ -70,11 +74,15 @@ public class PlayerLoginRegisterUI : MB {
 
 	}
 
-    private void OnFormEvent(PlayerFormEvent e) {
+    private void OnFormEvent(PlayerLoginEvent e) {
 
-    	txtError.text = e.error;
-    	
-    	txtError.gameObject.SetActive(true);
+    	if(!e.success) {
+	    	txtError.text = e.error;
+	    	
+	    	txtError.gameObject.SetActive(true);
+	    }
+	    else
+	    	ObjectPool.Destroy(transform);
 
     }
 
