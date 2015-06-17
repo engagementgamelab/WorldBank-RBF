@@ -59,7 +59,7 @@ public class PlayerManager : MonoBehaviour {
         authFields.Add("email", email);
         authFields.Add("password", pass);
 
-        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/auth/", authFields, AuthCallback);
+        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/auth/", authFields, AuthCallback);
         
     }
 
@@ -78,7 +78,7 @@ public class PlayerManager : MonoBehaviour {
         registerFields.Add("location", location);
         registerFields.Add("password", pass);
 
-        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/create/", registerFields, AuthCallback);
+        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/create/", registerFields, AuthCallback);
         
     }
 
@@ -114,7 +114,7 @@ public class PlayerManager : MonoBehaviour {
         saveFields.Add("user_id", _playerId);
 
         // Save user info
-        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/save/", saveFields, response, true);
+        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/save/", saveFields, response, true);
     }
 
 }

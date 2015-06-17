@@ -43,7 +43,7 @@ public class ScenarioManager : MonoBehaviour {
 
         // Get plans
 		if(PlayerManager.Instance.Authenticated)
-	        NetworkManager.Instance.GetURL(DataManager.config.serverRoot + "/plan/all/", PlansRetrieved);
+	        NetworkManager.Instance.GetURL(DataManager.RemoteURL + "/plan/all/", PlansRetrieved);
 
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
 
@@ -189,7 +189,7 @@ public class ScenarioManager : MonoBehaviour {
         saveFields.Add("plan_id", planId);
 
         // Save user info
-        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/scenario/", saveFields, AssignScenario);
+        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/scenario/", saveFields, AssignScenario);
 
     }
 
@@ -205,7 +205,7 @@ public class ScenarioManager : MonoBehaviour {
 		Debug.Log("Scenario: " + response["current_scenario"].ToString());
 
     	// Set scene context from current scenario
-    	DataManager.currentSceneContext = "scenario_3";
+    	DataManager.SetSceneContext(response["current_scenario"].ToString());
 
     	// Set tactics that are a part of this plan
     	tacticsAvailable = ((IEnumerable)response["tactics"]).Cast<object>().Select(obj => obj.ToString()).ToList<string>();

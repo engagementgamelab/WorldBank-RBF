@@ -17,6 +17,16 @@ using System.Linq;
 using JsonFx.Json;
 
 public class DataManager {
+    
+    public static string RemoteURL {
+        get {
+            #if UNITY_EDITOR
+               return config.serverLocalRoot;
+            #else
+               return config.serverRoot;
+            #endif
+        }
+    }
 
     public static string currentSceneContext;
 

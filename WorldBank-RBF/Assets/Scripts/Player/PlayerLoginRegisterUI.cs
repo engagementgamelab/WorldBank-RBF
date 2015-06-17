@@ -82,7 +82,7 @@ public class PlayerLoginRegisterUI : MB {
 	    	txtError.gameObject.SetActive(true);
 	    }
 	    else
-	    	ObjectPool.Destroy(transform);
+	    	ObjectPool.Destroy(transform.gameObject);
 
     }
 

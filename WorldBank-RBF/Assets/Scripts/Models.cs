@@ -26,6 +26,7 @@ public class Models {
     public class GameConfig {
 
         public string serverRoot { get; set; }
+        public string serverLocalRoot { get; set; }
         public string authKey { get; set; }
 
     }

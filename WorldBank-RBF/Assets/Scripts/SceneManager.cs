@@ -45,16 +45,12 @@ public class SceneManager : MonoBehaviour {
 		// Authenticate player -- user/pass is hard-coded for now
 		if(!PlayerManager.Instance.Authenticated)
 		{
+			// #if UNITY_EDITOR
+			// 	PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
+			// #endif
 			ObjectPool.Instantiate<PlayerLoginRegisterUI>();
 			
-			#if UNITY_EDITOR
-				PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
-			#endif
 		}
-	}
-
-	void Start () {
-
 	}
 
 	/// <summary>

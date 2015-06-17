@@ -94,7 +94,7 @@ public class NetworkManager : MonoBehaviour {
 
         try {
             
-            Stream data = client.OpenRead(DataManager.config.serverRoot + url);
+            Stream data = client.OpenRead(DataManager.RemoteURL + url);
 
             StreamReader reader = new StreamReader(data);
             
