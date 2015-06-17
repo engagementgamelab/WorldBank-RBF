@@ -248,6 +248,8 @@ public class ScenarioManager : MonoBehaviour {
 		tacticCardCooldown = new TimerUtils.Cooldown();
 		tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
 
+		Debug.Log("Scenario: " + response["current_scenario"].ToString());
+
     	// Set scene context from current scenario
     	DataManager.SceneContext = response["current_scenario"].ToString();
 
