@@ -121,7 +121,12 @@ public class CitiesManager : MB {
 
 	void OnVisit () {
 		UpdateInteractableCities ();
+
+		DataManager.SceneContext = currentCitySymbol;
+		NpcManager.InitNpcs ();
+
 		ParallaxLayerManager.Instance.Load (currentCitySymbol);
+		
 		NotebookManager.Instance.Close ();
 	}
 

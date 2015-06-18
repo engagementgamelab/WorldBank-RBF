@@ -59,25 +59,36 @@ public class PlayerManager : MonoBehaviour {
         authFields.Add("email", email);
         authFields.Add("password", pass);
 
-        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/auth/", authFields, AuthCallback);
+        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/auth/", authFields, AuthCallback);
         
     }
 
-    public void Register(string email, string pass, string passConfirm) {
+    public void Register(string email, string username, string location, string pass, string passConfirm) {
+
+        if(pass != passConfirm)
+        {          
+            Events.instance.Raise(new PlayerLoginEvent(false, "Password and Password Confirmation do not match!"));
+            return;
+        }
 
         Dictionary<string, object> registerFields = new Dictionary<string, object>();
 
         registerFields.Add("email", email);
+        registerFields.Add("username", username);
+        registerFields.Add("location", location);
         registerFields.Add("password", pass);
 
-        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/create/", registerFields);
+        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/create/", registerFields, AuthCallback);
         
     }
 
     public void AuthCallback(Dictionary<string, object> response) {
 
-        // if(response["error"] != null)
-        //     Events.instance.Raise(new PlayerFormEvent(response["error"].ToString()));
+        if(response.ContainsKey("error"))  
+        {          
+            Events.instance.Raise(new PlayerLoginEvent(false, response["error"].ToString()));
+            return;
+        }
 
         System.Text.StringBuilder output = new System.Text.StringBuilder();
         
@@ -85,13 +96,15 @@ public class PlayerManager : MonoBehaviour {
         
         writer.Write(response["user"]);
 
-        Debug.Log("User authenticated: " + response["user"]);
-
         // Set user info
         Models.User user = JsonReader.Deserialize<Models.User>(output.ToString());
 
         _playerId = user._id;
         _isAuthenticated = Convert.ToBoolean(response["auth"]);
+
+        Events.instance.Raise(new PlayerLoginEvent(true));
+
+        return;
         
     }
 
@@ -101,7 +114,7 @@ public class PlayerManager : MonoBehaviour {
         saveFields.Add("user_id", _playerId);
 
         // Save user info
-        NetworkManager.Instance.PostURL(DataManager.config.serverRoot + "/user/save/", saveFields, response, true);
+        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/save/", saveFields, response, true);
     }
 
 }
