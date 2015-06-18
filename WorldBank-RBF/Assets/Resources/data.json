@@ -41,7 +41,7 @@
       "description": "A patient sits on a chair on the deck of the clinic, waiting for her turn to be seen."
     },
     {
-      "symbol": "old-men-gaming",
+      "symbol": "old_men_gaming",
       "display_name": "Old Men Gaming",
       "description": "A pair of older men sit under the shade of a palm, playing some sort of tile-laying game. The gaming set is finely crafted from polished wood, but seems old and well worn. They chat as they play."
     },
@@ -81,8 +81,8 @@
       "description": "A young woman looking to be in her teens kicks a stone down the road. You notice a rolled up flyer in her pocket that seems to be some sort of a \\“help wanted\\” notice."
     },
     {
-      "symbol": "nomad",
-      "display_name": "Nomad",
+      "symbol": "traveling_merchant",
+      "display_name": "Traveling Merchant",
       "description": "This man is clearly a merchant of some sort, with wares from all over Zariba. He calls out to people on the street, \\“Fresh fruit from Mile! Cigars from Crup! Technology from the Capitol! I have it all!\\”"
     },
     {
@@ -322,11 +322,11 @@
   "phase_one": {
     "crup": [
       {
-        "symbol": "crup_test",
-        "character": "Plantation Owner",
+        "symbol": "clinician",
+        "character": "clinician",
         "dialogue": {
           "Initial": {
-            "text": "The man extends a hand to shake and introduces himself. \"Hello,\" he says, \"I am Dr. Maramuta. I run [[this clinic]], and I’ve consulted with a number of others in the area.\""
+            "text": "The man extends a hand to shake and introduces himself. \"Hello,\" he says, \"I'm Dr. Maramuta. I run [[this clinic]], and I've consulted with a number of others in the area.\""
           },
           "This Clinic": {
             "text": "\"Things have been very tough. In the highlands, things are done differently. The situation is not ideal, and sometimes the quick and dirty solution is better than no treatment at all. We have very little money, and we find ourselves skimping and cutting corners in order to operate.\"",
@@ -334,6 +334,11 @@
           },
           "unlockable_dialogue_mrtodd": {
             "display_name": "Ask about Mr. Todd",
+            "text": "When you press him on what is being skimped on, he backpedals a little bit. \"It's not so much that we don't have enough money, it is more that the budget has already been set by the Ministry of Health, and we don't have the ability to purchase the medicine and supplies we need. You understand.\"",
+            "unlocks": "unlockable_grant_providers_autonomy"
+          },
+          "unlockable_dialogue_clinician": {
+            "display_name": "Ask about why services aren't effective",
             "text": "When you press him on what is being skimped on, he backpedals a little bit. \"It's not so much that we don’t have enough money it's more that the budget has already been set by the Ministry of Health, and we don’t have the ability to purchase the medicine and supplies we need. You understand.\"",
             "unlocks": "unlockable_grant_providers_autonomy"
           }
@@ -344,49 +349,49 @@
         "character": "Mech Farmer",
         "dialogue": {
           "Initial": {
-            "text": "He offers you a cigarette as you draw nearer, which you politely refuse. \"Suit yourself,\" he says. He explains he’s been working on the plantation for a few years now, and though the work is hard, the pay is reliable. \"I just wish they paid us [[a bit more]].\""
+            "text": "He offers you a cigarette as you draw nearer, which you politely refuse. \"Suit yourself,\" he says. He explains he has been working on the plantation for a few years now, and though the work is hard, the pay is reliable. \"I just wish they paid us [[a bit more]].\""
           },
           "A Bit More": {
-            "text": "\"We’re lucky to get anything, of course. Most people in the highlands earn nothing and only eat what they grow. But even so, the pay does not go very far.\" He frowns, taking a puff from his cigarette. When you ask about affording health care, he laughs. \"The clinic is fine, but I would rather save my money for something else, unless it’s an emergency. You know?\"",
+            "text": "\"We're lucky to get anything, of course. Most people in the highlands earn nothing and only eat what they grow. But even so, the pay does not go very far.\" He frowns, taking a puff from his cigarette. When you ask about affording health care, he laughs. \"The clinic is fine, but I would rather save my money for something else, unless it is an emergency. You know?\"",
             "unlocks": "unlockable_vouchers_for_services"
           }
         }
       },
       {
-        "symbol": "crup_test",
-        "character": "Old_Men_Gaming",
+        "symbol": "old_men_gaming",
+        "character": "Old Men Gaming",
         "dialogue": {
           "Initial": {
-            "text": "You stand a little closer and are able to hear their conversation. \"Damn arthritis,\" one says, grabbing at a tile.\nThe other replies, \"You should visit Kibari and see Mr. Todd. Best medicine man in Zariba!\"\n\"I know,\" the first man says, placing his piece on the board. \"You keep saying. I might try it. The doctor at the clinic gave me some ointment and it did nothing. He told me to go to the hospital for some test, but that’s all the way in Zima.\"\n\"Trucks go back and forth to Kibari every day...\" the first man says.\n\"It’s your move,\" the other grumbles.",
+            "text": "You stand a little closer and are able to hear their conversation. \"Damn arthritis,\" one says, grabbing at a tile.\nThe other replies, \"You should visit Kibari and see Mr. Todd. Best medicine man in Zariba!\"\n\"I know,\" the first man says, placing his piece on the board. \"You keep saying. I might try it. The doctor at the clinic gave me some ointment and it did nothing. He told me to go to the hospital for some test, but that's all the way in Zima.\"\n\"Trucks go back and forth to Kibari every day...\" the first man says.\n\"It’s your move,\" the other grumbles.",
             "unlocks": "unlockable_route_crup_to_kibari"
           }
         }
       },
       {
-        "symbol": "crup_test",
+        "symbol": "patient",
         "character": "Patient",
         "dialogue": {
           "Initial": {
             "text": "The woman looks a bit exasperated, and not in the best health. When you ask her about her experience with the clinic, she offers a mostly negative account. \"We are lucky to have a clinic nearby at all,\" she says. \"But there are long waits here, and the clinic is very poor. I blame [[government incompetence]].\""
           },
           "Government Incompetence": {
-            "text": "\"The government can’t get out of its own way,\" she says. \"The governor claims they are increasing the budget for health care and doing many great things for people in the highlands, but where are the results? I don’t see them. And it’s not just this, it is everything they are involved with. They cannot be trusted to keep their word. I try to have no dealings with them.\"",
-            "unlocks": "PBC"
+            "text": "\"The government can't get out of its own way,\" she says. \"The governor claims they are increasing the budget for health care and doing many great things for people in the highlands, but where are the results? I don't see them. And it's not just this, it is everything they are involved with. They cannot be trusted to keep their word. I try to have no dealings with them.\"",
+            "unlocks": "unlockable_contract_outside_organization_to_administer_plan"
           }
         }
       },
       {
-        "symbol": "crup_test",
+        "symbol": "plantation_owner",
         "character": "Plantation Owner",
         "dialogue": {
           "Initial": {
-            "text": "She greets you in a business-like way and introduces herself. \"Yes, I do own this plantation,\" she says. \"Over a hundred people work and live here. It wasn’t easy, but I have worked hard and built a legacy for my sons to inherit when I’m gone.\""
+            "text": "She greets you in a business-like way and introduces herself. \"Yes, I do own this plantation,\" she says. \"Over a hundred people work and live here. It wasn't easy, but I have worked hard and built a legacy for my sons to inherit when I'm gone.\""
           },
           "Sons": {
             "text": "\"I have two sons. They were both born right here, at home, [[the traditional way]]. I spared no expense and hired the best midwife in Zariba. It was a great experience.\""
           },
           "The Traditional Way": {
-            "text": "\"Yes,\" she nods. \"In Zariba, it is customary that women give birth in their own homes with a traditional midwife in the room. I had a traditional midwife and a trained nurse in the room when I gave birth.\" When you ask about whether her employees can afford the same care, she shrugs. \"I don’t know what they do,\" she says. \"It’s not my business. Anyway they seem fine to me.\"",
+            "text": "\"Yes,\" she nods. \"In Zariba, it is customary that women give birth in their own homes with a traditional midwife in the room. I had a traditional midwife and a trained nurse in the room when I gave birth.\" When you ask about whether her employees can afford the same care, she shrugs. \"I don't know what they do,\" she says. \"It's not my business. Anyway they seem fine to me.\"",
             "unlocks": "unlockable_information_campaign_to_change_cultural_customs_and_behavior"
           }
         }
@@ -394,8 +399,8 @@
     ],
     "kibari": [
       {
-        "symbol": "malcolm_test",
-        "character": "capitolcitytraveler",
+        "symbol": "herder",
+        "character": "herder",
         "dialogue": {
           "Initial": {
             "text": "He pauses to speak with you, nervously keeping his birds in eyeshot, and occasionally redirecting them back to the flock. \"Since you ask,\" he says, \"I am a strong believer in traditional cures. They [[seem to work]], and they're [[easy to get]].\""
@@ -404,13 +409,13 @@
             "text": "\"I heard that some people travel for days to get to the hospital, only to be told they have no medicine. Who wants to do that?\""
           },
           "Seem to work": {
-            "text": "He clutches his medallion. \"This is said to protect me from fevers, which kill many people in this area. I haven’t gotten sick with a fever since I put it on. Hospitals on the other hand? Who even knows what happens in them?\"",
+            "text": "He clutches his medallion. \"This is said to protect me from fevers, which kill many people in this area. I haven't gotten sick with a fever since I put it on. Hospitals on the other hand? Who even knows what happens in them?\"",
             "unlocks": "unlockable_information_campaign_to_explain_changes_to_system"
           }
         }
       },
       {
-        "symbol": "mr_todd",
+        "symbol": "mrtodd",
         "character": "Mr. Todd",
         "dialogue": {
           "Initial": {
@@ -418,9 +423,10 @@
           },
           "Best Medicine Man": {
             "text": "He chuckles. \"People come to me because I am already a part of their lives. Part of their community! They trust me, because they know when they come to see me, they will leave with the medicine they need in their hands. The hospitals and clinics you want people to visit are not good. Why would a person travel far to see a doctor who can’t even give them medicine? Ask your doctors that.\"",
-            "unlocks": "conversation_in_crup_with_clinician"
+            "unlocks": "unlockable_dialogue_clinician"
           },
-          "What They Say": {
+          "unlockable_dialogue_mrtodd": {
+            "display_name": "Ask about what other people are saying",
             "text": "You press, and ask him what else people are saying. \"People say lots of things,\" he replies. \"For instance, those nasty rumors about what else has been going on in your hospitals. I heard some folks saying they believe hospitals are a trick to take our money, make us sicker, and degrade our whole way of life! I don’t know how those get started. People say what they they say,\" he reiterates.",
             "unlocks": "unlockable_information_campaign_to_counter_misinformation"
           }
@@ -431,10 +437,10 @@
         "character": "Nomad",
         "dialogue": {
           "Initial": {
-            "text": "The travelling harper nods. \"Don’t I know you from somewhere?!\" he says. \"Folks around here call me Nomad. Care to hear a song?\" His light fingers pluck out a pleasant tune. When his song ends, he looks at you [[expectantly]]."
+            "text": "The travelling harper nods. \"Don't I know you from somewhere?!\" he says. \"Folks around here call me Nomad. Care to hear a song?\" His light fingers pluck out a pleasant tune. When his song ends, he looks at you [[expectantly]]."
           },
           "Expectantly": {
-            "text": "You drop a few appreciative coins into his hat, and he thanks you. \"And here’s a tip for you. If you’re interested in medicine, make your way to Zima for sure. But talk to the folks at the clinic in Crup before you leave Zariba. Most people in the highlands never see the inside of a hospital, but clinics are pretty common.\""
+            "text": "You drop a few appreciative coins into his hat, and he thanks you. \"And here's a tip for you. If you're interested in medicine, make your way to Zima for sure. But talk to the folks at the clinic in Crup before you leave Zariba. Most people in the highlands never see the inside of a hospital, but clinics are pretty common.\""
           }
         }
       },
@@ -443,7 +449,7 @@
         "character": "Teenager",
         "dialogue": {
           "Initial": {
-            "text": "She extends a hand for you to shake as you come nearer. When you ask her what she thinks about hospitals, she seems mostly positive on them. \"I would go to a hospital if something was wrong with me,\" she says. \"But I’m healthy, thank goodness. A lot of other people seem to [[distrust]] the hospitals though, especially in [[this area]].\""
+            "text": "She extends a hand for you to shake as you come nearer. When you ask her what she thinks about hospitals, she seems mostly positive on them. \"I would go to a hospital if something was wrong with me,\" she says. \"But I'm healthy, thank goodness. A lot of other people seem to [[distrust]] the hospitals though, especially in [[this area]].\""
           },
           "Distrust": {
             "text": "\"Well,\" she says, \"It is simple enough. The medicine is foreign. The hospitals are far away, and when you get there, you are treated by strangers. It is just unfamiliar, and people distrust what is not familiar. Perhaps if these hospitals hired more people from this area, that would help. People might be more willing to go to them if they could count on seeing friendly faces. And besides, we could use the work around here.\"",
@@ -470,23 +476,23 @@
     ],
     "malcom": [
       {
-        "symbol": "capitalcityprofessor_dialogue",
+        "symbol": "capital_city_professor",
         "character": "capital_city_professor",
         "dialogue": {
           "Initial": {
             "text": "He introduces himself enthusiastically and tells you about his work studying political science and the old Zariban empire. His friendly demeanor shifts into annoyance as he speaks about his need to get to [[Mile]] and rolls his eyes at the picture of the [[prime minister]] on the front page of his paper."
           },
           "Mile": {
-            "text": "You ask him about Mile: \"I haven’t been down that far south in decades but I hear the life hasn’t changed much. Good people who still remember life before the the current regime took power.\" He indicates the Prime Minister’s photo as he speaks. \"You can take the train through mile into Zema, though the tracks have been terrible for years.\""
+            "text": "You ask him about Mile: \"I haven't been down that far south in decades but I hear the life hasn’t changed much. Good people who still remember life before the the current regime took power.\" He indicates the Prime Minister's photo as he speaks. \"You can take the train through Mile into Zema, though the tracks have been terrible for years.\""
           },
           "Prime Minister": {
-            "text": "As soon as you say the words prime minister his eyes grow wide and he puts down his paper. \"You know, ever since the new government took power, the train has gotten worse and worse. They should be investing in transport instead of inviting foreigners into the country to pillage our resources.\" He eyes you appraisingly before continuing. \"I will tell you this, the government is corrupt and incompetent. They are not respected in the highlands, where they still remember the old regime. They can’t keep the trains running, and they won’t be in power for long.\"",
+            "text": "As soon as you say the words prime minister his eyes grow wide and he puts down his paper. \"You know, ever since the new government took power, the train has gotten worse and worse. They should be investing in transport instead of inviting foreigners into the country to pillage our resources.\" He eyes you appraisingly before continuing. \"I will tell you this, the government is corrupt and incompetent. They are not respected in the highlands, where they still remember the old regime. They can't keep the trains running, and they won't be in power for long.\"",
             "unlocks": "unlockable_contract_outside_organization_to_administer_plan"
           }
         }
       },
       {
-        "symbol": "capitalcitytraveler_dialogue",
+        "symbol": "capital_city_traveler",
         "character": "capital_city_traveler",
         "dialogue": {
           "Initial": {
@@ -496,13 +502,13 @@
             "text": "You ask her about Mile, and she tells you she has never been there. \"I just need to pass through on the way to visit my friend.\""
           },
           "being late": {
-            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. \"We are very close, and since he has been frustrated with his job, I want to help him have a little fun for a few days. Apparently he hasn’t been receiving supplies, or so he says.\"  She raises her arms in exasperation. \"This accursed train! If medical supplies don’t even reach the hospital, what are my chances?\"",
+            "text": "You learn she is attempting to head to Zema, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. \"We are very close, and since he has been frustrated with his job, I want to help him have a little fun for a few days. Apparently he has not been receiving supplies, or so he says.\"  She raises her arms in exasperation. \"This accursed train! If medical supplies don't even reach the hospital, what are my chances?\"",
             "unlocks": "unlockable_contract_private_company_to_deliver_supplies"
           }
         }
       },
       {
-        "symbol": "fruitvendor_dialogue",
+        "symbol": "fruit_vendor",
         "character": "fruit_vendor",
         "dialogue": {
           "Initial": {
@@ -513,13 +519,13 @@
             "unlocks": "unlockable_vouchers_for_services"
           },
           "Daughter": {
-            "text": "\"My daughter? She is just three, and the cutest girl you have ever seen,\" the fruit seller beams. \"Her grandmother is watching her so I can sell fruit here in the market. I support all three of us.\" When you ask about the girl’s vaccinations, the woman shrugs. \"Who has time to travel to a hospital? Keeping her fed is more important.\"",
+            "text": "\"My daughter? She is just three, and the cutest girl you have ever seen,\" the fruit seller beams. \"Her grandmother is watching her so I can sell fruit here in the market. I support all three of us.\" When you ask about the girl's vaccinations, the woman shrugs. \"Who has time to travel to a hospital? Keeping her fed is more important.\"",
             "unlocks": "unlockable_hire_more_nurses_from_highlands_region"
           }
         }
       },
       {
-        "symbol": "medicinemerchant_dialogue",
+        "symbol": "medicine_merchant",
         "character": "medicine_merchant",
         "dialogue": {
           "Initial": {
@@ -530,16 +536,16 @@
             "unlocks": "unlockable_route_malcom_to_kibari"
           },
           "Mr. Todd": {
-            "text": "As soon as you mention Mr. Todd the medicine merchant’s face lights up. \"I might be a bit biased, but that man is everything for the local region. He is a genius who has built a business from the ground up! Literally! Everyone loves Mr. Todd. You need to meet him. I’m sure one conversation with him will change all your thoughts on foreign medicine!\""
+            "text": "As soon as you mention Mr. Todd the medicine merchant’s face lights up. \"I might be a bit biased, but that man is everything for the local region. He is a genius who has built a business from the ground up! Literally! Everyone loves Mr. Todd. You need to meet him. I'm sure one conversation with him will change all your thoughts on foreign medicine!\""
           }
         }
       },
       {
-        "symbol": "twowomen_dialogue",
+        "symbol": "two_women",
         "character": "malcom_twowomen",
         "dialogue": {
           "Initial": {
-            "text": "As you approach they both turn to eye you up and down, and you feel a sense of being judged by your attire. They turn back to each other smirking, continuing their conversation. \n\"This market was fun for an hour or so, but I just cannot wait to be back at the estate. Did you hear? Uncle will be renovating the outer sand gardens to make space for three new horses!\"\n The second woman smiles. \"That sounds lovely. Hopefully next spring he’ll finally put in that airship tether he’s always going on about. What time is it, dear? The ferry should be here soon!\"",
+            "text": "As you approach they both turn to eye you up and down, and you feel a sense of being judged for your attire. They turn back to each other smirking, continuing their conversation. \n\"This market was fun for an hour or so, but I just cannot wait to be back at the estate. Did you hear? Uncle will be renovating the outer sand gardens to make space for three new horses!\"\n The second woman smiles. \"That sounds lovely. Hopefully next spring he'll finally put in that airship tether he's always going on about. What time is it, dear? The ferry should be here soon!\"",
             "unlocks": "unlockable_route_malcom_to_valeria"
           }
         }
@@ -551,19 +557,19 @@
         "character": "farm worker",
         "dialogue": {
           "Initial": {
-            "text": "As you step closer, she stops what she is doing and looks at you askance. \"Not that I am not thankful for an excuse to rest and talk,\" she says, \"but I have a lot of work to do. This harvest will feed my [[family]], and others in the village.\" There is a hint of [[pride]] in her voice.\""
+            "text": "As you step closer, she stops what she is doing and looks at you askance. \"Not that I'm not thankful for an excuse to rest and talk,\" she says, \"but I have a lot of work to do. This harvest will feed my [[family]], and others in the village.\" There is a hint of [[pride]] in her voice.\""
           },
           "Family": {
             "text": "\"I have two sons and a daughter, a husband and a brother,\" she explains. When you ask about their health care, she shrugs, looking a little guilty. \"I barely have time to do what needs doing here, you know? Between doing my work and taking care of basic needs, who has time to think about health care, let alone visit a hospital? Taking care of basics like food and water, and a roof that does not leak is far more important. Besides, some people are [[scared]] of the hospitals.\"",
-            "unlocks": "cct"
+            "unlocks": "unlockable_conditional_cash_transfer"
           },
           "Pride": {
             "text": "\"I guess I am proud of it,\" she smiles. \"My family has farmed this land for generations. Soon my children will be old enough to contribute, and carry our family on to the next generation. This makes me very happy. It’s not just about feeding ourselves.\"",
-            "unlocks": "unlockable_corruption_crackdown"
+            "unlocks": null
           },
           "Scared": {
             "text": "She looks a little unsure. \"I don’t know. People are worried about visiting them for some reason. There are rumors, you know? You hear things.\" When you press her on what she’s heard, she just shakes her head - she seems nervous. \"Things!\" she repeats.",
-            "unlocks": "Conversation in Kibari with Mr. Todd."
+            "unlocks": "unlockable_dialogue_mrtodd"
           }
         }
       },
@@ -576,10 +582,10 @@
           },
           "Thought I did": {
             "text": "She is clearly still steamed about what happened at the hospital as she relates what happened. \"I travelled more than a day to get there, and did the entire interview, only to be told there were no resources available to hire me! The hospital administrator said she would love to have me on their staff, but a new position was not budgeted.\"",
-            "unlocks": "conversation_with_admin_in_zima"
+            "unlocks": "unlockable_dialogue_hospital_administrator"
           },
           "Midwife": {
-            "text": "She scoffs. \"Skilled midwives such as myself who can travel are very hard to come by, and very in demand these days since most women won’t travel long distances to give birth. I can’t believe they would not hire me.\""
+            "text": "She scoffs. \"Skilled midwives such as myself who can travel are very hard to come by, and very in demand these days, since most women won't travel long distances to give birth. I can't believe they would not hire me.\""
           }
         }
       },
@@ -588,10 +594,10 @@
         "character": "nomad",
         "dialogue": {
           "Initial": {
-            "text": "He greets you with a friendly nod. \"I’ve been just about everywhere in this country, you know? I travel here and there, play my harp, busk up a meal, and then on to the next place! The people here are poor. Can’t give me much coin for my time, but that just means they need music the most. So I always stop in this town on my way to the next destination. What they lack in money they more than make up for in hospitality and spirit. Good cooks, too!\""
+            "text": "He greets you with a friendly nod. \"I've been just about everywhere in this country, you know? I travel here and there, play my harp, busk up a meal, and then on to the next place! The people here are poor. Can't give me much coin for my time, but that just means they need music the most. So I always stop in this town on my way to the next destination. What they lack in money they more than make up for in hospitality and spirit. Good cooks, too!\""
           },
           "Upon Exiting": {
-            "text": "You return to the train station and immediately it is clear that something is not right. People seem worried, or even angry, and they crowd around an information booth. It’s chaotic here, but you manage to learn that bad weather has triggered landslide to the east, and the train tracks between Mile and Zima have been destroyed. They could take weeks to repair! A group of young men tug on your shirt and grin. They say they drive a produce truck that is leaving the city right now, and for a small price, they can get you to Kibari, the heart of the highlands. \"From there,\" they say, \"you can get anywhere!\"",
+            "text": "You return to the train station and immediately it is clear that something is not right. People seem worried, or even angry, and they crowd around an information booth. It's chaotic here, but you manage to learn that bad weather has triggered landslide to the east, and the train tracks between Mile and Zima have been destroyed. They could take weeks to repair! A group of young men tug on your shirt and grin. They say they drive a produce truck that is leaving the city right now, and for a small price, they can get you to Kibari, the heart of the highlands. \"From there,\" they say, \"you can get anywhere!\"",
             "unlocks": "unlockable_route_kibari_to_mile"
           }
         }
@@ -601,16 +607,16 @@
         "character": "settled refugee",
         "dialogue": {
           "Initial": {
-            "text": "He does not seem particularly bothered by your presence, and rests the magazine on his lap to speak with you. After a few minutes of idle conversation, he volunteers a little more about his past. \"I wasn’t from here originally,\" he says. \"I came here as a refugee many years ago, back during the [[old regime]].\" A frown spreads across his face. \"My village was destroyed by a [[landslide]] during a rain storm. It will never be rebuilt.\""
+            "text": "He does not seem particularly bothered by your presence, and rests the magazine on his lap to speak with you. After a few minutes of idle conversation, he volunteers a little more about his past. \"I wasn't from here originally,\" he says. \"I came here as a refugee many years ago, back during the [[old regime]].\" A frown spreads across his face. \"My village was destroyed by a [[landslide]] during a rain storm. It will never be rebuilt.\""
           },
           "Old Regime": {
-            "text": "\"Some people miss the old regime,\" he says, \"but they never did anything for me, you know? Democracy is fine. Honestly, I can’t even tell the difference.\" He fans himself with the news magazine and finishes his thought. \"Some people disagree, and wish they could go back. But most don’t care.\""
+            "text": "\"Some people miss the old regime,\" he says, \"but they never did anything for me, you know? Democracy is fine. Honestly, I can't even tell the difference.\" He fans himself with the news magazine and finishes his thought. \"Some people disagree, and wish they could go back. But most don't care.\""
           },
           "Landslide": {
             "text": "\"It was so terrible,\\” he says. \"Unless you have seen one, it is hard to describe. The entire village was just gone. Many people died. I lost family members. I feel lucky that I was [[able to make it]] here, and was accepted and given hospitality, even though people here do not have much. They gave all they could and more.\""
           },
           "Able to Make it": {
-            "text": "He nods and explains how travel is very difficult unless you can afford to buy a train ticket. \"And few can! If you can’t afford a ticket, you must walk along the tracks, and it is very dangerous. Recently, someone died making the trip to Zima, and now no one even tries it unless they are desperate, you know?\"",
+            "text": "He nods and explains how travel is very difficult unless you can afford to buy a train ticket. \"And few can! If you can't afford a ticket, you must walk along the tracks, and it is very dangerous. Recently, someone died making the trip to Zima, and now no one even tries it unless they are desperate, you know?\"",
             "unlocks": "unlockable_outreach"
           }
         }
@@ -618,41 +624,41 @@
     ],
     "valeria": [
       {
-        "symbol": "malcolm_test",
-        "character": "malcolm",
+        "symbol": "grandmother_with_toddler",
+        "character": "Grandmother With Toddler",
         "dialogue": {
           "Initial": {
-            "text": "\"Oh, hello,\" the woman says. \"This airship port wasn’t here the last time I came to this town, so it’s a little confusing. We’re visiting here for a little bit. My [[grandson]] always wanted to see the sand palaces.\""
+            "text": "\"Oh, hello,\" the woman says. \"This airship port wasn't here the last time I came to this town, so it's a little confusing. We were visiting here for a little bit. My [[grandson]] always wanted to see the sand palaces.\""
           },
           "Grandson": {
-            "text": "When you inquire about her grandson’s health, she seems a little unsure. \"I think he is vaccinated,\" she says, \"but I don’t really care for these hospitals. When I went, the nurse was very rude to me. He made me feel unwelcomed, and I had to argue with a doctor about getting a prescription for my little one.\"",
+            "text": "When you inquire about the health of her grandson, she seems a little unsure. \"I think he's vaccinated,\" she says, \"but I don't really care for these hospitals. When I went, the nurse was very rude to me. He made me feel unwelcomed, and I had to argue with a doctor about getting a prescription for my little one.\"",
             "unlocks": "unlockable_improve_patient_and_provider_relationship"
           },
           "Prescription": {
-            "text": "\"I don’t remember exactly what the doctor said, but he kept saying that he did not need antibiotics. When I finally got him to write me a prescription, I felt like he wrote it just to shut me up. He didn’t seem to care, you know?\"",
+            "text": "\"I don't remember exactly what the doctor said, but he kept saying that he did not need antibiotics. When I finally got him to write me a prescription, I felt like he wrote it just to shut me up. He didn't seem to care, you know?\"",
             "unlocks": "unlockable_incentivise_providers_to_follow_protocols"
           }
         }
       },
       {
-        "symbol": "mech_farmer",
-        "character": "Mech Farmer",
+        "symbol": "airship_pilot",
+        "character": "Lydia",
         "dialogue": {
           "Initial": {
-            "text": "She seems very at ease as you approach, and introduces herself as Lydia, an airship pilot. \"These airships are pretty new, so not many people can fly one. This one here is mine,\" she says with some pride, pointing to a floating craft. \"I’m about to depart on a [[personal trip]] to Zima, but I have room for a passenger if you’re heading that way.\""
+            "text": "She seems very at ease as you approach, and introduces herself as Lydia, an airship pilot. \"These airships are pretty new, so not many people can fly one. This one here is mine,\" she says with some pride, pointing to a floating craft. \"I’m about to depart on a [[personal trip]] to Zima, but I have room for a passenger if you're heading that way.\""
           },
           "Personal Trip": {
-            "text": "\"I’m actually three months pregnant today,\" she offers, \"and I have an appointment at the hospital. The best doctor in Zariba is a resident there, and lucky for me, I have an airship, so getting there is no problem.\"",
+            "text": "\"I'm actually three months pregnant today,\" she offers, \"and I have an appointment at the hospital. The best doctor in Zariba is a resident there, and lucky for me, I have an airship, so getting there is no problem.\"",
             "unlocks": "unlockable_route_valeria_to_zema"
           }
         }
       },
       {
-        "symbol": "malcolm_test",
-        "character": "malcolm",
+        "symbol": "nomad",
+        "character": "Nomad",
         "dialogue": {
           "Initial": {
-            "text": "\"Funny seeing you here,\" the harper says. \"You can call me Nomad. Most folks do. I’ve been everywhere in this country. This part of Zariba is probably the richest. Land Barons have been building palaces out of sand for hundreds of years here. Not sure how they get the sand to hold together, but it seems to work. The airships are new, though. Got to change with the times.\""
+            "text": "\"Funny seeing you here,\" the harper says. \"You can call me Nomad. Most folks do. I've been everywhere in this country. This part of Zariba is probably the richest. Land Barons have been building palaces out of sand for hundreds of years here. Not sure how they get the sand to hold together, but it seems to work. The airships are new, though. Got to change with the times.\""
           }
         }
       },
@@ -661,7 +667,7 @@
         "character": "Spoiled Twins",
         "dialogue": {
           "Initial": {
-            "text": "They stare at you for a moment when you approach, then ask who you are. When you explain yourself, they are happy to share their opinions on Zariba’s health care system. \n\"The highlands are where all the poor people live,\" the brother says.\n\"He knows that,\" his sister interrupts. \"Everyone knows that. We were both born here in Valeria, in our own house. No one likes to go to these hospitals. They’re so ugly.\"\n\"I’ve been in one. They just feel dirty, and they smell. And the staff look like street people,\" the brother agrees. \"That’s why no one wants to go to them.\"",
+            "text": "They stare at you for a moment when you approach, then ask who you are. When you explain yourself, they are happy to share their opinions on Zariba's health care system. \n\"The highlands are where all the poor people live,\" the brother says.\n\"He knows that,\" his sister interrupts. \"Everyone knows that. We were both born here in Valeria, in our own house. No one likes to go to these hospitals. They're so ugly.\"\n\"I've been in one. They just feel dirty, and they smell. And the staff look like street people,\" the brother agrees. \"That's why no one wants to go to them.\"",
             "unlocks": "unlockable_make_aesthetic_improvements"
           }
         }
@@ -676,11 +682,11 @@
             "text": "At first, he seems too engrossed in the chart to devote his full attention to you, but once you introduce yourself, he puts it down and apologizes. \"I wish I had time for a formal sit down with you,\" he says, \"but time is tight around here. I will try to share as much as I can. This hospital works very well for the rich, since they can afford whatever tests and procedures we order, but [[poor people]] tend to shy away from us, which is a shame.\""
           },
           "Poor People": {
-            "text": "You ask more about the poor people of the highlands and he gives a frustrated shrug. \"The majority of people in the highlands have no money. They can’t afford basic [[preventative care]]. Even if they could, I’m not sure they would purchase it.\"",
+            "text": "You ask more about the poor people of the highlands and he gives a frustrated shrug. \"The majority of people in the highlands have no money. They can't afford basic [[preventative care]]. Even if they could, I'm not sure they would purchase it.\"",
             "unlocks": "unlockable_vouchers_for_services"
           },
           "Preventative Care": {
-            "text": "It's true. This basic care ends up saving everyone money in the long run, but they don’t always understand the benefits of them. I think any changes we make to the health system need to be well publicized and very clear.\"",
+            "text": "It's true. This basic care ends up saving everyone money in the long run, but they don't always understand the benefits of them. I think any changes we make to the health system need to be well publicized and very clear.\"",
             "unlocks": "unlockable_information_campaign_to_explain_changes_to_system"
           }
         }
@@ -693,7 +699,7 @@
             "text": "You strike up a conversation with the traveller, and she explains that she is investigating the mining industry in West Zariba for her company. \"It is a [[long journey]], and I dread the trip through the highlands.\""
           },
           "Long Journey": {
-            "text": "She looks anxious. \"I’ll not be taking the train. Instead, I am taking a private motor car. I am afraid of trains. I leave in a few hours, bound for Kibari, which I hear is the center of the Zariban Highlands. I guess it is kind of exciting.\"",
+            "text": "She looks anxious. \"I'll not be taking the train. Instead, I am taking a private motor car. I am afraid of trains. I leave in a few hours, bound for Kibari, which I hear is the center of the Zariban Highlands. I guess it is kind of exciting.\"",
             "unlocks": "unlockable_route_zema_to_kibari"
           }
         }
@@ -703,14 +709,18 @@
         "character": "hospital_administrator",
         "dialogue": {
           "Initial": {
-            "text": "She notices you, and rises to shake your hand. \"Very pleased to meet you. I’ve been expecting you, actually,\" she says. She begins a frank explanation of the hospital’s challenges. \"The worst thing has been a lack of supplies. We are frequently out of stock on basic things due to [[budget constraints]]. This has a [[trickle-down effect]] on many other hospital functions.\""
+            "text": "She notices you, and rises to shake your hand. \"Very pleased to meet you. I have been expecting you, actually,\" she says. She begins a frank explanation of the hospital's challenges. \"The worst thing has been a lack of supplies. We are frequently out of stock on basic things due to [[budget constraints]]. This has a [[trickle-down effect]] on many other hospital functions.\""
           },
-          "Budget Constraints": {
-            "text": "\"The root cause of the constraints is simple bureaucracy. How we spend our budget is determined by a ministry bureaucrat in the capital city who has no idea what our actual needs are. If we had the autonomy to allocate our budget nimbly, the supply issue would go away.\" [IF MIDWIFE TRUE] You bring up the midwife you met in Mile, and the administrator nods. \"Same problem. We did not have the autonomy needed to budget for that hire, so I had to turn away a qualified, needed worker.\"",
+          "budget Constraints": {
+            "text": "\"The root cause of the constraints is simple bureaucracy. How we spend our budget is determined by a ministry bureaucrat in the capital city who has no idea what our actual needs are. If we had the autonomy to allocate our budget nimbly, the supply issue would go away.\""
+          },
+          "unlockable_dialogue_hospital_administrator": {
+            "display_name": "Ask about the midwife in Mile",
+            "text": "You bring up the midwife you met in Mile, and the administrator nods. \"Same problem. We did not have the autonomy needed to budget for that hire, so I had to turn away a qualified, needed worker.\"",
             "unlocks": "unlockable_grant_providers_autonomy"
           },
-          "Trickle-down Effect": {
-            "text": "\"When we don’t have the proper supplies, it looks bad to the patients, and we lose face. Not only that, the lack of basic supplies begins to wear on my staff. I am aware of some attitude problems. All of this is not conducive to treating people.\""
+          "trickle-down effect": {
+            "text": "\"When we don't have the proper supplies, it looks bad to the patients, and we lose face. Not only that, the lack of basic supplies begins to wear on my staff. I am aware of some attitude problems. All of this is not conducive to treating people.\""
           }
         }
       },
@@ -722,7 +732,7 @@
             "text": "Once you get him talking, the nurse seems almost relieved to have someone to complain to. \"I work harder than anyone in this facility, but compared the doctors, I get paid practically nothing! I deal with [[angry people]] every day. He just writes prescriptions.\""
           },
           "Angry People": {
-            "text": "The tall nurse crosses his arms. \"They get angry when I tell them they must go to the drugstore. They don’t understand anything. They think the hospital is a pharmacy. They ask stupid questions. I get tired of it. You’ve never heard of a drugstore? And then when the pharmacy doesn’t have the drugs… That is my fault TOO?\"",
+            "text": "The tall nurse crosses his arms. \"They get angry when I tell them they must go to the drugstore. They don't understand anything. They think the hospital is a pharmacy. They ask stupid questions. I get tired of it. You've never heard of a drugstore? And then when the pharmacy doesn't have the drugs… That is my fault TOO?\"",
             "unlocks": "unlockable_improve_patient_and_provider_relationship"
           }
         }
@@ -732,14 +742,14 @@
         "character": "patient",
         "dialogue": {
           "Initial": {
-            "text": "She seems surprised when you sit down to talk with her. She explains that it cost her [[a lot of money]] to get here, but it was necessary since her headaches don’t go away.\n\"I have more money [[than most]],\" she continues, \"so I should be thankful, I suppose. I got vaccinations for my son, and the doctor said he is too skinny, so they gave me some protein bars.\""
+            "text": "She seems surprised when you sit down to talk with her. She explains that it cost her [[a lot of money]] to get here, but it was necessary since her headaches do not go away.\n\"I have more money [[than most]],\" she continues, \"so I should be thankful, I suppose. I got vaccinations for my son, and the doctor said he's too skinny, so they gave me some protein bars.\""
           },
           "A Lot of Money": {
             "text": "\"Would you believe it? The train cost me more than the medicine!\"",
             "unlocks": "unlockable_outreach"
           },
           "Than Most": {
-            "text": "\"Most of my neighbors can’t afford even simple health services like vaccinations or doctors appointments.\"",
+            "text": "\"Most of my neighbors can't afford even simple health services like vaccinations or doctors appointments.\"",
             "unlocks": "unlockable_vouchers_for_services"
           }
         }
@@ -2296,12 +2306,13 @@
   ],
   "unlockables": [
     {
-      "symbol": "unlockable_dialogue_mrtodd",
-      "unlocked": null
+      "symbol": "unlockable_dialogue_mrtodd"
     },
     {
-      "symbol": "unlockable_dialogue_",
-      "unlocked": null
+      "symbol": "unlockable_dialogue_hospital_administrator"
+    },
+    {
+      "symbol": "unlockable_dialogue_clinician"
     },
     {
       "symbol": "unlockable_route_malcom_to_kibari",
