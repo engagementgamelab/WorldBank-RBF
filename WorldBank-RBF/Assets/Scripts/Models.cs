@@ -262,6 +262,7 @@ public class Models {
     public class ParallaxNpc : ParallaxElement {
         public string symbol { get; set; }
         public bool facingLeft { get; set; }
+        public string Texture2Path { get; set; }
     }
 
     public class ParallaxZoomTrigger : ParallaxElement {

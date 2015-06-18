@@ -246,13 +246,13 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
 	/// <param name="strDialogueKey">The key corresponding to the dialogue to show</param>
 	/// <param name="returning">Specify whether player is returning to previous dialog</param>
-	public void OpenSpeechDialog(Models.NPC currNpc, string strDialogueKey, bool returning=false) {
+	public void OpenSpeechDialog(Models.NPC currNpc, string strDialogueKey, bool returning=false, bool left=false) {
 
 		if (returning && currentDialogueChoices == null)
 			throw new Exception ("You are trying to return to the previous dialog, but none exists");
 
 		string strDialogTxt = currNpc.dialogue[strDialogueKey]["text"];
-		
+
 		// Match any characters in between [[ and ]]
 		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
 
@@ -308,7 +308,7 @@ public class DialogManager : MonoBehaviour {
 
 			string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
 			btnChoice.Button.onClick.AddListener (() => currentDialogueChoices.Remove(t));
-			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, false));
+			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, false, left));
 
 			btnList.Add(btnChoice);
 		}
@@ -322,11 +322,11 @@ public class DialogManager : MonoBehaviour {
 			del = delegate { OpenSpeechDialog(currNpc, "Initial", true); };
 		}*/
 
-		CreateChoiceDialog(strToDisplay, btnList, "", del, true);
+		CreateChoiceDialog(strToDisplay, btnList, "", del, true, left);
 	}
 
-	public void OpenSpeechDialog(string symbol, string strDialogueKey, bool returning=false) {
-		OpenSpeechDialog (NpcManager.GetNpc (symbol), strDialogueKey, returning);
+	public void OpenSpeechDialog(string symbol, string strDialogueKey, bool returning=false, bool left=false) {
+		OpenSpeechDialog (NpcManager.GetNpc (symbol), strDialogueKey, returning, left);
 	}
 
 	void OpenDialog (Models.NPC currNpc) {

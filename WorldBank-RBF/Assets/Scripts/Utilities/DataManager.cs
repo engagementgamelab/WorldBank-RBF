@@ -247,7 +247,7 @@ public class DataManager {
     public static Models.Character GetDataForCharacter(string strCharSymbol)    {
         
         int characterIndex = Array.FindIndex(gameData.characters, row => row.symbol == strCharSymbol);
-
+        
         if(characterIndex == -1)
             throw new Exception("Unable to find Character with symbol '" + strCharSymbol + "'! Uh oh.");
      

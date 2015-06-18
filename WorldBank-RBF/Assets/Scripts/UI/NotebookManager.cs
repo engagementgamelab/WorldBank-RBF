@@ -78,13 +78,13 @@ public class NotebookManager : MB {
 
 	void Start () {
 		// Need to find a better way to approach this, but for now 
-		/*if (openAtStart) {
+		if (openAtStart) {
 			open = false;
 			Open ();
-		} else {*/
+		} else {
 			open = true;
 			Close ();
-		// }
+		}
 	}
 
 	public void OpenMap () {

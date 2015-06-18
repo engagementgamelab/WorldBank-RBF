@@ -71,7 +71,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 	}
 
 	public void PreviewFocus (ParallaxNpc npc) {
-		if (!InteractionsManager.Instance.HasInteractions || FocusLevel != FocusLevel.Default) return;
+		if (focusing || !InteractionsManager.Instance.HasInteractions || FocusLevel != FocusLevel.Default) return;
 		if (!CameraPositioner.Drag.Dragging) {
 			this.npc = npc;
 			Focus ();
@@ -128,7 +128,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 		} else if (FocusLevel == FocusLevel.Preview) {
 			DialogManager.instance.OpenIntroDialog (NpcManager.GetNpc (npc.symbol), npc.FacingLeft);
 		} else if (FocusLevel == FocusLevel.Dialog) {
-			DialogManager.instance.OpenSpeechDialog (npc.symbol, "Initial");
+			DialogManager.instance.OpenSpeechDialog (npc.symbol, "Initial", false, npc.FacingLeft);
 		}
 	}
 

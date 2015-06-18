@@ -6,7 +6,7 @@ using System.Collections;
 #endif
 public class AnimatedQuadTexture : MB {
 
-	protected Material _Material {
+	public Material _Material {
 		get { return _MeshRenderer.sharedMaterial; }
 		set { _MeshRenderer.sharedMaterial = value; }
 	}

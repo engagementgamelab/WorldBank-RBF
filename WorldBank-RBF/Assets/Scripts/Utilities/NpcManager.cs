@@ -12,7 +12,12 @@ public class NpcManager {
 
 	public static Models.NPC GetNpc (string symbol) {
 
-		return new Models.NPC[] { Array.Find(npcs, row => row.character == symbol) }[0];
+		Models.NPC npc = new Models.NPC[] { Array.Find(npcs, row => row.character == symbol) }[0];
+		
+		if (npc == null)
+			throw new System.Exception ("An NPC with the symbol '" + symbol + "' could not be found");
+
+		return npc;
 		
 	}
 }
