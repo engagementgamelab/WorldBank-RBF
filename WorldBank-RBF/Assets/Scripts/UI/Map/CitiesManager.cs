@@ -47,6 +47,8 @@ public class CitiesManager : MB {
 	public GameObject extraDayPrompt;
 	bool initialized = false;
 
+	bool unlockAll = true; // use for debugging
+
 	void Start () {
 		UpdateUnlockedCities ();
 		UpdateInteractableCities ();
@@ -98,7 +100,7 @@ public class CitiesManager : MB {
 		for (int i = 0; i < models.Length; i ++) {
 			Models.City model = models[i];
 			string symbol = model.symbol;
-			if ((model.unlocked || PlayerData.CityGroup.HasCity (symbol))
+			if ((unlockAll || model.unlocked || PlayerData.CityGroup.HasCity (symbol))
 				&& CanVisitCity (symbol)) 
 				Cities[symbol].Unlock ();
 		}

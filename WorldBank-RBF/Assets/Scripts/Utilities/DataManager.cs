@@ -167,7 +167,11 @@ public class DataManager {
     public static Models.NPC[] GetNPCsForCity(string strSelector=null) {
         
         if(strSelector == null) {
-            return gameData.phase_one[currentSceneContext];
+            try {
+                return gameData.phase_one[currentSceneContext];
+            } catch (System.Exception e) {
+                throw new System.Exception ("No city with the symbol '" + currentSceneContext + "' could be found.");
+            }
         } else {
 
             Models.NPC[] npcRef = new Models.NPC[] { Array.Find(gameData.phase_one[currentSceneContext], row => row.character == strSelector) };

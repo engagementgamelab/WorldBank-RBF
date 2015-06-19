@@ -30,7 +30,9 @@ public class RoutesManager : MB {
 		}
 	}
 
-	void Start () {
+	bool unlockAll = true; // use for debugging
+
+	void Awake () {
 		UpdateRoutes (DataManager.GetAllRoutes ());
 	}
 
@@ -39,11 +41,20 @@ public class RoutesManager : MB {
 	}
 
 	void UpdateRoutes (Models.Route[] routes) {
-		for (int i = 0; i < routes.Length; i ++) {
-			Models.Route route = routes[i];
-			MapRoute mapRoute = FindRoute (route.city1, route.city2);
-			mapRoute.Cost = route.cost;
-			mapRoute.Unlocked = route.unlocked;
+		if (unlockAll) {
+			for (int i = 0; i < routes.Length; i ++) {
+				Models.Route route = routes[i];
+				MapRoute mapRoute = FindRoute (route.city1, route.city2);
+				mapRoute.Cost = route.cost;
+				mapRoute.Unlocked = true;
+			}
+		} else {
+			for (int i = 0; i < routes.Length; i ++) {
+				Models.Route route = routes[i];
+				MapRoute mapRoute = FindRoute (route.city1, route.city2);
+				mapRoute.Cost = route.cost;
+				mapRoute.Unlocked = route.unlocked;
+			}
 		}
 	}
 
