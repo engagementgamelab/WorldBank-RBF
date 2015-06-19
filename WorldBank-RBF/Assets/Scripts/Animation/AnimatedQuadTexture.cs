@@ -52,7 +52,7 @@ public class AnimatedQuadTexture : MB {
 	float xScale;
 	float pauseTime;
 
-	void Awake () {
+	protected virtual void Awake () {
 		SetScale ();
 		SetOffset ();
 		_Texture = texture;

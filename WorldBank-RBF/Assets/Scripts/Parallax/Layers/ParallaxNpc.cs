@@ -22,46 +22,51 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 
 	[ExposeInWindow] public string symbol;
 
-	[SerializeField, HideInInspector] public ParallaxImage parallaxImage2;
+	[SerializeField] public ParallaxImage parallaxImage2 = null;
+
+
+	// This second texture is for NPCs who are too big to fit on a single tile
+	// A better way to handle this would be to have a group of ParallaxImages
+	// (so that NPC size can be arbitrary)
 
 	#if UNITY_EDITOR
 	public string Texture2Path {
-		get { return AssetDatabase.GetAssetPath (_Texture); }
+		get { return AssetDatabase.GetAssetPath (_Texture2); }
 		set { 
-			_Texture = AssetDatabase.LoadAssetAtPath (value, typeof (Texture2D)) as Texture2D;
-			texture = _Texture;
+			_Texture2 = AssetDatabase.LoadAssetAtPath (value, typeof (Texture2D)) as Texture2D;
+			texture2 = _Texture2;
 		}
 	}
 	#endif
 
-	[ExposeInWindow] public Texture2D texture2 = null;
-	Texture2D cachedTexture2 = null;
+	[ExposeInWindow] public Texture2D texture2 = null;	
 	public Texture2D _Texture2 {
-		get { 
-			if (cachedTexture2 == null && parallaxImage2 != null) {
-				cachedTexture2 = parallaxImage2._Material.mainTexture as Texture2D;
-			}
-			return cachedTexture2; 
+		get {
+			return texture2;
 		}
-		set { 
-			Debug.Log (value);
-			Debug.Log (cachedTexture2);
-			if (cachedTexture2 == value) return;
-			cachedTexture2 = value;
-			if (cachedTexture2 != null) {
-				Debug.Log (parallaxImage2);
+		set {
+			if (value == null) {
+				if (parallaxImage2 != null) {
+					EditorObjectPool.Destroy<ParallaxImage> (parallaxImage2.Transform);
+					parallaxImage2 = null;
+				}
+			} else {
 				if (parallaxImage2 == null) {
 					parallaxImage2 = EditorObjectPool.Create<ParallaxImage> ();
 					parallaxImage2.Parent = Transform;
 					parallaxImage2.Transform.Reset ();
-					parallaxImage2.Transform.SetLocalPositionX (LocalPosition.x - 1);
-	 			}
-				parallaxImage2._Material = MaterialsManager.CreateMaterialFromTexture (cachedTexture2, cachedTexture2.format.HasAlpha ());
-				gameObject.SetActive (!MaterialsManager.TextureIsBlank (_Texture2));
-			} else {
-				parallaxImage2._Material = MaterialsManager.Blank;
+					parallaxImage2.XOffset = -1;
+				}
+				parallaxImage2._Material = MaterialsManager.CreateMaterialFromTexture (value, value.format.HasAlpha ());
+				parallaxImage2.gameObject.SetActive (true);
 			}
+			texture2 = value;
 		}
+	}
+
+	protected override void Awake () {
+		base.Awake ();
+		_Texture2 = texture2;
 	}
 
 	public override void Reset () {
@@ -71,9 +76,7 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 
  	public override void Refresh () {
  		base.Refresh ();
- 		Debug.Log (texture2);
- 		Debug.Log (_Texture2);
- 		if (texture2 != null) _Texture2 = texture2;
+ 		_Texture2 = texture2;
  	}
 
 	public void OnDragEnter (DragSettings dragSettings) {
