@@ -170,6 +170,7 @@ public class NotebookManager : MB {
 	}
 
 	// Continues to phase  two
+	// Also, skips to phase two via "skip tab" button (won't be in test or final game)
 	public void Continue() {
 
 		Application.LoadLevel("PhaseTwo");
