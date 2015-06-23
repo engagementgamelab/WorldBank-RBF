@@ -80,16 +80,18 @@ public class CitiesManager : MB {
 		NotebookManager.Instance.Close ();
 	}
 
-	public void VisitCity (string symbol) {
+	// returns false if travel was interrupted
+	public bool VisitCity (string symbol) {
 		if (currentCitySymbol == "mile" && symbol == "zima") {
 			cityInfoBox.OpenRouteBlocked ();
-			return;	
+			return false;	
 		}
 		dayCounter.RemoveDays (RouteCost (currentCitySymbol, symbol));
 		currentCitySymbol = symbol;
 		CurrentCity.Visit ();
 		InteractionsManager.Instance.OnVisitCity (currentCitySymbol);
 		MoveIndicator (OnVisit);
+		return true;
 	}
 
 	public void TravelToCity (string symbol) {

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public delegate void OnUpdateCount ();
+public delegate void OnUpdate ();
 public delegate void OnEmpty ();
 
 public abstract class ItemGroup {
@@ -27,7 +27,7 @@ public abstract class ItemGroup {
 		get { return items.Count == 0; }
 	}
 
-	public OnUpdateCount onUpdateCount;
+	public OnUpdate onUpdate;
 	public OnEmpty onEmpty;
 
 	public abstract void Initialize (Inventory inventory);
@@ -42,7 +42,7 @@ public abstract class ItemGroup {
 	public abstract void SetItemOrder (InventoryItem item, int position);
 	public abstract void MoveItemUp (InventoryItem item);
 	public abstract void MoveItemDown (InventoryItem item);
-	protected abstract void SendUpdateCountMessage ();
+	protected abstract void SendUpdateMessage ();
 	protected abstract void SendEmptyMessage ();
 	public abstract void Print ();
 }
@@ -86,7 +86,7 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 			newItems.RemoveAt (0);
 		}
 
-		SendUpdateCountMessage ();
+		SendUpdateMessage ();
 	}
 
 	public override void Remove (int count) {
@@ -107,7 +107,7 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 			items.Remove (item);
 		}
 
-		SendUpdateCountMessage ();
+		SendUpdateMessage ();
 		if (Empty) SendEmptyMessage ();
 		
 		return removedItem;
@@ -137,8 +137,8 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 		SetItemOrder (item, items.IndexOf (item)+1);
 	}
 
-	protected override void SendUpdateCountMessage () {
-		if (onUpdateCount != null) onUpdateCount ();
+	protected override void SendUpdateMessage () {
+		if (onUpdate != null) onUpdate ();
 	}
 
 	protected override void SendEmptyMessage () {

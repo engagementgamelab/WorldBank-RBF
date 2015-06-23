@@ -11,4 +11,8 @@ public class RouteItem : InventoryItem {
 	public RouteItem (Models.Unlockable unlockable) {
 		route = DataManager.GetRouteInfo (unlockable.unlocked[0]);
 	}
+
+	public RouteItem (Models.Route route) {
+		this.route = route;
+	}
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define SHOW_OPTIONS
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -30,7 +31,7 @@ public class RoutesManager : MB {
 		}
 	}
 
-	bool unlockAll = true; // use for debugging
+	bool unlockAll = false; // use for debugging
 
 	void Awake () {
 		UpdateRoutes (DataManager.GetAllRoutes ());
@@ -83,4 +84,18 @@ public class RoutesManager : MB {
 		}
 		return false;
 	}
+
+	#if SHOW_OPTIONS
+	void OnGUI () {
+		Models.Route[] playerRoutes = PlayerData.RouteGroup.Routes;
+		GUILayout.Space (30);
+		foreach (Models.Route route in playerRoutes) {
+			if (route.unlocked) continue;
+			if (GUILayout.Button ("unlock " + route.city1 + " to " + route.city2)) {
+				route.unlocked = true;
+				UpdateRoutes (PlayerData.RouteGroup.Routes);
+			}
+		}
+	}
+	#endif
 }

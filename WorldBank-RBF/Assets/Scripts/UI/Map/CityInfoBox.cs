@@ -73,9 +73,14 @@ public class CityInfoBox : MB {
 
 	public void OpenRouteBlocked () {
 		Header = "Route Blocked";
-		Body = "Oopsie shippy dip! Can't go this dang way. But it's looking good for a hop/skip/and-a-dip to kooky Kibari.";
-		SetButtons ("Ok", Close);
+		Body = "Oopsie shippy dip! Can't go this dang way, but it's looking good for a hop/skip/and-a-kick to ~~ kooky ~~ Kibari! ;)";
+		SetButtons ("Ok", UnlockRoute);
 		panel.SetActive (true);
+	}
+
+	void UnlockRoute () {
+		PlayerData.UnlockImplementation("unlockable_route_kibari_to_mile");
+		Close ();
 	}
 
 	void Close () {
@@ -88,8 +93,9 @@ public class CityInfoBox : MB {
 	}
 
 	void Visit (string symbol) {
-		CitiesManager.Instance.VisitCity (symbol);
-		Close ();
+		if (CitiesManager.Instance.VisitCity (symbol)) {
+			Close ();
+		}
 	}
 
 	void TravelTo (string symbol) {

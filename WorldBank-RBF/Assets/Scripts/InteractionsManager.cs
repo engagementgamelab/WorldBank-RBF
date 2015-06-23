@@ -28,7 +28,7 @@ public class InteractionsManager : MonoBehaviour {
 
 	void Awake () {
 		inventory.Add (interactions);
-		interactions.onUpdateCount += UpdateCount;
+		interactions.onUpdate += UpdateCount;
 	}
 
 	public void OnTravelToCity () {

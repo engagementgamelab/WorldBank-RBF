@@ -138,8 +138,12 @@ public class DataManager {
     /// </summary>
     /// <returns>An array of Models.Route.</returns>
     public static Models.Route[] GetAllRoutes ()    {
-        Debug.Log (gameData);
-        return gameData.routes;
+        
+        try {
+            return gameData.routes;
+        } catch {
+            throw new Exception ("Could not load routes. Make sure the MapCanvas is disabled before entering play mode.");
+        }
 
     }
 

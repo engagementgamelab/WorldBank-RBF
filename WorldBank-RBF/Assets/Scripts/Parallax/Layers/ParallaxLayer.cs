@@ -79,6 +79,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		npc.Parent = Transform;
 		npc.Transform.Reset ();
 		npc.gameObject.layer = gameObject.layer;
+		npc.Refresh ();
 	}
 
 	public void RemoveNpc (ParallaxNpc npc) {

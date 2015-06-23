@@ -55,6 +55,10 @@ public class PlayerData : MonoBehaviour {
 		get {
 			if (routeGroup == null) {
 				routeGroup = new RouteGroup ();
+				Models.Route[] routes = DataManager.GetAllRoutes ();
+				foreach (Models.Route route in routes) {
+					routeGroup.Add (new RouteItem (route));
+				}
 			}
 			return routeGroup;
 		}
@@ -82,10 +86,14 @@ public class PlayerData : MonoBehaviour {
 
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
 		if (strSymbol.Contains ("unlockable_route_")) {
-			RouteItem route = new RouteItem (unlockRef);
-			RouteGroup.Add (route);
-			CityGroup.AddUnique (route.route.city1);
-			CityGroup.AddUnique (route.route.city2);
+			// RouteItem route = new RouteItem (unlockRef);
+			// RouteGroup.Add (route);
+			// TODO: Need to find route by symbol, not by unlockable
+			Models.Route route = RouteGroup.Unlock (strSymbol);
+			if (route != null) {
+				CityGroup.AddUnique (route.city1);
+				CityGroup.AddUnique (route.city2);
+			}
 		} else {
 			PlanTacticGroup.Add (new PlanTacticItem (unlockRef));
 		}

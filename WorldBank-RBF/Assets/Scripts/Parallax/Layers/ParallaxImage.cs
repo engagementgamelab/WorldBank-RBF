@@ -27,6 +27,7 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 	public float LayerPosition {
 		get { return layerPosition; }
 		set {
+
 			layerPosition = 10000 - value * 100;
 			
 			// Prevents z fighting
@@ -85,7 +86,8 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 	}
 
 	void SetRenderQueue () {
-		if (_Material != null)
-			_Material.renderQueue = (int)LayerPosition;
+		LayerPosition = Position.z;
+		/*if (_Material != null)
+			_Material.renderQueue = (int)LayerPosition;*/
 	}
 }

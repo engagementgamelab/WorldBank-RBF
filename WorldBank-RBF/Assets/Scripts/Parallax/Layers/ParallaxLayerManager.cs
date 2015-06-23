@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 [JsonSerializable (typeof (Models.Scene))]
 public class ParallaxLayerManager : MonoBehaviour {
@@ -59,14 +60,20 @@ public class ParallaxLayerManager : MonoBehaviour {
 	}
 
 	public void Load (string symbol) {
-		Clear ();		
+		Clear ();
 		ModelSerializer.Load (this, 
 			Application.dataPath + "/Resources/Config/PhaseOne/Cities/" + symbol + ".json");
+
+		// TODO: ModelSerializer *should be* setting the layers list, but isn't for some reason
+		// Also- cities would load faster if existing layers were updated rather than destroyed & instantiated
+		ParallaxLayer[] pLayers = GameObject.FindObjectsOfType (typeof (ParallaxLayer)) as ParallaxLayer[];
+		layers = pLayers.ToList ();
     }
 
     void Clear () {
 		foreach (ParallaxLayer layer in layers)
-			layer.Destroy ();    	
+			layer.Destroy ();
+		layers.Clear ();
     }
 
 	void RefreshLayers () {

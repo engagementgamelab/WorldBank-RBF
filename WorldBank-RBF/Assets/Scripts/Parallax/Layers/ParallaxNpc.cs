@@ -77,6 +77,7 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
  	public override void Refresh () {
  		base.Refresh ();
  		_Texture2 = texture2;
+ 		parallaxImage2.Refresh ();
  	}
 
 	public void OnDragEnter (DragSettings dragSettings) {
