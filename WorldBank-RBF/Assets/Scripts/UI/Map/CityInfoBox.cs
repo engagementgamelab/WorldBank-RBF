@@ -71,6 +71,13 @@ public class CityInfoBox : MB {
 		panel.SetActive (true);
 	}
 
+	public void OpenRouteBlocked () {
+		Header = "Route Blocked";
+		Body = "Oopsie shippy dip! Can't go this dang way. But it's looking good for a hop/skip/and-a-dip to kooky Kibari.";
+		SetButtons ("Ok", Close);
+		panel.SetActive (true);
+	}
+
 	void Close () {
 		panel.SetActive (false);
 	}

@@ -81,6 +81,10 @@ public class CitiesManager : MB {
 	}
 
 	public void VisitCity (string symbol) {
+		if (currentCitySymbol == "mile" && symbol == "zima") {
+			cityInfoBox.OpenRouteBlocked ();
+			return;	
+		}
 		dayCounter.RemoveDays (RouteCost (currentCitySymbol, symbol));
 		currentCitySymbol = symbol;
 		CurrentCity.Visit ();

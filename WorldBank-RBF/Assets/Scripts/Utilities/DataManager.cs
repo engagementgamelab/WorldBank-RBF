@@ -138,7 +138,7 @@ public class DataManager {
     /// </summary>
     /// <returns>An array of Models.Route.</returns>
     public static Models.Route[] GetAllRoutes ()    {
-        
+        Debug.Log (gameData);
         return gameData.routes;
 
     }
