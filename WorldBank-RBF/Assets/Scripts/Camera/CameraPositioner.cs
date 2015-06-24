@@ -24,7 +24,7 @@ public class CameraPositioner : MB {
 			set { positioner.XPosition = value; }
 		}
 
-		float speed = 0.6f;
+		float speed = 1.33f;
 		public float Speed {
 			get { return speed; }
 			set { speed = value; }
