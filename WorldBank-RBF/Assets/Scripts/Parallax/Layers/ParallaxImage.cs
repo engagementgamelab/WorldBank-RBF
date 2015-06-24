@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define TEST_STANDALONE_LOAD
+using UnityEngine;
 // Run only if inside editor
 #if UNITY_EDITOR
 using UnityEditor;
@@ -33,6 +34,7 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 			// Prevents z fighting
 			if (_Material != null) {
 				_Material.renderQueue = (int)layerPosition;
+				Debug.Log (_Material.renderQueue);
 			}
 		}
 	}
@@ -41,12 +43,19 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		get { return false; }
 	}
 
-	#if UNITY_EDITOR
+	#if UNITY_EDITOR && !TEST_STANDALONE_LOAD
 	public string TexturePath {
 		get { return AssetDatabase.GetAssetPath (_Texture); }
 		set { 
 			_Texture = AssetDatabase.LoadAssetAtPath (value, typeof (Texture2D)) as Texture2D;
 			texture = _Texture;
+		}
+	}
+	#else
+	public string TexturePath {
+		get { return ""; }
+		set {
+			_Material = MaterialsManager.GetMaterialAtPath (value);
 		}
 	}
 	#endif

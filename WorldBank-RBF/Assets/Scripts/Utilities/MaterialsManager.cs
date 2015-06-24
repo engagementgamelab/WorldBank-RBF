@@ -1,4 +1,4 @@
-﻿ 	using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -7,22 +7,13 @@ using System.IO;
 
 public class MaterialsManager {
 
+	public static Material GetMaterialAtPath (string path) {
+		path = path.Replace ("Assets/Textures/", "Materials/").Replace (".png", "");
+		Material material = Resources.Load (path) as Material;
+		return material;
+	}
+
 	public static Material CreateMaterialFromTexture (Texture2D texture, bool transparent=true) {
-		
-		#if !UNITY_EDITOR_OSX && !UNITY_STANDALONE_OSX
-		#if UNITY_EDITOR
-		string path = "Assets/Materials/";
-		Material material = AssetDatabase.LoadAssetAtPath (path + texture.name + ".mat", typeof (Material)) as Material;
-		if (material != null) {
-			return material;
-		}
-		#elif !UNITY_WEBPLAYER
-		Material material = Resources.Load ("Materials/" + texture.name + ".mat") as Material;
-		if (material != null) {
-			return material;
-		}
-		#endif
-		#endif
 
 		Shader shader = Shader.Find ("Standard");
 		Material m = new Material (shader);
@@ -40,34 +31,36 @@ public class MaterialsManager {
 		}
 		m.SetFloat ("_Glossiness", 0);
 		m.mainTexture = texture;
-		
-		#if UNITY_EDITOR && !UNITY_EDITOR_OSX && !UNITY_STANDALONE_OSX
-		AssetDatabase.CreateAsset (m, path + texture.name + ".mat");
+
+		#if UNITY_EDITOR
+		string path = AssetDatabase.GetAssetPath (texture).Replace ("/Textures/", "/Resources/Materials/").Replace (texture.name + ".png", "");
+		string fileName = texture.name + ".mat";
+		if (!CreateDirectory (path, fileName)) {
+			AssetDatabase.CreateAsset (m, path + fileName);
+		}
 		#endif
 
 		return m;
 	}
 
-	/*public static void PrepareMaterialsForBuild () {
-		#if UNITY_EDITOR && !UNITY_WEBPLAYER
-		string path = Application.dataPath + "/Resources/Materials";
-		if (!Directory.Exists (path)) {
-            Directory.CreateDirectory (path);
+	#if UNITY_EDITOR
+	static bool CreateDirectory (string path, string fileName) {
+		string dataPath = Application.dataPath.Replace ("Assets", "");
+		string path2 = dataPath + path;
+		if (!Directory.Exists (path2)) {
+            Directory.CreateDirectory (path2);
         }
-		string[] materialFiles = Directory.GetFiles (Application.dataPath + "/Materials", "*.mat", SearchOption.AllDirectories);
-		for (int i = 0; i < materialFiles.Length; i ++) {
-			string fromPath = "Assets" + materialFiles[i].Replace (Application.dataPath, "").Replace ('\\', '/');
-			string fileName = fromPath.Replace ("Assets/Materials/", "");
-			string resourcesPath = "/Resources/Materials/" + fileName;
-			string toPath = "Assets" + resourcesPath;
-			if (File.Exists (Application.dataPath + resourcesPath)) {
-				continue;
-			}
-			AssetDatabase.CopyAsset (fromPath, toPath);
-			AssetDatabase.Refresh ();
+        return File.Exists (path2 + fileName);
+	}
+
+	public static void PrepareMaterialsFromTextures () {
+		string[] textureFiles = Directory.GetFiles (Application.dataPath + "/Textures", "*.png", SearchOption.AllDirectories);
+		for (int i = 0; i < textureFiles.Length; i ++) {
+			string path = textureFiles[i].Replace (Application.dataPath, "").Replace ("/Textures/", "Assets/Textures/");
+			CreateMaterialFromTexture ((Texture2D)AssetDatabase.LoadAssetAtPath (path, typeof (Texture2D)));
 		}
-		#endif
-	}*/
+	}
+	#endif
 
 	public static Material Blank {
 		get { return Resources.Load ("Materials/Blank.mat") as Material; }

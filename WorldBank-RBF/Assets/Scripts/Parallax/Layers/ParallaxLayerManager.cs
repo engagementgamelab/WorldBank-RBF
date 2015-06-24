@@ -61,7 +61,7 @@ public class ParallaxLayerManager : MonoBehaviour {
 
 	public void Load (string symbol) {
 		Clear ();
-		ModelSerializer.Load (this, symbol);
+		ModelSerializer.Load (this, "Config/PhaseOne/Cities/" + symbol);
 
 		// TODO: ModelSerializer *should be* setting the layers list, but isn't for some reason
 		// Also- cities would load faster if existing layers were updated rather than destroyed & instantiated

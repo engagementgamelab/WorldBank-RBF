@@ -21,6 +21,12 @@ class GenerateBuilds {
 
     static string APP_NAME = "WorldBank";
     static string TARGET_DIR = "Output";
+
+    [MenuItem ("Build/Prepare Materials")]
+    static void PrepareMaterials () {
+        MaterialsManager.PrepareMaterialsFromTextures ();
+    }
+
     [MenuItem ("Build/Build Mac OS X Universal")]
     static void PerformMacOSXBuild ()
     {
@@ -56,7 +62,6 @@ class GenerateBuilds {
         PerformWebBuild();
     }
 
-
     private static string[] FindEnabledEditorScenes() {
         List<string> EditorScenes = new List<string>();
         foreach(EditorBuildSettingsScene scene in EditorBuildSettings.scenes) {
@@ -69,6 +74,7 @@ class GenerateBuilds {
     static void GenericBuild(string[] scenes, string target_dir, BuildTarget build_target, BuildOptions build_options)
     {
             EditorUserBuildSettings.SwitchActiveBuildTarget(build_target);
+            PrepareMaterials ();
             string res = BuildPipeline.BuildPlayer(scenes,target_dir,build_target,build_options);
             if (res.Length > 0) {
                     throw new Exception("BuildPlayer failure: " + res);
