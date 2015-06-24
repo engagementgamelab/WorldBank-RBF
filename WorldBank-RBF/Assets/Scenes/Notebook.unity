@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: malcom
+  phaseOne: 0
 --- !u!4 &750291792
 Transform:
   m_ObjectHideFlags: 0
@@ -259,6 +260,30 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 22419068, guid: eb86469158ff2402889356c0ff97234a, type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22419068, guid: eb86469158ff2402889356c0ff97234a, type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22419068, guid: eb86469158ff2402889356c0ff97234a, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 22419068, guid: eb86469158ff2402889356c0ff97234a, type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -135
+      objectReference: {fileID: 0}
+    - target: {fileID: 22419068, guid: eb86469158ff2402889356c0ff97234a, type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 22419068, guid: eb86469158ff2402889356c0ff97234a, type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 22441694, guid: eb86469158ff2402889356c0ff97234a, type: 2}
       propertyPath: m_AnchorMin.y
       value: 1
@@ -273,7 +298,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22441694, guid: eb86469158ff2402889356c0ff97234a, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -135
+      value: -200
       objectReference: {fileID: 0}
     - target: {fileID: 22441694, guid: eb86469158ff2402889356c0ff97234a, type: 2}
       propertyPath: m_SizeDelta.x
@@ -332,6 +357,7 @@ MonoBehaviour:
   m_SubmitButton: Submit
   m_CancelButton: Cancel
   m_InputActionsPerSecond: 10
+  m_RepeatDelay: .5
   m_AllowActivationOnMobileDevice: 0
 --- !u!114 &797085524
 MonoBehaviour:
@@ -449,6 +475,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: .0219999999
+  m_StereoMirrorMode: 0
 --- !u!4 &1071560974
 Transform:
   m_ObjectHideFlags: 0

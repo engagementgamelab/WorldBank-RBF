@@ -142,19 +142,33 @@ public class ScenarioManager : MonoBehaviour {
 	    	}
 	}
 
+    /// <summary>
+    /// Tries to open either a tactic card dialog, and if tactic card not found, restarts tactic card timer.
+    /// </summary>
 	void OpenTacticCard() {
 
 		if(tacticState == "open")
 		{
 			int tacticIndex = new System.Random().Next(0, tacticsAvailable.Count);
 
-			Models.TacticCard card = DataManager.GetTacticCardByName(tacticsAvailable[tacticIndex]);
-			currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
+			try {
+		
+				Models.TacticCard card = DataManager.GetTacticCardByName(tacticsAvailable[tacticIndex]);
+				currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
 
-			tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
+				tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
 
-			if(tacticsAvailable.Count == 0)
-				tacticCardCooldown.Stop();
+				if(tacticsAvailable.Count == 0)
+					tacticCardCooldown.Stop();
+		
+			}
+			catch(System.Exception e) {
+
+				tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
+				
+				Debug.LogWarning("Unable to locate a tactic card for '" + tacticsAvailable[tacticIndex] + "'. Timer restarting.", this);
+
+			}
 		}
 		else 
 		{

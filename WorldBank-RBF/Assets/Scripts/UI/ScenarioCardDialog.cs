@@ -63,8 +63,8 @@ public class ScenarioCardDialog : GenericDialogBox {
 			OptionButton btnChoice = ObjectPool.Instantiate<OptionButton>();
 
 			// Debug.Log("Option: " + btnChoice);
-			
-			btnChoice.Text = "Option: " + option;
+
+			btnChoice.Text = DataManager.GetUnlockableBySymbol(option).title;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
 			

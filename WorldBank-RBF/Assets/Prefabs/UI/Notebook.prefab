@@ -175,6 +175,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &110712
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 22419068}
+  - 222: {fileID: 22212832}
+  - 114: {fileID: 11455522}
+  - 114: {fileID: 11446154}
+  - 114: {fileID: 11492638}
+  m_Layer: 5
+  m_Name: Tab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &111116
 GameObject:
   m_ObjectHideFlags: 1
@@ -553,7 +572,7 @@ GameObject:
   - 114: {fileID: 11474004}
   - 114: {fileID: 11451448}
   m_Layer: 5
-  m_Name: Tab
+  m_Name: Tab - Phase Two (TESTING)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1492,6 +1511,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!1 &180822
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 22481222}
+  - 222: {fileID: 22234120}
+  - 114: {fileID: 11474038}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &181810
 GameObject:
   m_ObjectHideFlags: 1
@@ -2221,8 +2257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 507b2395fbe9c43c69880d538b557fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  currentCity: 0
   symbol: malcom
 --- !u!114 &11401608
 MonoBehaviour:
@@ -2289,8 +2323,7 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11443422}
-          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2402,8 +2435,7 @@ MonoBehaviour:
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2448,8 +2480,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9442a859f5542a8bc0c422040e89ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  cost: 3
   city1: crup
   city2: kibari
 --- !u!114 &11410076
@@ -2463,8 +2493,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9442a859f5542a8bc0c422040e89ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  cost: 1
   city1: valeria
   city2: zema
 --- !u!114 &11410404
@@ -2531,8 +2559,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9442a859f5542a8bc0c422040e89ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  cost: 1
   city1: kibari
   city2: mile
 --- !u!114 &11411040
@@ -2609,8 +2635,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9442a859f5542a8bc0c422040e89ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 1
-  cost: 1
   city1: capitol
   city2: crup
 --- !u!114 &11412260
@@ -2678,8 +2702,7 @@ MonoBehaviour:
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2772,8 +2795,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9442a859f5542a8bc0c422040e89ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 1
-  cost: 2
   city1: capitol
   city2: malcom
 --- !u!114 &11417554
@@ -2821,8 +2842,7 @@ MonoBehaviour:
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2916,8 +2936,7 @@ MonoBehaviour:
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2990,8 +3009,7 @@ MonoBehaviour:
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3127,8 +3145,7 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11481412}
-          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3276,8 +3293,7 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11480914}
-          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3436,8 +3452,7 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11427378}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3505,8 +3520,7 @@ MonoBehaviour:
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3608,8 +3622,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 507b2395fbe9c43c69880d538b557fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  currentCity: 0
   symbol: zema
 --- !u!114 &11434506
 MonoBehaviour:
@@ -3707,8 +3719,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 193506}
-  cityName: {fileID: 11472156}
-  cityDescription: {fileID: 11470464}
+  header: {fileID: 0}
+  body: {fileID: 0}
+  button1: {fileID: 0}
+  button2: {fileID: 0}
 --- !u!114 &11435998
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3788,8 +3802,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9442a859f5542a8bc0c422040e89ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  cost: 3
   city1: malcom
   city2: valeria
 --- !u!114 &11439236
@@ -3862,8 +3874,7 @@ MonoBehaviour:
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3915,8 +3926,7 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11471276}
-          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3992,8 +4002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 507b2395fbe9c43c69880d538b557fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  currentCity: 0
   symbol: kibari
 --- !u!114 &11443534
 MonoBehaviour:
@@ -4054,6 +4062,58 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
+--- !u!114 &11446154
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 1}
+    m_HighlightedColor: {r: .470588237, g: 0, b: .941176474, a: 1}
+    m_PressedColor: {r: .784313738, g: .784313738, b: .784313738, a: 1}
+    m_DisabledColor: {r: .784313738, g: .784313738, b: .784313738, a: .501960814}
+    m_ColorMultiplier: 1
+    m_FadeDuration: .100000001
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 11455522}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11456942}
+        m_MethodName: OpenData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &11446684
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4205,8 +4265,7 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11401356}
-          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4478,6 +4537,27 @@ MonoBehaviour:
   m_Text: 'Enter plan name...
 
 '
+--- !u!114 &11455522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 191ae7b7de8d8a94382a00946f72fd48, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &11456864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4515,10 +4595,13 @@ MonoBehaviour:
   data: {fileID: 105596}
   tabGroup: {fileID: 134820}
   notebookCollider: {fileID: 0}
+  dayCounter: {fileID: 0}
+  citiesManager: {fileID: 0}
   namingPanel: {fileID: 0}
   feedbackPanel: {fileID: 22413232}
   scoreText: {fileID: 11482852}
   feedbackText: {fileID: 11476742}
+  openAtStart: 1
 --- !u!114 &11457886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4534,6 +4617,7 @@ MonoBehaviour:
   routesManager: {fileID: 11482246}
   dayCounter: {fileID: 11447670}
   currentCityIndicator: {fileID: 11413506}
+  extraDayPrompt: {fileID: 0}
 --- !u!114 &11459072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4657,8 +4741,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9442a859f5542a8bc0c422040e89ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  cost: 3
   city1: zema
   city2: kibari
 --- !u!114 &11468072
@@ -4705,8 +4787,7 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11475372}
-          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4853,8 +4934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 507b2395fbe9c43c69880d538b557fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 1
-  currentCity: 1
   symbol: capitol
 --- !u!114 &11471754
 MonoBehaviour:
@@ -5016,12 +5095,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11456942}
-        m_MethodName: OpenData
+        m_MethodName: Continue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5029,6 +5107,27 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &11474038
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 180822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a34eb6ffd96e42642ba9e7cdebde6bd0, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &11474758
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5066,8 +5165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 507b2395fbe9c43c69880d538b557fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  currentCity: 0
   symbol: crup
 --- !u!114 &11475680
 MonoBehaviour:
@@ -5096,8 +5193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9442a859f5542a8bc0c422040e89ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  cost: 2
   city1: malcom
   city2: kibari
 --- !u!114 &11476272
@@ -5195,8 +5290,7 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11433318}
-          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: CityButton, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5341,8 +5435,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 507b2395fbe9c43c69880d538b557fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  currentCity: 0
   symbol: mile
 --- !u!114 &11481052
 MonoBehaviour:
@@ -5381,8 +5473,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 507b2395fbe9c43c69880d538b557fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 0
-  currentCity: 0
   symbol: valeria
 --- !u!114 &11482246
 MonoBehaviour:
@@ -5553,8 +5643,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9442a859f5542a8bc0c422040e89ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 1
-  cost: 2
   city1: malcom
   city2: mile
 --- !u!114 &11486240
@@ -5738,7 +5826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 21300000, guid: a34eb6ffd96e42642ba9e7cdebde6bd0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ec8521dd4e4948a4bbf606d1f70bf5cf, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -5796,6 +5884,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: {fileID: 22483146}
+--- !u!114 &11492638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 60
+  m_PreferredHeight: 60
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
 --- !u!114 &11492710
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5840,8 +5946,7 @@ MonoBehaviour:
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5989,8 +6094,7 @@ MonoBehaviour:
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6202,8 +6306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9442a859f5542a8bc0c422040e89ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlocked: 1
-  cost: 2
   city1: mile
   city2: zema
 --- !u!222 &22200892
@@ -6272,6 +6374,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 164592}
+--- !u!222 &22212832
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110712}
 --- !u!222 &22213758
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -6380,6 +6488,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 170780}
+--- !u!222 &22234120
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 180822}
 --- !u!222 &22235674
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -7212,6 +7326,24 @@ RectTransform:
   m_AnchoredPosition: {x: -10, y: 10}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 1, y: 0}
+--- !u!224 &22419068
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110712}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 22481222}
+  m_Father: {fileID: 22478990}
+  m_RootOrder: 2
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 1, y: 1}
 --- !u!224 &22419676
 RectTransform:
   m_ObjectHideFlags: 1
@@ -7527,7 +7659,7 @@ RectTransform:
   m_Children:
   - {fileID: 22443378}
   m_Father: {fileID: 22478990}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -8245,6 +8377,7 @@ RectTransform:
   m_Children:
   - {fileID: 22416046}
   - {fileID: 22443458}
+  - {fileID: 22419068}
   - {fileID: 22441694}
   m_Father: {fileID: 22439028}
   m_RootOrder: 1
@@ -8271,6 +8404,23 @@ RectTransform:
   m_AnchoredPosition: {x: 580.281921, y: -119.193314}
   m_SizeDelta: {x: 1140.56384, y: 99.1933136}
   m_Pivot: {x: .5, y: 1}
+--- !u!224 &22481222
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 180822}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 22419068}
+  m_RootOrder: 0
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -20, y: -20}
+  m_Pivot: {x: .5, y: .5}
 --- !u!224 &22481454
 RectTransform:
   m_ObjectHideFlags: 1
