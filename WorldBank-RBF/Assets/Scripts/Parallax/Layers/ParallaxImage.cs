@@ -24,18 +24,17 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		set { index = value; }
 	}
 
-	float layerPosition = 10000;
-	public float LayerPosition {
-		get { return layerPosition; }
+	float sortingLayer = 10000;
+	public float SortingLayer {
+		get { return sortingLayer; }
 		set {
 
-			layerPosition = 10000 - value * 100;
+			sortingLayer = 10000 - value * 100;
 			
 			// Prevents z fighting
 			if (_Material != null) {
-				_Material.renderQueue = (int)layerPosition;
-				Debug.Log (_Material.renderQueue);
-			}
+				_Material.renderQueue = (int)sortingLayer;
+			} 
 		}
 	}
 
@@ -76,13 +75,11 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 
 	public void Init () {
 		_Texture = null;
-		SetRenderQueue ();
 		Reset ();
 	}
 
 	public override void Refresh () {
 		base.Refresh ();
-		SetRenderQueue ();
 		Reset ();
 	}
 
@@ -91,12 +88,6 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		if (Parent != null) gameObject.layer = Parent.gameObject.layer;
 		if (Forward) Transform.SetLocalPositionZ (-0.01f);
 		Transform.SetLocalPositionX (XOffset);
-		LayerPosition = Position.z;
-	}
-
-	void SetRenderQueue () {
-		LayerPosition = Position.z;
-		/*if (_Material != null)
-			_Material.renderQueue = (int)LayerPosition;*/
+		SortingLayer = Position.z;
 	}
 }

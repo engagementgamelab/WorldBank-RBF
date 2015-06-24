@@ -8,7 +8,11 @@ public class AnimatedQuadTexture : MB {
 
 	public Material _Material {
 		get { return _MeshRenderer.sharedMaterial; }
-		set { _MeshRenderer.sharedMaterial = value; }
+		set { 
+			_MeshRenderer.sharedMaterial = value; 
+			int sortingLayer = 10000 - (int)(Position.z * 100);
+			value.renderQueue = sortingLayer;
+		}
 	}
 
 	MeshRenderer meshRenderer = null;
