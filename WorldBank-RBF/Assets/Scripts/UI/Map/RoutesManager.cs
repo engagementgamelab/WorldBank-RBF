@@ -37,10 +37,6 @@ public class RoutesManager : MB {
 		UpdateRoutes (DataManager.GetAllRoutes ());
 	}
 
-	/*void OnEnable () {
-		UpdateRoutes (PlayerData.RouteGroup.Routes);
-	}*/
-
 	public void UpdateRoutes () {
 		UpdateRoutes (PlayerData.RouteGroup.Routes);
 	}

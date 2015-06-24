@@ -97,6 +97,10 @@ public class PlayerData : MonoBehaviour {
 
 	}
 
+	public static void LockRoute (string symbol) {
+		RouteGroup.Lock (symbol);
+	}
+
 	public static void SetTactics (PlanTacticGroup tacticGroup) {
 		planTacticGroup = tacticGroup;
 	}

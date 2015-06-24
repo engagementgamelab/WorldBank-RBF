@@ -291,9 +291,12 @@ public class ModelSerializer {
     }
 
     static public object ReadJsonData (object obj, string path) {
-        StreamReader streamReader = new StreamReader (path);
+        /*StreamReader streamReader = new StreamReader (path);
         string data = streamReader.ReadToEnd ();
         streamReader.Close ();
-        return JsonReader.Deserialize<object> (data);
+        return JsonReader.Deserialize<object> (data);*/
+        TextAsset dataJson = (TextAsset)Resources.Load(path, typeof(TextAsset));
+        StringReader data = new StringReader(dataJson.text);
+        return JsonReader.Deserialize<object> (data.ReadToEnd ());
     }
 }

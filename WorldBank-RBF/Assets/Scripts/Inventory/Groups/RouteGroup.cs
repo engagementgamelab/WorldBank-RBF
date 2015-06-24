@@ -16,4 +16,9 @@ public class RouteGroup : ItemGroup<RouteItem> {
 		if (route != null) route.unlocked = true;
 		return route;
 	}
+
+	public void Lock (string symbol) {
+		Models.Route route = Array.Find (Routes, x => x.symbol == symbol);
+		if (route != null) route.unlocked = false;
+	}
 }

@@ -45,23 +45,12 @@ public class CitiesManager : MB {
 	public DayCounter dayCounter;
 	public CurrentCityIndicator currentCityIndicator;
 	public GameObject extraDayPrompt;
-	bool initialized = false;
 
 	bool unlockAll = true; // use for debugging
 
 	void Start () {
 		UpdateUnlockedCities ();
 		UpdateInteractableCities ();
-		initialized = true;
-	}
-
-	void OnEnable () {
-		/*if (!initialized) return;
-		UpdateUnlockedCities ();
-		foreach (var city in Cities) {
-			city.Value.UpdateState (IsCurrentCity (city.Value.symbol));
-		}
-		UpdateInteractableCities ();*/
 	}
 
 	public void UpdateCities () {

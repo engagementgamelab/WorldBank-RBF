@@ -80,6 +80,7 @@ public class CityInfoBox : MB {
 	}
 
 	void UnlockRoute () {
+		PlayerData.LockRoute ("mile_to_zima");
 		PlayerData.UnlockImplementation("unlockable_route_kibari_to_mile");
 		mapManager.UpdateMap ();
 		Close ();
