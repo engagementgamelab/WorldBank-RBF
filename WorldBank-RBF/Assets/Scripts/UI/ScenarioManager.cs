@@ -41,9 +41,13 @@ public class ScenarioManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        // Get plans
-		if(PlayerManager.Instance.Authenticated)
+		#if UNITY_EDITOR
 	        NetworkManager.Instance.GetURL(DataManager.RemoteURL + "/plan/all/", PlansRetrieved);
+		#else
+		    // Get plans
+			if(PlayerManager.Instance.Authenticated)
+		        NetworkManager.Instance.GetURL(DataManager.RemoteURL + "/plan/all/", PlansRetrieved);
+		#endif
 
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
 
