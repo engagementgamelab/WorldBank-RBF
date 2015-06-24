@@ -11,6 +11,7 @@ public class CityInfoBox : MB {
 	public Text body;
 	public CityInfoBoxButton button1;
 	public CityInfoBoxButton button2;
+	public MapManager2 mapManager;
 
 	string Header {
 		get { return header.text; }
@@ -72,7 +73,7 @@ public class CityInfoBox : MB {
 	}
 
 	public void OpenRouteBlocked () {
-		Header = "Route Blocked";
+		Header = "Route DESTROYED";
 		Body = "Oopsie shippy dip! Can't go this dang way, but it's looking good for a hop/skip/and-a-kick to ~~ kooky ~~ Kibari! ;)";
 		SetButtons ("Ok", UnlockRoute);
 		panel.SetActive (true);
@@ -80,6 +81,7 @@ public class CityInfoBox : MB {
 
 	void UnlockRoute () {
 		PlayerData.UnlockImplementation("unlockable_route_kibari_to_mile");
+		mapManager.UpdateMap ();
 		Close ();
 	}
 

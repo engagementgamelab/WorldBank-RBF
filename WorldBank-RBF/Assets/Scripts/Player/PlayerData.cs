@@ -86,10 +86,7 @@ public class PlayerData : MonoBehaviour {
 
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
 		if (strSymbol.Contains ("unlockable_route_")) {
-			// RouteItem route = new RouteItem (unlockRef);
-			// RouteGroup.Add (route);
-			// TODO: Need to find route by symbol, not by unlockable
-			Models.Route route = RouteGroup.Unlock (strSymbol);
+			Models.Route route = RouteGroup.Unlock (strSymbol.Substring (17));
 			if (route != null) {
 				CityGroup.AddUnique (route.city1);
 				CityGroup.AddUnique (route.city2);

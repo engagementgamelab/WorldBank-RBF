@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class MapManager2 : MB {
+public class MapManager2 : NotebookCanvas {
 
 	Canvas canvas = null;
 	Canvas Canvas {
@@ -14,11 +14,20 @@ public class MapManager2 : MB {
 		}
 	}
 
-	void Open () {
+	public CitiesManager citiesManager;
+	public RoutesManager routesManager;
+
+	public override void Open () {
 		Canvas.enabled = true;
+		UpdateMap ();
 	}
 
-	void Close () {
+	public override void Close () {
 		Canvas.enabled = false;
+	}
+
+	public void UpdateMap () {
+		routesManager.UpdateRoutes ();
+		citiesManager.UpdateCities ();
 	}
 }

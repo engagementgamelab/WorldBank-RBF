@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 public class NotebookManager : MB {
 
-	public GameObject map;
-	public GameObject priorities;
-	public GameObject data;
+	public NotebookCanvas map;
+	public NotebookCanvas priorities;
+	public NotebookCanvas data;
 	public GameObject tabGroup;
 	public GameObject notebookCollider;
 	public DayCounter dayCounter;
@@ -19,11 +19,11 @@ public class NotebookManager : MB {
 	public Text scoreText;
 	public Text feedbackText;
 
-	Dictionary<string, GameObject> canvases;
-	Dictionary<string, GameObject> Canvases {
+	Dictionary<string, NotebookCanvas> canvases;
+	Dictionary<string, NotebookCanvas> Canvases {
 		get {
 			if (canvases == null) {
-				canvases = new Dictionary<string, GameObject> ();
+				canvases = new Dictionary<string, NotebookCanvas> ();
 				canvases.Add ("map", map);
 				canvases.Add ("priorities", priorities);
 				canvases.Add ("data", data);
@@ -121,7 +121,8 @@ public class NotebookManager : MB {
 	public void Close () {
 		if (!CanCloseNotebook) return;
 		foreach (var canvas in Canvases) {
-			canvas.Value.SetActive (false);
+			canvas.Value.Close ();
+			canvas.Value.gameObject.SetActive (false);
 		}
 		tabGroup.SetActive (false);
 		notebookCollider.SetActive (false);
@@ -153,7 +154,13 @@ public class NotebookManager : MB {
 
 	void OpenCanvas (string id) {
 		foreach (var canvas in Canvases) {
-			canvas.Value.SetActive (canvas.Key == id);
+			bool open = canvas.Key == id;
+			canvas.Value.gameObject.SetActive (open);
+			if (open) {
+				canvas.Value.Open ();
+			} else {
+				canvas.Value.Close ();
+			}
 		}
 		activeCanvas = id;
 	}

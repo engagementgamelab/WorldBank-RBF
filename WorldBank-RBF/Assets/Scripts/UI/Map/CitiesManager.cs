@@ -56,12 +56,20 @@ public class CitiesManager : MB {
 	}
 
 	void OnEnable () {
-		if (!initialized) return;
+		/*if (!initialized) return;
 		UpdateUnlockedCities ();
 		foreach (var city in Cities) {
 			city.Value.UpdateState (IsCurrentCity (city.Value.symbol));
 		}
-		UpdateInteractableCities ();
+		UpdateInteractableCities ();*/
+	}
+
+	public void UpdateCities () {
+		UpdateUnlockedCities ();
+		foreach (var city in Cities) {
+			city.Value.UpdateState (IsCurrentCity (city.Value.symbol));
+		}
+		UpdateInteractableCities ();	
 	}
 
 	public bool IsCurrentCity (string symbol) {

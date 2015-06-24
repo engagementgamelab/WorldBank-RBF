@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PrioritizationManager : MonoBehaviour {
+public class PrioritizationManager : NotebookCanvas {
 
 	public GameObject continueButton;
 
-	void OnEnable () {
+	/*void OnEnable () {
 		continueButton.SetActive (NotebookManager.Instance.MakingPlan);
+	}*/
+
+	public override void Open () {
+		continueButton.SetActive (NotebookManager.Instance.MakingPlan);		
 	}
 }
