@@ -51,12 +51,12 @@ public class SceneManager : MonoBehaviour {
 		if(!PlayerManager.Instance.Authenticated)
 		{
 
-			#if UNITY_EDITOR
-				PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
-			#else
+			// #if UNITY_EDITOR
+			// 	PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
+			// #else
 				loginUI = ObjectPool.Instantiate<PlayerLoginRegisterUI>();
 				loginUI.Callback = UserAuthenticated;
-			#endif
+			// #endif
 			
 		}
 	}
