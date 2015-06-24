@@ -203,7 +203,8 @@ public class ParallaxDesigner : EditorWindow {
         string loadPath = EditorUtility.OpenFilePanel ("Load a city", PATH, "json");
         if (loadPath != "") {
             New ();
-            objectDrawer.Load (loadPath);
+            string path = loadPath.Replace (Application.dataPath + "/Resources/", "").Replace (".json", "");
+            objectDrawer.Load (path);
             fileName = Path.GetFileName (loadPath);
             savePath = loadPath;
         }
