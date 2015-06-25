@@ -89,14 +89,20 @@ public class GenericDialogBox : MB {
 
 	}
 
-	public void AddButtons<T>(List<T> btnChoices, bool vertical=false, Transform groupOverride=null) where T: MonoBehaviour {
+	public void AppendButtons<T>(List<T> btnChoices) where T: MonoBehaviour {
+		
+		AddButtons<T>(btnChoices, false, null, true);
+	}
+
+	public void AddButtons<T>(List<T> btnChoices, bool vertical=false, Transform groupOverride=null, bool append=false) where T: MonoBehaviour {
 
 		Transform group = vertical ? activeBox.verticalGroup : activeBox.horizontalGroup;
 
 		if(groupOverride != null)
 			group = groupOverride;
 
-		RemoveButtons<T>(group);
+		if(!append)
+			RemoveButtons<T>(group);
 
 		if(btnChoices != null) {
 			foreach(T btnChoice in btnChoices) {
