@@ -136,6 +136,7 @@ public class CameraPositioner : MB {
 
 	void Update () {
 		Drag.OnDrag ();
+		XPosition = Position.x + Input.GetAxis ("Horizontal") * Time.deltaTime * 10f;
 	}
 
 	void OnDragDownEvent (DragDownEvent e) {
