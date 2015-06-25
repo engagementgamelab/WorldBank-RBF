@@ -28,7 +28,6 @@ public class ScenarioManager : MonoBehaviour {
 
 	private static TimerUtils.Cooldown tacticCardCooldown;
 	
-	public static List<string> tacticCardOptions  = new List<string> { "Investigate", "Observe" };
 	private static int[] tacticCardIntervals = new int[3] {3, 3, 3};
 	private List<string> tacticsAvailable;
 
@@ -153,17 +152,12 @@ public class ScenarioManager : MonoBehaviour {
 
 		if(tacticState == "open")
 		{
+			Models.TacticCard card = null;		
 			int tacticIndex = new System.Random().Next(0, tacticsAvailable.Count);
 
 			try {
 		
-				Models.TacticCard card = DataManager.GetTacticCardByName(tacticsAvailable[tacticIndex]);
-				currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
-
-				tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
-
-				if(tacticsAvailable.Count == 0)
-					tacticCardCooldown.Stop();
+				card = DataManager.GetTacticCardByName(tacticsAvailable[tacticIndex]);
 		
 			}
 			catch(System.Exception e) {
@@ -172,7 +166,16 @@ public class ScenarioManager : MonoBehaviour {
 				
 				Debug.LogWarning("Unable to locate a tactic card for '" + tacticsAvailable[tacticIndex] + "'. Timer restarting.", this);
 
+				return;
+
 			}
+
+			currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
+
+			tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
+
+			if(tacticsAvailable.Count == 0)
+				tacticCardCooldown.Stop();
 		}
 		else 
 		{

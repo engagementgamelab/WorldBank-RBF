@@ -22,7 +22,10 @@ public class TacticCardDialog : ScenarioCardDialog {
 	public Image tooltipDoneImg;
 	public Text tooltipTxt;
 	
+	public RectTransform investigatePanel;
 	public RectTransform actionsPanel;
+	public GenericButton buttonInvestigate;
+	public GenericButton buttonObserve;
 
 	public Animator animatorTactic;
 
@@ -37,6 +40,8 @@ public class TacticCardDialog : ScenarioCardDialog {
 	private bool open = false;
 	private bool close = true;
 	private bool finished = false;
+	private bool investigateDone = false;
+	private bool investigateFurther = false;
 
 	private Transform cardContainer;
 
@@ -46,16 +51,14 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 	}
 
+	// Used to animate card
+	// TODO: Use animation
 	void Update() {
 
 		tooltipTxt.text = cooldownElapsed + "s";
 		
 		float step = (openCloseDuration * 1000f) * Time.deltaTime;
 		float targetX = close ? -Screen.width : 0;
-		 
-		// if(close)
-		// else if(open && cardContainer.localPosition.x < 0)
-		// 	cardContainer.Translate((Screen.width / openCloseDuration) * Time.deltaTime * Vector3.right);
 
 		cardContainer.localPosition = Vector3.MoveTowards(cardContainer.localPosition, new Vector3(targetX, 0, 0), step);
 		
@@ -74,10 +77,6 @@ public class TacticCardDialog : ScenarioCardDialog {
 		// Show default icon
 		tooltipDoneImg.gameObject.SetActive(false);
 		tooltipAlertImg.gameObject.SetActive(true);
-
-		// Show actions
-		actionsPanel.gameObject.SetActive(true);
-		activeBox.horizontalGroup.gameObject.SetActive(false);
 		
 		// Show tooltip
 		tooltipDoneImg.transform.parent.gameObject.SetActive(true);
@@ -98,34 +97,45 @@ public class TacticCardDialog : ScenarioCardDialog {
 		}
 		// Set to open
 		else if(close) {
+
 			open = true;
 			close = false;
+
 		}
 
 	}
     
     public void GetResultOptions() {
 
+    	investigateDone = true;
+
 		List<GenericButton> btnListOptions = new List<GenericButton>();
 
-    	Content = data.investigate;
-	
-		foreach(KeyValuePair<string, string> option in data.new_options) {
+    	Dictionary<string, string> options = investigateFurther ? data.further_options : data.new_options;
 
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
+    	Content = investigateFurther ? data.investigate_further_dialogue : data.investigate_dialogue;
+	
+		foreach(KeyValuePair<string, string> option in options) {
 
 			string optionKey = option.Key;
+
+			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 			
 			btnChoice.Text = option.Value;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
-
 			btnChoice.Button.onClick.AddListener (() => GetFeedback(optionKey));
 
 			btnListOptions.Add(btnChoice);
 		}
 
-		AddButtons(btnListOptions, false, HorizontalGroup);
+		if(investigateFurther) {
+			AppendButtons(btnListOptions);
+
+			buttonInvestigate.gameObject.SetActive(false);
+		}
+		else
+			AddButtons(btnListOptions, false, HorizontalGroup);
 		
 		// Show done icon
 		tooltipDoneImg.gameObject.SetActive(true);
@@ -133,8 +143,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 		tooltipTxt.gameObject.SetActive(false);
 
 		// Show choices
-		actionsPanel.gameObject.SetActive(false);
-		activeBox.horizontalGroup.gameObject.SetActive(true);
+		actionsPanel.gameObject.SetActive(true);
 
     }
 
@@ -142,12 +151,16 @@ public class TacticCardDialog : ScenarioCardDialog {
 
     	// Disable();
 
+    	investigateFurther = investigateDone;
+
+    	int[] thisCooldown = investigateFurther ? data.investigate_further_cooldown : data.investigate_cooldown;
+
     	if(investigateCooldown == null)
 			investigateCooldown = new TimerUtils.Cooldown();
 		
-	 	cooldownTotal = investigateCooldown.Init(data.cooldown, new ScenarioEvent(ScenarioEvent.TACTIC_RESULTS));
+	 	cooldownTotal = investigateCooldown.Init(thisCooldown, new ScenarioEvent(ScenarioEvent.TACTIC_RESULTS));
 
-		Events.instance.Raise(new ScenarioEvent("Investigate"));
+		Events.instance.Raise(new ScenarioEvent( "Investigate" + (investigateFurther ? "_Further" : "") ));
 
 		// Show cooldown text
 		tooltipDoneImg.gameObject.SetActive(false);
@@ -166,24 +179,22 @@ public class TacticCardDialog : ScenarioCardDialog {
     
     public void GetFeedback(string optionChosen) {
 
-    	Content = data.feedback[optionChosen];
+    	Content = data.feedback_dialogue[optionChosen];
 
-		GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
-		btnChoice.Text = "Close";
+		// Hide choices
+		actionsPanel.gameObject.SetActive(false);
+		// activeBox.horizontalGroup.gameObject.SetActive(true);
 
-		btnChoice.Button.onClick.RemoveAllListeners();
+		buttonObserve.Text = "Close";
 
-		btnChoice.Button.onClick.AddListener (() => Animate(true));
-		btnChoice.Button.onClick.AddListener (() => Events.instance.Raise(
+		buttonObserve.Button.onClick.RemoveAllListeners();
+		buttonObserve.Button.onClick.AddListener (() => Animate(true));
+		buttonObserve.Button.onClick.AddListener (() => Events.instance.Raise(
 														new ScenarioEvent(ScenarioEvent.TACTIC_CLOSED)
 													)
 											 );
 
-		AddButtons<GenericButton>(new List<GenericButton> { btnChoice });
-
-		// Show choices
-		actionsPanel.gameObject.SetActive(false);
-		activeBox.horizontalGroup.gameObject.SetActive(true);
+		buttonInvestigate.gameObject.SetActive(false);
     }
 
     /// <summary>

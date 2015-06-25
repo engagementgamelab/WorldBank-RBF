@@ -15,6 +15,7 @@ public class ScenarioEvent : GameEvent {
 	public static readonly string NEXT = "next";
 	public static readonly string TACTIC_OPEN = "tactic_open";
 	public static readonly string TACTIC_INVESTIGATE = "investigate";
+	public static readonly string TACTIC_INVESTIGATE_FURTHER = "investigate_further";
 	public static readonly string TACTIC_RESULTS = "tactic_results";
 	public static readonly string TACTIC_CLOSED = "tactic_closed";
 
