@@ -10,8 +10,7 @@ public class AnimatedQuadTexture : MB {
 		get { return _MeshRenderer.sharedMaterial; }
 		set { 
 			_MeshRenderer.sharedMaterial = value; 
-			int sortingLayer = 10000 - (int)(Position.z * 100);
-			value.renderQueue = sortingLayer;
+			UpdateSortingLayer ();
 		}
 	}
 
@@ -41,7 +40,7 @@ public class AnimatedQuadTexture : MB {
 				_Material = MaterialsManager.CreateMaterialFromTexture (cachedTexture, cachedTexture.format.HasAlpha ());
 				gameObject.SetActive (!MaterialsManager.TextureIsBlank (_Texture));
 			} else {
-				_Material = MaterialsManager.Blank;
+				_Material = null;
 			}
 		}
 	}
@@ -79,6 +78,7 @@ public class AnimatedQuadTexture : MB {
 
 	public virtual void Refresh () {
 		if (texture != null) _Texture = texture;
+		UpdateSortingLayer ();
 	}
 
 	public void StartAnimating () {
@@ -145,6 +145,23 @@ public class AnimatedQuadTexture : MB {
 
 	void UpdatePauseTime () {
 		pauseTime = Random.Range (intervalMin, intervalMax);
+	}
+
+	protected void UpdateSortingLayer () {
+		Debug.Log (Position.z);
+		int sortingLayer = 10000 - (int)(Position.z * 100);
+		if (_Material != null) {
+			_Material.renderQueue = sortingLayer;
+		} else {
+			StartCoroutine (SetSortingLayerOnLoad ());
+		}
+	}
+
+	IEnumerator SetSortingLayerOnLoad () {
+		while (_Material == null) {
+			yield return null;
+		}
+		UpdateSortingLayer ();
 	}
 
 	#if PREVIEW_ANIMATIONS && UNITY_EDITOR

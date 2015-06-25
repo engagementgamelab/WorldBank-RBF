@@ -93,7 +93,8 @@ public class RoutesManager : MB {
 			if (route.unlocked) continue;
 			if (GUILayout.Button ("unlock " + route.city1 + " to " + route.city2)) {
 				route.unlocked = true;
-				UpdateRoutes (PlayerData.RouteGroup.Routes);
+				// UpdateRoutes (PlayerData.RouteGroup.Routes);
+				NotebookManager.Instance.OpenMap ();
 			}
 		}
 	}
