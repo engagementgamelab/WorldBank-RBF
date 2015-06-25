@@ -76,7 +76,7 @@ public class ParallaxLayerManager : MonoBehaviour {
     }
 
 	void RefreshLayers () {
-        
+	
         layers = EditorObjectPool.GetObjectsOfTypeInOrder<ParallaxLayer> ();
 
         // Remove layers

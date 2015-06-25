@@ -148,7 +148,6 @@ public class AnimatedQuadTexture : MB {
 	}
 
 	protected void UpdateSortingLayer () {
-		Debug.Log (Position.z);
 		int sortingLayer = 10000 - (int)(Position.z * 100);
 		if (_Material != null) {
 			_Material.renderQueue = sortingLayer;

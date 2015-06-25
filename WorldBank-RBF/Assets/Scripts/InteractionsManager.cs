@@ -57,10 +57,12 @@ public class InteractionsManager : MonoBehaviour {
 		return DataManager.GetCityNPCCount (citySymbol) - DataManager.GetCityInfo (citySymbol).npc_interactions;
 	}
 
+	#if DEBUG
 	void OnGUI () {
 		if (GUILayout.Button ("0 interactions")) {
 			interactions.Set (0);
 			UpdateCount ();
 		}
 	}
+	#endif
 }

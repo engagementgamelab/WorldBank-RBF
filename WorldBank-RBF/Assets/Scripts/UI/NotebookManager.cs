@@ -72,8 +72,12 @@ public class NotebookManager : MB {
 		get { return state == State.MakingPlan; }
 	}
 
-	public bool openAtStart = true;
 	bool open = true;
+	public bool IsOpen {
+		get { return open; }
+	}
+
+	public bool openAtStart = true;
 	string activeCanvas = "map";
 
 	void Start () {
@@ -102,7 +106,7 @@ public class NotebookManager : MB {
 	public void ToggleNotebook () {
 		if (open) {
 			Close ();
-		} else if (NPCFocusBehavior.Instance.FocusLevel == FocusLevel.Default) {
+		} else if (NPCFocusBehavior.Instance.Unfocused) {
 			Open ();
 		}
 	}
@@ -180,13 +184,18 @@ public class NotebookManager : MB {
 	// Also, skips to phase two via "skip tab" button (won't be in test or final game)
 	public void Continue() {
 
-		Application.LoadLevel("PhaseTwo");
+		Application.LoadLevel("PhaseTwo_jay");
 
 	}
 
 	// Get response from submitting a plan
 	void SubmitPlanCallback(Dictionary<string, object> response) {
 
+		Debug.Log (response);
+		foreach (var r in response) {
+			Debug.Log (r.Key);
+			Debug.Log (r.Value);
+		}
 	 	scoreText.text = "Score: " + response["score"].ToString();
 	 	feedbackText.text = response["description"].ToString();
 
