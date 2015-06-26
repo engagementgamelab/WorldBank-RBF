@@ -55,9 +55,10 @@ public class NotebookManager : MB {
 	bool CanCloseNotebook {
 		get {
 			return (
-				open
+				(open
 				&& citiesManager.CurrentCitySymbol != "capitol"
-				&& state != State.MakingPlan
+				&& state != State.MakingPlan)
+				|| !isPhaseOne
 			);
 		}
 	}
@@ -78,6 +79,8 @@ public class NotebookManager : MB {
 	}
 
 	public bool openAtStart = true;
+	public bool isPhaseOne = true;
+
 	string activeCanvas = "map";
 
 	void Start () {
@@ -128,10 +131,21 @@ public class NotebookManager : MB {
 			canvas.Value.Close ();
 			canvas.Value.gameObject.SetActive (false);
 		}
-		tabGroup.SetActive (false);
+	
+		// Hide tabs only in phase one; are always visible in two
+		if(isPhaseOne)
+			tabGroup.SetActive (false);
+	
 		notebookCollider.SetActive (false);
 		CameraPositioner.Drag.Enabled = true;
 		open = false;
+	}
+
+	// Tell data canvas to update indicators
+	public void UpdateIndicators(int intBirths, int intVaccinations, int intQOC) {
+
+		data.UpdateIndicators(intBirths, intVaccinations, intQOC);
+		
 	}
 
 	public void NamePlan() {
@@ -175,6 +189,9 @@ public class NotebookManager : MB {
 	}
 
 	void UpdateState () {
+		if(dayCounter == null)
+			return;
+
 		if (!dayCounter.HasDays && !InteractionsManager.Instance.HasInteractions) {
 			state = State.MakingPlan;
 		}
@@ -184,7 +201,7 @@ public class NotebookManager : MB {
 	// Also, skips to phase two via "skip tab" button (won't be in test or final game)
 	public void Continue() {
 
-		Application.LoadLevel("PhaseTwo_jay");
+		Application.LoadLevel("PhaseTwo");
 
 	}
 

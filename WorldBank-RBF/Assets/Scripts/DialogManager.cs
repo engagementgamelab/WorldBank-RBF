@@ -172,7 +172,7 @@ public class DialogManager : MonoBehaviour {
 			CloseAll();
 
 	    scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>();
-	    scenarioDialog.data = scenario;
+	    scenarioDialog.Data = scenario;
 
 	    // scenarioDialog.transform.SetParent(uiCanvasRoot);
 	    scenarioDialog.transform.SetAsFirstSibling();
@@ -182,13 +182,7 @@ public class DialogManager : MonoBehaviour {
 	    // Get initial dialogue or an advisor's?
 	    if(strAdvisorSymbol == null)
 		    scenarioDialog.Content = scenario.initiating_dialogue;
-
-		// Create buttons for all advisors
-		scenarioDialog.AddAdvisors(ScenarioManager.currentAdvisorOptions);
-
-		// Create buttons for all options if not speaking to advisor
-		scenarioDialog.AddOptions(ScenarioManager.currentCardOptions);
-
+		
 	    scenarioDialog.Open();
 
 	    return scenarioDialog;
@@ -259,7 +253,8 @@ public class DialogManager : MonoBehaviour {
 		// Does this dialogue unlock something?
 		if(currNpc.dialogue[strDialogueKey].ContainsKey("unlocks"))
 		{
-			strDialogTxt += "\n\n<color=yellow>Unlocks</color>: " + currNpc.dialogue[strDialogueKey]["unlocks"];
+			Models.Unlockable unlockableRef = DataManager.GetUnlockableBySymbol(currNpc.dialogue[strDialogueKey]["unlocks"]);
+			strDialogTxt += "\n\n<color=yellow>Unlocked</color> " + unlockableRef.title;
 
 			// Unlock this implementation option for player
 			PlayerData.UnlockImplementation(currNpc.dialogue[strDialogueKey]["unlocks"]);

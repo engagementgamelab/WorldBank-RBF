@@ -19,10 +19,9 @@ public class ScenarioManager : MonoBehaviour {
 
 	public Text scenarioLabel;
 	public Text cardLabel;
-	public RectTransform endPanel;
 
-	public static List<string> currentAdvisorOptions;
-	public static List<string> currentCardOptions;
+	public RectTransform yearEndPanel;
+	public RectTransform scenarioEndPanel;
 
 	private static int currentCardIndex;
 
@@ -90,18 +89,41 @@ public class ScenarioManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// Increment card index and open next scenario card, or end the scenario.
+    /// Increment card index and open next scenario card, show year break, or end the scenario.
     /// </summary>
-	public void GetNextCard() {
+    /// <param name="newYear">Load new year (skip year break check). Default is false.</param>
+	public void GetNextCard(bool newYear=false) {
+
+		int nextCard = currentCardIndex+1;
+
+		if(!newYear && (nextCard > 0 && nextCard <= 8) && (nextCard % 4 == 0)) {
+			
+			// Pause tactic card cooldown
+			tacticCardCooldown.Pause();
+
+			ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
+			yearEndPanel.gameObject.SetActive(true);
+
+			return;
+		}
 
 		if(DataManager.ScenarioLength()-1 > currentCardIndex) {
+			
+			yearEndPanel.gameObject.SetActive(false);
+
+			// Load next card
 			currentCardIndex++;
 			OpenDialog();
+
 		}
 		else {
-			ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
 
-			endPanel.gameObject.SetActive(true);
+			Debug.Log("length: " + (DataManager.ScenarioLength()-1));
+			
+			// Show end of scenario
+			ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
+			scenarioEndPanel.gameObject.SetActive(true);
+
 		}
 
 	}
@@ -124,10 +146,6 @@ public class ScenarioManager : MonoBehaviour {
 
 			// Generate scenario card for the current card index
 			Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex);
-
-			// Generate advisor options
-			currentAdvisorOptions = card.characters.Select(x => x.Key).ToList();
-			currentCardOptions = new List<string>(card.starting_options);
 
 			// Create the card dialog
 		 	currentScenarioCard = DialogManager.instance.CreateScenarioDialog(card);
