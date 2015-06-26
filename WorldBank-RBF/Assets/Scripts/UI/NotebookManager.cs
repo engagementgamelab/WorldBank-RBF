@@ -44,9 +44,9 @@ public class NotebookManager : MB {
 
 	CameraPositioner cameraPositioner = null;
 	CameraPositioner CameraPositioner {
-		get { 
+		get {
 			if (cameraPositioner == null) {
-				cameraPositioner = MainCamera.Instance.Positioner; 
+				cameraPositioner = MainCamera.Instance.Positioner;
 			}
 			return cameraPositioner;
 		}
@@ -81,7 +81,7 @@ public class NotebookManager : MB {
 	string activeCanvas = "map";
 
 	void Start () {
-		// Need to find a better way to approach this, but for now 
+		// Need to find a better way to approach this, but for now
 		if (openAtStart) {
 			open = false;
 			Open ();
@@ -149,7 +149,7 @@ public class NotebookManager : MB {
 
         plan.name = planNameInput.text;
         plan.tactics = PlayerData.PlanTacticGroup.GetUniqueTacticSymbols ();
-        
+
         formFields.Add("plan", plan);
 
 		PlayerManager.Instance.SaveData (formFields, SubmitPlanCallback);
@@ -191,11 +191,6 @@ public class NotebookManager : MB {
 	// Get response from submitting a plan
 	void SubmitPlanCallback(Dictionary<string, object> response) {
 
-		Debug.Log (response);
-		foreach (var r in response) {
-			Debug.Log (r.Key);
-			Debug.Log (r.Value);
-		}
 	 	scoreText.text = "Score: " + response["score"].ToString();
 	 	feedbackText.text = response["description"].ToString();
 

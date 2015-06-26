@@ -1,4 +1,4 @@
-﻿/* 
+﻿/*
 World Bank RBF
 Created by Engagement Lab, 2015
 ==============
@@ -82,7 +82,7 @@ public class DialogManager : MonoBehaviour {
 		{
 
 			string[] arrTxt = new string[currentDialogueText.Count];
-		
+
 			for(int i = 0; i < currentDialogIndex-1; i++)
 			{
 				// if(currentDialogueOpacity[i] == null)
@@ -106,10 +106,10 @@ public class DialogManager : MonoBehaviour {
 
 	private void CloseAll() {
 
-		if(dialogBox != null)	
+		if(dialogBox != null)
 			dialogBox.Close();
 
-		if(scenarioDialog != null)	
+		if(scenarioDialog != null)
 			scenarioDialog.Close();
 
 	}
@@ -131,7 +131,7 @@ public class DialogManager : MonoBehaviour {
 
 		if (strHeader != "") dialogBox.Header = strHeader;
 		dialogBox.AddButtons(btnChoices, !worldSpace);
-		
+
 		// Setup back button
 		if (worldSpace) {
 			Button backButton = dialogBox.BackButton;
@@ -142,7 +142,7 @@ public class DialogManager : MonoBehaviour {
 			} else {
 				dialogBox.BackButton.gameObject.SetActive (false);
 			}
-		} 
+		}
 	}
 
 	/// <summary>
@@ -220,7 +220,7 @@ public class DialogManager : MonoBehaviour {
 	public void OpenIntroDialog(Models.NPC currNpc, bool left) {
 
 		List<GenericButton> btnChoices = new List<GenericButton> ();
-		
+
 		if (!talkedToNpcs.Contains (currNpc)) {
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton> ();
 			btnChoice.Text = "Learn More";
@@ -231,7 +231,7 @@ public class DialogManager : MonoBehaviour {
 
 		Models.Character character = DataManager.GetDataForCharacter(currNpc.character);
 		CreateChoiceDialog (
-			character.description, 
+			character.description,
 			btnChoices,
 			character.display_name,
 			CloseAndUnfocus,
@@ -266,10 +266,10 @@ public class DialogManager : MonoBehaviour {
 		}
 
 		string strToDisplay = strDialogTxt.Replace("[[", "<color=orange>").Replace("]]", "</color>");
-		
-		/*		
+
+		/*
 		currentDialogueText = new List<string>();
-		
+
 		foreach(char c in strDialogTxt)
 			currentDialogueText.Add(c.ToString());
 
@@ -279,7 +279,7 @@ public class DialogManager : MonoBehaviour {
 		// Search for "keywords" in between [[ and ]]
 		Regex regexKeywords = new Regex(strKeywordRegex, RegexOptions.IgnoreCase);
 		MatchCollection keyMatches = regexKeywords.Matches(strDialogTxt);
-	
+
 		if(strDialogueKey == "Initial" && !returning)
 		{
 			currentDialogueChoices = new List<string>();
@@ -288,10 +288,15 @@ public class DialogManager : MonoBehaviour {
 			    if (m.Success)
 				{
 			        string strKeyword = m.Groups[3].ToString();
-			        currentDialogueChoices.Add(strKeyword);	
+			        currentDialogueChoices.Add(strKeyword);
 				}
 			}
 		}
+
+		Dictionary<string, Dictionary<string, string>> unlockableDiag = currNpc.dialogue.Where(kvp => kvp.Key.IndexOf("unlockable_dialogue_") == 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+		// foreach(Dictionary<string, string> unlockable in unlockableDiag)
+	  //       currentDialogueChoices.Add(unlockable["display_name"]);
 
 		List<GenericButton> btnList = new List<GenericButton>();
 
