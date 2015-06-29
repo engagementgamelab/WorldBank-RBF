@@ -2,9 +2,11 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using JsonFx.Json;
+using Parse;
  
 // TODO: This needs lots of cleanup
 public class PlayerManager : MonoBehaviour {
@@ -59,7 +61,19 @@ public class PlayerManager : MonoBehaviour {
         authFields.Add("email", email);
         authFields.Add("password", pass);
 
-        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/auth/", authFields, AuthCallback);
+        /*ParseUser.LogInAsync(user.username, pass).ContinueWith(t =>
+        {
+            if (t.IsFaulted || t.IsCanceled)
+            {
+                // The login failed. Check the error to see why.
+            }
+            else
+            {
+                // Login was successful.
+            }
+        });*/
+
+        NetworkManager.Instance.PostURL("/user/auth/", authFields, AuthCallback);
         
     }
 
@@ -78,7 +92,16 @@ public class PlayerManager : MonoBehaviour {
         registerFields.Add("location", location);
         registerFields.Add("password", pass);
 
-        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/create/", registerFields, AuthCallback);
+        var user = new ParseUser()
+        {
+            Username = username,
+            Password = pass,
+            Email = email
+        };
+
+        Task signUpTask = user.SignUpAsync();
+
+        NetworkManager.Instance.PostURL("/user/create/", registerFields, AuthCallback);
         
     }
 
@@ -104,6 +127,8 @@ public class PlayerManager : MonoBehaviour {
 
         Events.instance.Raise(new PlayerLoginEvent(true));
 
+        TrackEvent("User Login", "API");
+        
         return;
         
     }
@@ -114,7 +139,20 @@ public class PlayerManager : MonoBehaviour {
         saveFields.Add("user_id", _playerId);
 
         // Save user info
-        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/save/", saveFields, response, true);
+        NetworkManager.Instance.PostURL("/user/save/", saveFields, response, true);
+    }
+
+    public void TrackEvent(string strEventName, string strEventCategory) {
+
+        Dictionary<string, string> parseFields = new Dictionary<string, string>() {{ "user", _playerId }};
+        Dictionary<string, object> postFields = new Dictionary<string, object>() {{ "eventName", strEventName }, { "eventCategory", strEventCategory }, { "userId", _playerId }};
+
+        // Send to Parse SDK
+        ParseAnalytics.TrackEventAsync(strEventName, parseFields);
+
+        // Send analytic event
+        NetworkManager.Instance.PostURL("/analytics/event/", postFields, null, true);
+
     }
 
 }

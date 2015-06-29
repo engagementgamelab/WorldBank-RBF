@@ -40,11 +40,11 @@ public class ScenarioManager : MonoBehaviour {
 	void Start () {
 
 		#if UNITY_EDITOR
-	        NetworkManager.Instance.GetURL(DataManager.RemoteURL + "/plan/all/", PlansRetrieved);
+	        NetworkManager.Instance.GetURL("/plan/all/", PlansRetrieved);
 		#else
 		    // Get plans
 			if(PlayerManager.Instance.Authenticated)
-		        NetworkManager.Instance.GetURL(DataManager.RemoteURL + "/plan/all/", PlansRetrieved);
+		        NetworkManager.Instance.GetURL("/plan/all/", PlansRetrieved);
 		#endif
 
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
@@ -228,7 +228,9 @@ public class ScenarioManager : MonoBehaviour {
         saveFields.Add("plan_id", planId);
 
         // Save user info
-        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/scenario/", saveFields, AssignScenario);
+        NetworkManager.Instance.PostURL("/user/scenario/", saveFields, AssignScenario);
+
+		PlayerManager.Instance.TrackEvent("Plan ID " + planId + " Selected", "Phase Two");
 
     }
 
@@ -254,6 +256,8 @@ public class ScenarioManager : MonoBehaviour {
     	scenarioLabel.gameObject.SetActive(true);
 
     	OpenDialog();
+
+		PlayerManager.Instance.TrackEvent("Scenario Assigned", "Phase Two");
 
     }
 

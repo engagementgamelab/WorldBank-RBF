@@ -28,6 +28,8 @@ public class Models {
         public string serverRoot { get; set; }
         public string serverLocalRoot { get; set; }
         public string authKey { get; set; }
+        public string parseAppId { get; set; }
+        public string parseKey { get; set; }
 
     }
 

@@ -215,5 +215,7 @@ public class NotebookManager : MB {
 		feedbackPanel.gameObject.SetActive(true);
 		OpenData();
 
+		PlayerManager.Instance.TrackEvent("Plan Saved", "Phase One");
+
 	}
 }
