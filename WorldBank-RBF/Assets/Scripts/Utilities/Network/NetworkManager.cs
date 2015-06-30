@@ -18,8 +18,8 @@ using System.IO;
 using System.Text;
 using JsonFx.Json;
  
-// TODO: This needs lots of cleanup
 public class NetworkManager : MonoBehaviour {
+
     protected NetworkManager() {}
     private static NetworkManager _instance = null;
         
@@ -38,18 +38,34 @@ public class NetworkManager : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Calls a URL endpoint and gives an optional response handler.
+    /// </summary>
+    /// <param name="url">The URL to get.</param>
+    /// <param name="responseHandler">An Action that handles the response (optional).</param>
     public void GetURL(string url, Action<string> responseHandler=null) {
-        
+
+        string absoluteURL = DataManager.RemoteURL + url;
         
         if(responseHandler == null)
-            StartCoroutine(WaitForRequest(url));
+            StartCoroutine(WaitForRequest(absoluteURL));
         else
-            StartCoroutine(WaitForRequest(url, responseHandler));
+            StartCoroutine(WaitForRequest(absoluteURL, responseHandler));
 
     }
 
-    public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> response=null, bool rawPost=false) {
 
+    /// <summary>
+    /// Post to a a URL endpoint with required field(s) and gives an optional response handler.
+    /// </summary>
+    /// <param name="url">The URL to post to.</param>
+    /// <param name="responseHandler">An Action that handles the response (optional).</param>
+    /// <param name="rawPost">The form should be sent as a byte array (default is false).</param>
+    public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> responseHandler=null, bool rawPost=false) {
+
+        string absoluteURL = DataManager.RemoteURL + url;
+
+        // Send form as raw byte array?
         if(rawPost) {
 
             System.Text.StringBuilder output = new System.Text.StringBuilder();
@@ -57,16 +73,16 @@ public class NetworkManager : MonoBehaviour {
             JsonWriter writer = new JsonWriter (output);
             
             writer.Write(fields);
-
-            Debug.Log(output.ToString());
          
-            StartCoroutine(WaitForForm(url, Encoding.UTF8.GetBytes(output.ToString()), response));
+            // Encode output as UTF8 bytes
+            StartCoroutine(WaitForForm(absoluteURL, Encoding.UTF8.GetBytes(output.ToString()), responseHandler));
 
         }
         else {
 
             WWWForm form = new WWWForm();
             
+            // Create WWWForm
             foreach(KeyValuePair<string, object> field in fields)
             {
                 string formFieldVal = null;
@@ -81,13 +97,15 @@ public class NetworkManager : MonoBehaviour {
                 }
             }
 
-            StartCoroutine(WaitForForm(url, null, response, form));
+            StartCoroutine(WaitForForm(absoluteURL, null, responseHandler, form));
 
         }
     }
 
-
-
+    /// <summary>
+    /// Download data from specified URL.
+    /// </summary>
+    /// <param name="url">The URL to download from.</param>
     public string DownloadDataFromURL(string url) {
 
         WebClient client = new WebClient();
@@ -115,11 +133,13 @@ public class NetworkManager : MonoBehaviour {
         WWW www = new WWW(url);
 
         yield return www;
-        // check for errors
+
+        // Check for errors
         if (www.error == null) 
         {
             if(responseAction != null)
             {
+                // Respond w/ error text
                 responseAction(www.text);
                 yield return null;
             }
@@ -136,20 +156,27 @@ public class NetworkManager : MonoBehaviour {
 
     IEnumerator WaitForForm(string url, byte[] formData=null, Action<Dictionary<string, object>> responseAction=null, WWWForm form=null)
      {
-        WWW www; 
+        WWW www;
 
+        // Specified raw form as JSON
         Dictionary<string, string> postHeader = new Dictionary<string, string>();
         postHeader.Add("Content-Type", "application/json");
 
+        // This is a raw UTF8 form
         if(form == null && formData != null)
            www = new WWW(url, formData, postHeader);
+
+        // This is a WWWForm
         else if(form != null)
            www = new WWW(url, form);
+        
+        // Bail out!
         else
             throw new Exception("WaitForForm: both form and form byte data not specified.");
         
         yield return www;
 
+        // Deserialize the response and handle it below
         Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
 
         // check for errors

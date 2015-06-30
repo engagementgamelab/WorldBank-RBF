@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 #if UNITY_EDITOR
@@ -8,10 +8,9 @@ public class AnimatedQuadTexture : MB {
 
 	public Material _Material {
 		get { return _MeshRenderer.sharedMaterial; }
-		set { 
-			_MeshRenderer.sharedMaterial = value; 
-			int sortingLayer = 10000 - (int)(Position.z * 100);
-			value.renderQueue = sortingLayer;
+		set {
+			_MeshRenderer.sharedMaterial = value;
+			UpdateSortingLayer ();
 		}
 	}
 
@@ -28,20 +27,20 @@ public class AnimatedQuadTexture : MB {
 	[ExposeInWindow] public Texture2D texture = null;
 	Texture2D cachedTexture = null;
 	public Texture2D _Texture {
-		get { 
+		get {
 			if (cachedTexture == null) {
 				cachedTexture = (Texture2D)_Material.mainTexture;
 			}
-			return cachedTexture; 
+			return cachedTexture;
 		}
-		set { 
+		set {
 			if (cachedTexture == value) return;
 			cachedTexture = value;
 			if (cachedTexture != null) {
 				_Material = MaterialsManager.CreateMaterialFromTexture (cachedTexture, cachedTexture.format.HasAlpha ());
 				gameObject.SetActive (!MaterialsManager.TextureIsBlank (_Texture));
 			} else {
-				_Material = MaterialsManager.Blank;
+				_Material = null;
 			}
 		}
 	}
@@ -63,9 +62,9 @@ public class AnimatedQuadTexture : MB {
 		animating = false;
 	}
 
-	public void SetScale () {
+public void SetScale () {
 		xScale = 1f / (float)frameCount;
-		if (_Material != null) _Material.mainTextureScale = new Vector2 (xScale, 1f);		
+		if (_Material != null) _Material.mainTextureScale = new Vector2 (xScale, 1f);
 	}
 
 	public void SetOffset () {
@@ -79,6 +78,7 @@ public class AnimatedQuadTexture : MB {
 
 	public virtual void Refresh () {
 		if (texture != null) _Texture = texture;
+		UpdateSortingLayer ();
 	}
 
 	public void StartAnimating () {
@@ -103,10 +103,10 @@ public class AnimatedQuadTexture : MB {
 	}
 
 	IEnumerator CoPause () {
-		
+
 		float time = pauseTime;
 		float eTime = 0f;
-	
+
 		while (eTime < time) {
 			eTime += Time.deltaTime;
 			yield return null;
@@ -116,7 +116,7 @@ public class AnimatedQuadTexture : MB {
 	}
 
 	IEnumerator CoAnimate () {
-		
+
 		float position = 0f;
 
 		while (animating) {
@@ -138,13 +138,29 @@ public class AnimatedQuadTexture : MB {
 			frame = 0;
 		}
 		SetOffset ();
-		
+
 		// Returns true if first frame was reached
 		return frame == 0;
 	}
 
 	void UpdatePauseTime () {
 		pauseTime = Random.Range (intervalMin, intervalMax);
+	}
+
+	protected void UpdateSortingLayer () {
+		int sortingLayer = 10000 - (int)(Position.z * 100);
+		if (_Material != null) {
+			_Material.renderQueue = sortingLayer;
+		} else {
+			StartCoroutine (SetSortingLayerOnLoad ());
+		}
+	}
+
+	IEnumerator SetSortingLayerOnLoad () {
+		while (_Material == null) {
+			yield return null;
+		}
+		UpdateSortingLayer ();
 	}
 
 	#if PREVIEW_ANIMATIONS && UNITY_EDITOR

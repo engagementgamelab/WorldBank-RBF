@@ -262,4 +262,25 @@ public class DataManager {
         return gameData.characters[characterIndex];
 
     }
+
+    /// <summary>
+    /// Get an affect given its symbol
+    /// </summary>
+    /// <param name="strSymbol">Symbol of the affect</param>
+    /// <returns>The Dictionary for the affect<returns>
+    public static Dictionary<string, int> GetIndicatorBySymbol(string strSymbol)    {
+        
+        try { 
+
+            return gameData.indicator_affects[strSymbol];
+
+        } 
+        catch(Exception e) {
+
+            throw new Exception("Unable to find Affect with symbol '" + strSymbol + "'! Uh oh.");
+     
+
+        }
+
+    }
 }

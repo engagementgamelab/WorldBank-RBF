@@ -72,6 +72,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		image.Transform.Reset ();
 		image.XOffset = images.Count-1;
 		image.gameObject.layer = gameObject.layer;
+		image.Refresh ();
 	}
 
 	public void AddNpc (ParallaxNpc npc) {

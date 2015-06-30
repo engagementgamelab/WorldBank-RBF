@@ -1,4 +1,4 @@
-﻿#define TEST_STANDALONE_LOAD
+﻿#undef TEST_STANDALONE_LOAD
 using UnityEngine;
 // Run only if inside editor
 #if UNITY_EDITOR
@@ -22,20 +22,6 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 	public int Index {
 		get { return index; }
 		set { index = value; }
-	}
-
-	float sortingLayer = 10000;
-	public float SortingLayer {
-		get { return sortingLayer; }
-		set {
-
-			sortingLayer = 10000 - value * 100;
-			
-			// Prevents z fighting
-			if (_Material != null) {
-				_Material.renderQueue = (int)sortingLayer;
-			} 
-		}
 	}
 
 	protected virtual bool Forward {
@@ -74,7 +60,6 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 	}
 
 	public void Init () {
-		_Texture = null;
 		Reset ();
 	}
 
@@ -88,6 +73,6 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		if (Parent != null) gameObject.layer = Parent.gameObject.layer;
 		if (Forward) Transform.SetLocalPositionZ (-0.01f);
 		Transform.SetLocalPositionX (XOffset);
-		SortingLayer = Position.z;
+		UpdateSortingLayer ();
 	}
 }

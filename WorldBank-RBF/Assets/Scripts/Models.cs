@@ -28,6 +28,8 @@ public class Models {
         public string serverRoot { get; set; }
         public string serverLocalRoot { get; set; }
         public string authKey { get; set; }
+        public string parseAppId { get; set; }
+        public string parseKey { get; set; }
 
     }
 
@@ -38,6 +40,7 @@ public class Models {
 
         public Character[] characters { get; set; }
         public City[] cities { get; set; }
+        public Dictionary<string, Dictionary<string, int>> indicator_affects { get; set; }
         public Route[] routes { get; set; }
         public Unlockable[] unlockables { get; set; }
         public Dictionary<string, NPC[]> phase_one { get; set; }
@@ -50,10 +53,11 @@ public class Models {
 
         // public Character[] characters { get; set; }
         // public City[] cities { get; set; }
+        public Dictionary<string, Dictionary<string, int>> indicator_affects { get; set; }
         // public Route[] routes { get; set; }
         // public Unlockable[] unlockables { get; set; }
         public Dictionary<string, NPC[]> phase_one { get; set; }
-        public PhaseTwo phase_two { get; set; }
+        // public PhaseTwo phase_two { get; set; }
 
     }
 
@@ -154,11 +158,20 @@ public class Models {
         public string symbol { get; set; }
         public string name { get; set; }
         public string tactic_name { get; set; }
+        
         public string initiating_dialogue { get; set; }
-        public string investigate { get; set; }
-        public int[] cooldown { get; set; }
+        public string investigate_dialogue { get; set; }
+        public string investigate_further_dialogue { get; set; }
+
+        public int[] investigate_cooldown { get; set; }
+        public int[] investigate_further_cooldown { get; set; }
+        
         public Dictionary<string, string> new_options { get; set; }
-        public Dictionary<string, string> feedback { get; set; }
+        public Dictionary<string, string> new_options_affects { get; set; }
+        public Dictionary<string, string> further_options { get; set; }
+        public Dictionary<string, string> further_options_affects { get; set; }
+        
+        public Dictionary<string, string> feedback_dialogue { get; set; }
 
     }
 

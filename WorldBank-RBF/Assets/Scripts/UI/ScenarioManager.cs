@@ -19,16 +19,14 @@ public class ScenarioManager : MonoBehaviour {
 
 	public Text scenarioLabel;
 	public Text cardLabel;
-	public RectTransform endPanel;
 
-	public static List<string> currentAdvisorOptions;
-	public static List<string> currentCardOptions;
+	public RectTransform yearEndPanel;
+	public RectTransform scenarioEndPanel;
 
 	private static int currentCardIndex;
 
 	private static TimerUtils.Cooldown tacticCardCooldown;
 	
-	public static List<string> tacticCardOptions  = new List<string> { "Investigate", "Observe" };
 	private static int[] tacticCardIntervals = new int[3] {3, 3, 3};
 	private List<string> tacticsAvailable;
 
@@ -41,9 +39,13 @@ public class ScenarioManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        // Get plans
-		if(PlayerManager.Instance.Authenticated)
-	        NetworkManager.Instance.GetURL(DataManager.RemoteURL + "/plan/all/", PlansRetrieved);
+		#if UNITY_EDITOR
+	        NetworkManager.Instance.GetURL("/plan/all/", PlansRetrieved);
+		#else
+		    // Get plans
+			if(PlayerManager.Instance.Authenticated)
+		        NetworkManager.Instance.GetURL("/plan/all/", PlansRetrieved);
+		#endif
 
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
 
@@ -87,18 +89,41 @@ public class ScenarioManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// Increment card index and open next scenario card, or end the scenario.
+    /// Increment card index and open next scenario card, show year break, or end the scenario.
     /// </summary>
-	public void GetNextCard() {
+    /// <param name="newYear">Load new year (skip year break check). Default is false.</param>
+	public void GetNextCard(bool newYear=false) {
+
+		int nextCard = currentCardIndex+1;
+
+		if(!newYear && (nextCard > 0 && nextCard <= 8) && (nextCard % 4 == 0)) {
+			
+			// Pause tactic card cooldown
+			tacticCardCooldown.Pause();
+
+			ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
+			yearEndPanel.gameObject.SetActive(true);
+
+			return;
+		}
 
 		if(DataManager.ScenarioLength()-1 > currentCardIndex) {
+			
+			yearEndPanel.gameObject.SetActive(false);
+
+			// Load next card
 			currentCardIndex++;
 			OpenDialog();
+
 		}
 		else {
-			ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
 
-			endPanel.gameObject.SetActive(true);
+			Debug.Log("length: " + (DataManager.ScenarioLength()-1));
+			
+			// Show end of scenario
+			ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
+			scenarioEndPanel.gameObject.SetActive(true);
+
 		}
 
 	}
@@ -121,10 +146,6 @@ public class ScenarioManager : MonoBehaviour {
 
 			// Generate scenario card for the current card index
 			Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex);
-
-			// Generate advisor options
-			currentAdvisorOptions = card.characters.Select(x => x.Key).ToList();
-			currentCardOptions = new List<string>(card.starting_options);
 
 			// Create the card dialog
 		 	currentScenarioCard = DialogManager.instance.CreateScenarioDialog(card);
@@ -149,17 +170,12 @@ public class ScenarioManager : MonoBehaviour {
 
 		if(tacticState == "open")
 		{
+			Models.TacticCard card = null;		
 			int tacticIndex = new System.Random().Next(0, tacticsAvailable.Count);
 
 			try {
 		
-				Models.TacticCard card = DataManager.GetTacticCardByName(tacticsAvailable[tacticIndex]);
-				currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
-
-				tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
-
-				if(tacticsAvailable.Count == 0)
-					tacticCardCooldown.Stop();
+				card = DataManager.GetTacticCardByName(tacticsAvailable[tacticIndex]);
 		
 			}
 			catch(System.Exception e) {
@@ -168,7 +184,16 @@ public class ScenarioManager : MonoBehaviour {
 				
 				Debug.LogWarning("Unable to locate a tactic card for '" + tacticsAvailable[tacticIndex] + "'. Timer restarting.", this);
 
+				return;
+
 			}
+
+			currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
+
+			tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
+
+			if(tacticsAvailable.Count == 0)
+				tacticCardCooldown.Stop();
 		}
 		else 
 		{
@@ -203,7 +228,9 @@ public class ScenarioManager : MonoBehaviour {
         saveFields.Add("plan_id", planId);
 
         // Save user info
-        NetworkManager.Instance.PostURL(DataManager.RemoteURL + "/user/scenario/", saveFields, AssignScenario);
+        NetworkManager.Instance.PostURL("/user/scenario/", saveFields, AssignScenario);
+
+		PlayerManager.Instance.TrackEvent("Plan ID " + planId + " Selected", "Phase Two");
 
     }
 
@@ -229,6 +256,8 @@ public class ScenarioManager : MonoBehaviour {
     	scenarioLabel.gameObject.SetActive(true);
 
     	OpenDialog();
+
+		PlayerManager.Instance.TrackEvent("Scenario Assigned", "Phase Two");
 
     }
 

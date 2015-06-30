@@ -44,9 +44,9 @@ public class NotebookManager : MB {
 
 	CameraPositioner cameraPositioner = null;
 	CameraPositioner CameraPositioner {
-		get { 
+		get {
 			if (cameraPositioner == null) {
-				cameraPositioner = MainCamera.Instance.Positioner; 
+				cameraPositioner = MainCamera.Instance.Positioner;
 			}
 			return cameraPositioner;
 		}
@@ -55,9 +55,10 @@ public class NotebookManager : MB {
 	bool CanCloseNotebook {
 		get {
 			return (
-				open
+				(open
 				&& citiesManager.CurrentCitySymbol != "capitol"
-				&& state != State.MakingPlan
+				&& state != State.MakingPlan)
+				|| !isPhaseOne
 			);
 		}
 	}
@@ -72,12 +73,18 @@ public class NotebookManager : MB {
 		get { return state == State.MakingPlan; }
 	}
 
-	public bool openAtStart = true;
 	bool open = true;
+	public bool IsOpen {
+		get { return open; }
+	}
+
+	public bool openAtStart = true;
+	public bool isPhaseOne = true;
+
 	string activeCanvas = "map";
 
 	void Start () {
-		// Need to find a better way to approach this, but for now 
+		// Need to find a better way to approach this, but for now
 		if (openAtStart) {
 			open = false;
 			Open ();
@@ -102,7 +109,7 @@ public class NotebookManager : MB {
 	public void ToggleNotebook () {
 		if (open) {
 			Close ();
-		} else if (NPCFocusBehavior.Instance.FocusLevel == FocusLevel.Default) {
+		} else if (NPCFocusBehavior.Instance.Unfocused) {
 			Open ();
 		}
 	}
@@ -124,10 +131,21 @@ public class NotebookManager : MB {
 			canvas.Value.Close ();
 			canvas.Value.gameObject.SetActive (false);
 		}
-		tabGroup.SetActive (false);
+	
+		// Hide tabs only in phase one; are always visible in two
+		if(isPhaseOne)
+			tabGroup.SetActive (false);
+	
 		notebookCollider.SetActive (false);
 		CameraPositioner.Drag.Enabled = true;
 		open = false;
+	}
+
+	// Tell data canvas to update indicators
+	public void UpdateIndicators(int intBirths, int intVaccinations, int intQOC) {
+
+		data.UpdateIndicators(intBirths, intVaccinations, intQOC);
+		
 	}
 
 	public void NamePlan() {
@@ -145,7 +163,7 @@ public class NotebookManager : MB {
 
         plan.name = planNameInput.text;
         plan.tactics = PlayerData.PlanTacticGroup.GetUniqueTacticSymbols ();
-        
+
         formFields.Add("plan", plan);
 
 		PlayerManager.Instance.SaveData (formFields, SubmitPlanCallback);
@@ -171,6 +189,9 @@ public class NotebookManager : MB {
 	}
 
 	void UpdateState () {
+		if(dayCounter == null)
+			return;
+
 		if (!dayCounter.HasDays && !InteractionsManager.Instance.HasInteractions) {
 			state = State.MakingPlan;
 		}
@@ -193,6 +214,8 @@ public class NotebookManager : MB {
 	 	// Show feedback in data panel (allows player to continue)
 		feedbackPanel.gameObject.SetActive(true);
 		OpenData();
+
+		PlayerManager.Instance.TrackEvent("Plan Saved", "Phase One");
 
 	}
 }

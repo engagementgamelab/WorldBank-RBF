@@ -12,6 +12,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Parse;
 
 public class SceneManager : MonoBehaviour {
 
@@ -41,6 +42,13 @@ public class SceneManager : MonoBehaviour {
 
 		// We need our game config data before calling any remote endpoints
 		LoadGameConfig();
+
+		// Initialize the Parse SDK (this is a configurable game object)
+		// ParseInitializeBehaviour parseInit = gameObject.AddComponent<ParseInitializeBehaviour>();
+		// parseInit.applicationID = ;
+		// parseInit.dotnetKey = ;
+
+		ParseClient.Initialize(DataManager.config.parseAppId, DataManager.config.parseKey);
 	
 		// Set global game data if needed
 		SetGameData();
@@ -59,6 +67,7 @@ public class SceneManager : MonoBehaviour {
 			#endif
 			
 		}
+
 	}
 	
 	public void UserAuthenticated(bool success) {

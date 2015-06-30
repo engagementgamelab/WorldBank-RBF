@@ -40,6 +40,10 @@ public class NPCFocusBehavior : MonoBehaviour {
 		}
 	}
 
+	public bool Unfocused {
+		get { return FocusLevel == FocusLevel.Default && !focusing; }
+	}
+
 	MainCamera mainCamera = null;
 	MainCamera MainCamera {
 		get {
@@ -71,7 +75,10 @@ public class NPCFocusBehavior : MonoBehaviour {
 	}
 
 	public void PreviewFocus (ParallaxNpc npc) {
-		if (focusing || !InteractionsManager.Instance.HasInteractions || FocusLevel != FocusLevel.Default) return;
+		if (NotebookManager.Instance.IsOpen 
+			|| focusing 
+			|| !InteractionsManager.Instance.HasInteractions 
+			|| FocusLevel != FocusLevel.Default) return;
 		if (!CameraPositioner.Drag.Dragging) {
 			this.npc = npc;
 			Focus ();

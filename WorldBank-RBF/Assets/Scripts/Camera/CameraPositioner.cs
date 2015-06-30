@@ -24,7 +24,7 @@ public class CameraPositioner : MB {
 			set { positioner.XPosition = value; }
 		}
 
-		float speed = 0.6f;
+		float speed = 1.33f;
 		public float Speed {
 			get { return speed; }
 			set { speed = value; }
@@ -136,6 +136,7 @@ public class CameraPositioner : MB {
 
 	void Update () {
 		Drag.OnDrag ();
+		XPosition = Position.x + Input.GetAxis ("Horizontal") * Time.deltaTime * 10f;
 	}
 
 	void OnDragDownEvent (DragDownEvent e) {
