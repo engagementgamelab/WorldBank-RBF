@@ -13,6 +13,11 @@ public class PrioritizationChart : MonoBehaviour {
 	void Awake () {
 		// Listen for TacticSlotEvent
 		Events.instance.AddListener<TacticSlotEvent>(OnTacticEvent);
+
+		// TODO: FOR TESTING BUILD ONLY; since capital city is not ready, add these to inventory by default
+		PlayerData.UnlockImplementation ("unlockable_vouchers_for_services");
+		PlayerData.UnlockImplementation ("unlockable_information_campaign_to_explain_changes_to_system");
+		PlayerData.UnlockImplementation ("unlockable_incentivise_providers_to_deliver_services");
 	}
 
 	void OnEnable () {

@@ -42,13 +42,6 @@ public class SceneManager : MonoBehaviour {
 
 		// We need our game config data before calling any remote endpoints
 		LoadGameConfig();
-
-		// Initialize the Parse SDK (this is a configurable game object)
-		// ParseInitializeBehaviour parseInit = gameObject.AddComponent<ParseInitializeBehaviour>();
-		// parseInit.applicationID = ;
-		// parseInit.dotnetKey = ;
-
-		ParseClient.Initialize(DataManager.config.parseAppId, DataManager.config.parseKey);
 	
 		// Set global game data if needed
 		SetGameData();
