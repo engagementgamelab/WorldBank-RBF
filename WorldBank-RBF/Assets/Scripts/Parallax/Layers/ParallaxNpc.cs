@@ -1,4 +1,4 @@
-﻿#undef TEST_STANDALONE_LOAD
+﻿#define TEST_STANDALONE_LOAD
 using UnityEngine;
 // Run only if inside editor
 #if UNITY_EDITOR

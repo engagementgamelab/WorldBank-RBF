@@ -1,4 +1,4 @@
-﻿#undef TEST_STANDALONE_LOAD
+﻿#define TEST_STANDALONE_LOAD
 using UnityEngine;
 // Run only if inside editor
 #if UNITY_EDITOR
@@ -28,6 +28,7 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		get { return false; }
 	}
 
+	// TODO: lots of cleanup!!
 	#if UNITY_EDITOR && !TEST_STANDALONE_LOAD
 	public string TexturePath {
 		get { return AssetDatabase.GetAssetPath (_Texture); }
@@ -39,7 +40,14 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 	#else
 	string texturePath = "";
 	public string TexturePath {
-		get { return texturePath; }
+		get { 
+			#if UNITY_EDITOR
+			if (texturePath == "") {
+				texturePath = AssetDatabase.GetAssetPath (_Texture);
+			}
+			#endif
+			return texturePath; 
+		}
 		set {
 			texturePath = value;
 			_Material = MaterialsManager.GetMaterialAtPath (texturePath);

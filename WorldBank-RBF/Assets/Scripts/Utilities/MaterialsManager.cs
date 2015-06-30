@@ -35,7 +35,7 @@ public class MaterialsManager {
 		#if UNITY_EDITOR
 		string path = AssetDatabase.GetAssetPath (texture).Replace ("/Textures/", "/Resources/Materials/").Replace (texture.name + ".png", "");
 		string fileName = texture.name + ".mat";
-		if (!CreateDirectory (path, fileName)) {
+		if (fileName != ".mat" && !CreateDirectory (path, fileName)) {
 			AssetDatabase.CreateAsset (m, path + fileName);
 		}
 		#endif

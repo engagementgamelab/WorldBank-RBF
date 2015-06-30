@@ -60,7 +60,6 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		Transform.SetPositionX (-LocalScale.x / 2);
 	}
 
-	#if UNITY_EDITOR
 	public void ClearImages () {
 		EditorObjectPool.Destroy (images);
 		images.Clear ();
@@ -99,5 +98,4 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		EditorObjectPool.Destroy<ParallaxZoomTrigger> (zoomTrigger.Transform);
 		zoomTriggers.Remove (zoomTrigger);
 	}
-	#endif
 }

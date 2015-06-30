@@ -22,9 +22,9 @@ public class ModelSerializer {
             CreateModelFromObject (obj), FilePath (obj, path));
     }
 
-    public static void Load (object obj, string path) {
+    public static void Load (object obj, string path, bool useResources=true) {
     	ApplyModelPropertiesToObject (
-            obj, ReadJsonData (obj, FilePath (obj, path)));
+            obj, ReadJsonData (obj, FilePath (obj, path), useResources));
     }
 
     static string FilePath (object obj, string path) {
@@ -290,9 +290,20 @@ public class ModelSerializer {
         streamWriter.Close ();
     }
 
-    static public object ReadJsonData (object obj, string path) {
-        TextAsset dataJson = (TextAsset)Resources.Load(path, typeof(TextAsset));
-        StringReader data = new StringReader(dataJson.text);
-        return JsonReader.Deserialize<object> (data.ReadToEnd ());
+    static public object ReadJsonData (object obj, string path, bool useResources) {
+        if (useResources) {
+            TextAsset dataJson = (TextAsset)Resources.Load(path, typeof(TextAsset));
+            try {
+                StringReader data = new StringReader(dataJson.text);
+                return JsonReader.Deserialize<object> (data.ReadToEnd ());
+            } catch (System.Exception e) {
+                throw new System.Exception ("Could not find a json file at '" + path + "' " + e);
+            }
+        } else {
+            StreamReader streamReader = new StreamReader (path);
+            string data = streamReader.ReadToEnd ();
+            streamReader.Close ();
+            return JsonReader.Deserialize<object> (data);
+        }
     }
 }
