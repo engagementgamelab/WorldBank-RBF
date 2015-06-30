@@ -37,10 +37,12 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		}
 	}
 	#else
+	string texturePath = "";
 	public string TexturePath {
-		get { return ""; }
+		get { return texturePath; }
 		set {
-			_Material = MaterialsManager.GetMaterialAtPath (value);
+			texturePath = value;
+			_Material = MaterialsManager.GetMaterialAtPath (texturePath);
 		}
 	}
 	#endif
