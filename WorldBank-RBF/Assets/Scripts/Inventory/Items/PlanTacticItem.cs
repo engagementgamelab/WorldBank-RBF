@@ -13,6 +13,10 @@ public class PlanTacticItem : InventoryItem {
 		get { return model.symbol; }
 	}
 
+	public string Description {
+		get { return model.description[0]; }
+	}
+
 	int priority = -1;
 	public int Priority {
 		get { return priority; }

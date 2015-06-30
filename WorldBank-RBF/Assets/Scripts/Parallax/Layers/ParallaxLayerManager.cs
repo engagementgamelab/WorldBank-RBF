@@ -81,7 +81,7 @@ public class ParallaxLayerManager : MonoBehaviour {
     }
 
     public void LoadFromSymbol (string symbol) {
-    	Load ("Config/PhaseOne/Cities" + symbol);
+    	Load ("Config/PhaseOne/Cities/" + symbol);
     }
 
     void Clear () {

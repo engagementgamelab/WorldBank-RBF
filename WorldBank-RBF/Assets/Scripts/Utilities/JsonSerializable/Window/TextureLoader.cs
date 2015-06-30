@@ -66,9 +66,7 @@ public class TextureLoader {
             } else {
                 #if UNITY_EDITOR
                 string path = "Assets" + texturePath.Remove (0, Application.dataPath.Length);
-                // image._Texture = AssetDatabase.LoadAssetAtPath (path, typeof (Texture2D)) as Texture2D;
                 image.TexturePath = path;
-                Debug.Log (path);
                 #endif
             }
             layer.AddImage (image);

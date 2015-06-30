@@ -98,7 +98,6 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 
  	public override void Refresh () {
  		base.Refresh ();
- 		// _Texture2 = texture2;
  		if (parallaxImage2 != null) parallaxImage2.Refresh ();
  	}
 

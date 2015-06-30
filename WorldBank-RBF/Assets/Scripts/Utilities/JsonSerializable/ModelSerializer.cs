@@ -297,7 +297,7 @@ public class ModelSerializer {
                 StringReader data = new StringReader(dataJson.text);
                 return JsonReader.Deserialize<object> (data.ReadToEnd ());
             } catch (System.Exception e) {
-                throw new System.Exception ("Could not find a json file at '" + path + "' " + e);
+                throw new System.Exception ("Could not find '" + path + ".json' " + e);
             }
         } else {
             StreamReader streamReader = new StreamReader (path);
