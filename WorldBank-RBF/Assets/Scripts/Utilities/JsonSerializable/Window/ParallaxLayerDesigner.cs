@@ -89,7 +89,7 @@ public class ParallaxLayerDesigner : ScriptableObject {
         showLayerSettings = EditorGUILayout.Foldout (showLayerSettings, "Layer Settings");
         if (showLayerSettings) {
             if (GUILayout.Button ("Load layer textures from directory", Options)) {
-                textureLoader.LoadTexturesDirectory (objectDrawer.Target);
+                // textureLoader.LoadTexturesDirectory (objectDrawer.Target);
             }
             objectDrawer.DrawObjectProperties (Options);
         }

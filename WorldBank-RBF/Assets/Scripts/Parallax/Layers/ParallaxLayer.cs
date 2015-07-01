@@ -60,9 +60,17 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		Transform.SetPositionX (-LocalScale.x / 2);
 	}
 
-	public void ClearImages () {
+	/*public void ClearImages () {
 		EditorObjectPool.Destroy (images);
 		images.Clear ();
+	}*/
+
+	public void CreateImages (List<string> texturePaths) {
+		for (int i = 0; i < texturePaths.Count; i ++) {
+			ParallaxImage image = EditorObjectPool.Create<ParallaxImage> ();
+			image.TexturePath = texturePaths[i];
+			AddImage (image);
+		}
 	}
 
 	public void AddImage (ParallaxImage image) {

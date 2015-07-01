@@ -25,22 +25,25 @@ public class AnimatedQuadTexture : MB {
 	}
 
 	[ExposeInWindow] public Texture2D texture = null;
-	Texture2D cachedTexture = null;
 	public Texture2D _Texture {
-		get {
-			if (cachedTexture == null) {
-				cachedTexture = (Texture2D)_Material.mainTexture;
-			}
-			return cachedTexture;
-		}
 		set {
-			if (cachedTexture == value) return;
-			cachedTexture = value;
-			if (cachedTexture != null) {
-				_Material = MaterialsManager.CreateMaterialFromTexture (cachedTexture, cachedTexture.format.HasAlpha ());
-				gameObject.SetActive (!MaterialsManager.TextureIsBlank (_Texture));
+			#if UNITY_EDITOR
+			TexturePath = MaterialsManager.GetTexturePath (value);
+			#endif
+		}
+	}
+
+	string texturePath = "";
+	public string TexturePath {
+		get { return texturePath; }
+		set {
+			texturePath = value;
+			_Material = MaterialsManager.GetMaterialAtPath (texturePath, this);
+			if (_Material == null) {
+				gameObject.SetActive (false);
 			} else {
-				_Material = null;
+				texture = (Texture2D)_Material.mainTexture;
+				gameObject.SetActive (!MaterialsManager.TextureIsBlank (texture));
 			}
 		}
 	}
@@ -58,7 +61,7 @@ public class AnimatedQuadTexture : MB {
 	protected virtual void Awake () {
 		SetScale ();
 		SetOffset ();
-		_Texture = texture;
+		if (texture != null) _Texture = texture;
 		animating = false;
 	}
 

@@ -70,6 +70,14 @@ public class ParallaxLayerManager : MonoBehaviour {
 	TextureLoader textureLoader = new TextureLoader ("", true);
 	#endif
 
+	public void Create (Dictionary<int, List<string>> texturePaths) {
+		Clear ();
+		LayerCount = texturePaths.Count;
+		foreach (var path in texturePaths) {
+			layers[path.Key].CreateImages (path.Value);
+		}
+	}
+
 	public void Load (string path, bool useResources=true) {
 		Clear ();
 		ModelSerializer.Load (this, path, useResources);
@@ -120,7 +128,7 @@ public class ParallaxLayerManager : MonoBehaviour {
 
 	#if DEBUG
 	void OnGUI () {
-		if (!designerScene) return;
+		/*if (!designerScene) return;
 		showOptions = GUILayout.Toggle (showOptions, "show options", new GUILayoutOption[0]);
 		if (!showOptions) return;
 		texPath = GUILayout.TextField (texPath, new GUILayoutOption[0]);
@@ -128,7 +136,7 @@ public class ParallaxLayerManager : MonoBehaviour {
 			if (Directory.Exists (texPath)) {
 				textureLoader.LoadCityTextures (this, texPath);
 			}
-		}
+		}*/
 	}
 	#endif
 }

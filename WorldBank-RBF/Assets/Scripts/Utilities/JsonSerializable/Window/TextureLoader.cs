@@ -18,59 +18,26 @@ public class TextureLoader {
         this.local = local;
 	}
 
-	public void LoadCityTextures (ParallaxLayerManager layerManager) {
-        #if UNITY_EDITOR
-        string loadPath = EditorUtility.OpenFolderPanel ("Load city textures", path, "");
-        if (loadPath != "") LoadCityTextures (layerManager, loadPath);
-        #endif
-    }
-
-    public void LoadCityTextures (ParallaxLayerManager layerManager, string loadPath) {
+    public Dictionary<int, List<string>> GetTextureDirectories (string loadPath="") {
         
-        List<string> folders = new List<string> (Directory.GetDirectories (loadPath));
-        folders = folders.Where (folder => folder.Contains ("layer")).ToList ();
-        folders = OrderStrings (folders);
-
-        int folderCount = folders.Count;
-        layerManager.LayerCount = folderCount;
-        for (int i = 0; i < folderCount; i ++) {
-            ParallaxLayer layer = layerManager.layers[i];
-            LoadTexturesDirectory (layer, folders[i]);
-        }
-    }
-
-    public void LoadTexturesDirectory (ParallaxLayer layer, string loadPath="") {
         #if UNITY_EDITOR
-        loadPath = (loadPath == "") 
-            ? EditorUtility.OpenFolderPanel ("Load layer textures", path, "layer1")
-            : loadPath;
+        if (loadPath == "")
+            loadPath = EditorUtility.OpenFolderPanel ("Load city textures", path, "");
         #endif
-        List<string> textures = OrderStrings (Directory.GetFiles (loadPath).ToList ());
-        List<string> texturesToLoad = new List<string> ();
-        for (int i = 0; i < textures.Count; i ++) {
-            string texture = textures[i];
-            if (texture.EndsWith (".png")) {
-                texturesToLoad.Add (texture);
-            }
-        }
-        LoadLayerTextures (layer, texturesToLoad);
-    }
 
-    void LoadLayerTextures (ParallaxLayer layer, List<string> textures) {
-        layer.ClearImages ();
-        foreach (string texturePath in textures) {
-            ParallaxImage image = EditorObjectPool.Create<ParallaxImage> ();
-            if (local) {
-                string path = "file://" + texturePath;
-                Coroutine.LoadTexture (path, image);
-            } else {
-                #if UNITY_EDITOR
-                string path = "Assets" + texturePath.Remove (0, Application.dataPath.Length);
-                image.TexturePath = path;
-                #endif
-            }
-            layer.AddImage (image);
+        if (loadPath == "") return null;
+
+        List<string> layerFolders = new List<string> (Directory.GetDirectories (loadPath));
+        layerFolders = layerFolders.Where (folder => folder.Contains ("layer")).ToList ();
+        layerFolders = OrderStrings (layerFolders);
+
+        Dictionary<int, List<string>> texturePaths = new Dictionary<int, List<string>> ();
+        for (int i = 0; i < layerFolders.Count; i ++) {
+            List<string> textures = OrderStrings (Directory.GetFiles (layerFolders[i]).ToList ()).FindAll (x => x.EndsWith (".png"));
+            texturePaths.Add (i, textures);
         }
+
+        return texturePaths;
     }
 
     List<string> OrderStrings (List<string> input) {

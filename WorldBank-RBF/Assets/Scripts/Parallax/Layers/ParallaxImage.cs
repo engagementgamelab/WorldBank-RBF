@@ -28,33 +28,6 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		get { return false; }
 	}
 
-	// TODO: lots of cleanup!!
-	#if UNITY_EDITOR && !TEST_STANDALONE_LOAD
-	public string TexturePath {
-		get { return AssetDatabase.GetAssetPath (_Texture); }
-		set { 
-			_Texture = AssetDatabase.LoadAssetAtPath (value, typeof (Texture2D)) as Texture2D;
-			texture = _Texture;
-		}
-	}
-	#else
-	string texturePath = "";
-	public string TexturePath {
-		get { 
-			#if UNITY_EDITOR
-			if (texturePath == "") {
-				texturePath = AssetDatabase.GetAssetPath (_Texture);
-			}
-			#endif
-			return texturePath; 
-		}
-		set {
-			texturePath = value;
-			_Material = MaterialsManager.GetMaterialAtPath (texturePath);
-		}
-	}
-	#endif
-
 	public float LocalPositionX {
 		get { return LocalPosition.x; }
 		set { Transform.SetLocalPositionX (value); }

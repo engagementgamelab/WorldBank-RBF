@@ -43,13 +43,13 @@ public class Coroutine : MonoBehaviour {
 		if (endAction != null) endAction ();
 	}
 
-	public static void LoadTexture (string texturePath, ParallaxImage image) {
-		Coroutine.Instance.StartCoroutine (CoLoadTexture (texturePath, image));
+	public static void LoadTexture (string texturePath, AnimatedQuadTexture quadTex) {
+		Coroutine.Instance.StartCoroutine (CoLoadTexture (texturePath, quadTex));
 	}
 
-	static IEnumerator CoLoadTexture (string texturePath, ParallaxImage image) {
+	static IEnumerator CoLoadTexture (string texturePath, AnimatedQuadTexture quadTex) {
     	WWW www = new WWW (texturePath);
     	while (!www.isDone) yield return null;
-    	image._Texture = www.texture;
+    	quadTex._Material = MaterialsManager.CreateMaterialFromTexture (www.texture);
     }
 }
