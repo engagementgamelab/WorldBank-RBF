@@ -43,6 +43,7 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 	}
 
 	public void Init () {
+		texture = null;
 		Reset ();
 	}
 

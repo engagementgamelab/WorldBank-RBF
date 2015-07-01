@@ -52,7 +52,7 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 		get { return ParallaxImage2.TexturePath; }
 		set {
 			ParallaxImage2.TexturePath = value;
-			texture2 = ParallaxImage2.texture;
+			texture2 = null;
 		}
 	}
 

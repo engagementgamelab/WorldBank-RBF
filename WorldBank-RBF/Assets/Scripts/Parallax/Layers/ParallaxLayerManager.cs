@@ -65,7 +65,7 @@ public class ParallaxLayerManager : MonoBehaviour {
 
 	#if DEBUG
 	public bool designerScene = false;
-	string texPath = "";
+	string texPath = "Command+V to paste file path";
 	bool showOptions = true;
 	TextureLoader textureLoader = new TextureLoader ("", true);
 	#endif
@@ -128,15 +128,15 @@ public class ParallaxLayerManager : MonoBehaviour {
 
 	#if DEBUG
 	void OnGUI () {
-		/*if (!designerScene) return;
+		if (!designerScene) return;
 		showOptions = GUILayout.Toggle (showOptions, "show options", new GUILayoutOption[0]);
 		if (!showOptions) return;
 		texPath = GUILayout.TextField (texPath, new GUILayoutOption[0]);
 		if (GUILayout.Button ("Load textures")) {
 			if (Directory.Exists (texPath)) {
-				textureLoader.LoadCityTextures (this, texPath);
+				Create (textureLoader.GetTextureDirectories (texPath));
 			}
-		}*/
+		}
 	}
 	#endif
 }

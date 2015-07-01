@@ -10,7 +10,7 @@ public class AnimatedQuadTexture : MB {
 		get { return _MeshRenderer.sharedMaterial; }
 		set {
 			_MeshRenderer.sharedMaterial = value;
-			UpdateSortingLayer ();
+			if (value != null) UpdateSortingLayer ();
 		}
 	}
 

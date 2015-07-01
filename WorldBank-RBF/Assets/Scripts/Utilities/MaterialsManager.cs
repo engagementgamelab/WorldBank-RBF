@@ -7,17 +7,13 @@ using System.IO;
 
 public class MaterialsManager {
 
-	public static string GetTexturePath (Texture2D texture) {
-		return AssetDatabase.GetAssetPath (texture);
-	}
-
-	public static Material GetMaterial (Texture2D texture, AnimatedQuadTexture quadTex) {
+	/*public static Material GetMaterial (Texture2D texture, AnimatedQuadTexture quadTex) {
 		#if UNITY_EDITOR
 		return GetMaterialAtPath (AssetDatabase.GetAssetPath (texture), quadTex);
 		#else
 		return CreateMaterialFromTexture (texture);
 		#endif
-	}
+	}*/
 
 	public static Material GetMaterialAtPath (string path, AnimatedQuadTexture quadTex) {
 		
@@ -45,6 +41,7 @@ public class MaterialsManager {
 		} else {
 			path = "file://" + path;
             Coroutine.LoadTexture (path, quadTex);
+            return Blank;
 		}
 
 		return null;
@@ -77,6 +74,10 @@ public class MaterialsManager {
 	}
 
 	#if UNITY_EDITOR
+	public static string GetTexturePath (Texture2D texture) {
+		return AssetDatabase.GetAssetPath (texture);
+	}
+
 	static Material CreateMaterialAndAddToDatabase (string texturePath) {
 		Texture2D texture = (Texture2D)AssetDatabase.LoadAssetAtPath (texturePath, typeof (Texture2D));
 		Material m = CreateMaterialFromTexture (texture);
@@ -113,7 +114,7 @@ public class MaterialsManager {
 	#endif
 
 	public static Material Blank {
-		get { return Resources.Load ("Materials/Blank.mat") as Material; }
+		get { return Resources.Load ("Materials/blank") as Material; }
 	}
 
 	public static bool TextureIsBlank (Texture2D tex) {
