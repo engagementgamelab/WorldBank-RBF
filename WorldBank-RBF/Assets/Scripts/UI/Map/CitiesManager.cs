@@ -130,7 +130,7 @@ public class CitiesManager : MB {
 		DataManager.SceneContext = currentCitySymbol;
 		NpcManager.InitNpcs ();
 
-		ParallaxLayerManager.Instance.Load (currentCitySymbol);
+		ParallaxLayerManager.Instance.LoadFromSymbol (currentCitySymbol);
 		
 		NotebookManager.Instance.Close ();
 	}

@@ -1,4 +1,4 @@
-﻿#undef TEST_STANDALONE_LOAD
+﻿#define TEST_STANDALONE_LOAD
 using UnityEngine;
 // Run only if inside editor
 #if UNITY_EDITOR
@@ -98,7 +98,6 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 
  	public override void Refresh () {
  		base.Refresh ();
- 		// _Texture2 = texture2;
  		if (parallaxImage2 != null) parallaxImage2.Refresh ();
  	}
 

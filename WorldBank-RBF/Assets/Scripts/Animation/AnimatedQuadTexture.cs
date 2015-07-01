@@ -62,7 +62,7 @@ public class AnimatedQuadTexture : MB {
 		animating = false;
 	}
 
-public void SetScale () {
+	public void SetScale () {
 		xScale = 1f / (float)frameCount;
 		if (_Material != null) _Material.mainTextureScale = new Vector2 (xScale, 1f);
 	}

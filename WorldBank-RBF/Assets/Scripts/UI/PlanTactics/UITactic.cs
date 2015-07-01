@@ -43,6 +43,7 @@ public class UITactic : TacticButton {
 
 	public override void OnClick () {
 		selectedTactic = this;
+		Events.instance.Raise (new SelectTacticEvent (tactic));
 	}
 
 	public void OnClickRemove () {

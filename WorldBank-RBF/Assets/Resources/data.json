@@ -1040,7 +1040,7 @@
           "Mile": {
             "text": "You ask her about Mile, and she tells you she has never been there. \"I just need to pass through on the way to visit my friend.\""
           },
-          "being late": {
+          "Being Late": {
             "text": "You learn she is attempting to head to Zima, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. \"We are very close, and since he has been frustrated with his job, I want to help him have a little fun for a few days. Apparently he has not been receiving supplies, or so he says.\"  She raises her arms in exasperation. \"This accursed train! If medical supplies don't even reach the hospital, what are my chances?\"",
             "unlocks": "unlockable_contract_private_company_to_deliver_supplies"
           }
@@ -4287,7 +4287,7 @@
     ],
     "tactics": [
       {
-        "symbol": "Poor_Voucher_Usage",
+        "symbol": "tactic_poor_voucher_usage",
         "tactic_name": "unlockable_vouchers_for_services",
         "name": "Poor Voucher Usage",
         "year": 1,
@@ -4332,13 +4332,13 @@
         }
       },
       {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_vouchers_for_services",
-        "name": "Tactic card name",
+        "symbol": "tactic_wrong_number_of_cases",
+        "tactic_name": "unlockable_wrong_number_of_cases",
+        "name": "Wrong Number of Cases",
         "year": 1,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "initiating_dialogue": "The Verifier just let me know that the number of cases reported for the voucher program appears to be incorrect.",
+        "investigate_dialogue": "I verified this with the providers, and they claim that this was an unintended mistake. We could just issue a nonpayment, or we could issue sanctions. Alternatively, I could investigate further for evidence of fraud.",
+        "investigate_further_dialogue": "My investigation did not turn up any hard evidence of fraud.",
         "investigate_cooldown": [
           5,
           5,
@@ -4350,29 +4350,24 @@
           20
         ],
         "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
+          "Warning": "Warning",
+          "Sanctions": "Sanctions"
         },
         "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
+          "Warning": "affect_wrong_number_of_cases_warning",
+          "Sanctions": "affect_wrong_number_of_cases_sanctions"
         },
         "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
+          "something_1": "Warning",
+          "something_2": "Sanctions"
         },
         "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
+          "Warning": "example_1",
+          "Sanctions": "example_2"
         },
         "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "Warning": "Warning: I'll issue the warning and let the fundholder know that payments should be withheld for the false cases.",
+          "Sanctions": "Sanctions: We'll levy sanctions, then. My analysis suggests they can afford to pay the penalty.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },

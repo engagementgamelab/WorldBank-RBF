@@ -77,7 +77,6 @@ public class NPCFocusBehavior : MonoBehaviour {
 	public void PreviewFocus (ParallaxNpc npc) {
 		if (NotebookManager.Instance.IsOpen 
 			|| focusing 
-			|| !InteractionsManager.Instance.HasInteractions 
 			|| FocusLevel != FocusLevel.Default) return;
 		if (!CameraPositioner.Drag.Dragging) {
 			this.npc = npc;
