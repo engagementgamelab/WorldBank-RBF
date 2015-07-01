@@ -114,9 +114,17 @@ public class CameraPositioner : MB {
 		}
 	}
 
+	float xMax;
+	public float XMax {
+		get { return xMax; }
+		set {
+			xMax = value;
+		}
+	} 
+
 	public float XPosition {
 		get { return Position.x; }
-		set { Transform.SetPositionX (Mathf.Max (XMin, value)); }
+		set { Transform.SetPositionX (Mathf.Clamp (value, XMin, XMax)); }
 	}
 
 	CameraDrag drag;
@@ -132,6 +140,8 @@ public class CameraPositioner : MB {
 	void Awake () {
 		Events.instance.AddListener<DragDownEvent> (OnDragDownEvent);
 		Events.instance.AddListener<DragUpEvent> (OnDragUpEvent);
+
+		XMax = 50;
 	}
 
 	void Update () {
