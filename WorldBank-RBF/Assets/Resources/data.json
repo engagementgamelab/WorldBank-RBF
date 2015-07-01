@@ -557,7 +557,7 @@
       "indicator_2": -2,
       "indicator_3": -1
     },
-    "unlockable_contract multiple printers": {
+    "unlockable_contract_multiple_printers": {
       "indicator_1": -1,
       "indicator_2": -1,
       "indicator_3": -1
@@ -727,7 +727,7 @@
       "indicator_2": 0,
       "indicator_3": -1
     },
-    "unlockable_increase_budet_for_printing_informational_collateral": {
+    "unlockable_increase_budget_for_printing_informational_collateral": {
       "indicator_1": 1,
       "indicator_2": 1,
       "indicator_3": 0
@@ -1040,7 +1040,7 @@
           "Mile": {
             "text": "You ask her about Mile, and she tells you she has never been there. \"I just need to pass through on the way to visit my friend.\""
           },
-          "Being Late": {
+          "being late": {
             "text": "You learn she is attempting to head to Zima, the southern city on the water, to visit her friend who is a doctor at the largest hospital there. \"We are very close, and since he has been frustrated with his job, I want to help him have a little fun for a few days. Apparently he has not been receiving supplies, or so he says.\"  She raises her arms in exasperation. \"This accursed train! If medical supplies don't even reach the hospital, what are my chances?\"",
             "unlocks": "unlockable_contract_private_company_to_deliver_supplies"
           }
@@ -4293,7 +4293,6 @@
         "year": 1,
         "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
         "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
         "investigate_cooldown": [
           5,
           5,
@@ -4304,36 +4303,26 @@
           15,
           20
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
+        "new_options": [
+          "unlockable_information_campaign",
+          "unlockable_add_travel_vouchers",
+          "unlockable_increase_budget_for_outreach"
+        ],
+        "new_options_affects": [
+          "unlockable_information_campaign",
+          "unlockable_add_travel_vouchers",
+          "unlockable_increase_budget_for_outreach"
+        ],
         "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "unlockable_add_travel_vouchers": "Transportation Vouchers: That's simple enough to do, and it should help people reach health facilities.",
+          "unlockable_information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
+          "unlockable_increase_budget_for_outreach": "I will make the arrangements. As long as there are enough nurses available to carry out these outreach activites, this should help.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
       {
         "symbol": "tactic_wrong_number_of_cases",
-        "tactic_name": "unlockable_wrong_number_of_cases",
+        "tactic_name": "unlockable_vouchers_for_services",
         "name": "Wrong Number of Cases",
         "year": 1,
         "initiating_dialogue": "The Verifier just let me know that the number of cases reported for the voucher program appears to be incorrect.",
@@ -4349,36 +4338,27 @@
           15,
           20
         ],
-        "new_options": {
-          "Warning": "Warning",
-          "Sanctions": "Sanctions"
-        },
-        "new_options_affects": {
-          "Warning": "affect_wrong_number_of_cases_warning",
-          "Sanctions": "affect_wrong_number_of_cases_sanctions"
-        },
-        "further_options": {
-          "something_1": "Warning",
-          "something_2": "Sanctions"
-        },
-        "further_options_affects": {
-          "Warning": "example_1",
-          "Sanctions": "example_2"
-        },
+        "new_options": [
+          "unlockable_warning_t1",
+          "unlockable_sanctions_t1"
+        ],
+        "new_options_affects": [
+          "unlockable_warning_t1",
+          "unlockable_sanctions_t1"
+        ],
         "feedback_dialogue": {
-          "Warning": "Warning: I'll issue the warning and let the fundholder know that payments should be withheld for the false cases.",
-          "Sanctions": "Sanctions: We'll levy sanctions, then. My analysis suggests they can afford to pay the penalty.",
+          "unlockable_warning_t1": "Warning: I'll issue the warning and let the fundholder know that payments should be withheld for the false cases.",
+          "unlockable_sanctions_t1": "Sanctions: We'll levy sanctions, then. My analysis suggests they can afford to pay the penalty.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
       {
-        "symbol": "tactic_card_1",
+        "symbol": "tactic_voucher_acceptance",
         "tactic_name": "unlockable_vouchers_for_services",
-        "name": "Tactic card name",
+        "name": "Voucher Acceptance",
         "year": 2,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "initiating_dialogue": "The community verifier tells me that some people were turned away from a hospital in the highlands when they tried to pay with vouchers. They demanded cash!",
+        "investigate_dialogue": "I spoke with the adminstrator of the hospital, and they said they don't have the money they need to keep the hospital open without the cash. It takes weeks for them to be paid for the vouchers, so they can't afford to accept them.",
         "investigate_cooldown": [
           5,
           5,
@@ -4389,41 +4369,31 @@
           15,
           20
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
+        "new_options": [
+          "unlockable_expedite_voucher_payments",
+          "unlockable_sanction_the_provider",
+          "unlockable_warn_the_provider"
+        ],
+        "new_options_affects": [
+          "unlockable_expedite_voucher_payments",
+          "unlockable_sanction_the_provider",
+          "unlockable_warn_the_provider"
+        ],
         "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "unlockable_expedite_voucher_payments": "It could be better to shorten the process of verification and to ensure a timely payment.",
+          "unlockable_sanction_the_provider": "They've shown flagrant disregard for the letter and spirit of the contract. We can find another hospital which can do the same job.",
+          "unlockable_warn_the_provider": "Warn the providers: I will take time with providers to explain the payment procedures so that they can better plan for their expenditures.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
       {
-        "symbol": "tactic_card_1",
+        "symbol": "tactic_false_declarations",
         "tactic_name": "unlockable_vouchers_for_services",
-        "name": "Tactic card name",
+        "name": "False Declarations",
         "year": 2,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "initiating_dialogue": "The Voucher Agency Manager just called to tell me they found false declarations in the reports from the providers. These look to be invented cases.",
+        "investigate_dialogue": "The hospital adminstrators deny they have made fraudulent claims, but the numbers they submit are impossible. It could be lower-level employees making false claims.",
+        "investigate_further_dialogue": "The providers seem to be encouraging their workers to bring in vouchers by offering bonuses.",
         "investigate_cooldown": [
           5,
           5,
@@ -4434,41 +4404,35 @@
           15,
           20
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
+        "new_options": [
+          "unlockable_warning_t2",
+          "unlockable_sanctions_t2"
+        ],
+        "new_options_affects": [
+          "unlockable_warning_t2",
+          "unlockable_sanctions_t2"
+        ],
+        "further_options": [
+          "unlockable_modify_business_plan_t1"
+        ],
+        "further_options_affects": [
+          "unlockable_modify_business_plan_t1"
+        ],
         "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "unlockable_warning_t2": "The senior staff management should be personally verifying reports before the third party verifier sees it. This is fraud, and not acceptable.",
+          "unlockable_sanctions_t2": "This warrants a strong response. If it continues, we might need to go further and look for other providers in the area.",
+          "unlockable_modify_business_plan_t1": "We can set new targets for the Voucher program.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
       {
-        "symbol": "tactic_card_1",
+        "symbol": "tactic_running_out_of_vouchers",
         "tactic_name": "unlockable_vouchers_for_services",
-        "name": "Tactic card name",
+        "name": "Running Out of Vouchers",
         "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "initiating_dialogue": "I'm getting reports that the Agency is running out of vouchers to give out. It could be a temporary shortage, or a systemic issue.",
+        "investigate_dialogue": "The printer is located in the capitol city, and they are overloaded by demmand, and it takes too long for new shipments of printed vouchers to arrive. I could start looking for another printer. Or I could investigate whether they could be produced locally.",
+        "investigate_further_dialogue": "It could be done at the local level with our cooperation. It would cost some money to set up a process in each region. ",
         "investigate_cooldown": [
           5,
           5,
@@ -4479,39 +4443,494 @@
           15,
           20
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
+        "new_options": [
+          "unlockable_seek_another_printer",
+          "unlockable_contract_multiple_printers"
+        ],
+        "new_options_affects": [
+          "unlockable_seek_another_printer",
+          "unlockable_contract_multiple_printers"
+        ],
+        "further_options": [
+          "unlockable_print_vouchers_locally"
+        ],
+        "further_options_affects": [
+          "unlockable_print_vouchers_locally"
+        ],
         "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "unlockable_seek_another_printer": "No other printers seems to be able to meet our demand. We could contract two printers to share the burden, but that would be a management challenge.",
+          "unlockable_contract_multiple_printers": "I'll make the arrangements. It will be  a hassle dealing with two or more printers and distributors, but the benefits outweigh the downsides.",
+          "unlockable_print_vouchers_locally": "I'll make the arrangements. With any luck, this will solve the shortage.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
       {
-        "symbol": "tactic_card_1",
+        "symbol": "tactic_voucher_issues",
         "tactic_name": "unlockable_vouchers_for_services",
-        "name": "Tactic card name",
+        "name": "Voucher Issues",
         "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
+        "initiating_dialogue": "The community verifier tells me they've seen eligible people looking for vouchers and not being able to get them.",
+        "investigate_dialogue": "It seems that supply problems have been mostly solved, so it must be a distribution problem. They offered to put us in contact with another community organization to help distrubute these. Another option would be to warn or sanction the Voucher agency.",
+        "investigate_further_dialogue": "There are community based organizations in the concerned catchment area that the Voucher Agency could contract.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_contract_organization_to_help_distribute",
+          "unlockable_sanction_voucher_agency"
+        ],
+        "new_options_affects": [
+          "unlockable_contract_organization_to_help_distribute",
+          "unlockable_sanction_voucher_agency"
+        ],
+        "feedback_dialogue": {
+          "unlockable_contract_organization_to_help_distribute": "I'll get in touch with them and talk about establish a contract with a Community Based Organization.",
+          "unlockable_sanction_voucher_agency": "I will issue a warning and advise the fund holder to withhold payment.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_what_is_covered",
+        "tactic_name": "unlockable_conditional_cash_transfer",
+        "name": "What Is Covered",
+        "year": 1,
+        "initiating_dialogue": "The community organization has reported that some individuals are going to facilities and returning without being treated, and others say they have been told not to 'waste their time' at clinics and hospitals.",
+        "investigate_dialogue": "We conducted interviews on this, and it seems that people are showing up at the hospital expecting cash transfers for things not covered. They get so upset they leave without any services and are telling people to stay away.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_broaden_what_is_covered",
+          "unlockable_information_campaign_to_explain_what_is_covered"
+        ],
+        "new_options_affects": [
+          "unlockable_broaden_what_is_covered",
+          "unlockable_information_campaign_to_explain_what_is_covered"
+        ],
+        "feedback_dialogue": {
+          "unlockable_broaden_what_is_covered": "I'll add this to the itinerary when contracts come up for review. This could get more people into facilities to receive the services we are emphasizing.",
+          "unlockable_information_campaign_to_explain_what_is_covered": "I'll inform providers they need to act on this. Once people understand how this program works, this problem should go away.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_cct_qualification_confusion",
+        "tactic_name": "unlockable_conditional_cash_transfer",
+        "name": "CCT Qualification Confusion",
+        "year": 1,
+        "initiating_dialogue": "There is some confusion on who qualifies for cash transfers. This is supposed to target the poorest people from the highlands, but according to reports some from the capital city and larger settlements have been requesting and receiving funds.",
+        "investigate_dialogue": "The policy itself seems to contain some ambiguities. A revision of the policy's inclusion/exclusion criterea could be the solution. I can look into hiring a third party to handle that. The policy also seems to be confusing to some workers. We could retrain them, and that might solve the problem.",
+        "investigate_further_dialogue": "One of the hospital administrators has offered to revise the inclusion/exclusion policies to make it cearer for their staff. With our approval, of course. This would save us the cost of hiring a third party to revise them, if you trust the administrator to do it. ",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_retrain",
+          "unlockable_hire_third_party_to_rewrite"
+        ],
+        "new_options_affects": [
+          "unlockable_retrain",
+          "unlockable_hire_third_party_to_rewrite"
+        ],
+        "further_options": [
+          "unlockable_hospital_administrator_revises_policy"
+        ],
+        "further_options_affects": [
+          "unlockable_hospital_administrator_revises_policy"
+        ],
+        "feedback_dialogue": {
+          "unlockable_retrain": " I'll instruct the facility managers to institute a mandatory retraining for all staff.",
+          "unlockable_hire_third_party_to_rewrite": "We'll launch a bidding for a qualified third party right away.",
+          "unlockable_hospital_administrator_revises_policy": "The Hospital Administrator will redefine the inclusion/exclusion criteria and bring clarity on required documents to be verified by the staff.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_cct_penetration",
+        "tactic_name": "unlockable_conditional_cash_transfer",
+        "name": "CCT Penetration",
+        "year": 2,
+        "initiating_dialogue": "The targeted communities are not responding as well as they could to the CCT program. People are using the services, but the numbers in the poorest towns are not improving.",
+        "investigate_dialogue": "It could be the incentives are not where they should be. Alternatively, there could be a social or cultural barrier that we did not forsee. I could investigate this.",
+        "investigate_further_dialogue": "Some women have said they are uncomfortable giving birth anywhere but their own house. We could begin a campaign to counter this belief, or even pay local midwives for bringing women into facilities to give birth.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_increase_incentives"
+        ],
+        "new_options_affects": [
+          "unlockable_increase_incentives"
+        ],
+        "further_options": [
+          "unlockable_cultural_campaign",
+          "unlockable_incentivise_traditional_midwives"
+        ],
+        "further_options_affects": [
+          "unlockable_cultural_campaign",
+          "unlockable_incentivise_traditional_midwives"
+        ],
+        "feedback_dialogue": {
+          "unlockable_increase_incentives": "By raising the incentives, we can bring more women into these clinics.",
+          "unlockable_cultural_campaign": "It will be a challenge to convince women to change their ways. I hope we are up to it!",
+          "unlockable_incentivise_traditional_midwives": "This is an interesting approach!",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_underutilization",
+        "tactic_name": "unlockable_conditional_cash_transfer",
+        "name": "Underutilization",
+        "year": 2,
+        "initiating_dialogue": "For some reason, people just aren't taking advantage of this program as much as they should be. Our projections were flawed somehow.",
+        "investigate_dialogue": "After conducting surveys, it's clear that the incentives we identified just aren't worth it to most people.",
+        "investigate_further_dialogue": "There may be some social or cultural barrier at play here that is discouraging people from accepting these incentives. Changing the incentives all together, and repackaging the program seems advisable.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_increase_incentives_t2"
+        ],
+        "new_options_affects": [
+          "unlockable_increase_incentives_t2"
+        ],
+        "further_options": [
+          "unlockable_use_a_different_incentive"
+        ],
+        "further_options_affects": [
+          "unlockable_use_a_different_incentive"
+        ],
+        "feedback_dialogue": {
+          "unlockable_increase_incentives_t2": "We just need to find the right level to be attractive.",
+          "unlockable_use_a_different_incentive": "Let's go back to the ethnography and try to figure out how to present this program in a way that will be attractive to the most people.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_payment_inconsistency",
+        "tactic_name": "unlockable_conditional_cash_transfer",
+        "name": "Payment Inconsistency",
+        "year": 3,
+        "initiating_dialogue": "We have been going over the budget, and it looks like we have been overpaying. Our output does not match the indicators.",
+        "investigate_dialogue": "The finance ministry has been OKing payments to providers even though goals have not been met. Apparently providers have been focusing on improving quality, which has taken longer than expected, so the finance ministry made an exception.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_only_pay_for_results",
+          "unlockable_allow_temporary_exception"
+        ],
+        "new_options_affects": [
+          "unlockable_only_pay_for_results",
+          "unlockable_allow_temporary_exception"
+        ],
+        "feedback_dialogue": {
+          "unlockable_only_pay_for_results": "Clearly we can't authorize payments without verified results on pre-agreed behavior change.",
+          "unlockable_allow_temporary_exception": "So we'll allow that payment in the hopes it will encourage service utilisation even for other indicators. It is a social program, anyway.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_cash_transfer_confusion",
+        "tactic_name": "unlockable_conditional_cash_transfer",
+        "name": "Cash Transfer Confusion",
+        "year": 3,
+        "initiating_dialogue": "I've been noticing a drop off in the fourth quarter of CCT customers. Thought you should know.",
+        "investigate_dialogue": "Some people are having difficulty understanding. They do eventually receive their money, but it takes too long, and by then, they've complained to others, who are discouraged from coming.",
+        "investigate_further_dialogue": "It seems like  people expect to leave the hospital with money. When they don't receive it, they get mad, and say they'll tell others not to come.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_expedite_cct_payments",
+          "unlockable_fund_info_campaign"
+        ],
+        "new_options_affects": [
+          "unlockable_expedite_cct_payments",
+          "unlockable_fund_info_campaign"
+        ],
+        "further_options": [
+          "unlockable_embed_cct_officer_at_facilities"
+        ],
+        "further_options_affects": [
+          "unlockable_embed_cct_officer_at_facilities"
+        ],
+        "feedback_dialogue": {
+          "unlockable_expedite_cct_payments": "We can send a report to the fundholders with suggestions to revise the payment procedures, but who knows whether they'll actually come through, or if anything will be fast enough.",
+          "unlockable_fund_info_campaign": "Adjusting customer expectations should help a little. I'll make the preparations.",
+          "unlockable_embed_cct_officer_at_facilities": "This will take a while to implement. I'll start the preparations right away.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_confusion_of_roles",
+        "tactic_name": "unlockable_outreach",
+        "name": "Confusion of Roles",
+        "year": 1,
+        "initiating_dialogue": "We haven’t seen the outreach teams yet. They are supposed to be delivering services in the field already.",
+        "investigate_dialogue": "My investigation showed that providers are not conducting the outreach as required by the contract. However, the ministry is requiring the providers to submit plans for outreach, and so far the ministry hasn't approved these plans.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_clarify_role_for_ministry",
+          "unlockable_tell_providers_to_act_without_ministry_approval"
+        ],
+        "new_options_affects": [
+          "unlockable_clarify_role_for_ministry",
+          "unlockable_tell_providers_to_act_without_ministry_approval"
+        ],
+        "feedback_dialogue": {
+          "unlockable_clarify_role_for_ministry": "It could help to explain the separation of functions and autonomy, and to redefine the roles and responsibilities for each stakeholder.",
+          "unlockable_tell_providers_to_act_without_ministry_approval": "I will tell providers to carry out implementation activities without Ministry authorization.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_field_records",
+        "tactic_name": "unlockable_outreach",
+        "name": "Field Records",
+        "year": 1,
+        "initiating_dialogue": "The nurses working in communities have had some issues with recordkeeping in the fields. The forms often have mistakes or never show up, then the providers try to claim them anyway.",
+        "investigate_dialogue": "The providers claim the problem is the nurses themselves. I could try to contact some of them directly to see what's going on. Or we could issue a warning to the providers that employ them.",
+        "investigate_further_dialogue": "Nurses say they are over-taxed in communities. Actually hiring more might give them the leeway they need to pay more attention to record keeping.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_warning_t3"
+        ],
+        "new_options_affects": [
+          "unlockable_warning_t3"
+        ],
+        "further_options": [
+          "unlockable_advise_providers_to_hire_more_outreach_staff"
+        ],
+        "further_options_affects": [
+          "unlockable_advise_providers_to_hire_more_outreach_staff"
+        ],
+        "feedback_dialogue": {
+          "unlockable_warning_t3": "Warning: I will tell the providers that they must be responsible for their employees.",
+          "unlockable_advise_providers_to_hire_more_outreach_staff": "Let's make it a priority during the contract negotiation and the Business Plan elaboration.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_supply_chain",
+        "tactic_name": "unlockable_outreach",
+        "name": "Supply Chain",
+        "year": 2,
+        "initiating_dialogue": "My team has been conducting some evaluation interviews, and nurses in the outreach staff claim they don't have adaquate supplies to perform well in the field.",
+        "investigate_dialogue": "This speaks to quality of care. The Ministry of Health says we need to incentivise following protocols more strongly. Then facilities will be able to pay for better supplies. Providers say we actually have more nurses than we need, and not enough supplies to equip them all. I could analyze this and see what the impact of these nurses has actually been.",
+        "investigate_further_dialogue": "My analysis shows that if anything, more nurses would be of a benefit, but given the supply issues, hiring more right now wouldn't be prudent.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_increase_quality_of_care_incentives",
+          "unlockable_reduce_workforce"
+        ],
+        "new_options_affects": [
+          "unlockable_increase_quality_of_care_incentives",
+          "unlockable_reduce_workforce"
+        ],
+        "feedback_dialogue": {
+          "unlockable_increase_quality_of_care_incentives": "This is the only solution that I can reconcile with the data.",
+          "unlockable_reduce_workforce": "There is a problem of an unwieldly staff. Why not negotiate the staff reallocation in line with health norms and standards?",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_home_births",
+        "tactic_name": "unlockable_outreach",
+        "name": "Home Births",
+        "year": 3,
+        "initiating_dialogue": "The outreach staff have been very succesful over the past year! Providers are now asking if these outreach professionals can oversee home births to count them as facility births.",
+        "investigate_dialogue": "This would make it much easier for us to hit our facility birth goals, but it goes against the plan. And according to our statistics, could be dangerous for women and their babies. ",
+        "investigate_further_dialogue": "Our investigation indicates that facilities don't have the capacity to see all the women that are now asking for services. Increasing incentives for these services could help boost capacity there.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_continue_with_plan",
+          "unlockable_give_permission"
+        ],
+        "new_options_affects": [
+          "unlockable_continue_with_plan",
+          "unlockable_give_permission"
+        ],
+        "further_options": [
+          "unlockable_increase_facility_birth_incentives"
+        ],
+        "further_options_affects": [
+          "unlockable_increase_facility_birth_incentives"
+        ],
+        "feedback_dialogue": {
+          "unlockable_give_permission": "An interesting tactic.",
+          "unlockable_continue_with_plan": "If they are pleased with the outreach program now, they will continue to be pleased going forward.",
+          "unlockable_increase_facility_birth_incentives": "We can stimulate the collaboration between facilities and community.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_unusual_claims",
+        "tactic_name": "unlockable_improve_patient_and_provider_relationship",
+        "name": "Unusual Claims",
+        "year": 1,
+        "initiating_dialogue": "Verifiers have been seeing some suspicious activity on the new customer service surveying. As you know, some individual health workers' performances are being rated by customers, and they receive bonuses for good ratings. Health workers have been turning in reports to the independant verifyers, but they seem almost too good, and we can't be sure they're legitimate.",
+        "investigate_dialogue": "It's difficult to probe direct fraud, but this does seem suspicious We could issue a warning and deny payment on the suspicious claims, or we could pay the claims, since techincally they are meeting markers. I could also investigate further into the causes of this.",
+        "investigate_further_dialogue": "It seems that there might be too large of an emphasis on customer ratings, and some of the providers are just giving customers whatever they want, whether or not it's good health service. Reinforcing following protocol, or making payments only to the institutions, not individuals, could also remedy this.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_approve_payments",
+          "unlockable_warn_and_deny_payments"
+        ],
+        "new_options_affects": [
+          "unlockable_approve_payments",
+          "unlockable_warn_and_deny_payments"
+        ],
+        "further_options": [
+          "unlockable_reinforce_following_protocols",
+          "unlockable_issue_payments_to_institutions"
+        ],
+        "further_options_affects": [
+          "unlockable_reinforce_following_protocols",
+          "unlockable_issue_payments_to_institutions"
+        ],
+        "feedback_dialogue": {
+          "unlockable_approve_payments": "The contract is pretty clear, I suppose. I'll mark these as approved then.",
+          "unlockable_warn_and_deny_payments": "This is certainly suspect enough to warrant a warning.",
+          "unlockable_reinforce_following_protocols": "I'll sit down and discuss this with the providers. They need to apply the available checklists unless and until we change them.",
+          "unlockable_issue_payments_to_institutions": "We have tp pay, but the individual payment is the providers' internal business.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_staff_trouble",
+        "tactic_name": "unlockable_improve_patient_and_provider_relationship",
+        "name": "Staff Trouble",
+        "year": 2,
+        "initiating_dialogue": "I am getting reports from on of our health providers that their staff, doctors,  and nurses are rebelling. They are tired of filling out customer service forms, and aren't receiving incentives. They are threatening to leave.",
+        "investigate_dialogue": "Something clearly isn't working here. Increasing incentives and expiditing payments could help, but other facilities are handling this much better. Maybe retraining, or even a culling and rehiring might be worth looking into.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_retrain_t2",
+          "unlockable_cull_and_rehire",
+          "unlockable_increase_incentives_and_expidite_payments"
+        ],
+        "new_options_affects": [
+          "unlockable_retrain_t2",
+          "unlockable_cull_and_rehire",
+          "unlockable_increase_incentives_and_expidite_payments"
+        ],
+        "feedback_dialogue": {
+          "unlockable_retrain_t2": "TBD",
+          "unlockable_cull_and_rehire": "The people we're cutting were pretty entrenched in things before we came in. It's not fun to fire that many people, and we'll probably rehire a lot of them, but the distance will help.",
+          "information_campaign": "I told them we're increasing incentives and getting them out faster and they said 'getting them to us at all would be faster'. So, we really have to make sure that happens.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_possible_fraud",
+        "tactic_name": "unlockable_improve_patient_and_provider_relationship",
+        "name": "Possible Fraud",
+        "year": 3,
+        "initiating_dialogue": "TBD",
         "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
         "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
         "investigate_cooldown": [
@@ -4524,30 +4943,24 @@
           15,
           20
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
+        "new_options": [
+          "unlockable_sanction_offending_workiers",
+          "unlockable_warning_t4"
+        ],
+        "new_options_affects": [
+          "unlockable_sanction_offending_workiers",
+          "unlockable_warning_t4"
+        ],
+        "further_options": [
+          "unlockable_sanction_those_providers"
+        ],
+        "further_options_affects": [
+          "unlockable_sanction_those_providers"
+        ],
         "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "unlockable_sanction_offending_workiers": "TBD",
+          "unlockable_warning_t4": "My concern is that if we only warn them, they aren't going to stop. On the other hand, this kind of thing is hard to prove, so that isn't very helpful, either.",
+          "unlockable_sanction_those_providers": "The usual indignance. We don't have any hard evidence, but I wouldn't be surprised if this is the last we hear about falsified reports.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
@@ -4569,71 +4982,26 @@
           15,
           20
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 1,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
+        "new_options": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
         ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
+        "new_options_affects": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
+        "further_options": [
+          "something_1",
+          "something_2",
+          "something_3"
+        ],
+        "further_options_affects": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
         "feedback_dialogue": {
           "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
           "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
@@ -4659,26 +5027,331 @@
           15,
           20
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
+        "new_options": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
+        "new_options_affects": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
+        "further_options": [
+          "something_1",
+          "something_2",
+          "something_3"
+        ],
+        "further_options_affects": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
+        "feedback_dialogue": {
+          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
+          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
+          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_card_1",
+        "tactic_name": "unlockable_more_autonomy",
+        "name": "Tactic card name",
+        "year": 3,
+        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
+        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
+        "new_options_affects": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
+        "further_options": [
+          "something_1",
+          "something_2",
+          "something_3"
+        ],
+        "further_options_affects": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
+        "feedback_dialogue": {
+          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
+          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
+          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_road_issues",
+        "tactic_name": "unlockable_contract_private_company_to_deliver_supplies",
+        "name": "Road Issues",
+        "year": 1,
+        "initiating_dialogue": "There have been a number of late delivieries.",
+        "investigate_dialogue": "The late deliveries seem to be due to heavy rains suffered this year washing out roads. We could penalize the shipping co. and advise them to find better routes, or we could seek alternate delivery means.",
+        "investigate_further_dialogue": "Even with as unreliable as the train is, it's better than depending on roads. We could go back to using the trains, or try our luck with the delivery trucks.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_penalize_delivery_co"
+        ],
+        "new_options_affects": [
+          "unlockable_penalize_delivery_co"
+        ],
+        "further_options": [
+          "unlockable_switch_to_train_service"
+        ],
+        "further_options_affects": [
+          "unlockable_switch_to_train_service"
+        ],
+        "feedback_dialogue": {
+          "unlockable_penalize_delivery_co": "I'll inform their representative of the penalty. If they can't meet our demands, we'll need to go further next time.",
+          "unlockable_switch_to_train_service": "I know we had trouble with the trains before, but they aren't as vulnerable as roads.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_strike",
+        "tactic_name": "unlockable_contract_private_company_to_deliver_supplies",
+        "name": "Strike",
+        "year": 2,
+        "initiating_dialogue": "The private company we have hired to deliver medicine has gone on strike.",
+        "investigate_dialogue": "There's no telling how long this strike could last. We need to find a temporary solution, at least, or look into more permenant alternatives.",
+        "investigate_further_dialogue": "There is one other ground transport service we could use. There is also a new service that ships by air that would be more expensive, but could be more reliable.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_terminate_contract_at_end_of_year"
+        ],
+        "new_options_affects": [
+          "unlockable_terminate_contract_at_end_of_year"
+        ],
+        "further_options": [
+          "unlockable_hire_another_ground_based_service",
+          "unlockable_hire_air_service"
+        ],
+        "further_options_affects": [
+          "unlockable_hire_another_ground_based_service",
+          "unlockable_hire_air_service"
+        ],
+        "feedback_dialogue": {
+          "unlockable_terminate_contract_at_end_of_year": "OK, we'll discuss this at the end of the year. The old way of doing things wasn't great, which is why we switched in the first place, but it'll work as a stop-gap.",
+          "unlockable_hire_another_ground_based_service": "We probably should have gone with them first. We didn't because they're a little more expensive, but that's because they offer benefits and that sort of thing. They're less likely to strike.",
+          "unlockable_hire_air_service": "This will cut deeper into our coffers, but they have a good track record.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_raising_rates",
+        "tactic_name": "unlockable_contract_private_company_to_deliver_supplies",
+        "name": "Raising Rates",
+        "year": 3,
+        "initiating_dialogue": "The shipping company we hired says they have to raise their rates starting at the next contract year.",
+        "investigate_dialogue": "Our only options seem to be paying the new rate, which would have to come out of our discretionary budget, or trying to find a cheaper option.",
+        "investigate_further_dialogue": "It seems that everyone's raising their rates, so switching companies won't help us much. We could attempt to negotiate the price down.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_pay_new_rate"
+        ],
+        "new_options_affects": [
+          "unlockable_pay_new_rate"
+        ],
+        "further_options": [
+          "unlockable_negotiate"
+        ],
+        "further_options_affects": [
+          "unlockable_negotiate"
+        ],
+        "feedback_dialogue": {
+          "unlockable_pay_new_rate": "We'll have to get a little creative with the budget for this, but what else can we do?",
+          "unlockable_negotiate": "They wouldn't budge. Didn't hurt to try, though.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_short_staff",
+        "tactic_name": "unlockable_information_campaign_to_counter_misinformation",
+        "name": "Short Staff",
+        "year": 1,
+        "initiating_dialogue": "The campaign is struggling because providers say they don't have the staff to support this campaign and perform necessary healthcare functions.",
+        "investigate_dialogue": "They do appear short staffed. Providing funding for new hires could help, or we could reoganize our sensitization strategy.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_provide_funding_to_hire_new_staff",
+          "unlockable_increase_incentives_for_meeting_campaign_goals",
+          "unlockable_reevaluate_whether_this_campaign_is_necessary"
+        ],
+        "new_options_affects": [
+          "unlockable_provide_funding_to_hire_new_staff",
+          "unlockable_increase_incentives_for_meeting_campaign_goals",
+          "unlockable_reevaluate_whether_this_campaign_is_necessary"
+        ],
+        "feedback_dialogue": {
+          "unlockable_provide_funding_to_hire_new_staff": "Everywhere I've worked we were short staffed and were told to make due. We're telling people to do a job and giving them the money to do it. We are in uncharted territory!",
+          "unlockable_increase_incentives_for_meeting_campaign_goals": "This coud certainlyl spur people to meet goals. I'm worried, though, that they're spread thin already.",
+          "unlockable_reevaluate_whether_this_campaign_is_necessary": "We might not need to spend all the money for this staff, but if not, we should probably cut the plan at year's end.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_overexposure",
+        "tactic_name": "unlockable_information_campaign_to_counter_misinformation",
+        "name": "Overexposure",
+        "year": 2,
+        "initiating_dialogue": "The response to our campaign seems to be dropping off significantly. Should I look into the cause of this?",
+        "investigate_dialogue": "It appears that our information campaign has now gone too well, and we have become over-exposed.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_temporarily_reduce_output",
+          "unlockable_end_campaign"
+        ],
+        "new_options_affects": [
+          "unlockable_temporarily_reduce_output",
+          "unlockable_end_campaign"
+        ],
+        "feedback_dialogue": {
+          "unlockable_temporarily_reduce_output": "We've had plenty of exposure so far. This should give people time to refresh.",
+          "unlockable_end_campaign": "We can talk again at the end of the year and decide if this is worth the expenditure.",
+          "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "tactic_backlash",
+        "tactic_name": "unlockable_information_campaign_to_counter_misinformation",
+        "name": "Backlash",
+        "year": 3,
+        "initiating_dialogue": "There has been some backlash about this campaign from users of traditional medecine. They consider it insulting and inflamatory.",
+        "investigate_dialogue": "Some people want the campaign to be revised for cultural sensativity, while others want it halted all together. It's a minority that is opposed to this, but very vocal. I wonder what has them so upset after more than two years?",
+        "investigate_further_dialogue": "It turns out there is an election for regional governer coming up, and the conervative candidate is stirring the pot against foreign influences, including us! We could speak with him directly, perhaps.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_revise_language_in_campaign",
+          "unlockable_halt_campaign"
+        ],
+        "new_options_affects": [
+          "unlockable_revise_language_in_campaign",
+          "unlockable_halt_campaign"
+        ],
+        "further_options": [
+          "unlockable_request_meeting_with_candidate"
+        ],
+        "further_options_affects": [
+          "unlockable_request_meeting_with_candidate"
+        ],
+        "feedback_dialogue": {
+          "unlockable_revise_language_in_campaign": "We could write some copy about how our language is inflammatory, but if you have actual inflammation, real medicine helps! No? OK. I'll tone down the copy.",
+          "unlockable_halt_campaign": "It's not going to raise awareness to stop advertising. Some nationalist politician is jeopardizing public health to gain traction.",
+          "unlockable_request_meeting_with_candidate": "I admire you wanting to sit down with this politico. I think it'll frustrate you to no end, but I respect you for it.",
+          "observe": "If we don't engage it'll probably just fizzle out."
+        }
+      },
+      {
+        "symbol": "tactic_card_1",
+        "tactic_name": "unlockable_more_autonomy",
+        "name": "Tactic card name",
+        "year": 1,
+        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
+        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
+        "new_options_affects": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
+        "further_options": [
+          "something_1",
+          "something_2",
+          "something_3"
+        ],
+        "further_options_affects": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
         "feedback_dialogue": {
           "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
           "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
@@ -4704,26 +5377,26 @@
           15,
           20
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
+        "new_options": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
+        "new_options_affects": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
+        "further_options": [
+          "something_1",
+          "something_2",
+          "something_3"
+        ],
+        "further_options_affects": [
+          "information_campaign",
+          "transportation_vouchers",
+          "increase_budget"
+        ],
         "feedback_dialogue": {
           "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
           "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
@@ -4732,13 +5405,13 @@
         }
       },
       {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
+        "symbol": "tactic_printing_issues",
+        "tactic_name": "unlockable_information_campaign_to_counter_misinformation",
+        "name": "Backlash",
         "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
+        "initiating_dialogue": "We are running out of pamphlets at most facilities.",
+        "investigate_dialogue": "The printer we hired to create them is unreliable and keeps missing print deadlines, sometimes by many weeks. I could look for new printers, or we could let facilities produce their own materials. We'd need to provide equipment and materials, though.",
+        "investigate_further_dialogue": "It'll cost more, but I guess this is what we get for going with the cheapest option. We'll have to find room for that in the budget.",
         "investigate_cooldown": [
           5,
           5,
@@ -4749,930 +5422,20 @@
           15,
           20
         ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
+        "new_options": [
+          "unlockable_provide_health_facilities_with_equipment_to_print_materials"
+        ],
+        "new_options_affects": [
+          "unlockable_provide_health_facilities_with_equipment_to_print_materials"
+        ],
+        "further_options": [
+          "unlockable_increase_budget_for_printing_informational_collateral"
+        ],
+        "further_options_affects": [
+          "unlockable_increase_budget_for_printing_informational_collateral"
+        ],
         "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 1,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 1,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 2,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 1,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 2,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 1,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 2,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 1,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 2,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 1,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 2,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 1,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 2,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don’t know why at this point, but we’re not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": {
-          "information_campaign": "Information Campaign",
-          "transportation_vouchers": "Add travel vouchers",
-          "increase_budget": "Increase budget for travelling nurses"
-        },
-        "new_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "further_options": {
-          "something_1": "Information Campaign",
-          "something_2": "Add travel vouchers",
-          "something_3": "Increase budget for travelling nurses"
-        },
-        "further_options_affects": {
-          "information_campaign": "example_1",
-          "transportation_vouchers": "example_2",
-          "increase_budget": "example_3"
-        },
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
+          "unlockable_increase_budget_for_printing_informational_collateral": "This ended up being more of a cost than we realized, since now we have employees printing these up, which cuts into their time. And if they all need ink at the same time, we're doomed.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       }
@@ -6184,7 +5947,7 @@
       "title": "Seek Another Printer"
     },
     {
-      "symbol": "unlockable_contract multiple printers",
+      "symbol": "unlockable_contract_multiple_printers",
       "title": "Contract Multiple Printers"
     },
     {
@@ -6422,266 +6185,6 @@
     {
       "symbol": "unlockable_increase_budet_for_printing_informational_collateral\"",
       "title": "Invite Community Leaders to Facilities for Education"
-    }
-  ],
-  "unlockables_test": [
-    {
-      "symbol": "unlockable_dialogue_mr_todd"
-    },
-    {
-      "symbol": "unlockable_dialogue_hospital_administrator"
-    },
-    {
-      "symbol": "unlockable_dialogue_clinician"
-    },
-    {
-      "symbol": "unlockable_route_malcom_to_kibari",
-      "unlocked": [
-        "malcom_to_kibari"
-      ]
-    },
-    {
-      "symbol": "unlockable_route_capitol_to_malcom",
-      "unlocked": [
-        "capitol_to_malcom"
-      ]
-    },
-    {
-      "symbol": "unlockable_route_capitol_to_crup",
-      "unlocked": [
-        "capitol_to_crup"
-      ]
-    },
-    {
-      "symbol": "unlockable_route_crup_to_kibari",
-      "unlocked": [
-        "crup_to_kibari"
-      ]
-    },
-    {
-      "symbol": "unlockable_route_malcom_to_valeria",
-      "unlocked": [
-        "malcom_to_valeria"
-      ]
-    },
-    {
-      "symbol": "unlockable_route_malcom_to_mile",
-      "unlocked": [
-        "malcom_to_mile"
-      ]
-    },
-    {
-      "symbol": "unlockable_route_valeria_to_zima",
-      "unlocked": [
-        "valeria_to_zima"
-      ]
-    },
-    {
-      "symbol": "unlockable_route_zima_to_kibari",
-      "unlocked": [
-        "zima_to_kibari"
-      ]
-    },
-    {
-      "symbol": "unlockable_route_kibari_to_crup",
-      "unlocked": [
-        "kibari_to_crup"
-      ]
-    },
-    {
-      "symbol": "unlockable_route_kibari_to_mile",
-      "unlocked": [
-        "kibari_to_mile"
-      ]
-    },
-    {
-      "symbol": "unlockable_route_mile_to_zima",
-      "unlocked": [
-        "mile_to_zima"
-      ]
-    },
-    {
-      "symbol": "unlockable_incentivise_providers_to_deliver_services",
-      "title": "Incentivise Providers to Deliver Services",
-      "description": [
-        "A straightforward way to increase use of specific services, such as facility births and vaccinations, is to give bonuses to providers that deliver more of those services. This would set specific goals, and incentivise providers to reach them."
-      ],
-      "type": "supply_side_resource_allocation"
-    },
-    {
-      "symbol": "unlockable_incentivise_providers_to_follow_protocols",
-      "title": "Incentivise Providers to Follow Protocols",
-      "description": [
-        "If providers are not following protocols, ordering consults and prescribing things for the wrong reasons, this is both wasteful and harmful to quality of care. This would require providers to follow protocols in order to receive incentives."
-      ],
-      "type": "supply_side_resource_allocation"
-    },
-    {
-      "symbol": "unlockable_contract_outside_organization_to_administer_plan",
-      "title": "Contract Outside Organization to Administer Plan",
-      "description": [
-        "In instances where there is poor infrastructure or the government is not a strong partner, contracting a Non-Government Organization to fill the roles of infrastructure and management to deliver services is ideal."
-      ],
-      "type": "supply_side_resource_allocation"
-    },
-    {
-      "symbol": "unlockable_contract_private_company_to_deliver_supplies",
-      "title": "Contract Private Company to Deliver Supplies",
-      "description": [
-        "If public infrastructure and traditional channels aren’t reliably delivering needed supplies, contracting a private company to deliver them would ensure things run smoothly."
-      ],
-      "type": "supply_side_resource_allocation"
-    },
-    {
-      "symbol": "unlockable_grant_providers_autonomy",
-      "title": "Grant Providers Autonomy",
-      "description": [
-        "Providers need the autonomy to order supplies and make hires that suit the needs of their local communities. Moving these crucial decisions to the ground level instead of leaving it to the Ministry or another body should improve supplies and personnel issues."
-      ],
-      "type": "supply_side_resource_allocation"
-    },
-    {
-      "symbol": "unlockable_improve_patient_and_provider_relationship",
-      "title": "Improve Patient and Provider Relationship",
-      "description": [
-        "Patients don’t go to facilities where they are mistreated or receive poor service. Improving patient/provider relationships could increase use of important services long term."
-      ],
-      "type": "behavior_knowledge_and_professionalism"
-    },
-    {
-      "symbol": "unlockable_make_aesthetic_improvements",
-      "title": "Make Aesthetic Improvements",
-      "description": [
-        "If the facilities look uncleanunsafe, or just unattractive, patients will stay away. Improvements could include proper maintenance, renovations, paint, new uniforms for staff, or other upgrades."
-      ],
-      "type": "behavior_knowledge_and_professionalism"
-    },
-    {
-      "symbol": "unlockable_hire_more_nurses_from_highlands_region",
-      "title": "Hire From Nurses From the Highlands Region",
-      "description": [
-        "If patients see familiar faces who understand their needs, they will be more likely to use and return to facilities. This would also have the upside of stimulating the economy in a poor region of the country."
-      ],
-      "type": "behavior_knowledge_and_professionalism"
-    },
-    {
-      "symbol": "unlockable_vouchers_for_services",
-      "title": "Vouchers For Services",
-      "description": [
-        "If patients see familiar faces who understand their needs, they will be more likely to use and return to facilities. This would also have the upside of stimulating the economy in a poor region of the country."
-      ],
-      "type": "demand_side_resource_allocation"
-    },
-    {
-      "symbol": "unlockable_travel_reimbursement",
-      "title": "Travel Reimbursement",
-      "description": [
-        "If patients cannot afford to travel to facilities, they cannot use services there. A voucher program for travel could help offset this cost."
-      ],
-      "type": "demand_side_resource_allocation"
-    },
-    {
-      "symbol": "unlockable_conditional_cash_transfer",
-      "title": "Conditional Cash Transfer",
-      "description": [
-        "In areas where social welfare must be delivered due to poverty or disaster, making the transfer of money or goods conditional on using health services that we wish to incentivise anyway makes sense."
-      ],
-      "type": "demand_side_resource_allocation"
-    },
-    {
-      "symbol": "unlockable_outreach",
-      "title": "Outreach",
-      "description": [
-        "When travel is difficult for patients, bringing health care workers directly to their communities through a practice known as outreach can provide services much more conveniently."
-      ],
-      "type": "demand_side_resource_allocation"
-    },
-    {
-      "symbol": "unlockable_information_campaign_to_change_cultural_customs_and_behavior",
-      "title": "Information Campaign to Change Cultural Customs and Behavior",
-      "description": [
-        "Sometimes entrenched customs or cultural behaviors such as not hand washing or giving birth in unsafe environments can harm the health of communities. An educational information campaign could help change those behaviors."
-      ],
-      "type": "demand_side_behavior_and_knowledge"
-    },
-    {
-      "symbol": "unlockable_information_campaign_to_counter_misinformation",
-      "title": "Information Campaign to Counter Misinformation",
-      "description": [
-        "An educational information campaign to combat specific misinformation about health services could help clear up misconceptions about facility care."
-      ],
-      "type": "demand_side_behavior_and_knowledge"
-    },
-    {
-      "symbol": "unlockable_information_campaign_to_explain_changes_to_system",
-      "title": "Information Campaign to Explain Changes to System",
-      "description": [
-        "If major changes are going to take place in the health system, and educational information campaign to explain these changes may be necessary to avoid confusion."
-      ],
-      "type": "demand_side_behavior_and_knowledge"
-    },
-    {
-      "symbol": "unlockable_corruption_crackdown",
-      "title": "Something",
-      "description": "something",
-      "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_hire_private_shipping_company",
-      "title": "Something",
-      "description": "something",
-      "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_contract_ngo_to_administer_plan",
-      "title": "Something",
-      "description": "something",
-      "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_route_malcom_to_kibari",
-      "title": "Something",
-      "description": "something",
-      "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_fruit_1",
-      "title": "Something",
-      "description": "something",
-      "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
-    },
-    {
-      "symbol": "unlockable_plan_traveling_nurses",
-      "title": "Something",
-      "description": "something",
-      "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
-    },
-    {
-      "symbol": "comply_with_ministry",
-      "title": "Something",
-      "description": "something",
-      "unlocked": [
-        "malcom"
-      ],
-      "type": "professionalism"
     }
   ]
 }
