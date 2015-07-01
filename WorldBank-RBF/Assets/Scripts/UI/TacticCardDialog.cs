@@ -111,20 +111,20 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 		List<GenericButton> btnListOptions = new List<GenericButton>();
 
-    	Dictionary<string, string> options = investigateFurther ? data.further_options : data.new_options;
+    	string[] currentOptions = investigateFurther ? data.further_options : data.new_options;
 
     	Content = investigateFurther ? data.investigate_further_dialogue : data.investigate_dialogue;
 	
-		foreach(KeyValuePair<string, string> option in options) {
+		foreach(string option in currentOptions) {
 
-			string optionKey = option.Key;
+			Models.Unlockable unlockableRef = DataManager.GetUnlockableBySymbol(option);
 
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 			
-			btnChoice.Text = option.Value;
+			btnChoice.Text = unlockableRef.title;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => GetFeedback(optionKey));
+			btnChoice.Button.onClick.AddListener (() => GetFeedback(option));
 
 			btnListOptions.Add(btnChoice);
 		}
@@ -195,6 +195,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 											 );
 
 		buttonInvestigate.gameObject.SetActive(false);
+
     }
 
     /// <summary>

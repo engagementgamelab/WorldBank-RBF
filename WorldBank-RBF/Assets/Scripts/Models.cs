@@ -166,10 +166,10 @@ public class Models {
         public int[] investigate_cooldown { get; set; }
         public int[] investigate_further_cooldown { get; set; }
         
-        public Dictionary<string, string> new_options { get; set; }
-        public Dictionary<string, string> new_options_affects { get; set; }
-        public Dictionary<string, string> further_options { get; set; }
-        public Dictionary<string, string> further_options_affects { get; set; }
+        public string[] new_options { get; set; }
+        public string[] new_options_affects { get; set; }
+        public string[] further_options { get; set; }
+        public string[] further_options_affects { get; set; }
         
         public Dictionary<string, string> feedback_dialogue { get; set; }
 
