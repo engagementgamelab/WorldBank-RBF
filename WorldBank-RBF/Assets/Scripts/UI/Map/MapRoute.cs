@@ -34,8 +34,13 @@ public class MapRoute : MB {
 		}
 	}
 
-	public string[] Cities {
+	/*public string[] Cities {
 		get { return new string[] { city1, city2 }; }
+	}*/
+
+	Terminals terminals;
+	public Terminals Terminals {
+		get { return new Terminals (city1, city2); }
 	}
 
 	int cost = 1;

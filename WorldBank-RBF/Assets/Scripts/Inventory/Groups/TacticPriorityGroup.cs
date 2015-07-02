@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TacticPriorityGroup : ItemGroup<PlanTacticItem> {
+public class TacticPriorityGroup : ModelGroup<PlanTacticItem> {
+	
 	public override string Name { get { return "Priorities"; } }
+
+	public TacticPriorityGroup () : base ("") {}
 }

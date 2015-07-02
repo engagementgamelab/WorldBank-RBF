@@ -27,7 +27,7 @@ public class MapManager2 : NotebookCanvas {
 	}
 
 	public void UpdateMap () {
-		routesManager.UpdateRoutes ();
+		// routesManager.UpdateRoutes ();
 		citiesManager.UpdateCities ();
 	}
 }

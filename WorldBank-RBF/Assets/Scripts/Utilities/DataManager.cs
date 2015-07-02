@@ -209,6 +209,35 @@ public class DataManager {
     }
 
     /// <summary>
+    /// Get all current unlockables available in game data.
+    /// </summary>
+    /// <returns>An array of Models.Unlockable.</returns>
+    public static Models.Unlockable[] GetAllUnlockables () {
+        
+        try {
+            return gameData.unlockables;
+        } catch {
+            throw new Exception ("Could not load unlockables");
+        }
+
+    }
+
+    /// <summary>
+    /// Get all unlockables with the supplied prefix available in game data.
+    /// </summary>
+    /// <param name="prefix">Unlockable prefix</param>
+    /// <returns>An array of Models.Unlockable.</returns>
+    public static Models.Unlockable[] GetUnlockablesWithPrefix (string prefix) {
+        
+        try {
+            return Array.FindAll (gameData.unlockables, x => x.symbol.StartsWith ("unlockable_" + prefix + "_"));
+        } catch {
+            throw new Exception ("Could not load unlockables");
+        }
+
+    }
+
+    /// <summary>
     /// Get the phase two scenario card specified by the index input.
     /// </summary>
     /// <param name="cardIndex">Index of the scenario card</param>

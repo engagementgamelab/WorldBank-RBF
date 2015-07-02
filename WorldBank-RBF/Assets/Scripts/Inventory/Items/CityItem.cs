@@ -3,11 +3,12 @@ using System.Collections;
 
 public class CityItem : InventoryItem {
 	
-	string cityName;
-	public override string Name { get { return cityName; } }
+	public override string Name { get { return model.display_name; } }
+
+	Models.City model;
 
 	public CityItem () {}
-	public CityItem (string cityName) {
-		this.cityName = cityName;
+	public CityItem (Models.City model) {
+		this.model = model;
 	}
 }

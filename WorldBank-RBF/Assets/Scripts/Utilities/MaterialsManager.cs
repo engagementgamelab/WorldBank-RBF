@@ -7,16 +7,8 @@ using System.IO;
 
 public class MaterialsManager {
 
-	/*public static Material GetMaterial (Texture2D texture, AnimatedQuadTexture quadTex) {
-		#if UNITY_EDITOR
-		return GetMaterialAtPath (AssetDatabase.GetAssetPath (texture), quadTex);
-		#else
-		return CreateMaterialFromTexture (texture);
-		#endif
-	}*/
-
 	public static Material GetMaterialAtPath (string path, AnimatedQuadTexture quadTex) {
-		
+
 		bool textureInProject = path.Contains ("Assets/Textures/");
 
 		if (textureInProject) {
@@ -38,7 +30,7 @@ public class MaterialsManager {
 			#else
 			return Resources.Load (materialPath) as Material;
 			#endif
-		} else {
+		} else if (path != "") {
 			path = "file://" + path;
             Coroutine.LoadTexture (path, quadTex);
             return Blank;

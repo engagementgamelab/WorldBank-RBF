@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// TODO: DELETE THIS !!!
 public class InventoryDrawer : MonoBehaviour {
 
-	Inventory inventory;
+	/*Inventory inventory;
 	PlanTacticGroup tactics;
 	TacticPriorityGroup priorities;
 
@@ -78,5 +79,5 @@ public class InventoryDrawer : MonoBehaviour {
 		for (int i = 0; i < group.Items.Count; i ++) {
 			GUILayout.Label (group.Items[i].Name);
 		}
-	}
+	}*/
 }

@@ -103,7 +103,7 @@ public class CitiesManager : MB {
 		for (int i = 0; i < models.Length; i ++) {
 			Models.City model = models[i];
 			string symbol = model.symbol;
-			if ((unlockAll || model.unlocked || PlayerData.CityGroup.HasCity (symbol))
+			if ((unlockAll || model.enabled)// || PlayerData.CityGroup.HasCity (symbol))
 				&& CanVisitCity (symbol)) 
 				Cities[symbol].Unlock ();
 		}
@@ -115,7 +115,7 @@ public class CitiesManager : MB {
 			button.Interactable = 
 				!button.Locked 
 				&& CanVisitCity (city.Key)
-				&& routesManager.RouteExists (city.Key, currentCitySymbol)
+				// && routesManager.RouteExists (city.Key, currentCitySymbol)
 				|| IsCurrentCity (button.symbol) && dayCounter.HasDays;
 		}
 	}
@@ -140,7 +140,8 @@ public class CitiesManager : MB {
 	}
 
 	int RouteCost (string city1, string city2) {
-		if (!routesManager.RouteExists (city1, city2)) return 0;
-		return routesManager.FindRoute (city1, city2).Cost;
+		// if (!routesManager.RouteExists (city1, city2)) return 0;
+		// return routesManager.FindRoute (city1, city2).Cost;
+		return -1;
 	}
 }

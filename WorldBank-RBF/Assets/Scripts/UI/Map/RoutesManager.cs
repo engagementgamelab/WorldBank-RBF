@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class RoutesManager : MB {
 
-	struct Terminals {
+	/*struct Terminals {
 		
 		public string city1;
 		public string city2;
@@ -13,9 +13,9 @@ public class RoutesManager : MB {
 			this.city1 = city1;
 			this.city2 = city2;
 		}
-	}
+	}*/
 
-	Dictionary<Terminals, MapRoute> routes;
+	/*Dictionary<Terminals, MapRoute> routes;
 	Dictionary<Terminals, MapRoute> Routes {
 		get {
 			if (routes == null) {
@@ -28,15 +28,36 @@ public class RoutesManager : MB {
 			}
 			return routes;
 		}
+	}*/
+
+	List<MapRoute> mapRoutes;
+	List<MapRoute> MapRoutes {
+		get {
+			if (mapRoutes == null) {
+				mapRoutes = new List<MapRoute> ();
+				foreach (Transform child in Transform) {
+					mapRoutes.Add (child.GetScript<MapRoute> ());
+				}
+			}
+			return mapRoutes;
+		}
 	}
 
 	bool unlockAll = false; // use for debugging
 
-	void Awake () {
-		UpdateRoutes (DataManager.GetAllRoutes ());
+	void Start () {
+		// UpdateRoutes (DataManager.GetAllRoutes ());
+		List<Terminals> unlockedTerminals = PlayerData.RouteGroup.UnlockedTerminals;
+		foreach (Terminals t in unlockedTerminals) {
+			// Debug.Log (t.city1 + ", " + t.city2);
+		}
+		foreach (MapRoute route in MapRoutes) {
+			// Debug.Log (route.Terminals.city1 + ", " + route.Terminals.city2);
+			route.Unlocked = unlockedTerminals.Contains (route.Terminals);
+		}
 	}
 
-	public void UpdateRoutes () {
+	/*public void UpdateRoutes () {
 		UpdateRoutes (PlayerData.RouteGroup.Routes);
 	}
 
@@ -56,9 +77,9 @@ public class RoutesManager : MB {
 				mapRoute.Unlocked = route.unlocked;
 			}
 		}
-	}
+	}*/
 
-	public MapRoute FindRoute (string city1, string city2) {
+	/*public MapRoute FindRoute (string city1, string city2) {
 		MapRoute route;
 		Terminals terminals = new Terminals (city1, city2);
 		if (Routes.TryGetValue (terminals, out route)) {
@@ -82,11 +103,11 @@ public class RoutesManager : MB {
 			return route.Unlocked;
 		}
 		return false;
-	}
+	}*/
 
 	#if DEBUG
 	void OnGUI () {
-		Models.Route[] playerRoutes = PlayerData.RouteGroup.Routes;
+		/*Models.Route[] playerRoutes = PlayerData.RouteGroup.Routes;
 		GUILayout.Space (40);
 		foreach (Models.Route route in playerRoutes) {
 			if (route.unlocked) continue;
@@ -94,7 +115,7 @@ public class RoutesManager : MB {
 				route.unlocked = true;
 				NotebookManager.Instance.OpenMap ();
 			}
-		}
+		}*/
 	}
 	#endif
 }
