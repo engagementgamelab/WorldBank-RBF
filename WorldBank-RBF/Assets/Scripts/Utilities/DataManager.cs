@@ -18,6 +18,12 @@ using JsonFx.Json;
 
 public class DataManager {
     
+    public static string APIKey {
+        get {
+            return config.authKey;
+        }
+    }
+    
     public static string RemoteURL {
         get {
             #if UNITY_EDITOR
@@ -44,9 +50,9 @@ public class DataManager {
 
     private static JsonReaderSettings _readerSettings = new JsonReaderSettings();
 
-    public static Models.GameConfig config;
     public static List<string> tacticNames;
 
+    private static Models.GameConfig config;
     private static Models.GameData gameData;
     private static Models.GameDataTest gameDataTest;
 

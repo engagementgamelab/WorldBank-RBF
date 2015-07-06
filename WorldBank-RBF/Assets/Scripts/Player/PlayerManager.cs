@@ -113,6 +113,8 @@ public class PlayerManager : MonoBehaviour {
             return;
         }
 
+        // NetworkManager._userCookie = response["user_cookie"].ToString();
+
         System.Text.StringBuilder output = new System.Text.StringBuilder();
         
         JsonWriter writer = new JsonWriter (output);

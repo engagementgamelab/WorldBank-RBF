@@ -42,32 +42,57 @@ public class SceneManager : MonoBehaviour {
 
 		// We need our game config data before calling any remote endpoints
 		LoadGameConfig();
+
+		NetworkManager.CurrentResponseHandler = ClientAuthenticated;
+		NetworkManager.Instance.Authenticate();
+
+		DataManager.SceneContext = sceneName;
 	
 		// Set global game data if needed
 		SetGameData();
 
-		DataManager.SceneContext = sceneName;
+      
+	}
 
-		// Authenticate player -- user/pass is hard-coded for now
+	/// <summary>
+	/// Client was authenticated to API; we can now get game data and ask player to log in
+	/// </summary>
+    /// <param name="response">Dictionary containing "authed" key telling us if API auth </param>
+    public void ClientAuthenticated(Dictionary<string, object> response) {
+
+		Debug.Log("Client API auth successful? " + response["authed"]);
+
+		if(!System.Convert.ToBoolean(response["authed"]))
+			return;
+	
+		// Set global game data if needed
+		SetGameData();
+
+		// Authenticate player -- user/pass is hard-coded if in editor
 		if(!PlayerManager.Instance.Authenticated)
 		{
 
-			// #if UNITY_EDITOR
-				// PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
-			// #else
+			#if UNITY_EDITOR
+				PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
+			#else
 				loginUI = ObjectPool.Instantiate<PlayerLoginRegisterUI>();
-				loginUI.Callback = UserAuthenticated;
-			// #endif
+				loginUI.Callback = UserAuthenticateResponse;
+			#endif
 			
 		}
 
-	}
+    }
 	
-	public void UserAuthenticated(bool success) {
+	/// <summary>
+	/// User attempted authentication; return/show error if failed
+	/// </summary>
+    /// <param name="success">Was authentication successful?.</param>
+	public void UserAuthenticateResponse(bool success) {
 
 		if(!success)
 			return;
 
+		// Open map; this may be something different later
 		if(phaseOne)
 			NotebookManager.Instance.OpenMap();
 
