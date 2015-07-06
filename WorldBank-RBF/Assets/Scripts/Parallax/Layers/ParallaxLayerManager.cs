@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 
@@ -33,11 +32,21 @@ public class ParallaxLayerManager : MonoBehaviour {
 	public List<ParallaxLayer> Layers {
 		get { return layers; }
 	}
+	public List<ParallaxNpc> npcs;
 
-	for (int i = 0; i < ParallaxLayer.layers ; i++) {
-		for (int i = 0; i <ParallaxNpc.npcs ; i++) {
 
-			float x = transform.position.x;
+	void Start ()
+	{
+
+		for (int i = 0; i < Layers.Count; i ++) {
+			ParallaxLayer layer = Layers[i];
+			UnityEngine.Debug.Log("hello");
+
+				/*for (int j = 0; j < npcs.Count; j++) {
+					if (npcs!= null){
+						layer.npcs[0].Position.x;
+					}
+			}*/
 		}
 	}
 
