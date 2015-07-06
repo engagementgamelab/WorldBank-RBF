@@ -50,6 +50,13 @@ public class ParallaxLayerManager : MonoBehaviour {
 		}
 	}
 
+	for (int i = 0; i < ParallaxLayer.layers ; i++) {
+		for (int i = 0; i <ParallaxNpc.npcs ; i++) {
+
+			float x = transform.position.x;
+		}
+	}
+
 	[SerializeField] int layerCount = 1;
 	[ExposeInWindow, ExposeProperty]
 	public int LayerCount {
