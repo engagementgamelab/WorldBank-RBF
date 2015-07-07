@@ -6,15 +6,15 @@ public class PlanTacticItem : ModelItem {
 	public override string Name { get { return "Plan Tactic"; } }
 	
 	public string Title {
-		get { return model.title; }
+		get { return Model.title; }
 	}
 
 	public string Symbol {
-		get { return model.symbol; }
+		get { return Model.symbol; }
 	}
 
 	public string Description {
-		get { return model.description[0]; }
+		get { return Model.description[0]; }
 	}
 
 	int priority = -1;

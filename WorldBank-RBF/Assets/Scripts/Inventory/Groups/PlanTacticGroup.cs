@@ -6,9 +6,7 @@ public class PlanTacticGroup : ModelGroup<PlanTacticItem> {
 	
 	public override string Name { get { return "Plan Tactics"; } }
 
-	public PlanTacticGroup () : base ("") {
-		
-	}
+	public PlanTacticGroup () : base ("") {}
 
 	public string[] GetUniqueTacticSymbols () {
 		List<string> symbols = new List<string> ();

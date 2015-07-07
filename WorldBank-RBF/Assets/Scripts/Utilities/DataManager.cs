@@ -230,7 +230,12 @@ public class DataManager {
     public static Models.Unlockable[] GetUnlockablesWithPrefix (string prefix) {
         
         try {
-            return Array.FindAll (gameData.unlockables, x => x.symbol.StartsWith ("unlockable_" + prefix + "_"));
+            if (prefix == "") {
+                // not a great way of handling this - tactics should have a prefix like route and dialogue unlockables
+                return Array.FindAll (gameData.unlockables, x => !x.symbol.Contains ("_route_") && !x.symbol.Contains ("_dialogue_"));
+            } else {
+                return Array.FindAll (gameData.unlockables, x => x.symbol.StartsWith ("unlockable_" + prefix + "_"));
+            }
         } catch {
             throw new Exception ("Could not load unlockables");
         }

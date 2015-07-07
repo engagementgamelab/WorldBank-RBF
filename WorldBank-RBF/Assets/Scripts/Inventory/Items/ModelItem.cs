@@ -3,10 +3,22 @@ using System.Collections;
 
 public class ModelItem : InventoryItem {
 
+	public delegate void OnUpdateUnlocked ();
+
 	public override string Name { get { return "Model Item"; } }
 
 	string symbol;
 	public string Symbol { get { return symbol; } }
+
+	bool unlocked;
+	public bool Unlocked { 
+		get { return unlocked; }
+		set { 
+			unlocked = value; 
+			if (onUpdateUnlocked != null) 
+				onUpdateUnlocked ();
+		}
+	}
 
 	protected Models.Unlockable model;
 	public Models.Unlockable Model { 
@@ -14,9 +26,9 @@ public class ModelItem : InventoryItem {
 		set { 
 			model = value;
 			symbol = model.symbol;
-			OnSetModel ();
+			unlocked = model.unlocked;
 		}
 	}
 
-	public virtual void OnSetModel () {}
+	public OnUpdateUnlocked onUpdateUnlocked;
 }

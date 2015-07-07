@@ -56,7 +56,7 @@ public class NotebookManager : MB {
 		get {
 			return (
 				(open
-				&& citiesManager.CurrentCitySymbol != "capitol"
+				&& PlayerData.CityGroup.CurrentCity != "capitol" // temp
 				&& state != State.MakingPlan)
 				|| !isPhaseOne
 			);
@@ -192,7 +192,8 @@ public class NotebookManager : MB {
 		if(dayCounter == null)
 			return;
 
-		if (!dayCounter.HasDays && !InteractionsManager.Instance.HasInteractions) {
+		// if (!dayCounter.HasDays && !InteractionsManager.Instance.HasInteractions) {
+		if (PlayerData.DayGroup.Empty && PlayerData.InteractionGroup.Empty) {//!InteractionsManager.Instance.HasInteractions) {
 			state = State.MakingPlan;
 		}
 	}

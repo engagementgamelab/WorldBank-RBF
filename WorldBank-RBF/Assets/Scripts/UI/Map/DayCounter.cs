@@ -14,34 +14,12 @@ public class DayCounter : MB {
 		}
 	}
 
-	public int Count {
-		get { return days.Count; }
-	}
-
-	public bool HasDays {
-		get { return !initialized || !days.Empty; }
-	}
-
-	Inventory inventory = new Inventory ();
-	DayGroup days = new DayGroup ();
-	bool initialized = false;
-
 	void Awake () {
-		inventory.Add (days);
-		days.onUpdate += OnUpdateCount;
-		days.Add (15);
-		initialized = true;
-	}
-
-	public bool RemoveDays (int count) {
-		if (days.Count >= count) {
-			days.Remove (count);
-			return true;
-		}
-		return false;
+		PlayerData.DayGroup.onUpdate += OnUpdateCount;
+		OnUpdateCount ();
 	}
 
 	void OnUpdateCount () {
-		Text.text = "Days: " + days.Count;
+		Text.text = "Days: " + PlayerData.DayGroup.Count;
 	}
 }

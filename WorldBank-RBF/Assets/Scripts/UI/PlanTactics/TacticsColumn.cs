@@ -6,13 +6,33 @@ public class TacticsColumn : Column {
 
 	List<UITactic> uiTactics;
 
+	void Awake () {
+		// TODO: set it up this way eventually... (similar to how routes & cities are handled)
+		// PlayerData.PlanTacticGroup.onUpdate += OnUpdate;
+	}
+
+	/*void OnUpdate () {
+
+		ObjectPool.DestroyAll<UITactic> ();
+		uiTactics = new List<UITactic> ();
+
+		foreach (PlanTacticItem tactic in PlayerData.PlanTacticGroup.Items) {
+			if (tactic.Unlocked)
+				CreateUITactic (tactic);
+		}
+	}*/
+
 	public List<UITactic> Init (PlanTacticGroup tactics, TacticPriorityGroup priorities) {
+		
 		ObjectPool.DestroyAll<UITactic> ();
 		uiTactics = new List<UITactic> ();
 		List<UITactic> priorityUITactics = new List<UITactic> ();
+		
 		foreach (PlanTacticItem tactic in tactics.Items) {
-			CreateUITactic (tactic);
+			if (tactic.Unlocked)
+				CreateUITactic (tactic);
 		}
+
 		foreach (PlanTacticItem tactic in priorities.Items) {
 			priorityUITactics.Add (CreateUITactic (tactic));
 		}

@@ -81,7 +81,7 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 			InventoryItem newItem = newItems[0];
 			if (newItem != null) {
 				newItem.Initialize (Inventory, this);
-				items.Add (newItem as T);
+				items.Add ((T)newItem);
 			}
 			newItems.RemoveAt (0);
 		}
@@ -115,6 +115,8 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 
 	public override void Clear () {
 		items.Clear ();
+		SendUpdateMessage ();
+		SendEmptyMessage ();
 	}
 
 	// Moves item from this group to another group

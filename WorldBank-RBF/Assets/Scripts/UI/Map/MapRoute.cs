@@ -34,10 +34,6 @@ public class MapRoute : MB {
 		}
 	}
 
-	/*public string[] Cities {
-		get { return new string[] { city1, city2 }; }
-	}*/
-
 	Terminals terminals;
 	public Terminals Terminals {
 		get { return new Terminals (city1, city2); }
@@ -51,7 +47,22 @@ public class MapRoute : MB {
 			Text.text = cost.ToString ();			
 		}
 	}
+
+	RouteItem routeItem;
+	public RouteItem RouteItem { 
+		get { return routeItem; }
+		set {
+			routeItem = value;
+			routeItem.onUpdateUnlocked += OnUpdateUnlocked;
+			Unlocked = routeItem.Unlocked;
+			Cost = routeItem.Cost;
+		}
+	}
 	
 	public string city1;
 	public string city2;
+
+	public void OnUpdateUnlocked () {
+		Unlocked = routeItem.Unlocked;
+	}
 }

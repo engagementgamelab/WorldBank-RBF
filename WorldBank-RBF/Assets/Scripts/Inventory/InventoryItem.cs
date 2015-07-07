@@ -4,7 +4,7 @@ using System.Collections;
 public abstract class InventoryItem {
 
 	public abstract string Name { get; }
-
+ 
 	ItemGroup group;
 	public ItemGroup Group {
 		get { return group; }
@@ -18,5 +18,8 @@ public abstract class InventoryItem {
 	public void Initialize (Inventory inventory, ItemGroup group) {
 		this.inventory = inventory;
 		this.group = group;
+		OnInit ();
 	}
+
+	public virtual void OnInit () {}
 }

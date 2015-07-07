@@ -16,64 +16,6 @@ using System.Linq;
 
 public class PlayerData : MonoBehaviour {
 
-	/*private static Inventory inventory;
-	private static Inventory Inventory {
-		get {
-			if (inventory == null) {
-				inventory = new Inventory ();
-				inventory.Add (PlanTacticGroup);
-				inventory.Add (TacticPriorityGroup);
-				inventory.Add (RouteGroup);
-				inventory.Add (CityGroup);
-			}
-			return inventory;
-		}
-	}
-
-	private static PlanTacticGroup planTacticGroup;
-	public static PlanTacticGroup PlanTacticGroup {
-		get {
-			if (planTacticGroup == null) {
-				planTacticGroup = new PlanTacticGroup ();
-			}
-			return planTacticGroup;
-		}
-	}
-
-	private static TacticPriorityGroup tacticPriorityGroup;
-	public static TacticPriorityGroup TacticPriorityGroup {
-		get {
-			if (tacticPriorityGroup == null) {
-				tacticPriorityGroup = new TacticPriorityGroup ();
-			}
-			return tacticPriorityGroup;
-		}
-	}
-
-	private static RouteGroup routeGroup;
-	public static RouteGroup RouteGroup {
-		get {
-			if (routeGroup == null) {
-				routeGroup = new RouteGroup ();
-				Models.Route[] routes = DataManager.GetAllRoutes ();
-				foreach (Models.Route route in routes) {
-					routeGroup.Add (new RouteItem (route));
-				}
-			}
-			return routeGroup;
-		}
-	}
-
-	private static CityGroup cityGroup;
-	public static CityGroup CityGroup {
-		get {
-			if (cityGroup == null) {
-				cityGroup = new CityGroup ();
-			}
-			return cityGroup;
-		}
-	}*/
-
 	private static List<Models.Unlockable> playerImplementations = new List<Models.Unlockable>();
 	private static Dictionary<string, int> playerUnlockCounts = new Dictionary<string, int>();
 
@@ -81,6 +23,8 @@ public class PlayerData : MonoBehaviour {
 	static PlanTacticGroup planTacticGroup 			= new PlanTacticGroup ();
 	static TacticPriorityGroup tacticPriorityGroup 	= new TacticPriorityGroup ();
 	static DialogueGroup dialogueGroup 				= new DialogueGroup ();
+	static DayGroup dayGroup 						= new DayGroup (15);
+	static InteractionGroup interactionGroup 		= new InteractionGroup ();
 	static RouteGroup routeGroup 					= new RouteGroup ();
 	static CityGroup cityGroup 						= new CityGroup ();
 
@@ -100,6 +44,14 @@ public class PlayerData : MonoBehaviour {
 		get { return dialogueGroup; }
 	}
 
+	public static DayGroup DayGroup {
+		get { return dayGroup; }
+	}
+
+	public static InteractionGroup InteractionGroup {
+		get { return interactionGroup; }
+	}
+
 	public static RouteGroup RouteGroup {
 		get { return routeGroup; }
 	}
@@ -109,17 +61,13 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	void Awake () {
-
 		inventory.Add (planTacticGroup);
 		inventory.Add (tacticPriorityGroup);
 		inventory.Add (dialogueGroup);
+		inventory.Add (dayGroup);
+		inventory.Add (interactionGroup);
 		inventory.Add (routeGroup);
 		inventory.Add (cityGroup);
-
-		/*Models.Route[] routes = DataManager.GetAllRoutes ();
-		foreach (Models.Route route in routes) {
-			routeGroup.Add (new RouteItem (route));
-		}*/
 	}
 
 	/// <summary>
@@ -130,17 +78,11 @@ public class PlayerData : MonoBehaviour {
 
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
 		if (strSymbol.StartsWith ("unlockable_route_")) {
-			/*Models.Route route = RouteGroup.Unlock (strSymbol.Substring (17));
-			if (route != null) {
-				CityGroup.AddUnique (route.city1);
-				CityGroup.AddUnique (route.city2);
-			}*/
 			RouteGroup.Unlock (strSymbol);
 		} else if (strSymbol.StartsWith ("unlockable_dialogue_")) {
 			DialogueGroup.Unlock (strSymbol);
 		} else {
 			PlanTacticGroup.Unlock (strSymbol);
-			// PlanTacticGroup.Add (new PlanTacticItem (unlockRef));
 		}
 
 	}
