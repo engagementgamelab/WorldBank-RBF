@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlanTacticGroup : ItemGroup<PlanTacticItem> {
+public class PlanTacticGroup : ModelGroup<PlanTacticItem> {
 	
 	public override string Name { get { return "Plan Tactics"; } }
+
+	public PlanTacticGroup () : base ("") {}
 
 	public string[] GetUniqueTacticSymbols () {
 		List<string> symbols = new List<string> ();

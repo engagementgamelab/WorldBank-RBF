@@ -98,7 +98,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 		Focus ();
 		FocusLevel = FocusLevel.Dialog;
 		DialogManager.instance.CloseCharacterDialog ();
-		InteractionsManager.Instance.RemoveInteraction ();
+		PlayerData.InteractionGroup.Remove ();
 	}
 
 	void Focus () {

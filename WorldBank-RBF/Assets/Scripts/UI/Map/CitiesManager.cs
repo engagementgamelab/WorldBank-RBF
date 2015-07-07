@@ -31,116 +31,62 @@ public class CitiesManager : MB {
 		}
 	}
 
-	CityButton CurrentCity {
-		get { return Cities[currentCitySymbol]; }
-	}
-
-	string currentCitySymbol = "capitol";
-	public string CurrentCitySymbol {
-		get { return currentCitySymbol; }
-	}
-
 	public CityInfoBox cityInfoBox;
-	public RoutesManager routesManager;
-	public DayCounter dayCounter;
 	public CurrentCityIndicator currentCityIndicator;
-	public GameObject extraDayPrompt;
-
-	bool unlockAll = true; // use for debugging
 
 	void Start () {
-		UpdateUnlockedCities ();
-		UpdateInteractableCities ();
+		InitCities ();
 	}
 
-	public void UpdateCities () {
-		UpdateUnlockedCities ();
+	void InitCities () {
+		List<RouteItem> routeItems = PlayerData.RouteGroup.Routes;
+		List<CityItem> cityItems = PlayerData.CityGroup.Cities;
 		foreach (var city in Cities) {
-			city.Value.UpdateState (IsCurrentCity (city.Value.symbol));
+			CityButton button = city.Value;
+			string symbol = button.symbol;
+			button.CityItem = cityItems.Find (x => x.Symbol == symbol);
+			button.Routes = routeItems.FindAll (x => x.Terminals.ContainsCity (symbol));
 		}
-		UpdateInteractableCities ();	
 	}
 
-	public bool IsCurrentCity (string symbol) {
-		return symbol == currentCitySymbol;
+	public void TravelToCity (CityItem city, RouteItem route, System.Action onArrive=null) {
+		PlayerData.CityGroup.CurrentCity = city.Symbol;
+		PlayerData.DayGroup.Remove (route.Cost);
+		MoveIndicator (onArrive);
 	}
 
-	bool CanVisitCity (string symbol) {
-		return !currentCityIndicator.Moving 
-			&& dayCounter.Count >= RouteCost (currentCitySymbol, symbol);
+	public void VisitCity (CityItem city, RouteItem route) {
+		city.Visited = true;
+		PlayerData.InteractionGroup.Set (city.Model.npc_interactions);
+		TravelToCity (city, route, OnVisit);
 	}
 
-	public void StayExtraDay (string symbol) {
-		dayCounter.RemoveDays (1);
-		CurrentCity.StayExtraDay ();
-		InteractionsManager.Instance.OnStayExtraDay (symbol);
+	public void StayExtraDay (CityItem city) {
+		PlayerData.DayGroup.Remove ();
+		PlayerData.InteractionGroup.SetExtraInteractions (city.Symbol);
 		NotebookManager.Instance.Close ();
 	}
 
-	// returns false if travel was interrupted
-	public bool VisitCity (string symbol) {
-		if (currentCitySymbol == "mile" && symbol == "zima") {
-			cityInfoBox.OpenRouteBlocked ();
-			return false;	
-		}
-		dayCounter.RemoveDays (RouteCost (currentCitySymbol, symbol));
-		currentCitySymbol = symbol;
-		CurrentCity.Visit ();
-		InteractionsManager.Instance.OnVisitCity (currentCitySymbol);
-		MoveIndicator (OnVisit);
-		return true;
-	}
-
-	public void TravelToCity (string symbol) {
-		dayCounter.RemoveDays (RouteCost (currentCitySymbol, symbol));
-		currentCitySymbol = symbol;
-		InteractionsManager.Instance.OnTravelToCity ();
-		MoveIndicator (OnTravel);
-	}
-	
-	void UpdateUnlockedCities () {
-		Models.City[] models = DataManager.GetAllCities ();
-		for (int i = 0; i < models.Length; i ++) {
-			Models.City model = models[i];
-			string symbol = model.symbol;
-			if ((unlockAll || model.unlocked || PlayerData.CityGroup.HasCity (symbol))
-				&& CanVisitCity (symbol)) 
-				Cities[symbol].Unlock ();
-		}
-	}
-
-	void UpdateInteractableCities () {
-		foreach (var city in Cities) {
-			CityButton button = city.Value;
-			button.Interactable = 
-				!button.Locked 
-				&& CanVisitCity (city.Key)
-				&& routesManager.RouteExists (city.Key, currentCitySymbol)
-				|| IsCurrentCity (button.symbol) && dayCounter.HasDays;
-		}
-	}
-
 	void MoveIndicator (System.Action onArrive) {
-		currentCityIndicator.Move (CurrentCity.Position, onArrive);
+		currentCityIndicator.Move (Cities[PlayerData.CityGroup.CurrentCity].Position, onArrive);//CurrentCity.Position, onArrive);
 	}
 
 	void OnVisit () {
-		UpdateInteractableCities ();
 
-		DataManager.SceneContext = currentCitySymbol;
+		string currentCity = PlayerData.CityGroup.CurrentCity;
+
+		DataManager.SceneContext = currentCity;
 		NpcManager.InitNpcs ();
-
-		ParallaxLayerManager.Instance.LoadFromSymbol (currentCitySymbol);
+		ParallaxLayerManager.Instance.LoadFromSymbol (currentCity);
 		
 		NotebookManager.Instance.Close ();
 	}
 
-	void OnTravel () {
-		UpdateInteractableCities ();
+	#if DEBUG
+	void OnGUI () {
+		if (GUILayout.Button ("0 interactions")) {
+			PlayerData.InteractionGroup.Clear ();
+		}
 	}
-
-	int RouteCost (string city1, string city2) {
-		if (!routesManager.RouteExists (city1, city2)) return 0;
-		return routesManager.FindRoute (city1, city2).Cost;
-	}
+	#endif
 }

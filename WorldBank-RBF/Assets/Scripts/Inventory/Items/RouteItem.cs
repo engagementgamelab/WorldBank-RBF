@@ -1,18 +1,25 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
-public class RouteItem : InventoryItem {
+public class RouteItem : ModelItem {
 
 	public override string Name { get { return "Route"; } }
 
-	public readonly Models.Route route;
+	public Terminals Terminals { get; private set; }
+	public int Cost { get; private set; }
 
-	public RouteItem () {}
-	public RouteItem (Models.Unlockable unlockable) {
-		route = DataManager.GetRouteInfo (unlockable.unlocked[0]);
-	}
+	RouteGroup routeGroup;
+	Models.Route routeModel;
 
-	public RouteItem (Models.Route route) {
-		this.route = route;
+	public override void OnInit () {
+
+		routeGroup = Group as RouteGroup;
+		
+		if (routeGroup != null) {
+			routeModel = Array.Find (routeGroup.RouteModels, x => x.symbol == Symbol.Substring (17));
+			Terminals = new Terminals (routeModel.city1, routeModel.city2);
+			Cost = routeModel.cost;
+		}
 	}
 }

@@ -14,20 +14,11 @@ public class MapManager2 : NotebookCanvas {
 		}
 	}
 
-	public CitiesManager citiesManager;
-	public RoutesManager routesManager;
-
 	public override void Open () {
 		Canvas.enabled = true;
-		UpdateMap ();
 	}
 
 	public override void Close () {
 		Canvas.enabled = false;
-	}
-
-	public void UpdateMap () {
-		routesManager.UpdateRoutes ();
-		citiesManager.UpdateCities ();
 	}
 }

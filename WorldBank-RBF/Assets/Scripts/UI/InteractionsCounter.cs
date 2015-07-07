@@ -28,6 +28,15 @@ public class InteractionsCounter : MB {
 		set { Text.text = value.ToString (); }
 	}
 
+	void Start () {
+		PlayerData.InteractionGroup.onUpdate += OnUpdateCount;
+		OnUpdateCount ();
+	}
+
+	void OnUpdateCount () {
+		Count = PlayerData.InteractionGroup.Count;
+	}
+
 	public void Blink () {
 		StartCoroutine (CoBlink ());
 	}

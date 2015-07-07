@@ -10,7 +10,10 @@ public class AnimatedQuadTexture : MB {
 		get { return _MeshRenderer.sharedMaterial; }
 		set {
 			_MeshRenderer.sharedMaterial = value;
-			if (value != null) UpdateSortingLayer ();
+			if (value != null) {
+				gameObject.SetActive (true);
+				UpdateSortingLayer ();
+			}
 		}
 	}
 
