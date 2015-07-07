@@ -65,9 +65,9 @@ public class NetworkManager : MonoBehaviour {
 
     private void ClientAuthenticated(Dictionary<string, object> response) { 
 
-        _sessionCookie = response["session_cookie"].ToString();
+        // _sessionCookie = response["session_cookie"].ToString();
 
-        _currentResponseHandler(response);
+        // _currentResponseHandler(response);
 
     }
 
