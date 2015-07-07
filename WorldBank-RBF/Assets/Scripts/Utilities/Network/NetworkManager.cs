@@ -184,7 +184,7 @@ public class NetworkManager : MonoBehaviour {
         }
         else
         {
-            string exceptionMsg = "WaitForRequest unknown error.";
+            string exceptionMsg = "WaitForRequest error: " + www.error;
             
             throw new Exception(exceptionMsg);
         }

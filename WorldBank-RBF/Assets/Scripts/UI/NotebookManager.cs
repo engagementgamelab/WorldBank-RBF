@@ -157,6 +157,8 @@ public class NotebookManager : MB {
 
 	public void SubmitPlan(Text planNameInput) {
 
+		state =	State.MakingPlan;
+
         Dictionary<string, object> formFields = new Dictionary<string, object>();
 
         Models.Plan plan = new Models.Plan();
