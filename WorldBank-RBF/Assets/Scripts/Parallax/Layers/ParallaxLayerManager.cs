@@ -40,7 +40,17 @@ public class ParallaxLayerManager : MonoBehaviour {
 
 		for (int i = 0; i < Layers.Count; i ++) {
 			ParallaxLayer layer = Layers[i];
-			UnityEngine.Debug.Log("hello");
+			UnityEngine.Debug.Log(Layers[i]);
+
+			for (int j = 0; j < layer.npcs.Count; j++ ){
+				float x = transform.position.x; 
+
+			}
+			/*foreach (var layer in Layers) {
+				float x = transform.position.x; 
+				UnityEngine.Debug.Log (x);
+
+			}
 
 				/*for (int j = 0; j < npcs.Count; j++) {
 					if (npcs!= null){
@@ -48,14 +58,14 @@ public class ParallaxLayerManager : MonoBehaviour {
 					}
 			}*/
 		}
-	}
 
-	for (int i = 0; i < ParallaxLayer.layers ; i++) {
-		for (int i = 0; i <ParallaxNpc.npcs ; i++) {
+	/*for (int k = 0; k < ParallaxLayer.layer ; k++) {
+		for (int j = 0; j < ParallaxNpc.npcs.Count ; j++) {
 
 			float x = transform.position.x;
 		}
-	}
+	}*/
+}
 
 	[SerializeField] int layerCount = 1;
 	[ExposeInWindow, ExposeProperty]
