@@ -15,22 +15,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using JsonFx.Json;
+using Models;
 
 public class DataManager {
     
+    /// <summary>
+    /// Get the current API authentication key.
+    /// </summary>
     public static string APIKey {
         get {
-            return config.authKey;
+            return currentConfig.authKey;
         }
     }
     
+    /// <summary>
+    /// Get the current remote server URL.
+    /// </summary>
     public static string RemoteURL {
         get {
-            #if UNITY_EDITOR
-               return config.serverLocalRoot;
-            #else
-               return config.serverRoot;
-            #endif
+            return currentConfig.root;
         }
     }
     
@@ -46,17 +49,18 @@ public class DataManager {
         }
     }
 
-    private static string currentSceneContext;
-
-    private static JsonReaderSettings _readerSettings = new JsonReaderSettings();
-
     public static List<string> tacticNames;
 
-    private static Models.GameConfig config;
-    private static Models.GameData gameData;
-    private static Models.GameDataTest gameDataTest;
+    static string currentSceneContext;
+    static JsonReaderSettings _readerSettings = new JsonReaderSettings();
 
-    private static Models.ScenarioCard[] currentScenario;
+    static GameConfig config;
+    static GameEnvironment currentConfig;
+
+    static GameData gameData;
+    static GameDataTest gameDataTest;
+
+    static ScenarioCard[] currentScenario;
 
     /// <summary>
     /// Set global game config data, such as API endpoints, given a valid input string
@@ -70,7 +74,16 @@ public class DataManager {
             return;
 
         // Set global config
-        config = JsonReader.Deserialize<Models.GameConfig>(data);
+        config = JsonReader.Deserialize<GameConfig>(data);
+        
+        // Set the current game config based on the environment
+        #if UNITY_EDITOR
+           currentConfig = config.local;
+        #elif DEVELOPMENT_BUILD
+           currentConfig = config.development;
+        #else
+           currentConfig = config.staging;
+        #endif
 
     }
 
@@ -87,12 +100,12 @@ public class DataManager {
         try {
 
             System.Text.StringBuilder output = new System.Text.StringBuilder();
-            // _readerSettings.AddTypeConverter (new Models.GameDataConverter());
+            // _readerSettings.AddTypeConverter (new GameDataConverter());
 
             JsonReader reader = new JsonReader(data, _readerSettings);
             
-            gameData = reader.Deserialize<Models.GameData>();
-            // gameDataTest = reader.Deserialize<Models.GameDataTest>();
+            gameData = reader.Deserialize<GameData>();
+            // gameDataTest = reader.Deserialize<GameDataTest>();
 
             // Store current tactic names in a list
             if(gameData.phase_two.tactics != null && gameData.phase_two.tactics.Length > 0)
@@ -115,8 +128,8 @@ public class DataManager {
     /// <summary>
     /// Get all current cities available in game data.
     /// </summary>
-    /// <returns>An array of Models.City.</returns>
-    public static Models.City[] GetAllCities()    {
+    /// <returns>An array of City.</returns>
+    public static City[] GetAllCities()    {
         
         return gameData.cities;
 
@@ -126,10 +139,10 @@ public class DataManager {
     /// Get a reference to a particular city in the game, given its name
     /// </summary>
     /// <param name="strCityName">Name of the city</param>
-    /// <returns>The Models.City for the given city</returns>
-    public static Models.City GetCityInfo(string strCityName) {
+    /// <returns>The City for the given city</returns>
+    public static City GetCityInfo(string strCityName) {
         
-        foreach(Models.City city in gameData.cities)
+        foreach(City city in gameData.cities)
         {
             if(city.symbol == strCityName)
                 return city;
@@ -142,8 +155,8 @@ public class DataManager {
     /// <summary>
     /// Get all current routes available in game data.
     /// </summary>
-    /// <returns>An array of Models.Route.</returns>
-    public static Models.Route[] GetAllRoutes ()    {
+    /// <returns>An array of Route.</returns>
+    public static Route[] GetAllRoutes ()    {
         
         try {
             return gameData.routes;
@@ -157,10 +170,10 @@ public class DataManager {
     /// Get a reference to a particular route in the game, given its name
     /// </summary>
     /// <param name="strCityName">Name of the route</param>
-    /// <returns>The Models.Route for the given route</returns>
-    public static Models.Route GetRouteInfo(string strRouteName) {
+    /// <returns>The Route for the given route</returns>
+    public static Route GetRouteInfo(string strRouteName) {
         
-        foreach(Models.Route route in gameData.routes)
+        foreach(Route route in gameData.routes)
         {
             if(route.symbol == strRouteName)
                 return route;
@@ -174,7 +187,7 @@ public class DataManager {
     /// Get data for NPC with name specified, or all NPCs in current city.
     /// </summary>
     /// <returns>(Optional) Symbol of the character to get NPC data for; if not used all NPCs in current city are returned.</returns>
-    public static Models.NPC[] GetNPCsForCity(string strSelector=null) {
+    public static NPC[] GetNPCsForCity(string strSelector=null) {
         
         if(strSelector == null) {
             try {
@@ -184,7 +197,7 @@ public class DataManager {
             }
         } else {
 
-            Models.NPC[] npcRef = new Models.NPC[] { Array.Find(gameData.phase_one[currentSceneContext], row => row.character == strSelector) };
+            NPC[] npcRef = new NPC[] { Array.Find(gameData.phase_one[currentSceneContext], row => row.character == strSelector) };
             
             if(npcRef[0] == null)
                 throw new Exception("Unable to find NPC with symbol '" + strSelector + "' for this city (" + currentSceneContext + ")! Fiddlesticks.");
@@ -202,10 +215,10 @@ public class DataManager {
     /// Get a reference to a particular Unlockable given its symbol
     /// </summary>
     /// <param name="strSymbol">Symbol of the unlockable</param>
-    /// <returns>The Models.Unlockable for the symbol matching the input</returns>
-    public static Models.Unlockable GetUnlockableBySymbol(string strSymbol) {
+    /// <returns>The Unlockable for the symbol matching the input</returns>
+    public static Unlockable GetUnlockableBySymbol(string strSymbol) {
         
-        Models.Unlockable unlockRef = new Models.Unlockable[] { 
+        Unlockable unlockRef = new Unlockable[] { 
             Array.Find(gameData.unlockables, unlockable => unlockable.symbol == strSymbol) }[0];
 
         if(unlockRef == null)
@@ -218,8 +231,8 @@ public class DataManager {
     /// Get the phase two scenario card specified by the index input.
     /// </summary>
     /// <param name="cardIndex">Index of the scenario card</param>
-    /// <returns>The Models.ScenarioCard for the symbol matching the input</returns>
-    public static Models.ScenarioCard GetScenarioCardByIndex(int cardIndex) {
+    /// <returns>The ScenarioCard for the symbol matching the input</returns>
+    public static ScenarioCard GetScenarioCardByIndex(int cardIndex) {
 
         if(currentScenario == null)
         {
@@ -227,7 +240,7 @@ public class DataManager {
             Array.Sort(currentScenario);
         }
 
-        Models.ScenarioCard scenarioRef = currentScenario[cardIndex];
+        ScenarioCard scenarioRef = currentScenario[cardIndex];
         
         return scenarioRef;
     }
@@ -242,10 +255,10 @@ public class DataManager {
     /// Get the phase two tactic card specified by the tactic's name.
     /// </summary>
     /// <param name="cardName">Index of the scenario card</param>
-    /// <returns>The Models.TacticCard for the symbol matching the input</returns>
-    public static Models.TacticCard GetTacticCardByName(string cardName) {
+    /// <returns>The TacticCard for the symbol matching the input</returns>
+    public static TacticCard GetTacticCardByName(string cardName) {
 
-        Models.TacticCard tacticRef = gameData.phase_two.tactics.FirstOrDefault(card => card.tactic_name == cardName);
+        TacticCard tacticRef = gameData.phase_two.tactics.FirstOrDefault(card => card.tactic_name == cardName);
 
         if(tacticRef == null)
             throw new Exception("Unable to find TacticCard with tactic name '" + cardName + "'! Damn.");
@@ -257,8 +270,8 @@ public class DataManager {
     /// Get a character's data given its symbol
     /// </summary>
     /// <param name="strCharSymbol">Symbol of the character</param>
-    /// <returns>The Models.Character for the symbol matching the input</returns>
-    public static Models.Character GetDataForCharacter(string strCharSymbol)    {
+    /// <returns>The Character for the symbol matching the input</returns>
+    public static Character GetDataForCharacter(string strCharSymbol)    {
         
         int characterIndex = Array.FindIndex(gameData.characters, row => row.symbol == strCharSymbol);
         

@@ -1,4 +1,4 @@
-﻿/* 
+﻿/*
 World Bank RBF
 Created by Engagement Lab, 2015
 ==============
@@ -20,11 +20,15 @@ class GenerateBuilds {
     // These are the scenes that the build server is going to use
     static string[] SCENES = new string[] {"PhaseOne", "PhaseTwo"};
 
+    // Options for all builds
+    static BuildOptions BUILD_OPTIONS = BuildOptions.Development & BuildOptions.AllowDebugging;
+
     static string SCENE_PREFIX = "Assets/Scenes/";
     static string SCENE_AFFIX = ".unity";
 
     static string APP_NAME = "WorldBank";
     static string TARGET_DIR = "Output";
+
 
     [MenuItem ("Build/Prepare Materials")]
     static void PrepareMaterials () {
@@ -35,26 +39,26 @@ class GenerateBuilds {
     static void PerformMacOSXBuild ()
     {
         string target_dir = APP_NAME + ".app";
-        GenericBuild("Mac", target_dir, BuildTarget.StandaloneOSXUniversal, BuildOptions.None);
+        GenericBuild("Mac", target_dir, BuildTarget.StandaloneOSXUniversal);
     }
     [MenuItem ("Build/Build PC")]
     static void PerformPCBuild ()
     {
-        GenericBuild("PC", APP_NAME, BuildTarget.StandaloneWindows, BuildOptions.None);
+        GenericBuild("PC", APP_NAME, BuildTarget.StandaloneWindows);
     }
 
     [MenuItem ("Build/Build WebGL")]
     static void PerformWebGLBuild ()
     {
         string target_dir = APP_NAME;
-        GenericBuild("WebGL", target_dir, BuildTarget.WebGL, BuildOptions.None);
+        GenericBuild("WebGL", target_dir, BuildTarget.WebGL);
     }
 
     [MenuItem ("Build/Build Web")]
     static void PerformWebBuild ()
     {
-         string target_dir = APP_NAME;
-         GenericBuild("Web", target_dir, BuildTarget.WebPlayer, BuildOptions.None);
+        string target_dir = APP_NAME;
+        GenericBuild("Web", target_dir, BuildTarget.WebPlayer);
     }
 
     [MenuItem ("Build/Build All")]
@@ -67,24 +71,24 @@ class GenerateBuilds {
     }
 
     static string[] FindEnabledScenes() {
-        
+
         List<string> EditorScenes = new List<string>();
-        
-        foreach(string sceneName in SCENES)
+
+        foreach (string sceneName in SCENES)
             EditorScenes.Add(SCENE_PREFIX + sceneName + SCENE_AFFIX);
 
         return EditorScenes.ToArray();
 
     }
 
-    static void GenericBuild(string platform, string buildDir, BuildTarget build_target, BuildOptions build_options)
+    static void GenericBuild(string platform, string buildDir, BuildTarget buildTarget)
     {
 
-        EditorUserBuildSettings.SwitchActiveBuildTarget(build_target);
+        EditorUserBuildSettings.SwitchActiveBuildTarget(buildTarget);
         PrepareMaterials ();
-        
-        string res = BuildPipeline.BuildPlayer(FindEnabledScenes(), TARGET_DIR + "/" + platform + "/" + buildDir, build_target, build_options);
-        
+
+        string res = BuildPipeline.BuildPlayer(FindEnabledScenes(), TARGET_DIR + "/" + platform + "/" + buildDir, buildTarget, BUILD_OPTIONS);
+
         if (res.Length > 0)
             throw new Exception("BuildPlayer failure: " + res);
 

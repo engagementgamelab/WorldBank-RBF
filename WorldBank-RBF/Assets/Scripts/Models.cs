@@ -18,18 +18,29 @@ using JsonFx.Json;
 /// <summary>
 /// Game data models.
 /// </summary>
-public class Models {
+namespace Models {
 
     /// <summary>
     /// Stores game config schema.
     /// </summary>
     public class GameConfig {
 
-        public string serverRoot { get; set; }
-        public string serverLocalRoot { get; set; }
-        public string authKey { get; set; }
+        public GameEnvironment local { get; set; }
+        public GameEnvironment development { get; set; }
+        public GameEnvironment staging { get; set; }
+
         public string parseAppId { get; set; }
         public string parseKey { get; set; }
+
+    }
+
+    /// <summary>
+    /// Stores game config environment schema.
+    /// </summary>
+    public class GameEnvironment {
+
+        public string root { get; set; }
+        public string authKey { get; set; }
 
     }
 
