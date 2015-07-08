@@ -4,25 +4,25 @@ using System.Collections.Generic;
 
 public class TacticsColumn : Column {
 
-	List<UITactic> uiTactics;
+	List<UITactic> uiTactics = new List<UITactic> ();
 
 	void Awake () {
 		// TODO: set it up this way eventually... (similar to how routes & cities are handled)
-		// PlayerData.PlanTacticGroup.onUpdate += OnUpdate;
+		PlayerData.PlanTacticGroup.onUpdate += OnUpdate;
 	}
 
-	/*void OnUpdate () {
+	void OnUpdate () {
 
-		ObjectPool.DestroyAll<UITactic> ();
-		uiTactics = new List<UITactic> ();
+		ObjectPool.Destroy<UITactic> (uiTactics.ConvertAll (x => x.Transform));
+		uiTactics.Clear ();
 
 		foreach (PlanTacticItem tactic in PlayerData.PlanTacticGroup.Items) {
-			if (tactic.Unlocked)
+			if (tactic.Unlocked && tactic.Priority == -1)
 				CreateUITactic (tactic);
 		}
-	}*/
+	}
 
-	public List<UITactic> Init (PlanTacticGroup tactics, TacticPriorityGroup priorities) {
+	/*public List<UITactic> Init (PlanTacticGroup tactics, TacticPriorityGroup priorities) {
 		
 		ObjectPool.DestroyAll<UITactic> ();
 		uiTactics = new List<UITactic> ();
@@ -56,7 +56,7 @@ public class TacticsColumn : Column {
 		foreach (UITactic uiTactic in uiTactics) {
 			uiTactic.OnClickRemove ();
 		}
-	}
+	}*/
 
 	UITactic CreateUITactic (PlanTacticItem tactic) {
 		UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();

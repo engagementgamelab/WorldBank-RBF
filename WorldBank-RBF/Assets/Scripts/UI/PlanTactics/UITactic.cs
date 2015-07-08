@@ -32,7 +32,6 @@ public class UITactic : TacticButton {
 	UITacticSlot slot = null;
 
 	void Awake () {
-		Text.text = "incentivise improvement in patient/provider relations";
 		SetRemoveButtonActive (false);
 	}
 

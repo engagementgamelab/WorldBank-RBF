@@ -5,11 +5,21 @@ using System.Collections.Generic;
 public class PrioritiesColumn : Column {
 
 	int slotCount = 6;
+	List<UITactic> uiTactics;
 
 	void Awake () {
-		
 		CreateTacticSlots ();
-	
+		PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
+	}
+
+	public void OnUpdate () {
+		
+		ObjectPool.Destroy<UITactic> (uiTactics.ConvertAll (x => x.Transform));
+		uiTactics.Clear ();
+
+		foreach (PlanTacticItem tactic in PlayerData.TacticPriorityGroup.Items) {
+			CreateUITactic (tactic);
+		}		
 	}
 
 	public void CreateTacticSlots () {
@@ -43,5 +53,4 @@ public class PrioritiesColumn : Column {
 		}
 		return group;
 	}
-
 }

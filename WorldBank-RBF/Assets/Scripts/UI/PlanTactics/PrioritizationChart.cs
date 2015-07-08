@@ -32,8 +32,8 @@ public class PrioritizationChart : MonoBehaviour {
 		if (open) return;
 		tacticsColumn.gameObject.SetActive (true);
 		prioritiesColumn.gameObject.SetActive (true);
-		prioritiesColumn.SetPriorities (
-			tacticsColumn.Init (PlayerData.PlanTacticGroup, PlayerData.TacticPriorityGroup));
+		// prioritiesColumn.SetPriorities (
+		// 	tacticsColumn.Init (PlayerData.PlanTacticGroup, PlayerData.TacticPriorityGroup));
 		open = true;
 	}
 

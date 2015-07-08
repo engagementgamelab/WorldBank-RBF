@@ -179,6 +179,16 @@ public class ObjectPool : MonoBehaviour {
 		GetPool<T> ().ReleaseInstance (instance);
 	}
 
+	public static void Destroy<T> (List<Transform> instances) where T : MonoBehaviour {
+		if (instance == null || instance.Count == 0) return;
+		StartupLoad ();
+		ObjectPool p = GetPool<T> ();
+		int count = instance.Count;
+		for (int i = 0; i < count; i ++) {
+			p.ReleaseInstance (instance[i]);
+		}
+	}
+
 	public static void DestroyAll<T> () where T : MonoBehaviour {
 		StartupLoad ();
 		GetPool<T> ().ReleaseAllInstances ();
