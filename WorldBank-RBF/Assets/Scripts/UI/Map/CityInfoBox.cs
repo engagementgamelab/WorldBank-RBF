@@ -57,7 +57,7 @@ public class CityInfoBox : MB {
 	}
 
 	void UnlockRoute () {
-		PlayerData.LockRoute ("mile_to_zima");
+		PlayerData.RouteGroup.Lock ("unlockable_route_mile_to_zima");
 		PlayerData.UnlockImplementation("unlockable_route_kibari_to_mile");
 		Close ();
 	}
@@ -72,6 +72,10 @@ public class CityInfoBox : MB {
 	}
 
 	void Visit (CityItem city, RouteItem route) {
+		if (route.Terminals == new Terminals ("mile", "zima")) {
+			OpenRouteBlocked ();
+			return;
+		}
 		CitiesManager.Instance.VisitCity (city, route);
 		Close ();
 	}

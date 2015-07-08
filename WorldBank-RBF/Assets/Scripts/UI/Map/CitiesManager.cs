@@ -64,11 +64,11 @@ public class CitiesManager : MB {
 	public void StayExtraDay (CityItem city) {
 		PlayerData.DayGroup.Remove ();
 		PlayerData.InteractionGroup.SetExtraInteractions (city.Symbol);
-		NotebookManager.Instance.Close ();
+		OnVisit ();
 	}
 
 	void MoveIndicator (System.Action onArrive) {
-		currentCityIndicator.Move (Cities[PlayerData.CityGroup.CurrentCity].Position, onArrive);//CurrentCity.Position, onArrive);
+		currentCityIndicator.Move (Cities[PlayerData.CityGroup.CurrentCity].Position, onArrive);
 	}
 
 	void OnVisit () {
