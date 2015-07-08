@@ -24,7 +24,7 @@ public class NetworkManager : MonoBehaviour {
     private static NetworkManager _instance = null;
 
     private static Action<Dictionary<string, object>> _currentResponseHandler;
-    private static string _sessionCookie;
+    public static string _sessionCookie;
     public static string _userCookie;
         
     public static NetworkManager Instance {
@@ -40,6 +40,16 @@ public class NetworkManager : MonoBehaviour {
             }
             return _instance;
         }
+    }
+
+    public string Cookie {
+        
+        set {
+            _sessionCookie = value;
+
+            Debug.Log("Set cookie to " + _sessionCookie);
+        }
+
     }
 
     public static Action<Dictionary<string, object>> CurrentResponseHandler {
@@ -224,8 +234,13 @@ public class NetworkManager : MonoBehaviour {
         // Deserialize the response and handle it below
         Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
 
+        // User is not logged in
+        if(www.responseHeaders["STATUS"].ToString().Contains("401"))
+        {
+            Debug.LogWarning("User is not logged in. Call to " + url + " rejected.");
+        }
         // check for errors
-        if (www.error == null) 
+        else if (www.error == null) 
         {
             if(responseAction != null)
             {
@@ -244,7 +259,7 @@ public class NetworkManager : MonoBehaviour {
                 exceptionMsg = "General WWW issue: " + www.error;
                 throw new Exception(exceptionMsg);
             }
-            else if(responseAction != null) 
+            else if(responseAction != null && response["error"] == null) 
             {
                 responseAction(response);
                 yield return null;

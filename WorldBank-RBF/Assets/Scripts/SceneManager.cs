@@ -66,7 +66,9 @@ public class SceneManager : MonoBehaviour {
 			return;
 	
 		// Set global game data if needed
-		SetGameData();
+		// SetGameData();
+
+		NetworkManager.Instance.Cookie = response["session_cookie"].ToString();
 
 		// Authenticate player -- user/pass is hard-coded if in editor
 		if(!PlayerManager.Instance.Authenticated)
