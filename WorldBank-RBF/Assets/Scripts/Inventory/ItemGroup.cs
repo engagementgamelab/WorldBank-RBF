@@ -39,6 +39,7 @@ public abstract class ItemGroup {
 	public abstract InventoryItem Remove (InventoryItem item=null);
 	public abstract void Clear ();
 	public abstract void Transfer (ItemGroup toGroup, InventoryItem item);
+	public abstract bool Contains (InventoryItem item);
 	public abstract void SetItemOrder (InventoryItem item, int position);
 	public abstract void MoveItemUp (InventoryItem item);
 	public abstract void MoveItemDown (InventoryItem item);
@@ -123,6 +124,10 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	public override void Transfer (ItemGroup toGroup, InventoryItem item) {
 		Remove (item);
 		toGroup.Add (item);
+	}
+
+	public override bool Contains (InventoryItem item) {
+		return Items.Contains (item);
 	}
 
 	public override void SetItemOrder (InventoryItem item, int position) {

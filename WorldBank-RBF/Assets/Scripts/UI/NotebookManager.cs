@@ -164,7 +164,7 @@ public class NotebookManager : MB {
         Models.Plan plan = new Models.Plan();
 
         plan.name = planNameInput.text;
-        plan.tactics = PlayerData.PlanTacticGroup.GetUniqueTacticSymbols ();
+        plan.tactics = PlayerData.TacticPriorityGroup.Tactics;
 
         formFields.Add("plan", plan);
 

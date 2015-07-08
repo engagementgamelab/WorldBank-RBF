@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class PrioritiesColumn : Column {
 
 	int slotCount = 6;
-	List<UITactic> uiTactics;
+	List<UITacticSlot> uiSlots = new List<UITacticSlot> ();
+	List<UITactic> uiTactics = new List<UITactic> ();
 
 	void Awake () {
 		CreateTacticSlots ();
@@ -17,8 +18,13 @@ public class PrioritiesColumn : Column {
 		ObjectPool.Destroy<UITactic> (uiTactics.ConvertAll (x => x.Transform));
 		uiTactics.Clear ();
 
+		ActivateSlots ();
+
 		foreach (PlanTacticItem tactic in PlayerData.TacticPriorityGroup.Items) {
-			CreateUITactic (tactic);
+			int priority = tactic.Priority;
+			UITactic t = CreateUITactic (tactic);
+			DeactivateSlot (uiSlots[priority]);
+			t.Transform.SetSiblingIndex (priority);
 		}		
 	}
 
@@ -30,27 +36,26 @@ public class PrioritiesColumn : Column {
 			if (i >= 2 && i < 5) { title = "Medium priority"; }
 			if (i == 5)	{ title = "Lower priority"; }
 			slot.Init (this, content, title);
+			uiSlots.Add (slot);
 		}
 	}
 
-	public void SetPriorities (List<UITactic> priorities) {
-		// super hacky
-		foreach (UITactic tactic in priorities) {
-			int priority = tactic.Tactic.Priority;
-			tactic.OnClick ();
-			content.GetChild (priority).GetScript<UITacticSlot> ().OnClick ();
+	UITactic CreateUITactic (PlanTacticItem tactic) {
+		UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
+		uiTactic.Init (this, content, tactic);
+		uiTactics.Add (uiTactic);
+		return uiTactic;
+	}
+
+	void ActivateSlots () {
+		foreach (UITacticSlot slot in uiSlots) {
+			slot.gameObject.SetActive (true);
+			slot.Transform.SetSiblingIndex (slot.SiblingIndex);
 		}
 	}
 
-	public TacticPriorityGroup GetPriorities () {
-		TacticPriorityGroup group = new TacticPriorityGroup ();
-		foreach (Transform child in content.transform) {
-			UITactic tactic = child.GetScript<UITactic> ();
-			if (tactic != null) {
-				tactic.Tactic.Priority = child.GetSiblingIndex ();
-				group.Add (tactic.Tactic);
-			}
-		}
-		return group;
+	void DeactivateSlot (UITacticSlot slot) {
+		slot.gameObject.SetActive (false);
+		slot.Transform.SetAsLastSibling ();
 	}
 }

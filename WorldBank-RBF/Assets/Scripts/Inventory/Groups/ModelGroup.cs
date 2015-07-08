@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ModelGroup<T> : ItemGroup<T> where T : ModelItem, new () {
 
-	public ModelGroup (string prefix) {
+	public ModelGroup (string prefix="") {
 		Models.Unlockable[] unlockables = DataManager.GetUnlockablesWithPrefix (prefix);
 		foreach (Models.Unlockable unlockable in unlockables) {
 			T t = new T () { Model = unlockable };

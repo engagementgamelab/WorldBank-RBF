@@ -31,39 +31,27 @@ public class UITactic : TacticButton {
 
 	UITacticSlot slot = null;
 
-	void Awake () {
-		SetRemoveButtonActive (false);
-	}
-
 	public void Init (Column column, Transform contentParent, PlanTacticItem tactic) {
 		this.tactic = tactic;
+		RemoveButton.gameObject.SetActive (tactic.Priority > -1);	
 		Init (column, contentParent, tactic.Title);
 	}
 
 	public override void OnClick () {
 		selectedTactic = this;
+
+		// Used to set description
 		Events.instance.Raise (new SelectTacticEvent (tactic));
 	}
 
 	public void OnClickRemove () {
-		if (slot == null) return;
-		slot.OnRemoveTactic ();
-		SetParent (contentParent);
-		Transform.SetAsLastSibling ();
-		SetRemoveButtonActive (false);
+		Events.instance.Raise (new TacticSlotEvent (tactic));
 		slot = null;
 	}
 
 	public void MoveToSlot (UITacticSlot newSlot) {
-		if (slot != null) { slot.OnRemoveTactic (); }
 		slot = newSlot;
-		Parent = newSlot.Parent;
-		Transform.SetSiblingIndex (newSlot.SiblingIndex);
-		SetRemoveButtonActive (true);
+		Events.instance.Raise (new TacticSlotEvent (tactic, slot.SiblingIndex));
 		selectedTactic = null;
-	}
-
-	void SetRemoveButtonActive (bool active) {
-		RemoveButton.gameObject.SetActive (active);	
 	}
 }

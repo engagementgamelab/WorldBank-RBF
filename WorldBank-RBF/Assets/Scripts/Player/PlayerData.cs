@@ -9,17 +9,12 @@ Created by Engagement Lab, 2015
 ==============
 */
 using UnityEngine;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
-public class PlayerData : MonoBehaviour {
+public class PlayerData {
 
-	private static List<Models.Unlockable> playerImplementations = new List<Models.Unlockable>();
-	private static Dictionary<string, int> playerUnlockCounts = new Dictionary<string, int>();
-
-	static Inventory inventory 						= new Inventory ();
+	static Inventory inventory 						= null;
 	static PlanTacticGroup planTacticGroup 			= new PlanTacticGroup ();
 	static TacticPriorityGroup tacticPriorityGroup 	= new TacticPriorityGroup ();
 	static DialogueGroup dialogueGroup 				= new DialogueGroup ();
@@ -29,7 +24,19 @@ public class PlayerData : MonoBehaviour {
 	static CityGroup cityGroup 						= new CityGroup ();
 
 	public static Inventory Inventory {
-		get { return inventory; }
+		get { 
+			if (inventory == null) {
+				inventory = new Inventory ();
+				inventory.Add (planTacticGroup);
+				inventory.Add (tacticPriorityGroup);
+				inventory.Add (dialogueGroup);
+				inventory.Add (dayGroup);
+				inventory.Add (interactionGroup);
+				inventory.Add (routeGroup);
+				inventory.Add (cityGroup);
+			}
+			return inventory; 
+		}
 	}
 
 	public static PlanTacticGroup PlanTacticGroup {
@@ -58,16 +65,6 @@ public class PlayerData : MonoBehaviour {
 
 	public static CityGroup CityGroup {
 		get { return cityGroup; }
-	}
-
-	void Awake () {
-		inventory.Add (planTacticGroup);
-		inventory.Add (tacticPriorityGroup);
-		inventory.Add (dialogueGroup);
-		inventory.Add (dayGroup);
-		inventory.Add (interactionGroup);
-		inventory.Add (routeGroup);
-		inventory.Add (cityGroup);
 	}
 
 	/// <summary>

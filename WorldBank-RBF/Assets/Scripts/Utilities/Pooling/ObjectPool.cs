@@ -180,12 +180,12 @@ public class ObjectPool : MonoBehaviour {
 	}
 
 	public static void Destroy<T> (List<Transform> instances) where T : MonoBehaviour {
-		if (instance == null || instance.Count == 0) return;
+		if (instances == null || instances.Count == 0) return;
 		StartupLoad ();
 		ObjectPool p = GetPool<T> ();
-		int count = instance.Count;
+		int count = instances.Count;
 		for (int i = 0; i < count; i ++) {
-			p.ReleaseInstance (instance[i]);
+			p.ReleaseInstance (instances[i]);
 		}
 	}
 
