@@ -53,12 +53,12 @@ public class NetworkManager : MonoBehaviour {
 
     }
 
-    public void Authenticate() {
+    public void Authenticate(Action<Dictionary<string, object>> responseHandler=null) {
 
         PostURL(
             "/auth/",
             new Dictionary<string, object>() {{ "key", DataManager.APIKey }},
-            ClientAuthenticated
+            responseHandler
         );
 
     }

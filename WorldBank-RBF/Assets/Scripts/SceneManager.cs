@@ -43,12 +43,12 @@ public class SceneManager : MonoBehaviour {
 		// We need our game config data before calling any remote endpoints
 		LoadGameConfig();
 
-		NetworkManager.CurrentResponseHandler = ClientAuthenticated;
-		NetworkManager.Instance.Authenticate();
+		NetworkManager.Instance.Authenticate(ClientAuthenticated);
 
 		DataManager.SceneContext = sceneName;
 	
 		// Set global game data if needed
+		// TODO: This needs to not be in awake method
 		SetGameData();
 
       
