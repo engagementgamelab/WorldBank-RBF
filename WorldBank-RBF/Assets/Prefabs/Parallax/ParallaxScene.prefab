@@ -911,7 +911,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 417226}
   - 114: {fileID: 11487738}
-  - 114: {fileID: 11465208}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -2359,6 +2358,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &192730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 419430}
+  - 114: {fileID: 11493296}
+  m_Layer: 0
+  m_Name: ParseInitializeBehaviour
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &192740
 GameObject:
   m_ObjectHideFlags: 1
@@ -2582,6 +2597,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 458002}
   m_RootOrder: 4
+--- !u!4 &419430
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192730}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 458002}
+  m_RootOrder: 6
 --- !u!4 &419672
 Transform:
   m_ObjectHideFlags: 1
@@ -2669,7 +2696,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100170}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -55.0517883, y: 90.1522522, z: -139.782623}
+  m_LocalPosition: {x: -56.0517883, y: 90.1522522, z: -139.782623}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 482402}
@@ -2690,6 +2717,7 @@ Transform:
   - {fileID: 415284}
   - {fileID: 417226}
   - {fileID: 420874}
+  - {fileID: 419430}
   - {fileID: 463164}
   - {fileID: 480310}
   - {fileID: 469948}
@@ -2734,7 +2762,7 @@ Transform:
   - {fileID: 22416130}
   - {fileID: 477688}
   m_Father: {fileID: 458002}
-  m_RootOrder: 6
+  m_RootOrder: 7
 --- !u!4 &469948
 Transform:
   m_ObjectHideFlags: 1
@@ -2746,7 +2774,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 458002}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!4 &471880
 Transform:
   m_ObjectHideFlags: 1
@@ -2848,7 +2876,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 458002}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!4 &482402
 Transform:
   m_ObjectHideFlags: 1
@@ -6373,19 +6401,6 @@ MonoBehaviour:
   m_PreferredHeight: 100
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
---- !u!114 &11465208
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 131160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 762677091, guid: 6dbd05cd4bf02482d893181f5babbf3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  applicationID: nbmOyFpreG3d5mU0GwIhn0UoKtpOwuaAx45PCLge
-  dotnetKey: yg6mD0p0o916znXh5RbQS9DqGdL4Qji0sM11E2Hw
 --- !u!114 &11465444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7516,6 +7531,19 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &11493296
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 762677091, guid: 6dbd05cd4bf02482d893181f5babbf3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  applicationID: nbmOyFpreG3d5mU0GwIhn0UoKtpOwuaAx45PCLge
+  dotnetKey: yg6mD0p0o916znXh5RbQS9DqGdL4Qji0sM11E2Hw
 --- !u!114 &11493476
 MonoBehaviour:
   m_ObjectHideFlags: 1
