@@ -3,9 +3,9 @@ using System.Collections;
 
 public class SelectTacticEvent : GameEvent {
 
-	public readonly PlanTacticItem tactic;
+	public readonly TacticItem tactic;
 
-	public SelectTacticEvent (PlanTacticItem tactic) {
+	public SelectTacticEvent (TacticItem tactic) {
 		this.tactic = tactic;
 	}
 }

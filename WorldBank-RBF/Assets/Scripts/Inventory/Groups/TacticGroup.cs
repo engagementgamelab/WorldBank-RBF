@@ -2,6 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlanTacticGroup : ModelGroup<PlanTacticItem> {
+public class TacticGroup : ModelGroup<TacticItem> {
 	public override string Name { get { return "Plan Tactics"; } }
 }

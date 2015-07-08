@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlanTacticItem : ModelItem {
+public class TacticItem : ModelItem {
 	
-	public override string Name { get { return "Plan Tactic"; } }
+	public override string Name { get { return "Tactic"; } }
 	
 	public string Title {
 		get { return Model.title; }

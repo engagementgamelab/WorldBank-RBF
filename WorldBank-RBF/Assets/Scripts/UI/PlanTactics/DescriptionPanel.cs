@@ -19,7 +19,7 @@ public class DescriptionPanel : MB {
 	}
 
 	void OnSelectTacticEvent (SelectTacticEvent e) {
-		PlanTacticItem tactic = e.tactic;
+		TacticItem tactic = e.tactic;
 		Text.text = tactic.Description;
 	}
 }

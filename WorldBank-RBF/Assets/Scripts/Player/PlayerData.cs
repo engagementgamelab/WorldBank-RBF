@@ -15,7 +15,7 @@ using System.Collections.Generic;
 public class PlayerData {
 
 	static Inventory inventory 						= null;
-	static PlanTacticGroup planTacticGroup 			= new PlanTacticGroup ();
+	static TacticGroup tacticGroup 					= new TacticGroup ();
 	static TacticPriorityGroup tacticPriorityGroup 	= new TacticPriorityGroup ();
 	static DialogueGroup dialogueGroup 				= new DialogueGroup ();
 	static DayGroup dayGroup 						= new DayGroup (15);
@@ -27,7 +27,7 @@ public class PlayerData {
 		get { 
 			if (inventory == null) {
 				inventory = new Inventory ();
-				inventory.Add (planTacticGroup);
+				inventory.Add (tacticGroup);
 				inventory.Add (tacticPriorityGroup);
 				inventory.Add (dialogueGroup);
 				inventory.Add (dayGroup);
@@ -39,8 +39,8 @@ public class PlayerData {
 		}
 	}
 
-	public static PlanTacticGroup PlanTacticGroup {
-		get { return planTacticGroup; }
+	public static TacticGroup TacticGroup {
+		get { return tacticGroup; }
 	}
 
 	public static TacticPriorityGroup TacticPriorityGroup {
@@ -79,16 +79,7 @@ public class PlayerData {
 		} else if (strSymbol.StartsWith ("unlockable_dialogue_")) {
 			DialogueGroup.Unlock (strSymbol);
 		} else {
-			PlanTacticGroup.Unlock (strSymbol);
+			TacticGroup.Unlock (strSymbol);
 		}
-
-	}
-
-	public static void SetTactics (PlanTacticGroup tacticGroup) {
-		planTacticGroup = tacticGroup;
-	}
-
-	public static void SetPriorities (TacticPriorityGroup priorityGroup) {
-		tacticPriorityGroup = priorityGroup;
 	}
 }

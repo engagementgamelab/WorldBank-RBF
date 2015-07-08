@@ -7,7 +7,7 @@ public class TacticsColumn : Column {
 	List<UITactic> uiTactics = new List<UITactic> ();
 
 	void Awake () {
-		PlayerData.PlanTacticGroup.onUpdate += OnUpdate;
+		PlayerData.TacticGroup.onUpdate += OnUpdate;
 		PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
 	}
 
@@ -16,13 +16,13 @@ public class TacticsColumn : Column {
 		ObjectPool.Destroy<UITactic> (uiTactics.ConvertAll (x => x.Transform));
 		uiTactics.Clear ();
 
-		foreach (PlanTacticItem tactic in PlayerData.PlanTacticGroup.Items) {
+		foreach (TacticItem tactic in PlayerData.TacticGroup.Items) {
 			if (tactic.Unlocked && tactic.Priority == -1)
 				CreateUITactic (tactic);
 		}
 	}
 
-	UITactic CreateUITactic (PlanTacticItem tactic) {
+	UITactic CreateUITactic (TacticItem tactic) {
 		UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
 		uiTactic.Init (this, content, tactic);
 		uiTactics.Add (uiTactic);

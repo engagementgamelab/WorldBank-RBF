@@ -26,12 +26,12 @@ public class UITactic : TacticButton {
 		}
 	}
 
-	PlanTacticItem tactic;
-	public PlanTacticItem Tactic { get { return tactic; } }
+	TacticItem tactic;
+	public TacticItem Tactic { get { return tactic; } }
 
 	UITacticSlot slot = null;
 
-	public void Init (Column column, Transform contentParent, PlanTacticItem tactic) {
+	public void Init (Column column, Transform contentParent, TacticItem tactic) {
 		this.tactic = tactic;
 		RemoveButton.gameObject.SetActive (tactic.Priority > -1);	
 		Init (column, contentParent, tactic.Title);

@@ -20,7 +20,7 @@ public class PrioritiesColumn : Column {
 
 		ActivateSlots ();
 
-		foreach (PlanTacticItem tactic in PlayerData.TacticPriorityGroup.Items) {
+		foreach (TacticItem tactic in PlayerData.TacticPriorityGroup.Items) {
 			int priority = tactic.Priority;
 			UITactic t = CreateUITactic (tactic);
 			DeactivateSlot (uiSlots[priority]);
@@ -40,7 +40,7 @@ public class PrioritiesColumn : Column {
 		}
 	}
 
-	UITactic CreateUITactic (PlanTacticItem tactic) {
+	UITactic CreateUITactic (TacticItem tactic) {
 		UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
 		uiTactic.Init (this, content, tactic);
 		uiTactics.Add (uiTactic);
