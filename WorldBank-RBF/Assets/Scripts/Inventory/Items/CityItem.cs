@@ -8,10 +8,7 @@ public class CityItem : InventoryItem {
 	public string Symbol { get { return Model.symbol; } }
 	public Models.City Model { get; private set; }
 
-	// bool visited = false;
 	public bool Visited { get; set; }
-
-	// bool stayedExtraDay = false;
 	public bool StayedExtraDay { get; set; }
 
 	public CityItem () {}

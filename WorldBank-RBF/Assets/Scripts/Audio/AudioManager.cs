@@ -13,20 +13,14 @@ public class AudioManager : MonoBehaviour {
 		inventory.Add (new AmbienceGroup ());
 		inventory.Add (new SfxGroup ());
 		inventory.Add (new MusicGroup ());
-		PlayerData.CityGroup.onUpdate += OnSetCity;
-		// PlayAmbience ();
 	}
 
-	void OnSetCity () {
-		Ambiences.Play (PlayerData.CityGroup.CurrentCity);
+	void Start () {
+		PlayerData.CityGroup.onUpdateCurrentCity += OnSetCity;
+		Ambiences.Play ("capitol");
 	}
 
-	/*void PlayAmbience () {
-		PlayClip (Ambiences.Get ("capitol"), true);
+	void OnSetCity (string city) {
+		Ambiences.Play (city);
 	}
-
-	void PlayClip (AudioClip clip, bool loop) {
-		AudioObject o = ObjectPool.Instantiate<AudioObject> ();
-		o.Play (clip, loop);
-	}*/
 }
