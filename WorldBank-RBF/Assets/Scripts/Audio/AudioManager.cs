@@ -13,7 +13,12 @@ public class AudioManager : MonoBehaviour {
 		inventory.Add (new AmbienceGroup ());
 		inventory.Add (new SfxGroup ());
 		inventory.Add (new MusicGroup ());
+		PlayerData.CityGroup.onUpdate += OnSetCity;
 		// PlayAmbience ();
+	}
+
+	void OnSetCity () {
+		Ambiences.Play (PlayerData.CityGroup.CurrentCity);
 	}
 
 	/*void PlayAmbience () {

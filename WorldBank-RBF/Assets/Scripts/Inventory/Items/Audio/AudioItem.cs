@@ -13,9 +13,9 @@ public class AudioItem : InventoryItem {
 
 	AudioObject audioObject = null;
 
-	public void Play () {
+	public void Play (bool loop) {
 		audioObject = ObjectPool.Instantiate<AudioObject> ();
-		// audioObject.Play (Clip, loop);
+		audioObject.Play (Clip, loop);
 	}
 
 	public void Stop () {

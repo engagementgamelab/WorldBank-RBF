@@ -9,15 +9,19 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 		get { return Items.ConvertAll (x => (AudioItem)x); }
 	}
 
-	protected struct Settings {
+	protected struct PlaySettings {
 		
 		public bool allowSimultaneous;
 		public bool loop;
 
-		public Settings (bool allowSimultaneous, bool loop) {
+		public PlaySettings (bool allowSimultaneous, bool loop) {
 			this.allowSimultaneous = allowSimultaneous;
 			this.loop = loop;
 		}
+	}
+
+	protected virtual PlaySettings Settings {
+		get { return new PlaySettings (false, true); }
 	}
 
 	List<AudioItem> playing = new List<AudioItem> ();
@@ -34,13 +38,18 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 		}
 	}
 
-	/*public AudioClip Play (AudioItem item) {
-		if (!AllowSimultaneousClips) {
-
+	public void Play (AudioItem item) {
+		if (!Settings.allowSimultaneous) {
+			StopAll ();
 		}
+		item.Play (Settings.loop);
+		playing.Add (item);
 	}
 
 	void StopAll () {
-
-	}*/
+		foreach (AudioItem item in playing) {
+			item.Stop ();
+		}
+		playing.Clear ();
+	}
 }
