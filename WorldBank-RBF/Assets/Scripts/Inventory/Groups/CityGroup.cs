@@ -6,7 +6,7 @@ public class CityGroup : ItemGroup<CityItem> {
 		
 	public delegate void OnUpdateCurrentCity (string symbol);
 
-	public override string Name { get { return "Cities"; } }
+	public override string ID { get { return "cities"; } }
 
 	string currentCity = "capitol";
 	public string CurrentCity {

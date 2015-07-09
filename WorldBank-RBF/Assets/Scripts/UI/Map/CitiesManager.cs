@@ -81,12 +81,4 @@ public class CitiesManager : MB {
 		
 		NotebookManager.Instance.Close ();
 	}
-
-	#if DEBUG
-	void OnGUI () {
-		if (GUILayout.Button ("0 interactions")) {
-			PlayerData.InteractionGroup.Clear ();
-		}
-	}
-	#endif
 }

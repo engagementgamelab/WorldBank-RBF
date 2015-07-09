@@ -14,57 +14,50 @@ using System.Collections.Generic;
 
 public class PlayerData {
 
-	static Inventory inventory 						= null;
-	static TacticGroup tacticGroup 					= new TacticGroup ();
-	static TacticPriorityGroup tacticPriorityGroup 	= new TacticPriorityGroup ();
-	static DialogueGroup dialogueGroup 				= new DialogueGroup ();
-	static DayGroup dayGroup 						= new DayGroup (15);
-	static InteractionGroup interactionGroup 		= new InteractionGroup ();
-	static RouteGroup routeGroup 					= new RouteGroup ();
-	static CityGroup cityGroup 						= new CityGroup ();
+	static Inventory inventory = null;
 
 	public static Inventory Inventory {
 		get { 
 			if (inventory == null) {
 				inventory = new Inventory ();
-				inventory.Add (tacticGroup);
-				inventory.Add (tacticPriorityGroup);
-				inventory.Add (dialogueGroup);
-				inventory.Add (dayGroup);
-				inventory.Add (interactionGroup);
-				inventory.Add (routeGroup);
-				inventory.Add (cityGroup);
+				inventory.Add (new TacticGroup ());
+				inventory.Add (new TacticPriorityGroup ());
+				inventory.Add (new DialogueGroup ());
+				inventory.Add (new DayGroup (15));
+				inventory.Add (new InteractionGroup ());
+				inventory.Add (new RouteGroup ());
+				inventory.Add (new CityGroup ());
 			}
 			return inventory; 
 		}
 	}
 
 	public static TacticGroup TacticGroup {
-		get { return tacticGroup; }
+		get { return (TacticGroup)Inventory["tactics"]; }
 	}
 
 	public static TacticPriorityGroup TacticPriorityGroup {
-		get { return tacticPriorityGroup; }
+		get { return (TacticPriorityGroup)Inventory["priorities"]; }
 	}
 
 	public static DialogueGroup DialogueGroup {
-		get { return dialogueGroup; }
+		get { return (DialogueGroup)Inventory["dialogues"]; }
 	}
 
 	public static DayGroup DayGroup {
-		get { return dayGroup; }
+		get { return (DayGroup)Inventory["days"]; }
 	}
 
 	public static InteractionGroup InteractionGroup {
-		get { return interactionGroup; }
+		get { return (InteractionGroup)Inventory["interactions"]; }
 	}
 
 	public static RouteGroup RouteGroup {
-		get { return routeGroup; }
+		get { return (RouteGroup)Inventory["routes"]; }
 	}
 
 	public static CityGroup CityGroup {
-		get { return cityGroup; }
+		get { return (CityGroup)Inventory["cities"]; }
 	}
 
 	/// <summary>

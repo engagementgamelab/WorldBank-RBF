@@ -7,7 +7,7 @@ public delegate void OnEmpty ();
 
 public abstract class ItemGroup {
 
-	public abstract string Name { get; }
+	public abstract string ID { get; }
 
 	protected List<InventoryItem> items = new List<InventoryItem> ();
 	public List<InventoryItem> Items {
@@ -50,7 +50,7 @@ public abstract class ItemGroup {
 
 public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	
-	public override string Name { get { return ""; } }
+	public override string ID { get { return ""; } }
 
 	public override void Initialize (Inventory inventory) {
 		this.inventory = inventory;

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TacticPriorityGroup : ItemGroup<TacticItem> {
 	
-	public override string Name { get { return "Priorities"; } }
+	public override string ID { get { return "priorities"; } }
 
 	public string[] Tactics {
 		get { return Items.ConvertAll (x => ((TacticItem)x).Symbol).ToArray (); }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class RouteGroup : ModelGroup<RouteItem> {
 
-	public override string Name { get { return "Routes"; } }
+	public override string ID { get { return "routes"; } }
 
 	public List<RouteItem> Routes {
 		get { return Items.ConvertAll (x => (RouteItem)x); }

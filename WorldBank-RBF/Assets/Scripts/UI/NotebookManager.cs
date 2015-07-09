@@ -194,8 +194,7 @@ public class NotebookManager : MB {
 		if(dayCounter == null)
 			return;
 
-		// if (!dayCounter.HasDays && !InteractionsManager.Instance.HasInteractions) {
-		if (PlayerData.DayGroup.Empty && PlayerData.InteractionGroup.Empty) {//!InteractionsManager.Instance.HasInteractions) {
+		if (PlayerData.DayGroup.Empty && PlayerData.InteractionGroup.Empty) {
 			state = State.MakingPlan;
 		}
 	}

@@ -7,8 +7,7 @@ public class ModelGroup<T> : ItemGroup<T> where T : ModelItem, new () {
 	public ModelGroup (string prefix="") {
 		Models.Unlockable[] unlockables = DataManager.GetUnlockablesWithPrefix (prefix);
 		foreach (Models.Unlockable unlockable in unlockables) {
-			T t = new T () { Model = unlockable };
-			Add (t);
+			Add (new T () { Model = unlockable });
 		}
 	}
 
