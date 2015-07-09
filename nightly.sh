@@ -10,6 +10,7 @@
 # ==============
 
 OUTPUT_NAME=$1;
+MANUAL_BUILD=$2;
 EXTERNAL_BUILDS_DIR="/Library/BuildArtifacts";
 CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 

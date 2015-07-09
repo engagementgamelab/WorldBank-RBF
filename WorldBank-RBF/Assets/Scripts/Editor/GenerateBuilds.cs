@@ -21,8 +21,9 @@ class GenerateBuilds {
     static string[] SCENES = new string[] {"PhaseOne", "PhaseTwo"};
 
     // Options for all builds
-    static BuildOptions BUILD_OPTIONS = BuildOptions.Development & BuildOptions.AllowDebugging;
+    static BuildOptions BUILD_OPTIONS = BuildOptions.Development | BuildOptions.AllowDebugging;
 
+    // Scene directory
     static string SCENE_PREFIX = "Assets/Scenes/";
     static string SCENE_AFFIX = ".unity";
 
@@ -38,27 +39,24 @@ class GenerateBuilds {
     [MenuItem ("Build/Build Mac OS X Universal")]
     static void PerformMacOSXBuild ()
     {
-        string target_dir = APP_NAME + ".app";
-        GenericBuild("Mac", target_dir, BuildTarget.StandaloneOSXUniversal);
+        GenericBuild("Mac", BuildTarget.StandaloneOSXUniversal);
     }
     [MenuItem ("Build/Build PC")]
     static void PerformPCBuild ()
     {
-        GenericBuild("PC", APP_NAME, BuildTarget.StandaloneWindows);
+        GenericBuild("PC", BuildTarget.StandaloneWindows);
     }
 
     [MenuItem ("Build/Build WebGL")]
     static void PerformWebGLBuild ()
     {
-        string target_dir = APP_NAME;
-        GenericBuild("WebGL", target_dir, BuildTarget.WebGL);
+        GenericBuild("WebGL", BuildTarget.WebGL);
     }
 
     [MenuItem ("Build/Build Web")]
     static void PerformWebBuild ()
     {
-        string target_dir = APP_NAME;
-        GenericBuild("Web", target_dir, BuildTarget.WebPlayer);
+        GenericBuild("Web", BuildTarget.WebPlayer);
     }
 
     [MenuItem ("Build/Build All")]
@@ -81,13 +79,21 @@ class GenerateBuilds {
 
     }
 
-    static void GenericBuild(string platform, string buildDir, BuildTarget buildTarget)
+    /// <summary>
+    /// Generate a game binary using the given options.
+    /// </summary>
+    /// <param name="platform">The platform name, used as the name for the folder to contain the platform's binary.</param>
+    /// <param name="buildTarget">The Unity build target.</param>
+    static void GenericBuild(string platform, BuildTarget buildTarget)
     {
 
         EditorUserBuildSettings.SwitchActiveBuildTarget(buildTarget);
-        PrepareMaterials ();
+        PrepareMaterials();
 
-        string res = BuildPipeline.BuildPlayer(FindEnabledScenes(), TARGET_DIR + "/" + platform + "/" + buildDir, buildTarget, BUILD_OPTIONS);
+        if(platform == "Mac")
+            APP_NAME = APP_NAME + ".app";
+
+        string res = BuildPipeline.BuildPlayer(FindEnabledScenes(), TARGET_DIR + "/" + platform + "/" + APP_NAME, buildTarget, BUILD_OPTIONS);
 
         if (res.Length > 0)
             throw new Exception("BuildPlayer failure: " + res);
