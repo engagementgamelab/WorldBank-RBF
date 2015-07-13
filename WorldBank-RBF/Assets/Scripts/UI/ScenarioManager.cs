@@ -96,32 +96,35 @@ public class ScenarioManager : MonoBehaviour {
 
 		int nextCard = currentCardIndex+1;
 
+		// Should we display a year break (happens at 4th and 8th card)?
 		if(!newYear && (nextCard > 0 && nextCard <= 8) && (nextCard % 4 == 0)) {
 			
 			// Pause tactic card cooldown
 			tacticCardCooldown.Pause();
 
 			ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
+
+			// Show year end panel
 			yearEndPanel.gameObject.SetActive(true);
 
 			return;
 		}
-
+		// Load next card
 		if(DataManager.ScenarioLength()-1 > currentCardIndex) {
 			
+			// Hide year end panel
 			yearEndPanel.gameObject.SetActive(false);
 
-			// Load next card
 			currentCardIndex++;
 			OpenDialog();
 
 		}
+		// Show end of scenario
 		else {
 
-			Debug.Log("length: " + (DataManager.ScenarioLength()-1));
-			
-			// Show end of scenario
 			ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
+
+			// Show scenario end panel
 			scenarioEndPanel.gameObject.SetActive(true);
 
 		}
