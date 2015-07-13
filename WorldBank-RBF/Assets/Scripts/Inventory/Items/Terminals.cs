@@ -1,4 +1,7 @@
 ﻿
+/// <summary>
+/// This is a useful way of compairing routes by using the two cities on the route.
+/// </summary>
 public struct Terminals {
 		
 	public string city1;
