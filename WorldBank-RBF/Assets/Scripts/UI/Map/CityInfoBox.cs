@@ -13,18 +13,35 @@ public class CityInfoBox : MB {
 	public CityInfoBoxButton button2;
 	public MapManager2 mapManager;
 
+	/// <summary>
+	/// Gets/sets the text that appears in the header.
+	/// </summary>
 	string Header {
 		get { return header.text; }
 		set { header.text = value; }
 	}
 
+	/// <summary>
+	/// Gets/sets the text that appears in the body.
+	/// </summary>
 	string Body {
 		get { return body.text; }
 		set { body.text = value; }
 	}
 
+	/// <summary>
+	/// Opens the info box and sets the content based on the information provided by the given CityButton.
+	/// </summary>
+	/// <param name="button">The CityButton that was clicked on.</param>
 	public void Open (CityButton button) {
 		
+		if (PlayerData.DayGroup.Empty) {
+			Header = "Out of days";
+			Body = "You're all out of travel days! Time to make a dang plan ya doofie ;)";
+			panel.SetActive (true);
+			return;
+		}
+
 		CityItem city = button.CityItem;
 		bool currentCity = button.CityItem.Symbol == PlayerData.CityGroup.CurrentCity;
 
@@ -49,6 +66,9 @@ public class CityInfoBox : MB {
 		panel.SetActive (true);
 	}
 
+	/// <summary>
+	/// Handles the special case of the route between Mile and Zima.
+	/// </summary>
 	public void OpenRouteBlocked () {
 		Header = "Blocked";
 		Body = "You return to the train station and learn that bad weather has triggered a landslide to the east. The train tracks between Mile and Zima have been destroyed.\nA young man tugs on your shirt and grins. He say he drives a produce truck and can get you to Kibari, the heart of the highlands. \"From there,\" he says, \"you can get anywhere!\"";

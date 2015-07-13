@@ -5,6 +5,9 @@ using UnityEditor;
 using System.IO;
 #endif
 
+/// <summary>
+/// Handles material creation, saving, and loading.
+/// </summary>
 public class MaterialsManager {
 
 	public static Material GetMaterialAtPath (string path, AnimatedQuadTexture quadTex) {

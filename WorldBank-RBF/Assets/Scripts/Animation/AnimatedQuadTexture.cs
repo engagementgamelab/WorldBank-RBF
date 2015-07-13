@@ -4,6 +4,9 @@ using System.Collections;
 #if UNITY_EDITOR
 [ExecuteInEditMode]
 #endif
+/// <summary>
+/// A quad with a texture that can be animated (essentially a sprite sheet in 3D space)
+/// </summary>
 public class AnimatedQuadTexture : MB {
 
 	public Material _Material {

@@ -54,9 +54,11 @@ public class NotebookManager : MB {
 
 	bool CanCloseNotebook {
 		get {
+			string currentCity = PlayerData.CityGroup.CurrentCity;
 			return (
 				(open
-				&& PlayerData.CityGroup.CurrentCity != "capitol" // temp
+				&& currentCity == DataManager.SceneContext
+				&& currentCity != "capitol" // temp
 				&& state != State.MakingPlan)
 				|| !isPhaseOne
 			);

@@ -31,10 +31,10 @@ public class CameraPositioner : MB {
 		}
 
 		public int Smoothing {
-			get { return smoothing.Capacity; }
+			get { return smoothing.Buffer; }
 			set { 
-				smoothing.Capacity = value;
-				velocity.Capacity = value;
+				smoothing.Buffer = value;
+				velocity.Buffer = value;
 			}
 		}
 

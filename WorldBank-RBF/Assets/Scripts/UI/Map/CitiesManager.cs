@@ -2,8 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Keeps track of all the cities in the map screen.
+/// </summary>
 public class CitiesManager : MB {
 
+	/// <summary>
+	/// This is a singleton.
+	/// </summary>
 	static CitiesManager instance = null;
 	static public CitiesManager Instance {
 		get {
@@ -15,6 +21,10 @@ public class CitiesManager : MB {
 	}
 
 	Dictionary<string, CityButton> cities;
+
+	/// <summary>
+	/// Gets a dictionary of CityButtons in the game, with the city's symbol as the key.
+	/// </summary>
 	Dictionary<string, CityButton> Cities {
 		get {
 			if (cities == null) {
@@ -38,6 +48,9 @@ public class CitiesManager : MB {
 		InitCities ();
 	}
 
+	/// <summary>
+	/// Assigns the appropriate CityItem and RouteItems to each CityButton.
+	/// </summary>
 	void InitCities () {
 		List<RouteItem> routeItems = PlayerData.RouteGroup.Routes;
 		List<CityItem> cityItems = PlayerData.CityGroup.Cities;
@@ -49,18 +62,33 @@ public class CitiesManager : MB {
 		}
 	}
 
+	/// <summary>
+	/// Sets the current city, removes days based on cost, and moves the indicator on the map.
+	/// </summary>
+	/// <param name="city">The city to move to.</param>
+	/// <param name="route">The route to move along.</param>
+	/// <param name="onArrive">An action to take when the indicator arrives at the city (optional)</param>
 	public void TravelToCity (CityItem city, RouteItem route, System.Action onArrive=null) {
 		PlayerData.CityGroup.CurrentCity = city.Symbol;
 		PlayerData.DayGroup.Remove (route.Cost);
 		MoveIndicator (onArrive);
 	}
 
+	/// <summary>
+	/// Moves to the given city and sets the interaction count.
+	/// </summary>
+	/// <param name="city">The city to move to.</param>
+	/// <param name="route">The route to move along.</param>
 	public void VisitCity (CityItem city, RouteItem route) {
 		city.Visited = true;
 		PlayerData.InteractionGroup.Set (city.Model.npc_interactions);
 		TravelToCity (city, route, OnVisit);
 	}
 
+	/// <summary>
+	/// Stay an extra day in the given city. Remove 1 day and set the interaction count.
+	/// </summary>
+	/// <param name="city">The city to stay an extra day in.</param>
 	public void StayExtraDay (CityItem city) {
 		PlayerData.DayGroup.Remove ();
 		PlayerData.InteractionGroup.SetExtraInteractions (city.Symbol);

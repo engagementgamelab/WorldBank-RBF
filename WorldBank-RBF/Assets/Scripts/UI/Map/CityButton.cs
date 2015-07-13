@@ -32,34 +32,34 @@ public class CityButton : MB {
 		Button.onClick.AddListener (HandleClick);
 	}
 
-	CityItem cityItem;
+	CityItem cityItem = null;
+
+	/// <summary>
+	/// The CityItem associated with this CityButton. This can only be set once.
+	/// </summary>
 	public CityItem CityItem { 
 		get { return cityItem; }
 		set { 
-			cityItem = value;
-			PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
+			if (cityItem == null) {
+				cityItem = value;
+				PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
+			}
 		}
 	}
 
 	List<RouteItem> routes = new List<RouteItem> ();
+
+	/// <summary>
+	/// The RouteItems associated with this CityButton. This can only be set once.
+	/// </summary>
 	public List<RouteItem> Routes {
 		get { return routes; }
 		set { 
-			// This can only be set once
 			if (routes.Count > 0) return;
 			routes = value; 
 			foreach (RouteItem route in routes) {
-				route.onUpdateUnlocked += OnUpdateRouteUnlocked;
+				route.onUpdateUnlocked += UpdateInteractableState;
 			}
-			OnUpdateRouteUnlocked ();
-		}
-	}
-
-	bool unlocked = false;
-	bool Unlocked {
-		get { return unlocked; }
-		set { 
-			unlocked = value;
 			UpdateInteractableState ();
 		}
 	}
@@ -77,22 +77,16 @@ public class CityButton : MB {
 	}
 
 	RouteItem activeRoute = null;
+
+	/// <summary>
+	/// Gets the route that the player is currently on.
+	/// </summary>
 	public RouteItem ActiveRoute {
 		get { return activeRoute; }
 	}
 
 	void Start () {
 		PlayerData.InteractionGroup.onUpdate += UpdateInteractableState;
-	}
-
-	void OnUpdateRouteUnlocked () {
-		foreach (RouteItem route in Routes) {
-			if (route.Unlocked) {
-				Unlocked = true;
-				return;
-			}
-		}
-		Unlocked = false;
 	}
 
 	void OnUpdateCurrentCity (string symbol) {

@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
+/// <summary>
+/// A representation of the route on the map.
+/// </summary>
 public class MapRoute : MB {
 
 	Text text = null;
@@ -24,38 +27,45 @@ public class MapRoute : MB {
 		}
 	}
 
-	bool unlocked = false;
-	public bool Unlocked {
-		get { return unlocked; }
+	/// <summary>
+	/// Sets the unlocked state of the route. Hides the line and text if the route is not unlocked.
+	/// </summary>
+	bool Unlocked {
 		set {
-			unlocked = value;
-			Line.gameObject.SetActive (unlocked);
-			Text.gameObject.SetActive (unlocked);
+			Line.gameObject.SetActive (value);
+			Text.gameObject.SetActive (value);
 		}
 	}
 
-	Terminals terminals;
+	/// <summary>
+	/// Gets the two cities that the route connects.
+	/// </summary>
 	public Terminals Terminals {
 		get { return new Terminals (city1, city2); }
 	}
 
-	int cost = 1;
-	public int Cost {
-		get { return cost; }
-		set { 
-			cost = value;
-			Text.text = cost.ToString ();			
-		}
+	/// <summary>
+	/// Sets the text that represents the cost to travel along the route.
+	/// </summary>
+	int Cost {
+		set { Text.text = value.ToString (); }
 	}
 
-	RouteItem routeItem;
+	RouteItem routeItem = null;
+
+	/// <summary>
+	/// Gets/sets the RouteItem associated with this MapRoute. Setting also updates the cost and 
+	/// unlocked state. This can only be set once.
+	/// </summary>
 	public RouteItem RouteItem { 
 		get { return routeItem; }
 		set {
-			routeItem = value;
-			routeItem.onUpdateUnlocked += OnUpdateUnlocked;
-			Unlocked = routeItem.Unlocked;
-			Cost = routeItem.Cost;
+			if (routeItem == null) {
+				routeItem = value;
+				routeItem.onUpdateUnlocked += OnUpdateUnlocked;
+				Unlocked = routeItem.Unlocked;
+				Cost = routeItem.Cost;
+			}
 		}
 	}
 	
