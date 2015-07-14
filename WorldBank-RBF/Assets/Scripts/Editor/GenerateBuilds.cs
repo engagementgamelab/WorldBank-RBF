@@ -1,4 +1,4 @@
-﻿/* 
+﻿/*
 World Bank RBF
 Created by Engagement Lab, 2015
 ==============
@@ -17,40 +17,46 @@ using System.Collections.Generic;
 
 class GenerateBuilds {
 
-    static string[] SCENES = FindEnabledEditorScenes();
+    // These are the scenes that the build server is going to use
+    static string[] SCENES = new string[] {"PhaseOne", "PhaseTwo"};
+
+    // Options for all builds
+    static BuildOptions BUILD_OPTIONS = BuildOptions.Development | BuildOptions.AllowDebugging;
+
+    // Scene directory
+    static string SCENE_PREFIX = "Assets/Scenes/";
+    static string SCENE_AFFIX = ".unity";
 
     static string APP_NAME = "WorldBank";
     static string TARGET_DIR = "Output";
 
+
     [MenuItem ("Build/Prepare Materials")]
     static void PrepareMaterials () {
-        MaterialsManager.PrepareMaterialsFromTextures ();
+        MaterialsManager.PrepareMaterialsFromTextures();
     }
 
     [MenuItem ("Build/Build Mac OS X Universal")]
     static void PerformMacOSXBuild ()
     {
-             string target_dir = APP_NAME + ".app";
-             GenericBuild(SCENES, TARGET_DIR + "/Mac/" + target_dir, BuildTarget.StandaloneOSXUniversal, BuildOptions.None);
+        GenericBuild("Mac", BuildTarget.StandaloneOSXUniversal);
     }
     [MenuItem ("Build/Build PC")]
     static void PerformPCBuild ()
     {
-             GenericBuild(SCENES, TARGET_DIR + "/PC/" + APP_NAME, BuildTarget.StandaloneWindows, BuildOptions.None);
+        GenericBuild("PC", BuildTarget.StandaloneWindows);
     }
 
     [MenuItem ("Build/Build WebGL")]
     static void PerformWebGLBuild ()
     {
-             string target_dir = APP_NAME;
-             GenericBuild(SCENES, TARGET_DIR + "/WebGL/" + target_dir, BuildTarget.WebGL, BuildOptions.None);
+        GenericBuild("WebGL", BuildTarget.WebGL);
     }
 
     [MenuItem ("Build/Build Web")]
     static void PerformWebBuild ()
     {
-             string target_dir = APP_NAME;
-             GenericBuild(SCENES, TARGET_DIR + "/Web/" + target_dir, BuildTarget.WebPlayer, BuildOptions.None);
+        GenericBuild("Web", BuildTarget.WebPlayer);
     }
 
     [MenuItem ("Build/Build All")]
@@ -62,23 +68,36 @@ class GenerateBuilds {
         PerformWebBuild();
     }
 
-    private static string[] FindEnabledEditorScenes() {
+    static string[] FindEnabledScenes() {
+
         List<string> EditorScenes = new List<string>();
-        foreach(EditorBuildSettingsScene scene in EditorBuildSettings.scenes) {
-            if (!scene.enabled) continue;
-            EditorScenes.Add(scene.path);
-        }
+
+        foreach (string sceneName in SCENES)
+            EditorScenes.Add(SCENE_PREFIX + sceneName + SCENE_AFFIX);
+
         return EditorScenes.ToArray();
+
     }
 
-    static void GenericBuild(string[] scenes, string target_dir, BuildTarget build_target, BuildOptions build_options)
+    /// <summary>
+    /// Generate a game binary using the given options.
+    /// </summary>
+    /// <param name="platform">The platform name, used as the name for the folder to contain the platform's binary.</param>
+    /// <param name="buildTarget">The Unity build target.</param>
+    static void GenericBuild(string platform, BuildTarget buildTarget)
     {
-            EditorUserBuildSettings.SwitchActiveBuildTarget(build_target);
-            PrepareMaterials ();
-            string res = BuildPipeline.BuildPlayer(scenes,target_dir,build_target,build_options);
-            if (res.Length > 0) {
-                    throw new Exception("BuildPlayer failure: " + res);
-            }
+
+        EditorUserBuildSettings.SwitchActiveBuildTarget(buildTarget);
+        PrepareMaterials();
+
+        if(platform == "Mac")
+            APP_NAME = APP_NAME + ".app";
+
+        string res = BuildPipeline.BuildPlayer(FindEnabledScenes(), TARGET_DIR + "/" + platform + "/" + APP_NAME, buildTarget, BUILD_OPTIONS);
+
+        if (res.Length > 0)
+            throw new Exception("BuildPlayer failure: " + res);
+
     }
 
 }

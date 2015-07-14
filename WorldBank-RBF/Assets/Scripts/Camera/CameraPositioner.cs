@@ -31,10 +31,10 @@ public class CameraPositioner : MB {
 		}
 
 		public int Smoothing {
-			get { return smoothing.Capacity; }
+			get { return smoothing.Buffer; }
 			set { 
-				smoothing.Capacity = value;
-				velocity.Capacity = value;
+				smoothing.Buffer = value;
+				velocity.Buffer = value;
 			}
 		}
 
@@ -136,7 +136,7 @@ public class CameraPositioner : MB {
 
 	void Update () {
 		Drag.OnDrag ();
-		XPosition = Position.x + Input.GetAxis ("Horizontal") * Time.deltaTime * 10f;
+		if (Drag.Enabled) XPosition = Position.x + Input.GetAxis ("Horizontal") * Time.deltaTime * 10f;
 	}
 
 	void OnDragDownEvent (DragDownEvent e) {

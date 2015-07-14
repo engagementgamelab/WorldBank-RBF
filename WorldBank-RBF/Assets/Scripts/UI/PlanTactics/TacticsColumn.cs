@@ -4,41 +4,25 @@ using System.Collections.Generic;
 
 public class TacticsColumn : Column {
 
-	List<UITactic> uiTactics;
+	List<UITactic> uiTactics = new List<UITactic> ();
 
-	public List<UITactic> Init (PlanTacticGroup tactics, TacticPriorityGroup priorities) {
-		ObjectPool.DestroyAll<UITactic> ();
-		uiTactics = new List<UITactic> ();
-		List<UITactic> priorityUITactics = new List<UITactic> ();
-		foreach (PlanTacticItem tactic in tactics.Items) {
-			CreateUITactic (tactic);
-		}
-		foreach (PlanTacticItem tactic in priorities.Items) {
-			priorityUITactics.Add (CreateUITactic (tactic));
-		}
-		return priorityUITactics;
+	void Awake () {
+		PlayerData.TacticGroup.onUpdate += OnUpdate;
+		PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
 	}
 
-	public PlanTacticGroup GetTactics () {
-		PlanTacticGroup group = new PlanTacticGroup ();
-		foreach (Transform child in content.transform) {
-			UITactic tactic = child.GetScript<UITactic> ();
-			if (tactic != null && tactic.Tactic != null) {
-				tactic.Tactic.Priority = -1;
-				group.Add (tactic.Tactic);
-			}
-		}
-		return group;
-	}
+	void OnUpdate () {
 
-	public void ResetTactics () {
-		if (uiTactics == null) return;
-		foreach (UITactic uiTactic in uiTactics) {
-			uiTactic.OnClickRemove ();
+		ObjectPool.Destroy<UITactic> (uiTactics.ConvertAll (x => x.Transform));
+		uiTactics.Clear ();
+
+		foreach (TacticItem tactic in PlayerData.TacticGroup.Items) {
+			if (tactic.Unlocked && tactic.Priority == -1)
+				CreateUITactic (tactic);
 		}
 	}
 
-	UITactic CreateUITactic (PlanTacticItem tactic) {
+	UITactic CreateUITactic (TacticItem tactic) {
 		UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
 		uiTactic.Init (this, content, tactic);
 		uiTactics.Add (uiTactic);

@@ -17,20 +17,6 @@ public class UITacticSlot : TacticButton {
 	public override void OnClick () {
 		if (UITactic.selectedTactic != null) {
 			UITactic.selectedTactic.MoveToSlot (this);
-			gameObject.SetActive (false);
-			Transform.SetAsLastSibling ();
-
-			// Event broadcast
-			Events.instance.Raise(new TacticSlotEvent(SiblingIndex));
 		}
-	}
-
-	public void OnRemoveTactic () {
-
-		gameObject.SetActive (true);
-		Transform.SetSiblingIndex (siblingIndex);
-
-		// Event broadcast
-		Events.instance.Raise(new TacticSlotEvent(SiblingIndex, false));
 	}
 }

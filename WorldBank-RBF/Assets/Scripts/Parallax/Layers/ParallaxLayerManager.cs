@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 [JsonSerializable (typeof (Models.Scene))]
 public class ParallaxLayerManager : MonoBehaviour {
@@ -59,14 +63,33 @@ public class ParallaxLayerManager : MonoBehaviour {
 		}
 	}
 
-	public void Load (string symbol) {
+	#if DEBUG
+	public bool designerScene = false;
+	string texPath = "Command+V to paste file path";
+	bool showOptions = true;
+	TextureLoader textureLoader = new TextureLoader ("", true);
+	#endif
+
+	public void Create (Dictionary<int, List<string>> texturePaths) {
 		Clear ();
-		ModelSerializer.Load (this, "Config/PhaseOne/Cities/" + symbol);
+		LayerCount = texturePaths.Count;
+		foreach (var path in texturePaths) {
+			layers[path.Key].CreateImages (path.Value);
+		}
+	}
+
+	public void Load (string path, bool useResources=true) {
+		Clear ();
+		ModelSerializer.Load (this, path, useResources);
 
 		// TODO: ModelSerializer *should be* setting the layers list, but isn't for some reason
 		// Also- cities would load faster if existing layers were updated rather than destroyed & instantiated
 		ParallaxLayer[] pLayers = GameObject.FindObjectsOfType (typeof (ParallaxLayer)) as ParallaxLayer[];
 		layers = pLayers.ToList ();
+    }
+
+    public void LoadFromSymbol (string symbol) {
+    	Load ("Config/PhaseOne/Cities/" + symbol);
     }
 
     void Clear () {
@@ -100,6 +123,20 @@ public class ParallaxLayerManager : MonoBehaviour {
     #if UNITY_EDITOR
 	public void Reset () {
 		cityName = "";
+	}
+	#endif
+
+	#if DEBUG
+	void OnGUI () {
+		if (!designerScene) return;
+		showOptions = GUILayout.Toggle (showOptions, "show options", new GUILayoutOption[0]);
+		if (!showOptions) return;
+		texPath = GUILayout.TextField (texPath, new GUILayoutOption[0]);
+		if (GUILayout.Button ("Load textures")) {
+			if (Directory.Exists (texPath)) {
+				Create (textureLoader.GetTextureDirectories (texPath));
+			}
+		}
 	}
 	#endif
 }

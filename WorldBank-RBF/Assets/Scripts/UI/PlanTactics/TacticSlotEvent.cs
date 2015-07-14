@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class TacticSlotEvent : GameEvent {
 
-	public readonly int slotIndex;
-	public readonly bool slotAssigned;
+	public readonly TacticItem tactic;
 
-	public TacticSlotEvent(int index, bool selected=true) {
-		this.slotIndex = index;
-		this.slotAssigned = selected;
+	public TacticSlotEvent (TacticItem tactic, int priority=-1) {
+		this.tactic = tactic;
+		tactic.Priority = priority;
 	}
-
 }

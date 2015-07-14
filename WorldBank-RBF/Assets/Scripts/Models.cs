@@ -18,18 +18,29 @@ using JsonFx.Json;
 /// <summary>
 /// Game data models.
 /// </summary>
-public class Models {
+namespace Models {
 
     /// <summary>
     /// Stores game config schema.
     /// </summary>
     public class GameConfig {
 
-        public string serverRoot { get; set; }
-        public string serverLocalRoot { get; set; }
-        public string authKey { get; set; }
+        public GameEnvironment local { get; set; }
+        public GameEnvironment development { get; set; }
+        public GameEnvironment staging { get; set; }
+
         public string parseAppId { get; set; }
         public string parseKey { get; set; }
+
+    }
+
+    /// <summary>
+    /// Stores game config environment schema.
+    /// </summary>
+    public class GameEnvironment {
+
+        public string root { get; set; }
+        public string authKey { get; set; }
 
     }
 
@@ -86,28 +97,26 @@ public class Models {
         public string display_name { get; set; }
         public string description { get; set; }
         public bool enabled { get; set; }
-        public bool unlocked { get; set; }
         public int npc_interactions { get; set; }
 
     }
 
-    public class Route {
-
-        public string symbol { get; set; }
-        public string city1 { get; set; }
-        public string city2 { get; set; }
-        public bool unlocked { get; set; }
-        public int cost { get; set; }
-    }
-
-    public class Unlockable {
+    public class Unlockable : IInventoryModel {
 
         public string symbol { get; set; }
         public string title { get; set; }
         public string[] description { get; set; }
         public string type { get; set; }
         public int priority { get; set; }
-        public string[] unlocked { get; set; }
+        public bool unlocked { get; set; }
+
+    }
+
+    public class Route : Unlockable {
+
+        public string city1 { get; set; }
+        public string city2 { get; set; }
+        public int cost { get; set; }
 
     }
 
@@ -166,10 +175,10 @@ public class Models {
         public int[] investigate_cooldown { get; set; }
         public int[] investigate_further_cooldown { get; set; }
         
-        public Dictionary<string, string> new_options { get; set; }
-        public Dictionary<string, string> new_options_affects { get; set; }
-        public Dictionary<string, string> further_options { get; set; }
-        public Dictionary<string, string> further_options_affects { get; set; }
+        public string[] new_options { get; set; }
+        public string[] new_options_affects { get; set; }
+        public string[] further_options { get; set; }
+        public string[] further_options_affects { get; set; }
         
         public Dictionary<string, string> feedback_dialogue { get; set; }
 

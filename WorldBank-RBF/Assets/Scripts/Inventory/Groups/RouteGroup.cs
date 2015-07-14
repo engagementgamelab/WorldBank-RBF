@@ -3,22 +3,33 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class RouteGroup : ItemGroup<RouteItem> {
+/// <summary>
+/// Contains all the routes in the game.
+/// </summary>
+public class RouteGroup : ModelGroup<RouteItem> {
 
-	public override string Name { get { return "Routes"; } }
+	public override string ID { get { return "routes"; } }
 
-	public Models.Route[] Routes {
-		get { return Items.ConvertAll (x => ((RouteItem)x).route).ToArray (); }
+	/// <summary>
+	/// Gets a list of RouteItems.
+	/// </summary>
+	public List<RouteItem> Routes {
+		get { return Items.ConvertAll (x => (RouteItem)x); }
 	}
 
-	public Models.Route Unlock (string symbol) {
-		Models.Route route = Array.Find (Routes, x => x.symbol == symbol);
-		if (route != null) route.unlocked = true;
-		return route;
+	Models.Route[] routeModels = null;
+
+	/// <summary>
+	/// Gets an array of data models for each route.
+	/// </summary>
+	public Models.Route[] RouteModels {
+		get {
+			if (routeModels == null) {
+				routeModels = DataManager.GetAllRoutes ();
+			}
+			return routeModels;
+		}
 	}
 
-	public void Lock (string symbol) {
-		Models.Route route = Array.Find (Routes, x => x.symbol == symbol);
-		if (route != null) route.unlocked = false;
-	}
+	public RouteGroup () : base ("route") {}
 }

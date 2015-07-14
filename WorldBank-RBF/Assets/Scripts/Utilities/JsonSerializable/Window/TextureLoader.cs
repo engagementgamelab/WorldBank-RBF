@@ -1,60 +1,59 @@
-﻿// Run only if inside editor
-#if UNITY_EDITOR
-
-using UnityEngine;
+﻿#if UNITY_EDITOR
 using UnityEditor;
+#endif
+using UnityEngine;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 public class TextureLoader {
 
 	readonly string path;
+    bool local = false;
 
-	public TextureLoader (string path) {
+	public TextureLoader (string path, bool local=false) {
 		this.path = path;
+        this.local = local;
 	}
 
-	public void LoadCityTextures (ParallaxLayerManager layerManager) {
-        string loadPath = EditorUtility.OpenFolderPanel ("Load city textures", path, "");
-        if (loadPath == "") return;
+    public Dictionary<int, List<string>> GetTextureDirectories (string loadPath="") {
         
-        List<string> folders = new List<string> (Directory.GetDirectories (loadPath));
-        folders = folders.Where (folder => folder.Contains ("layer")).ToList ();
+        #if UNITY_EDITOR
+        if (loadPath == "")
+            loadPath = EditorUtility.OpenFolderPanel ("Load city textures", path, "");
+        #endif
 
-        int folderCount = folders.Count;
-        layerManager.LayerCount = folderCount;
-        for (int i = 0; i < folderCount; i ++) {
-            ParallaxLayer layer = layerManager.layers[i];
-            LoadTexturesDirectory (layer, folders[i]);
+        if (loadPath == "") return null;
+
+        List<string> layerFolders = new List<string> (Directory.GetDirectories (loadPath));
+        layerFolders = layerFolders.Where (folder => folder.Contains ("layer")).ToList ();
+        layerFolders = OrderStrings (layerFolders);
+
+        Dictionary<int, List<string>> texturePaths = new Dictionary<int, List<string>> ();
+        for (int i = 0; i < layerFolders.Count; i ++) {
+            List<string> textures = OrderStrings (Directory.GetFiles (layerFolders[i]).ToList ()).FindAll (x => x.EndsWith (".png"));
+            texturePaths.Add (i, textures);
         }
+
+        return texturePaths;
     }
 
-    public void LoadTexturesDirectory (ParallaxLayer layer, string loadPath="") {
-        loadPath = (loadPath == "") 
-            ? EditorUtility.OpenFolderPanel ("Load layer textures", path, "layer1")
-            : loadPath;
-        string[] textures = Directory.GetFiles (loadPath);
-        List<string> texturesToLoad = new List<string> ();
-        for (int i = 0; i < textures.Length; i ++) {
-            string texture = textures[i];
-            if (texture.EndsWith (".png")) {
-                texturesToLoad.Add (texture);
-            }
+    List<string> OrderStrings (List<string> input) {
+        
+        // TODO: probably better/quicker ways of doing this
+        Dictionary<string, int> orderedFolders = new Dictionary<string, int> ();
+        foreach (string i in input) {
+            Regex re = new Regex (@"\d+");
+            MatchCollection matches = re.Matches (i);
+            orderedFolders.Add (i, int.Parse (matches[matches.Count-1].Value));
         }
-        LoadLayerTextures (layer, texturesToLoad);
-    }
 
-    void LoadLayerTextures (ParallaxLayer layer, List<string> textures) {
-        layer.ClearImages ();
-        foreach (string texturePath in textures) {
-            ParallaxImage image = EditorObjectPool.Create<ParallaxImage> ();
-            string path = "Assets" + texturePath.Remove (0, Application.dataPath.Length);
-            image._Texture = AssetDatabase.LoadAssetAtPath (path, typeof (Texture2D)) as Texture2D;
-            layer.AddImage (image);
+        List<string> output = new List<string> ();
+        foreach (KeyValuePair<string, int> item in orderedFolders.OrderBy (key => key.Value)) {
+            output.Add (item.Key);
         }
+        return output;
     }
 }
-
-#endif

@@ -5,15 +5,48 @@ using UnityEditor;
 using System.IO;
 #endif
 
+/// <summary>
+/// Handles material creation, saving, and loading.
+/// </summary>
 public class MaterialsManager {
 
-	public static Material GetMaterialAtPath (string path) {
-		path = path.Replace ("Assets/Textures/", "Materials/").Replace (".png", "");
-		Material material = Resources.Load (path) as Material;
-		return material;
+	public static Material GetMaterialAtPath (string path, AnimatedQuadTexture quadTex) {
+
+		bool textureInProject = path.Contains ("Assets/Textures/");
+
+		if (textureInProject) {
+			
+			string materialPath = path.Replace (Application.dataPath, "")
+				.Replace ("Assets", "")
+				.Replace ("/Textures", "Materials")
+				.Replace (".png", "");
+
+			#if UNITY_EDITOR
+			if (File.Exists (materialPath + ".png")) {
+				return Resources.Load (materialPath) as Material;
+			} else {
+				string texturePath = path.Replace (Application.dataPath, "")
+					.Replace ("Assets", "")
+					.Replace ("/Textures", "Assets/Textures");
+				return CreateMaterialAndAddToDatabase (texturePath);
+			}
+			#else
+			return Resources.Load (materialPath) as Material;
+			#endif
+		} else if (path != "") {
+			path = "file://" + path;
+            Coroutine.LoadTexture (path, quadTex);
+            return Blank;
+		}
+
+		return null;
 	}
 
-	public static Material CreateMaterialFromTexture (Texture2D texture, bool transparent=true) {
+	public static Material CreateMaterialFromTexture (Texture2D texture) {
+
+		bool transparent = texture == null
+			? false
+			: texture.format.HasAlpha ();
 
 		Shader shader = Shader.Find ("Standard");
 		Material m = new Material (shader);
@@ -32,18 +65,31 @@ public class MaterialsManager {
 		m.SetFloat ("_Glossiness", 0);
 		m.mainTexture = texture;
 
-		#if UNITY_EDITOR
-		string path = AssetDatabase.GetAssetPath (texture).Replace ("/Textures/", "/Resources/Materials/").Replace (texture.name + ".png", "");
-		string fileName = texture.name + ".mat";
-		if (!CreateDirectory (path, fileName)) {
-			AssetDatabase.CreateAsset (m, path + fileName);
-		}
-		#endif
-
 		return m;
 	}
 
 	#if UNITY_EDITOR
+	public static string GetTexturePath (Texture2D texture) {
+		return AssetDatabase.GetAssetPath (texture);
+	}
+
+	static Material CreateMaterialAndAddToDatabase (string texturePath) {
+		Texture2D texture = (Texture2D)AssetDatabase.LoadAssetAtPath (texturePath, typeof (Texture2D));
+		Material m = CreateMaterialFromTexture (texture);
+		if (texture != null) AddMaterialToDatabase (texture, m);
+		return m;
+	}
+
+	static void AddMaterialToDatabase (Texture2D texture, Material m) {
+		string path = AssetDatabase.GetAssetPath (texture)
+			.Replace ("/Textures/", "/Resources/Materials/")
+			.Replace (texture.name + ".png", "");
+		string fileName = texture.name + ".mat";
+		if (fileName != ".mat" && !CreateDirectory (path, fileName)) {
+			AssetDatabase.CreateAsset (m, path + fileName);
+		}
+	}
+
 	static bool CreateDirectory (string path, string fileName) {
 		string dataPath = Application.dataPath.Replace ("Assets", "");
 		string path2 = dataPath + path;
@@ -57,13 +103,13 @@ public class MaterialsManager {
 		string[] textureFiles = Directory.GetFiles (Application.dataPath + "/Textures", "*.png", SearchOption.AllDirectories);
 		for (int i = 0; i < textureFiles.Length; i ++) {
 			string path = textureFiles[i].Replace (Application.dataPath, "").Replace ("/Textures/", "Assets/Textures/");
-			CreateMaterialFromTexture ((Texture2D)AssetDatabase.LoadAssetAtPath (path, typeof (Texture2D)));
+			CreateMaterialAndAddToDatabase (path);
 		}
 	}
 	#endif
 
 	public static Material Blank {
-		get { return Resources.Load ("Materials/Blank.mat") as Material; }
+		get { return Resources.Load ("Materials/blank") as Material; }
 	}
 
 	public static bool TextureIsBlank (Texture2D tex) {

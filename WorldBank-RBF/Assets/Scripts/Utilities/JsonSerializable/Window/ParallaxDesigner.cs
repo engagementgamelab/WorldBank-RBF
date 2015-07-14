@@ -65,10 +65,12 @@ public class ParallaxDesigner : EditorWindow {
         }
         
         SetTarget ();
-        DrawPoolCommands ();
         DrawSaveLoad ();
         if (GUILayout.Button ("Load city textures from directory")) {
-            textureLoader.LoadCityTextures (Target);
+            // textureLoader.LoadCityTextures (Target);
+            Dictionary<int, List<string>> texturePaths = textureLoader.GetTextureDirectories ();
+            if (texturePaths != null)
+                Target.Create (texturePaths);
         }
 
         options = new GUILayoutOption[] { GUILayout.MaxWidth (position.width), GUILayout.MinWidth (20f) };
@@ -78,16 +80,6 @@ public class ParallaxDesigner : EditorWindow {
         layerDesigner.Options = options;
         layerDesigner.OnGUI ();
         GUILayout.EndScrollView ();
-    }
-
-    void DrawPoolCommands () {
-        EditorGUILayout.BeginHorizontal ();
-        GUI.color = Color.yellow;
-        if (GUILayout.Button ("Clean up", largeButtonHeight)) {
-            EditorObjectPool.CleanUp ();
-        }
-        GUI.color = Color.white;
-        EditorGUILayout.EndHorizontal ();
     }
 
     void DrawSaveLoad () {

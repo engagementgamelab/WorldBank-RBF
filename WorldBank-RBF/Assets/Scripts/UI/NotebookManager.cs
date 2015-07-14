@@ -54,9 +54,11 @@ public class NotebookManager : MB {
 
 	bool CanCloseNotebook {
 		get {
+			string currentCity = PlayerData.CityGroup.CurrentCity;
 			return (
 				(open
-				&& citiesManager.CurrentCitySymbol != "capitol"
+				&& currentCity == DataManager.SceneContext
+				&& currentCity != "capitol" // temp
 				&& state != State.MakingPlan)
 				|| !isPhaseOne
 			);
@@ -157,12 +159,14 @@ public class NotebookManager : MB {
 
 	public void SubmitPlan(Text planNameInput) {
 
+		state =	State.MakingPlan;
+
         Dictionary<string, object> formFields = new Dictionary<string, object>();
 
         Models.Plan plan = new Models.Plan();
 
         plan.name = planNameInput.text;
-        plan.tactics = PlayerData.PlanTacticGroup.GetUniqueTacticSymbols ();
+        plan.tactics = PlayerData.TacticPriorityGroup.Tactics;
 
         formFields.Add("plan", plan);
 
@@ -192,7 +196,7 @@ public class NotebookManager : MB {
 		if(dayCounter == null)
 			return;
 
-		if (!dayCounter.HasDays && !InteractionsManager.Instance.HasInteractions) {
+		if (PlayerData.DayGroup.Empty && PlayerData.InteractionGroup.Empty) {
 			state = State.MakingPlan;
 		}
 	}

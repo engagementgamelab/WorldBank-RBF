@@ -1,4 +1,4 @@
-﻿#undef TEST_STANDALONE_LOAD
+﻿#define TEST_STANDALONE_LOAD
 using UnityEngine;
 // Run only if inside editor
 #if UNITY_EDITOR
@@ -28,23 +28,6 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		get { return false; }
 	}
 
-	#if UNITY_EDITOR && !TEST_STANDALONE_LOAD
-	public string TexturePath {
-		get { return AssetDatabase.GetAssetPath (_Texture); }
-		set { 
-			_Texture = AssetDatabase.LoadAssetAtPath (value, typeof (Texture2D)) as Texture2D;
-			texture = _Texture;
-		}
-	}
-	#else
-	public string TexturePath {
-		get { return ""; }
-		set {
-			_Material = MaterialsManager.GetMaterialAtPath (value);
-		}
-	}
-	#endif
-
 	public float LocalPositionX {
 		get { return LocalPosition.x; }
 		set { Transform.SetLocalPositionX (value); }
@@ -60,6 +43,7 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 	}
 
 	public void Init () {
+		texture = null;
 		Reset ();
 	}
 

@@ -215,7 +215,7 @@ public class DialogManager : MonoBehaviour {
 
 		List<GenericButton> btnChoices = new List<GenericButton> ();
 
-		if (!talkedToNpcs.Contains (currNpc)) {
+		if (!talkedToNpcs.Contains (currNpc) && !PlayerData.InteractionGroup.Empty) {
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton> ();
 			btnChoice.Text = "Learn More";
 			btnChoice.Button.onClick.RemoveAllListeners ();

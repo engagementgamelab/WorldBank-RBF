@@ -113,6 +113,8 @@ public class PlayerManager : MonoBehaviour {
             return;
         }
 
+        // NetworkManager._userCookie = response["user_cookie"].ToString();
+
         System.Text.StringBuilder output = new System.Text.StringBuilder();
         
         JsonWriter writer = new JsonWriter (output);
@@ -144,7 +146,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void TrackEvent(string strEventName, string strEventCategory) {
 
-        Dictionary<string, string> parseFields = new Dictionary<string, string>() {{ "user", _playerId }};
+        var parseFields = new Dictionary<string, string>() {{ "user", _playerId }};
         Dictionary<string, object> postFields = new Dictionary<string, object>() {{ "eventName", strEventName }, { "eventCategory", strEventCategory }, { "userId", _playerId }};
 
         // Send to Parse SDK
@@ -152,6 +154,8 @@ public class PlayerManager : MonoBehaviour {
 
         // Send analytic event
         NetworkManager.Instance.PostURL("/analytics/event/", postFields, null, true);
+
+        Debug.Log("Track Event: '" + strEventName + "'");
 
     }
 

@@ -294,8 +294,8 @@ public class MapManager : MonoBehaviour {
 
 		initialDialogScale = cityDialog.transform.localScale;
 	    
-	    // Show Go button if city is unlocked
-	    goBtnObj.SetActive(city.unlocked);
+	    // Show Go button if city is enabled
+	    goBtnObj.SetActive(city.enabled);
 		Text label = goBtn.transform.FindChild("Text").GetComponent<Text>();
 		label.text = "Travel to " + city.display_name;
  

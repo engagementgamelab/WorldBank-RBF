@@ -22,6 +22,10 @@ public class NetworkManager : MonoBehaviour {
 
     protected NetworkManager() {}
     private static NetworkManager _instance = null;
+
+    private static Action<Dictionary<string, object>> _currentResponseHandler;
+    public static string _sessionCookie;
+    public static string _userCookie;
         
     public static NetworkManager Instance {
         get {
@@ -36,6 +40,45 @@ public class NetworkManager : MonoBehaviour {
             }
             return _instance;
         }
+    }
+
+    public string Cookie {
+        
+        set {
+            _sessionCookie = value;
+
+            Debug.Log("Set cookie to " + _sessionCookie);
+        }
+
+    }
+
+    public static Action<Dictionary<string, object>> CurrentResponseHandler {
+        
+        get {
+            return _currentResponseHandler;
+        }
+        set {
+            _currentResponseHandler = value;
+        }
+
+    }
+
+    public void Authenticate(Action<Dictionary<string, object>> responseHandler=null) {
+
+        PostURL(
+            "/auth/",
+            new Dictionary<string, object>() {{ "key", DataManager.APIKey }},
+            responseHandler
+        );
+
+    }
+
+    private void ClientAuthenticated(Dictionary<string, object> response) { 
+
+        // _sessionCookie = response["session_cookie"].ToString();
+
+        // _currentResponseHandler(response);
+
     }
 
     /// <summary>
@@ -60,8 +103,8 @@ public class NetworkManager : MonoBehaviour {
     /// </summary>
     /// <param name="url">The URL to post to.</param>
     /// <param name="responseHandler">An Action that handles the response (optional).</param>
-    /// <param name="rawPost">The form should be sent as a byte array (default is false).</param>
-    public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> responseHandler=null, bool rawPost=false) {
+    /// <param name="rawPost">The form should be sent as a byte array (default is true).</param>
+    public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> responseHandler=null, bool rawPost=true) {
 
         string absoluteURL = DataManager.RemoteURL + url;
 
@@ -72,6 +115,9 @@ public class NetworkManager : MonoBehaviour {
             
             JsonWriter writer = new JsonWriter (output);
             
+            if(_sessionCookie != null)
+                fields.Add("sessionID", System.Convert.ChangeType(_sessionCookie, typeof(object)));
+
             writer.Write(fields);
          
             // Encode output as UTF8 bytes
@@ -97,7 +143,7 @@ public class NetworkManager : MonoBehaviour {
                 }
             }
 
-            StartCoroutine(WaitForForm(absoluteURL, null, responseHandler, form));
+            StartCoroutine(WaitForForm(absoluteURL, form.data, responseHandler));
 
         }
     }
@@ -119,9 +165,9 @@ public class NetworkManager : MonoBehaviour {
             return reader.ReadToEnd();
 
         }
-        catch(Exception e) {
+        catch(WebException e) {
 
-            throw new Exception("Unable to download data from " + url + ": " + e);
+            throw new Exception("Unable to download data from " + url + ": " + e.Message);
 
         }
     }
@@ -148,7 +194,7 @@ public class NetworkManager : MonoBehaviour {
         }
         else
         {
-            string exceptionMsg = "WaitForRequest unknown error.";
+            string exceptionMsg = "WaitForRequest error: " + www.error;
             
             throw new Exception(exceptionMsg);
         }
@@ -163,12 +209,21 @@ public class NetworkManager : MonoBehaviour {
         postHeader.Add("Content-Type", "application/json");
 
         // This is a raw UTF8 form
-        if(form == null && formData != null)
+        if(form == null && formData != null) {
+        
+            if(_sessionCookie != null)
+                postHeader.Add("x-sessionID", _sessionCookie);
+        
            www = new WWW(url, formData, postHeader);
-
+        }
         // This is a WWWForm
-        else if(form != null)
-           www = new WWW(url, form);
+        /*else if(form != null) {
+        
+            if(_sessionCookie != null)
+                postHeader.Add("sessionID", _sessionCookie);
+
+           www = new WWW(url, form, postHeader);
+        }*/
         
         // Bail out!
         else
@@ -179,8 +234,13 @@ public class NetworkManager : MonoBehaviour {
         // Deserialize the response and handle it below
         Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
 
+        // User is not logged in
+        if(www.responseHeaders["STATUS"].ToString().Contains("401"))
+        {
+            Debug.LogWarning("User is not logged in. Call to " + url + " rejected.");
+        }
         // check for errors
-        if (www.error == null) 
+        else if (www.error == null) 
         {
             if(responseAction != null)
             {
@@ -199,7 +259,7 @@ public class NetworkManager : MonoBehaviour {
                 exceptionMsg = "General WWW issue: " + www.error;
                 throw new Exception(exceptionMsg);
             }
-            else if(responseAction != null) 
+            else if(responseAction != null && response["error"] == null) 
             {
                 responseAction(response);
                 yield return null;

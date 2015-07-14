@@ -5,29 +5,57 @@ using System.Collections.Generic;
 public delegate void OnUpdate ();
 public delegate void OnEmpty ();
 
+/// <summary>
+/// An ItemGroup contains InventoryItems. This abstract class is useful for grouping ItemGroups
+/// of different types together, but only ItemGroup<T> should ever inherit from it.
+/// </summary>
 public abstract class ItemGroup {
 
-	public abstract string Name { get; }
+	/// <summary>
+	/// Get the ID. This is useful when finding an ItemGroup in the Inventory.
+	/// </summary>
+	public abstract string ID { get; }
 
 	protected List<InventoryItem> items = new List<InventoryItem> ();
+
+	/// <summary>
+	/// Get the InventoryItems.
+	/// </summary>
 	public List<InventoryItem> Items {
 		get { return items; }
 	}
 
 	protected Inventory inventory;
+
+	/// <summary>
+	/// Get the Inventory that this ItemGroup is contained in.
+	/// </summary>
 	public Inventory Inventory {
 		get { return inventory; }
 	}
 
+	/// <summary>
+	/// Get the total number of items.
+	/// </summary>
 	public int Count { 
 		get { return items.Count; }
 	}
 
+	/// <summary>
+	/// Returns true if there are no items.
+	/// </summary>
 	public bool Empty { 
-		get { return items.Count == 0; }
+		get { return Count == 0; }
 	}
 
+	/// <summary>
+	/// Called any time an item is added or removed.
+	/// </summary>
 	public OnUpdate onUpdate;
+
+	/// <summary>
+	/// Called when the last item is removed.
+	/// </summary>
 	public OnEmpty onEmpty;
 
 	public abstract void Initialize (Inventory inventory);
@@ -39,22 +67,32 @@ public abstract class ItemGroup {
 	public abstract InventoryItem Remove (InventoryItem item=null);
 	public abstract void Clear ();
 	public abstract void Transfer (ItemGroup toGroup, InventoryItem item);
-	public abstract void SetItemOrder (InventoryItem item, int position);
-	public abstract void MoveItemUp (InventoryItem item);
-	public abstract void MoveItemDown (InventoryItem item);
+	public abstract bool Contains (InventoryItem item);
 	protected abstract void SendUpdateMessage ();
 	protected abstract void SendEmptyMessage ();
 	public abstract void Print ();
 }
 
+/// <summary>
+/// Contains InventoryItems of type T. Every type of InventoryItem should have a corresponding ItemGroup
+/// and all new ItemGroups should inherit from this class.
+/// </summary>
 public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	
-	public override string Name { get { return ""; } }
+	public override string ID { get { return ""; } }
 
+	/// <summary>
+	/// Initialize by setting the Inventory that contains this ItemGroup. There is generally no need
+	/// to explicitly use this function because Inventory already calls it whenever an ItemGroup is added.
+	/// </summary>
+	/// <param name="inventory">The Inventory that contains this ItemGroup.</param>
 	public override void Initialize (Inventory inventory) {
 		this.inventory = inventory;
 	}
 
+	/// <summary>
+	/// Set the number of items.
+	/// </summary>
 	public override void Set (int count) {
 		if (count == Count) return;
 		if (Count < count) {
@@ -64,24 +102,36 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 		}
 	}
 
+	/// <summary>
+	/// Add a number of items.
+	/// </summary>
+	/// <param name="count">The number of items to add.</param>
 	public override void Add (int count) {
 		for (int i = 0; i < count; i ++) {
 			Add ();
 		}
 	}
 
+	/// <summary>
+	/// Add an InventoryItem
+	/// </summary>
+	/// <param name="item">The InventoryItem to add.</param>
 	public override void Add (InventoryItem item=null) {
 		if (item == null) item = new T ();
 		Add (new List<InventoryItem> () { item });
 	}
 
+	/// <summary>
+	/// Add a list of InventoryItems.
+	/// </summary>
+	/// <param name="newItems">A list of InventoryItems to be added.</param>
 	public override void Add (List<InventoryItem> newItems) {
 		
 		while (newItems.Count > 0) {
 			InventoryItem newItem = newItems[0];
 			if (newItem != null) {
 				newItem.Initialize (Inventory, this);
-				items.Add (newItem as T);
+				items.Add ((T)newItem);
 			}
 			newItems.RemoveAt (0);
 		}
@@ -89,12 +139,21 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 		SendUpdateMessage ();
 	}
 
+	/// <summary>
+	/// Removes a number of items.
+	/// </summary>
+	/// <param name="count">The number of items to remove</param>
 	public override void Remove (int count) {
 		for (int i = 0; i < count; i ++) {
 			Remove ();
 		}
 	}
 
+	/// <summary>
+	/// Removes the given InventoryItem.
+	/// </summary>
+	/// <param name="item">The InventoryItem to remove.</param>
+	/// <returns>The removed InventoryItem (null if the item was not in the group)</returns>
 	public override InventoryItem Remove (InventoryItem item=null) {
 		
 		if (Empty) return null;
@@ -113,28 +172,32 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 		return removedItem;
 	}
 
+	/// <summary>
+	/// Removes all items.
+	/// </summary>
 	public override void Clear () {
 		items.Clear ();
+		SendUpdateMessage ();
+		SendEmptyMessage ();
 	}
 
-	// Moves item from this group to another group
+	/// <summary>
+	/// Transfers an item from this ItemGroup to another ItemGroup.
+	/// </summary>
+	/// <param name="toGroup">ItemGroup to send the item to.</param>
+	/// <param name="item">The InventoryItem to transfer.</param>
 	public override void Transfer (ItemGroup toGroup, InventoryItem item) {
 		Remove (item);
 		toGroup.Add (item);
 	}
 
-	public override void SetItemOrder (InventoryItem item, int position) {
-		position = Mathf.Clamp (position, 0, Count-1);
-		items.Remove (item);
-		items.Insert (position, item);
-	}
-
-	public override void MoveItemUp (InventoryItem item) {
-		SetItemOrder (item, items.IndexOf (item)-1);
-	}
-
-	public override void MoveItemDown (InventoryItem item) {
-		SetItemOrder (item, items.IndexOf (item)+1);
+	/// <summary>
+	/// Checks if this ItemGroup contains a specfic InventoryItem.
+	/// </summary>
+	/// <param name="item">The InventoryItem to search for.</param>
+	/// <returns>True if the item was found.</returns>
+	public override bool Contains (InventoryItem item) {
+		return Items.Contains (item);
 	}
 
 	protected override void SendUpdateMessage () {
@@ -145,6 +208,9 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 		if (onEmpty != null) onEmpty ();
 	}
 
+	/// <summary>
+	/// Prints every InventoryItem to the console.
+	/// </summary>
 	public override void Print () {
 		foreach (InventoryItem item in Items) {
 			Debug.Log (item.Name);
