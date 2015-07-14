@@ -225,7 +225,7 @@ public class DialogManager : MonoBehaviour {
 
 		Models.Character character = DataManager.GetDataForCharacter(currNpc.character);
 		CreateChoiceDialog (
-			character.description,
+			character.description[0],
 			btnChoices,
 			character.display_name,
 			CloseAndUnfocus,
@@ -245,19 +245,27 @@ public class DialogManager : MonoBehaviour {
 		if (returning && currentDialogueChoices == null)
 			throw new Exception ("You are trying to return to the previous dialog, but none exists");
 
-		string strDialogTxt = currNpc.dialogue[strDialogueKey]["text"];
+		string strDialogTxt = currNpc.dialogue[strDialogueKey].text[0];
 
 		// Match any characters in between [[ and ]]
 		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
 
 		// Does this dialogue unlock something?
-		if(currNpc.dialogue[strDialogueKey].ContainsKey("unlocks"))
+		if(currNpc.dialogue[strDialogueKey].unlocks != null)
 		{
-			Models.Unlockable unlockableRef = DataManager.GetUnlockableBySymbol(currNpc.dialogue[strDialogueKey]["unlocks"]);
-			strDialogTxt += "\n\n<color=yellow>Unlocked</color> " + unlockableRef.title;
+			string[] unlockableSymbols = currNpc.dialogue[strDialogueKey].unlocks;
 
-			// Unlock this implementation option for player
-			PlayerData.UnlockImplementation(currNpc.dialogue[strDialogueKey]["unlocks"]);
+			foreach(string symbol in unlockableSymbols)
+			{
+
+				Models.Unlockable unlockableRef = DataManager.GetUnlockableBySymbol(symbol);
+				strDialogTxt += "\n\n<color=yellow>Unlocked</color> " + unlockableRef.title + " ";
+
+				// Unlock this implementation option for player
+				PlayerData.UnlockImplementation(symbol);
+
+			}
+
 		}
 
 		string strToDisplay = strDialogTxt.Replace("[[", "<color=orange>").Replace("]]", "</color>");
@@ -288,7 +296,7 @@ public class DialogManager : MonoBehaviour {
 			}
 		}
 
-		Dictionary<string, Dictionary<string, string>> unlockableDiag = currNpc.dialogue.Where(kvp => kvp.Key.IndexOf("unlockable_dialogue_") == 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+		// Dictionary<string, Dictionary<string, string>> unlockableDiag = currNpc.dialogue.Where(kvp => kvp.Key.IndexOf("unlockable_dialogue_") == 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
 		// foreach(Dictionary<string, string> unlockable in unlockableDiag)
 	  //       currentDialogueChoices.Add(unlockable["display_name"]);
@@ -313,14 +321,7 @@ public class DialogManager : MonoBehaviour {
 			btnList.Add(btnChoice);
 		}
 
-		// BackButtonDelegate del = null;
 		BackButtonDelegate del = CloseAndUnfocus;
-
-		/*if (strDialogueKey == "Initial") {
-			del = CloseAndUnfocus;
-		} else {
-			del = delegate { OpenSpeechDialog(currNpc, "Initial", true); };
-		}*/
 
 		CreateChoiceDialog(strToDisplay, btnList, "", del, true, left);
 	}

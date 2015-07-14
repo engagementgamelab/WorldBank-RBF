@@ -62,9 +62,9 @@ namespace Models {
     // Test model
     public class GameDataTest {
 
-        // public Character[] characters { get; set; }
+        public Character[] characters { get; set; }
         // public City[] cities { get; set; }
-        public Dictionary<string, Dictionary<string, int>> indicator_affects { get; set; }
+        // public Dictionary<string, Dictionary<string, int>> indicator_affects { get; set; }
         // public Route[] routes { get; set; }
         // public Unlockable[] unlockables { get; set; }
         public Dictionary<string, NPC[]> phase_one { get; set; }
@@ -87,7 +87,7 @@ namespace Models {
 
         public string symbol { get; set; }
         public string display_name { get; set; }
-        public string description { get; set; }
+        public string[] description { get; set; }
 
     }
 
@@ -189,7 +189,7 @@ namespace Models {
 
         public string symbol { get; set; }
         public string character { get; set; }
-		public Dictionary<string, Dictionary<string, string>> dialogue { get; set; }
+		public Dictionary<string, Dialogue> dialogue { get; set; }
 
     }
 
@@ -209,7 +209,10 @@ namespace Models {
 
     public class Dialogue {
 
-        public Dictionary<string, string> dialogue { get; set; }
+        public string display_name { get; set; }
+        public string[] text { get; set; }
+        public string[] unlocks { get; set; }
+        public string[] unlocks_context { get; set; }
 
     }
     
