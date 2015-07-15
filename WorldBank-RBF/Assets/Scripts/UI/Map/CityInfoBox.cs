@@ -37,7 +37,7 @@ public class CityInfoBox : MB {
 		
 		if (PlayerData.DayGroup.Empty) {
 			Header = "Out of days";
-			Body = "You're all out of travel days! Time to make a dang plan ya doofie ;)";
+			Body = "You're all out of travel days!";
 			panel.SetActive (true);
 			return;
 		}
@@ -54,7 +54,7 @@ public class CityInfoBox : MB {
 				if (currentCity) {
 					SetButtons ("Cancel", Close, "Extra Day", () => StayExtraDay (city));
 				} else {
-					SetButtons ("Cancel", Close, "Visit", () => TravelTo (city, button.ActiveRoute));	
+					SetButtons ("Cancel", Close, "Visit", () => Visit (city, button.ActiveRoute));	
 				}
 			}
 		} else {
@@ -78,7 +78,7 @@ public class CityInfoBox : MB {
 
 	void UnlockRoute () {
 		PlayerData.RouteGroup.Lock ("unlockable_route_mile_to_zima");
-		PlayerData.UnlockImplementation("unlockable_route_kibari_to_mile");
+		PlayerData.UnlockItem("unlockable_route_kibari_to_mile");
 		Close ();
 	}
 

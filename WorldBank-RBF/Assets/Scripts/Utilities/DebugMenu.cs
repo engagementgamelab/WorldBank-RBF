@@ -23,10 +23,11 @@ public class DebugMenu : MonoBehaviour {
 			}
 		}
 		if (GUILayout.Button ("unlock tactics")) {
-    		PlayerData.UnlockImplementation ("unlockable_incentivise_providers_to_follow_protocols");
-    		PlayerData.UnlockImplementation ("unlockable_improve_patient_and_provider_relationship");
-    		PlayerData.UnlockImplementation ("unlockable_make_aesthetic_improvements");
-    		PlayerData.UnlockImplementation ("unlockable_information_campaign_to_change_cultural_customs_and_behavior");
+    		PlayerData.UnlockItem ("unlockable_incentivise_providers_to_follow_protocols");
+    		PlayerData.UnlockItem ("unlockable_improve_patient_and_provider_relationship");
+    		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements");
+    		PlayerData.UnlockItem ("unlockable_information_campaign_to_change_cultural_customs_and_behavior");
+    		PlayerData.UnlockItem ("unlockable_dialogue_mr_todd");
     	}
 	}
 	#endif

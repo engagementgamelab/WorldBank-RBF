@@ -57,8 +57,11 @@ public class DialogManager : MonoBehaviour {
 	private int currentDialogIndex;
 	private double[] currentDialogueOpacity;
 	private List<string> currentDialogueText;
-	private List<string> currentDialogueChoices;
-	private List<Models.NPC> talkedToNpcs = new List<Models.NPC> ();
+	
+	Dictionary<string, string> currentDialogueChoices;
+	Dictionary<string, Models.Dialogue> currentDialogueUnlockables;
+
+	List<Models.NPC> talkedToNpcs = new List<Models.NPC> ();
 
 	void Awake() {
 
@@ -213,9 +216,14 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
 	public void OpenIntroDialog(Models.NPC currNpc, bool left) {
 
+		int introTxtIndex = GetDialogIndex(currNpc);
+
+		// If the "initial" text array index is over zero, or we've not talked to this NPC, show "Learn More"
+		bool enableLearnMore = introTxtIndex > 0 || !talkedToNpcs.Contains (currNpc);
+
 		List<GenericButton> btnChoices = new List<GenericButton> ();
 
-		if (!talkedToNpcs.Contains (currNpc) && !PlayerData.InteractionGroup.Empty) {
+		if (enableLearnMore && !PlayerData.InteractionGroup.Empty) {
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton> ();
 			btnChoice.Text = "Learn More";
 			btnChoice.Button.onClick.RemoveAllListeners ();
@@ -225,7 +233,7 @@ public class DialogManager : MonoBehaviour {
 
 		Models.Character character = DataManager.GetDataForCharacter(currNpc.character);
 		CreateChoiceDialog (
-			character.description[0],
+			character.description[Mathf.Clamp(introTxtIndex, 0, character.description.Length-1)],
 			btnChoices,
 			character.display_name,
 			CloseAndUnfocus,
@@ -242,10 +250,17 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="returning">Specify whether player is returning to previous dialog</param>
 	public void OpenSpeechDialog(Models.NPC currNpc, string strDialogueKey, bool returning=false, bool left=false) {
 
+		bool initialDialogue = strDialogueKey == "Initial";
+		int dialogTxtIndex = initialDialogue ? GetDialogIndex(currNpc) : 0;
+		int intTxtCount = currNpc.dialogue[strDialogueKey].text.Length-1;
+
+		CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+		TextInfo textInfo = cultureInfo.TextInfo;
+
 		if (returning && currentDialogueChoices == null)
 			throw new Exception ("You are trying to return to the previous dialog, but none exists");
 
-		string strDialogTxt = currNpc.dialogue[strDialogueKey].text[0];
+		string strDialogTxt = currNpc.dialogue[strDialogueKey].text[Mathf.Clamp(dialogTxtIndex, 0, intTxtCount)];
 
 		// Match any characters in between [[ and ]]
 		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
@@ -262,7 +277,7 @@ public class DialogManager : MonoBehaviour {
 				strDialogTxt += "\n\n<color=yellow>Unlocked</color> " + unlockableRef.title + " ";
 
 				// Unlock this implementation option for player
-				PlayerData.UnlockImplementation(symbol);
+				PlayerData.UnlockItem(symbol);
 
 			}
 
@@ -285,38 +300,43 @@ public class DialogManager : MonoBehaviour {
 
 		if(strDialogueKey == "Initial" && !returning)
 		{
-			currentDialogueChoices = new List<string>();
+			currentDialogueChoices = new Dictionary<string, string>();
 
 			foreach(Match m in keyMatches) {
 			    if (m.Success)
 				{
 			        string strKeyword = m.Groups[3].ToString();
-			        currentDialogueChoices.Add(strKeyword);
+
+			        currentDialogueChoices.Add(textInfo.ToTitleCase(strKeyword), textInfo.ToTitleCase(strKeyword));
 				}
+			}
+
+			currentDialogueUnlockables = currNpc.dialogue
+														.Where(kvp => kvp.Key.StartsWith("unlockable_dialogue_"))
+														.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+			foreach(KeyValuePair<string, Models.Dialogue> dialogue in currentDialogueUnlockables)
+			{
+				if(PlayerData.DialogueGroup.IsUnlocked(dialogue.Key))
+			        currentDialogueChoices.Add(dialogue.Key, dialogue.Value.display_name);
 			}
 		}
 
-		// Dictionary<string, Dictionary<string, string>> unlockableDiag = currNpc.dialogue.Where(kvp => kvp.Key.IndexOf("unlockable_dialogue_") == 0).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-		// foreach(Dictionary<string, string> unlockable in unlockableDiag)
-	  //       currentDialogueChoices.Add(unlockable["display_name"]);
 
 		List<GenericButton> btnList = new List<GenericButton>();
 
-		foreach(string choice in currentDialogueChoices) {
-			CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
-			TextInfo textInfo = cultureInfo.TextInfo;
+		foreach(KeyValuePair<string, string> choice in currentDialogueChoices) {
 
-			string choiceName = textInfo.ToTitleCase(choice);
+			string choiceName = choice.Value;
 
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 			btnChoice.Text = choiceName;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
 
-			string t = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
-			btnChoice.Button.onClick.AddListener (() => currentDialogueChoices.Remove(t));
-			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, false, left));
+			KeyValuePair<string, string> choiceRef = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
+			btnChoice.Button.onClick.AddListener (() => currentDialogueChoices.Remove(choiceRef.Key));
+			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choice.Key, false, left));
 
 			btnList.Add(btnChoice);
 		}
@@ -338,6 +358,32 @@ public class DialogManager : MonoBehaviour {
 	void CloseAndUnfocus () {
 		NPCFocusBehavior.Instance.DefaultFocus ();
 		CloseCharacterDialog ();
+	}
+
+    /// <summary>
+    /// Determine which text index (for description and initial text) to show by looking at if player has previously unlocked 1 or more of the referenced NPC's unlockables
+    /// </summary>
+    /// <param name="npcRef">The NPC reference</param>
+    /// <returns>The text index</returns>
+	int GetDialogIndex(Models.NPC npcRef) {
+
+		int intDialogIndex = 0;
+
+		foreach(string[] arrUnlocks in DataManager.GetUnlocksForCharacter(npcRef))
+		{
+			bool unlockItemUnlocked = false;
+
+			if(arrUnlocks[0].StartsWith ("unlockable_dialogue_")) 
+				unlockItemUnlocked = PlayerData.DialogueGroup.IsUnlocked(arrUnlocks[0]);
+			else
+				unlockItemUnlocked = PlayerData.TacticGroup.IsUnlocked(arrUnlocks[0]);
+
+			if(unlockItemUnlocked)
+				intDialogIndex++;
+		}
+
+		return intDialogIndex;
+
 	}
 
 	public void CloseCharacterDialog (bool openNext=true) {

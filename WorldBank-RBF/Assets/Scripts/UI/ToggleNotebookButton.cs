@@ -25,7 +25,7 @@ public class ToggleNotebookButton : MB {
 	}
 
 	void Awake () {
-		Events.instance.AddListener<UnlockImplementationEvent> (OnUnlockImplementationEvent);
+		Events.instance.AddListener<UnlockItemEvent> (OnUnlockItemEvent);
 	}
 
 	public void Blink () {
@@ -56,7 +56,7 @@ public class ToggleNotebookButton : MB {
 		Icon.color = color1;
 	}
 
-	void OnUnlockImplementationEvent (UnlockImplementationEvent e) {
+	void OnUnlockItemEvent (UnlockItemEvent e) {
 		Blink ();
 	}
 }

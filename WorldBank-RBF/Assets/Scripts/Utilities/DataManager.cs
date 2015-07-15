@@ -317,6 +317,19 @@ public class DataManager {
     }
 
     /// <summary>
+    /// Get the unlockables for a given NPC's dialogue
+    /// </summary>
+    /// <param name="npcRef">The NPC reference</param>
+    /// <returns>The Character for the symbol matching the input</returns>
+    public static string[][] GetUnlocksForCharacter(Models.NPC npcRef) {
+
+        Dictionary<string, Models.Dialogue> diag = npcRef.dialogue;
+
+        return diag.Select(x => x.Value.unlocks).OfType<string[]>().ToArray();
+
+    }
+
+    /// <summary>
     /// Get an affect given its symbol
     /// </summary>
     /// <param name="strSymbol">Symbol of the affect</param>

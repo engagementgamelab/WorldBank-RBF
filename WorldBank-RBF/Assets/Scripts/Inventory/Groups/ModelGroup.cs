@@ -45,4 +45,13 @@ public class ModelGroup<T> : ItemGroup<T> where T : ModelItem, new () {
 		Find (symbol).Unlocked = true;
 		SendUpdateMessage ();
 	}
+
+	/// <summary>
+	/// Is the item with the given symbol unlocked?
+	/// </summary>
+	/// <param name="symbol">The symbol of the item.</param>
+    /// <returns>Is the item unlocked?</returns>
+	public bool IsUnlocked (string symbol) {
+		return Find(symbol).Unlocked;
+	}
 }

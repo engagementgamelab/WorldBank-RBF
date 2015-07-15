@@ -95,9 +95,10 @@ public class PlayerData {
 	/// Unlocks the specified implementation for player.
 	/// </summary>
 	/// <param name="strSymbol">Symbol of the unlockable</param>
-	public static void UnlockImplementation (string strSymbol) {
+	public static void UnlockItem (string strSymbol) {
 
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
+		
 		if (strSymbol.StartsWith ("unlockable_route_")) {
 			RouteGroup.Unlock (strSymbol);
 		} else if (strSymbol.StartsWith ("unlockable_dialogue_")) {
