@@ -90,10 +90,14 @@ class GenerateBuilds {
         EditorUserBuildSettings.SwitchActiveBuildTarget(buildTarget);
         PrepareMaterials();
 
-        if(platform == "Mac")
-            APP_NAME = APP_NAME + ".app";
+        string name = APP_NAME;
 
-        string res = BuildPipeline.BuildPlayer(FindEnabledScenes(), TARGET_DIR + "/" + platform + "/" + APP_NAME, buildTarget, BUILD_OPTIONS);
+        if(platform == "Mac")
+            name = APP_NAME + ".app";
+        else if(platform == "PC") 
+            name = APP_NAME + ".exe";         
+
+        string res = BuildPipeline.BuildPlayer(FindEnabledScenes(), TARGET_DIR + "/" + platform + "/" + name, buildTarget, BUILD_OPTIONS);
 
         if (res.Length > 0)
             throw new Exception("BuildPlayer failure: " + res);

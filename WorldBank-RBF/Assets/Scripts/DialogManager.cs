@@ -21,7 +21,7 @@ using System.Linq;
 
 public class DialogManager : MonoBehaviour {
 
-	private static DialogManager _instance;
+	static DialogManager _instance;
 
 	// Singleton Manager
 	public static DialogManager instance {
@@ -48,20 +48,19 @@ public class DialogManager : MonoBehaviour {
 
 	public delegate void BackButtonDelegate();
 
-	private ScenarioCardDialog scenarioDialog;
-	private TacticCardDialog tacticDialog;
+	ScenarioCardDialog scenarioDialog;
+	TacticCardDialog tacticDialog;
 
-	private StringBuilder builder = new StringBuilder();
-
-	private Text currentDialogLabel;
-	private int currentDialogIndex;
-	private double[] currentDialogueOpacity;
-	private List<string> currentDialogueText;
+	Text currentDialogLabel;
+	int currentDialogIndex;
+	double[] currentDialogueOpacity;
+	List<string> currentDialogueText;
 	
 	Dictionary<string, string> currentDialogueChoices;
 	Dictionary<string, Models.Dialogue> currentDialogueUnlockables;
 
-	List<Models.NPC> talkedToNpcs = new List<Models.NPC> ();
+	List<Models.NPC> talkedToNpcs = new List<Models.NPC>();
+	StringBuilder builder = new StringBuilder();
 
 	void Awake() {
 
@@ -107,7 +106,7 @@ public class DialogManager : MonoBehaviour {
 		}
 	}*/
 
-	private void CloseAll() {
+	void CloseAll() {
 
 		if(dialogBox != null)
 			dialogBox.Close();

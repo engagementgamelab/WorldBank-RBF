@@ -154,7 +154,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 		NotebookManager.Instance.UpdateIndicators(dictAffect["indicator_1"], dictAffect["indicator_2"], dictAffect["indicator_3"]);
 
 		// Broadcast to open next card
-		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT));
+		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, strOptionSymbol));
 
 	}
     

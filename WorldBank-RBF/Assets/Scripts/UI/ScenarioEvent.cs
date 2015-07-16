@@ -11,6 +11,7 @@ Created by Engagement Lab, 2015
 public class ScenarioEvent : GameEvent {
 
 	public readonly string eventType;
+	public readonly string eventSymbol;
 
 	public static readonly string NEXT = "next";
 	public static readonly string TACTIC_OPEN = "tactic_open";
@@ -19,8 +20,9 @@ public class ScenarioEvent : GameEvent {
 	public static readonly string TACTIC_RESULTS = "tactic_results";
 	public static readonly string TACTIC_CLOSED = "tactic_closed";
 
-	public ScenarioEvent (string strType) {
+	public ScenarioEvent (string strType, string strSymbol=null) {
 		this.eventType = strType;
+		this.eventSymbol = strSymbol;
 	}
 
 }

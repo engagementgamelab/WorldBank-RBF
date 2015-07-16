@@ -123,10 +123,10 @@ namespace Models {
     // This a little ugly, but helps me keep phase two data strongly typed (since these siblings are multiple types)
     public class PhaseTwo { 
 
-        public ScenarioCard[] scenario_1 { get; set; }
-        public ScenarioCard[] scenario_2 { get; set; }
-        public ScenarioCard[] scenario_3 { get; set; }
-        public ScenarioCard[] scenario_4 { get; set; }
+        public Scenario scenario_1 { get; set; }
+        public Scenario scenario_2 { get; set; }
+        public Scenario scenario_3 { get; set; }
+        public Scenario scenario_4 { get; set; }
         public TacticCard[] tactics { get; set; }
 
         // This is slow but we'll only call it when obtaining a scenario card
@@ -134,6 +134,14 @@ namespace Models {
         {
             return (ScenarioCard[])this.GetType().GetProperty(propertyName).GetValue(this, null);
         }
+
+    }
+
+    public class Scenario {
+
+        public ScenarioCard[] problems { get; set; }
+        public ScenarioCard[] twists { get; set; }
+        public YearEnd[] year_end { get; set; }
 
     }
 
@@ -181,6 +189,14 @@ namespace Models {
         public string[] further_options_affects { get; set; }
         
         public Dictionary<string, string> feedback_dialogue { get; set; }
+
+    }
+
+    public class YearEnd {
+
+        public string symbol { get; set; }
+        public string prompt { get; set; }
+        public Dictionary<string, string>[] choices { get; set; }
 
     }
 

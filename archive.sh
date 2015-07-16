@@ -9,8 +9,9 @@
 #  Created by Johnny Richardson on 5/6/15.
 # ==============
 
+DATE=$(date +"%F");
 WORKSPACE=$1;
-OUTPUT_NAME=$2;
+OUTPUT_NAME=$2"_Nightly_"$DATE;
 BUILD_NUM=$3;
 EXTERNAL_BUILDS_DIR="/Library/BuildArtifacts";
 

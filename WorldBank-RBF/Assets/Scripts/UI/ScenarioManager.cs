@@ -30,6 +30,8 @@ public class ScenarioManager : MonoBehaviour {
 	private static int[] tacticCardIntervals = new int[3] {3, 3, 3};
 	private List<string> tacticsAvailable;
 
+	private List<string> selectedOptions = new List<string>();
+
 	private bool openTacticCard;
 	private string tacticState;
 
@@ -272,6 +274,7 @@ public class ScenarioManager : MonoBehaviour {
     	switch(e.eventType) {
 
     		case "next":
+    			selectedOptions.Add(e.eventSymbol);
     			GetNextCard();
     			break;
 
