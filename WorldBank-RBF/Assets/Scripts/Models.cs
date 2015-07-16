@@ -130,9 +130,11 @@ namespace Models {
         public TacticCard[] tactics { get; set; }
 
         // This is slow but we'll only call it when obtaining a scenario card
-        public ScenarioCard[] GetScenario(string propertyName)
+        public ScenarioCard[] GetScenario(string scenarioName, bool scenarioTwist=false)
         {
-            return (ScenarioCard[])this.GetType().GetProperty(propertyName).GetValue(this, null);
+            Scenario theScenario = (Scenario)this.GetType().GetProperty(scenarioName).GetValue(this, null);
+
+            return scenarioTwist ? theScenario.twists : theScenario.problems;
         }
 
     }
@@ -141,7 +143,7 @@ namespace Models {
 
         public ScenarioCard[] problems { get; set; }
         public ScenarioCard[] twists { get; set; }
-        public YearEnd[] year_end { get; set; }
+        public YearEndCard[] year_end { get; set; }
 
     }
 
@@ -192,7 +194,7 @@ namespace Models {
 
     }
 
-    public class YearEnd {
+    public class YearEndCard {
 
         public string symbol { get; set; }
         public string prompt { get; set; }

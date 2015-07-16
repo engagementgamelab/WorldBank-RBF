@@ -277,6 +277,7 @@ public class DataManager {
         ScenarioCard scenarioRef = currentScenario[cardIndex];
         
         return scenarioRef;
+        
     }
 
     /// <summary>

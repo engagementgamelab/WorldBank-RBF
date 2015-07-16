@@ -16,12 +16,11 @@ using System.Linq;
 
 public class ScenarioCardDialog : GenericDialogBox {
 
-	private Models.ScenarioCard _data;
+	Models.ScenarioCard _data;
 
     /// <summary>
     /// Set the data for this card
     /// </summary>
-    /// <returns>The player's ID.</returns>
     public Models.ScenarioCard Data {
         set {
         	_data = value;
@@ -46,13 +45,13 @@ public class ScenarioCardDialog : GenericDialogBox {
 	public Transform conferenceButtonGroup;
 	public Animator conferenceAnimator;
 
-	private List<string> currentAdvisorOptions;
-	private List<string> currentCardOptions;
+	List<string> currentAdvisorOptions;
+	List<string> currentCardOptions;
 
-	private List<string> allCardOptions;
-	private List<string> allCardAffects;
+	List<string> allCardOptions;
+	List<string> allCardAffects;
 
-	private List<GenericButton> btnListAdvisors = new List<GenericButton>();
+	List<GenericButton> btnListAdvisors = new List<GenericButton>();
 	
 
 	public void AddAdvisors() {
@@ -77,6 +76,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 			btnChoice.gameObject.SetActive(true);
 			btnListAdvisors.Add(btnChoice);
+			
 		}
 		
 		AddButtons<GenericButton>(btnListAdvisors, false, conferenceButtonGroup);
@@ -110,7 +110,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 		AddButtons<OptionButton>(btnListOptions);
 	}
 
-	private void AdvisorSelected(string strAdvisorSymbol) {
+	void AdvisorSelected(string strAdvisorSymbol) {
 
 		Models.Advisor advisor = _data.characters[strAdvisorSymbol];
 		
@@ -144,7 +144,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 	}
 
 	// Scenario option was selected
-	private void OptionSelected(string strOptionSymbol) {
+	void OptionSelected(string strOptionSymbol) {
 
 		string strAffectSymbol = allCardAffects[allCardOptions.IndexOf(strOptionSymbol)];
 
