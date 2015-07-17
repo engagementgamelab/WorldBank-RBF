@@ -129,12 +129,33 @@ namespace Models {
         public Scenario scenario_4 { get; set; }
         public TacticCard[] tactics { get; set; }
 
+        List<string> selectedDecisions = new List<string>();
+        int currentYear = 1;
+
         // This is slow but we'll only call it when obtaining a scenario card
-        public ScenarioCard[] GetScenario(string scenarioName, bool scenarioTwist=false)
+        public Scenario GetScenario(string scenarioName)
         {
             Scenario theScenario = (Scenario)this.GetType().GetProperty(scenarioName).GetValue(this, null);
 
-            return scenarioTwist ? theScenario.twists : theScenario.problems;
+            return theScenario;
+        }
+
+        public List<string> Decisions {
+            get {
+                return selectedDecisions;
+            }
+        }
+        public void AddDecision(string value) {
+            selectedDecisions.Add(value);
+        }
+
+        public int Year {
+            get {
+                return currentYear;
+            }
+            set {
+                currentYear = value;
+            }
         }
 
     }
@@ -143,7 +164,7 @@ namespace Models {
 
         public ScenarioCard[] problems { get; set; }
         public ScenarioCard[] twists { get; set; }
-        public YearEndCard[] year_end { get; set; }
+        public ScenarioConfig path_config { get; set; }
 
     }
 
@@ -152,6 +173,7 @@ namespace Models {
         public string symbol { get; set; }
         public string name { get; set; }
         public int priority { get; set; }
+        public int year { get; set; }
         public string initiating_npc { get; set; }
         public string initiating_dialogue { get; set; }
         public string[] starting_options { get; set; }
@@ -177,6 +199,7 @@ namespace Models {
         public string symbol { get; set; }
         public string name { get; set; }
         public string tactic_name { get; set; }
+        public int year { get; set; }
         
         public string initiating_dialogue { get; set; }
         public string investigate_dialogue { get; set; }
@@ -194,10 +217,10 @@ namespace Models {
 
     }
 
-    public class YearEndCard {
+    public class ScenarioConfig {
 
-        public string symbol { get; set; }
-        public string prompt { get; set; }
+        public string prompt_year_1 { get; set; }
+        public string prompt_year_2 { get; set; }
         public Dictionary<string, string>[] choices { get; set; }
 
     }

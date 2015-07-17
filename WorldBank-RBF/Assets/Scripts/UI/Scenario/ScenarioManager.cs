@@ -24,7 +24,6 @@ public class ScenarioManager : MonoBehaviour {
 	public RectTransform scenarioEndPanel;
 
 	static int currentCardIndex;
-	int currentYear = 1;
 
 	static TimerUtils.Cooldown tacticCardCooldown;
 	
@@ -34,7 +33,12 @@ public class ScenarioManager : MonoBehaviour {
 	List<string> selectedOptions = new List<string>();
 
 	bool openTacticCard;
+	bool scenarioTwistEnabled;
+	bool yearEnd;
+
 	string tacticState;
+	int scenarioTwistIndex;
+	int currentYear;
 
 	ScenarioCardDialog currentScenarioCard;
 	TacticCardDialog currentTacticCard;
@@ -102,7 +106,8 @@ public class ScenarioManager : MonoBehaviour {
 		// Should we display a year break (happens at 4th and 8th card)?
 		if(!newYear && (nextCard > 0 && nextCard <= 8) && (nextCard % 4 == 0)) {
 
-			currentYear++;
+			// Go to next year
+			DataManager.AdvanceScenarioYear();
 			
 			// Pause tactic card cooldown
 			tacticCardCooldown.Pause();
@@ -113,6 +118,8 @@ public class ScenarioManager : MonoBehaviour {
 
 			// Show year end panel
 			yearEndPanel.gameObject.SetActive(true);
+
+			yearEnd = true;
 
 			return;
 			
@@ -146,7 +153,18 @@ public class ScenarioManager : MonoBehaviour {
     /// <param name="isTactic">Is this card for a tactic? (Default: false)</param>
 	public void OpenDialog(bool isTactic=false) {
 
-		// Open Scenario or Tactic Card?
+		// Open Scenario, Scenario Decision, or Tactic Card?
+		if(yearEnd) {
+			
+			yearEnd = false;
+			currentCardIndex = 0;
+
+			OpenScenarioDecisionCard();
+
+			return;
+
+		}
+
 		if(!isTactic)
 			OpenScenarioCard();
 		else
@@ -154,25 +172,42 @@ public class ScenarioManager : MonoBehaviour {
 
 	}
 
+    /// <summary>
+    /// Displays a scenario card, given the current card index.
+    /// </summary>
 	void OpenScenarioCard() {
 
-			// Generate scenario card for the current card index
-			Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex);
+		// Generate scenario card for the current card index, as well as if the scenario is in a twist
+		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex, scenarioTwistEnabled);
 
-			// Create the card dialog
-		 	currentScenarioCard = DialogManager.instance.CreateScenarioDialog(card);
+		// Create the card dialog
+	 	currentScenarioCard = DialogManager.instance.CreateScenarioDialog(card);
 
-	    	// Debug
-	    	cardLabel.text = card.symbol;
-	    	cardLabel.gameObject.SetActive(true);
+    	// Debug
+    	cardLabel.text = card.symbol;
+    	cardLabel.gameObject.SetActive(true);
 
-	    	// TODO: Temp UI stuff
-	    	if(currentTacticCard != null)
-	    	{
-		    	currentTacticCard.transform.SetAsFirstSibling();
-				currentTacticCard.gameObject.SetActive(false);
-				currentTacticCard.gameObject.SetActive(true);		    	
-	    	}
+    	// TODO: Temp UI stuff
+    	if(currentTacticCard != null)
+    	{
+	    	currentTacticCard.transform.SetAsFirstSibling();
+			currentTacticCard.gameObject.SetActive(false);
+			currentTacticCard.gameObject.SetActive(true);		    	
+    	}
+
+	}
+
+    /// <summary>
+    /// Displays a secnario card, given the current card index.
+    /// </summary>
+	void OpenScenarioDecisionCard() {
+
+		// Generate scenario year card for the current scenario year
+		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
+
+		// Create the card dialog
+		DialogManager.instance.CreateScenarioDecisionDialog(scenarioConf);
+	    	
 	}
 
     /// <summary>
@@ -274,6 +309,23 @@ public class ScenarioManager : MonoBehaviour {
     }
 
     /// <summary>
+    /// Sets the current scenario path, whether it's a twist or a different scenario.
+    /// </summary>
+    /// <param name="strPathValue">The value to determine the next part of the path.</param>
+    void SetScenarioPath(string strPathValue) {
+
+    	// Path is a twist
+    	if(strPathValue.Contains("twist")) {
+	    	scenarioTwistEnabled = true;
+	    	scenarioTwistIndex++;
+    	}
+    	// Path is another scenario
+    	else
+    		DataManager.SceneContext = strPathValue;
+
+    }
+
+    /// <summary>
     // Callback for ScenarioEvent, filtering for type of event
     /// </summary>
     void OnScenarioEvent(ScenarioEvent e) {
@@ -297,6 +349,10 @@ public class ScenarioManager : MonoBehaviour {
 
 	   		case "tactic_closed":
 	   			tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
+    			break;
+
+	   		case "decision_selected":
+	   			SetScenarioPath(e.eventSymbol);
     			break;
 
     	}

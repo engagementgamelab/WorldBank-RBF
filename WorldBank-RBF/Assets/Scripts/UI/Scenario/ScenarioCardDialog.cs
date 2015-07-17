@@ -51,8 +51,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 	List<string> allCardOptions;
 	List<string> allCardAffects;
 
-	List<GenericButton> btnListAdvisors = new List<GenericButton>();
-	
+	List<GenericButton> btnListAdvisors = new List<GenericButton>();	
 
 	public void AddAdvisors() {
 

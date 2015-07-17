@@ -194,11 +194,17 @@ public class DialogManager : MonoBehaviour {
 	/// <summary>
 	/// Generate a Scenario Decision dialog for the specified year end card.
 	/// </summary>
-	/// <param name="yearEnd">The instance of the year end card.</param>
-	public void CreateScenarioDecisionDialog(Models.YearEndCard yearEnd) {
+	/// <param name="scenarioConfig">The instance of the current scenario's config.</param>
+	public void CreateScenarioDecisionDialog(Models.ScenarioConfig scenarioConfig) {
 
 	    ScenarioDecisionDialog yearEndDialog = ObjectPool.Instantiate<ScenarioDecisionDialog>();
-	    yearEndDialog.Data = yearEnd;
+	    
+	    yearEndDialog.transform.SetAsFirstSibling();
+
+	    yearEndDialog.Open();
+
+	    yearEndDialog.Year = DataManager.CurrentYear;
+	    yearEndDialog.Data = scenarioConfig;
 
 	}
 

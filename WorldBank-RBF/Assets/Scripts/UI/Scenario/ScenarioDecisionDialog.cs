@@ -16,19 +16,30 @@ using System.Linq;
 
 public class ScenarioDecisionDialog : GenericDialogBox {
 
-	Models.YearEndCard _data;
+	Models.ScenarioConfig _data;
+	int _year = 0;
 
     /// <summary>
     /// Set the data for this card
     /// </summary>
-    public Models.YearEndCard Data {
+    public Models.ScenarioConfig Data {
         set {
 
         	_data = value;
 
+        	Content = (_year == 0) ? _data.prompt_year_1 : _data.prompt_year_2;
+
         	AddChoices();
 
         }
+    }
+
+    public int Year {
+    	set {
+
+    		_year = value;
+
+    	}
     }
 
 	public Text textCardPrompt;
@@ -40,21 +51,41 @@ public class ScenarioDecisionDialog : GenericDialogBox {
 
 	void AddChoices() {
 
-		Dictionary<string, string>[] choiceData = _data.choices;
+		string currentChoicesConcat = string.Join(" ", DataManager.ScenarioDecisions().ToArray());
 
-		// Create buttons for all year end choices
-		GenericButton btnChoiceYes = ObjectPool.Instantiate<GenericButton>();
-		GenericButton btnChoiceNo = ObjectPool.Instantiate<GenericButton>();
+		Dictionary<string, string>[] choiceData = _data.choices.Where(choice => !currentChoicesConcat.Contains(choice["text"])).ToArray();
+
+		foreach(Dictionary<string, string> choice in choiceData) {
+
+			string choiceTxt = choice["text"];
+			string choiceVal = choice["load"];
+
+			// Create buttons for all year end choices
+			GenericButton btnChoiceYes = ObjectPool.Instantiate<GenericButton>();
+			// GenericButton btnChoiceNo = ObjectPool.Instantiate<GenericButton>();
+			
+			btnChoiceYes.Text = choiceTxt;
+			// btnChoiceNo.Text = choiceData[1]["text"];
+
+			btnChoiceYes.Button.onClick.RemoveAllListeners();
+			btnChoiceYes.Button.onClick.AddListener (() => OptionSelected(choiceTxt, choiceVal));
+
+			btnListChoices.Add(btnChoiceYes);
+			// btnListChoices.Add(btnChoiceNo);			
+
+		}
 		
-		btnChoiceYes.Text = choiceData[0]["text"];
-		btnChoiceNo.Text = choiceData[1]["text"];
+		AddButtons<GenericButton>(btnListChoices, true);
 
-		// btnChoice.Button.onClick.AddListener (() => AdvisorSelected(charRef.symbol));
+	}
 
-		btnListChoices.Add(btnChoiceYes);
-		btnListChoices.Add(btnChoiceNo);
-		
-		AddButtons<GenericButton>(btnListChoices, false, promptButtonGroup);
+	// Scenario year end decision was selected
+	void OptionSelected(string strOptionName, string strOptionValue) {
+
+		DataManager.ScenarioDecisions(strOptionName);
+
+		// Broadcast to affect current scenario path with the config value
+		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.DECISION_SELECTED, strOptionValue));
 
 	}
 	

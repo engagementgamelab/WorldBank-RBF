@@ -2338,11 +2338,26 @@
   },
   "phase_two": {
     "scenario_1": {
+      "path_config": {
+        "prompt_year_1": "do you want to do something?",
+        "prompt_year_2": "do you want to do something?",
+        "choices": [
+          {
+            "text": "Fire Clinic",
+            "load": "twist"
+          },
+          {
+            "text": "Fire Hospital",
+            "load": "twist"
+          }
+        ]
+      },
       "problems": [
         {
           "symbol": "government_overreach_verification",
           "name": "Government Overreach on Verification",
           "priority": 1,
+          "year": 1,
           "initiating_npc": "hospital_administrator",
           "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
           "starting_options": [
@@ -2424,6 +2439,7 @@
           "symbol": "bad_record_keeping",
           "name": "Bad Record Keeping",
           "priority": 2,
+          "year": 1,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "The Clinic submitted their reports to us, but there were some inconsistencies. When we asked to see their records, they could not supply them.",
           "starting_options": [
@@ -2503,6 +2519,7 @@
           "symbol": "poor_management",
           "name": "Poor Management",
           "priority": 3,
+          "year": 1,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "The clinic submitted their reports to us, but there were some inconsistencies. When we asked to see their records, they could not supply them.",
           "starting_options": [
@@ -2562,6 +2579,7 @@
           "symbol": "dodging_responsibility",
           "name": "Dodging Responsibility",
           "priority": 4,
+          "year": 1,
           "initiating_npc": "coach",
           "initiating_dialogue": "I requested a meeting with the Clinic Manager recently to go over their record-keeping practices, but it keeps getting rescheduled and canceled. I can't get a firm commitment from them. It is a little suspicious, frankly.",
           "starting_options": [
@@ -2632,7 +2650,8 @@
         {
           "symbol": "mismanagement",
           "name": "Mismanagement",
-          "priority": 5,
+          "priority": 1,
+          "year": 2,
           "initiating_npc": "coach",
           "initiating_dialogue": "I was visiting the hospital for my mentoring visit, and they are still mismanaging funds. The business plan has clear guidelines the Administrator is not sticking to.",
           "starting_options": [
@@ -2701,7 +2720,8 @@
         {
           "symbol": "lack_of_transparency",
           "name": "Lack of Transparency",
-          "priority": 6,
+          "priority": 2,
+          "year": 2,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "There is an ongoing issue with the Clinic Manager. They are small things, but since they have been having issues with record keeping, I looked more closely and found some forms that seem like exact duplicates of others.",
           "starting_options": [
@@ -2770,7 +2790,8 @@
         {
           "symbol": "inconsistent_indicators",
           "name": "Inconsistent Indicators",
-          "priority": 7,
+          "priority": 3,
+          "year": 2,
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "We are seeing some indicators rise while others stay stagnant. Hospital births are barely rising, though checkups and vaccination rates are improving. We need to see all indicators rising!",
           "starting_options": [
@@ -2848,7 +2869,8 @@
         {
           "symbol": "more_transparency",
           "name": "More Transparency",
-          "priority": 8,
+          "priority": 4,
+          "year": 2,
           "initiating_npc": "coach",
           "initiating_dialogue": "I was visiting one of the clinics in the network for my mentoring visit, and I was unhappy with their transparency. There were some records I was told were unavailable, and I was not able to meet with the staff as I wished.",
           "starting_options": [
@@ -2927,7 +2949,8 @@
         {
           "symbol": "wrong_numbers",
           "name": "Wrong Numbers",
-          "priority": 9,
+          "priority": 1,
+          "year": 3,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "I have been reviewing the Hospital Administrator's records, and they do not check out. There is either fraud or accidental misreporting here.",
           "starting_options": [
@@ -2998,7 +3021,8 @@
         {
           "symbol": "budget_lines",
           "name": "Budget Lines",
-          "priority": 10,
+          "priority": 2,
+          "year": 3,
           "initiating_npc": "hospital_administrator",
           "initiating_dialogue": "I received a memo today going over the new national health budget. The ministry has released new hiring guidelines for all providers, but it does not match our goals.",
           "starting_options": [
@@ -3074,7 +3098,8 @@
         {
           "symbol": "failed_inspection",
           "name": "Failed Inspection",
-          "priority": 10,
+          "priority": 3,
+          "year": 3,
           "initiating_npc": "clinic_manager",
           "initiating_dialogue": "Hey, we just received a memo telling us we failed a quality of care inspection, but I disagree with the assessment. Given the amount of strain we are under, I believe we need to be granted some leeway in order to serve patients.",
           "starting_options": [
@@ -3138,7 +3163,8 @@
         {
           "symbol": "over_capacity",
           "name": "Over Capacity",
-          "priority": 11,
+          "priority": 4,
+          "year": 3,
           "initiating_npc": "director_regional_health_services",
           "initiating_dialogue": "We've seen some great improvements over the past three years, but now the hospital is butting up against capacity. We might need to expand hiring to keep up with demand.",
           "starting_options": [
@@ -3204,7 +3230,8 @@
         {
           "symbol": "checkup_overload",
           "name": "Checkup Overload",
-          "priority": 12,
+          "priority": 5,
+          "year": 3,
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "We have been looking at the numbers, and outpatient consultations have risen much faster than projected. We can't explain it.",
           "starting_options": [
@@ -3281,7 +3308,9 @@
         {
           "symbol": "twist_mismanagement",
           "name": "Mismanagement",
-          "priority": 5,
+          "priority": 1,
+          "year": 2,
+          "twist": 1,
           "initiating_npc": "coach",
           "initiating_dialogue": "I was visiting the hospital of Provider 2 for my quarterly audit, and they are still mismanaging funds. The business plan has clear guidelines they are not sticking to.",
           "starting_options": [
@@ -3352,6 +3381,8 @@
           "symbol": "twist_reversal",
           "name": "Reversal",
           "priority": 2,
+          "year": 2,
+          "twist": 1,
           "initiating_npc": "health_provider_3",
           "initiating_dialogue": "Hello! Again, I must say I am very pleased to be working with you. My customers though, are less happy. They are reluctant to go to your hospitals even though I refer them. Couldn't you train someone here to do the work of your nurses?",
           "starting_options": [
@@ -3435,7 +3466,9 @@
         {
           "symbol": "twist_inconsistent_indicators",
           "name": "Inconsistent Indicators",
-          "priority": 7,
+          "priority": 3,
+          "year": 2,
+          "twist": 1,
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "We are seeing some indicators rise while others stay stagnant. Hospital births are barely rising, though checkups and vaccination rates are improving. We need to see all indicators rising!",
           "starting_options": [
@@ -3532,6 +3565,8 @@
           "symbol": "twist_overflow",
           "name": "Overflow",
           "priority": 4,
+          "year": 2,
+          "twist": 1,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "We have more referrals than expected from the traditional medicine practitioners. It looks like some people are going more than once.",
           "starting_options": [
@@ -3620,7 +3655,9 @@
         {
           "symbol": "twist_wrong_numbers",
           "name": "Wrong Numbers",
-          "priority": 9,
+          "priority": 1,
+          "year": 3,
+          "twist": 1,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "I have been reviewing Health Provider 2's records, and they do not check out. There is either fraud or accidental misreporting here.",
           "starting_options": [
@@ -3692,7 +3729,9 @@
         {
           "symbol": "twist_budget_lines",
           "name": "Budget Lines",
-          "priority": 10,
+          "priority": 2,
+          "year": 3,
+          "twist": 1,
           "initiating_npc": "hospital_administrator",
           "initiating_dialogue": "I received a memo today going over the new national health budget. The ministry has released new hiring guidelines for all providers, but it does not match our goals.",
           "starting_options": [
@@ -3771,6 +3810,8 @@
           "symbol": "twist_money_troubles",
           "name": "Money Troubles",
           "priority": 3,
+          "year": 3,
+          "twist": 1,
           "initiating_npc": "health_provider_3",
           "initiating_dialogue": "Hello! Wonderful to talk to you today. I have a problem, however. Some of the traditional healers I work with are telling me they do not wish to refer to your facilities. They say they could make more money by selling the traditional remedies that you are replacing.",
           "starting_options": [
@@ -3841,6 +3882,8 @@
           "symbol": "twist_field_records",
           "name": "Field Records",
           "priority": 4,
+          "year": 3,
+          "twist": 1,
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "We are having difficulty tracking the effectiveness of travelling nurses in the field. We can't confirm they are meeting goals or having positive impacts on indicators.",
           "starting_options": [
@@ -3950,7 +3993,9 @@
         {
           "symbol": "twist_checkup_overload",
           "name": "Checkup Overload",
-          "priority": 12,
+          "priority": 5,
+          "year": 3,
+          "twist": 1,
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "We have been looking at the numbers, and vaccination delivery has risen much faster than projected. We can't explain it.",
           "starting_options": [
@@ -4042,7 +4087,9 @@
         {
           "symbol": "twist_2_wrong_numbers",
           "name": "Wrong Numbers",
-          "priority": 9,
+          "priority": 1,
+          "year": 3,
+          "twist": 2,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "I have been reviewing Health Provider 2's records, and they do not check out. There is either fraud or accidental misreporting here.",
           "starting_options": [
@@ -4114,7 +4161,9 @@
         {
           "symbol": "twist_2_budget_lines",
           "name": "Budget Lines",
-          "priority": 10,
+          "priority": 2,
+          "year": 3,
+          "twist": 2,
           "initiating_npc": "hospital_administrator",
           "initiating_dialogue": "I received a memo today going over the new national health budget. The ministry has released new hiring guidelines for all providers, but it does not match our goals.",
           "starting_options": [
@@ -4193,6 +4242,8 @@
           "symbol": "twist_2_fraud",
           "name": "Fraud",
           "priority": 3,
+          "year": 3,
+          "twist": 2,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "I just received the reports from Provider 4, and they are rife with fraudulent claims. It goes without saying that they should not be paid, but more needs to be done.",
           "starting_options": [
@@ -4264,6 +4315,8 @@
           "symbol": "twist_2_field_records",
           "name": "Field Records",
           "priority": 4,
+          "year": 3,
+          "twist": 2,
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "We are having difficulty tracking the effectiveness of travelling nurses in the field. We can't confirm they are meeting goals or having positive impacts on indicators.",
           "starting_options": [
@@ -4374,6 +4427,8 @@
           "symbol": "twist_2_more_fraud",
           "name": "More Fraud",
           "priority": 5,
+          "year": 3,
+          "twist": 2,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "The fourth quarter reports are in and our review has found many suspicious claims from Provider 4. This is becoming a habit, and needs to stop.",
           "starting_options": [
@@ -4450,36 +4505,6 @@
             }
           }
         }
-      ],
-      "year_end": [
-        {
-          "symbol": "government_overreach_verification",
-          "name": "Government Overreach on Verification",
-          "prompt": "do you want to fire the clinic?",
-          "choices": [
-            {
-              "yes": "Yes",
-              "load": "twist_1"
-            },
-            {
-              "no": "No"
-            }
-          ]
-        },
-        {
-          "symbol": "government_overreach_verification",
-          "name": "Government Overreach on Verification",
-          "prompt": "do you want to fire the clinic?",
-          "choices": [
-            {
-              "yes": "Yes",
-              "load": "twist_1"
-            },
-            {
-              "no": "No"
-            }
-          ]
-        }
       ]
     },
     "scenario_2": {
@@ -4488,6 +4513,7 @@
           "symbol": "lack_of_procedure",
           "name": "Lack of Procedure",
           "priority": 1,
+          "year": 1,
           "initiating_npc": "director_regional_health_services",
           "initiating_dialogue": "With all these changes, my providers have expressed a lot of general confusion about roles, and the ministry hasn't been able to help. Can you clarify this for me?",
           "starting_options": [
@@ -4554,6 +4580,7 @@
           "symbol": "process_v_results",
           "name": "Process versus Results",
           "priority": 2,
+          "year": 1,
           "initiating_npc": "ngo_manager",
           "initiating_dialogue": "Look. I know we haven't hit the numbers you laid out, but we got a lot of good work done. We can easily make our marks next quarter if the payer issues us our bonus for this period.",
           "starting_options": [
@@ -4620,6 +4647,7 @@
           "symbol": "government_v_organization",
           "name": "Government versus Organization",
           "priority": 3,
+          "year": 1,
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "The NGO's giving us the run-around when we ask to counter-verify their reports. You need to get them to realize their presence here depends on their transparency.",
           "starting_options": [
@@ -4705,6 +4733,7 @@
           "symbol": "managerial_autonomy_hiring",
           "name": "Managerial Autonomy",
           "priority": 4,
+          "year": 1,
           "initiating_npc": "director_regional_health_services",
           "initiating_dialogue": "My hospitals can't hire good staff because the NGO is strangling the budget. I don't know how they expect to reach their goals if they won't let us give good care.",
           "starting_options": [
@@ -4783,7 +4812,8 @@
         {
           "symbol": "process_v_results_again",
           "name": "Process Versus Results",
-          "priority": 5,
+          "priority": 1,
+          "year": 1,
           "initiating_npc": "ngo_manager",
           "initiating_dialogue": "Vaccination prices went up, so we couldn't hit our numbers again. But if we don't get our bonus, next quarter it'll be a disaster.",
           "starting_options": [
@@ -4862,7 +4892,8 @@
         {
           "symbol": "reach",
           "name": "Reach",
-          "priority": 6,
+          "priority": 1,
+          "year": 2,
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "We're seeing underserved populations throughout the south. The NGO really seems to be falling short of their promises, at least in this area.",
           "starting_options": [
@@ -4956,7 +4987,8 @@
         {
           "symbol": "arguments",
           "name": "Arguments",
-          "priority": 7,
+          "priority": 3,
+          "year": 2,
           "initiating_npc": "coach",
           "initiating_dialogue": "I don't even know what's going on, but our stakeholders are bickering and it's gumming up the works.",
           "starting_options": [
@@ -5047,7 +5079,8 @@
         {
           "symbol": "unit_costs",
           "name": "Unit Costs",
-          "priority": 8,
+          "priority": 4,
+          "year": 2,
           "initiating_npc": "hospital_administrator",
           "initiating_dialogue": "Look, I don't really know what you and the NGO have worked out, but I need to be authorized to purchase supplies at the right costs. Can you tell them to lighten these restrictions some?",
           "starting_options": [
@@ -5129,7 +5162,8 @@
         {
           "symbol": "contract_management",
           "name": "Contract Management",
-          "priority": 9,
+          "priority": 5,
+          "year": 2,
           "initiating_npc": "ngo_manager",
           "initiating_dialogue": "We're still waiting on the fundholder to pay us. The Finance Minister's approval process has hamstrung us, and we need to get our money to pay our people.",
           "starting_options": [
@@ -5232,7 +5266,8 @@
         {
           "symbol": "more_arguments",
           "name": "More Arguments",
-          "priority": 10,
+          "priority": 1,
+          "year": 3,
           "initiating_npc": "director_regional_health_services",
           "initiating_dialogue": "I'm getting a different answer from everyone, so I'll ask you to straighten them out. The Ministry, NGO, and health care providers can't agree on who has jurisdiction where and what we're supposed to do for patients.",
           "starting_options": [
@@ -5321,7 +5356,8 @@
         {
           "symbol": "excuses",
           "name": "Excuses",
-          "priority": 11,
+          "priority": 2,
+          "year": 3,
           "initiating_npc": "ngo_manager",
           "initiating_dialogue": "We've talked about the problems of expectations. We can meet our goals better if we get our bonuses.",
           "starting_options": [
@@ -5404,7 +5440,8 @@
         {
           "symbol": "micromanagement",
           "name": "Micromanagement",
-          "priority": 12,
+          "priority": 3,
+          "year": 3,
           "initiating_npc": "ngo_manager",
           "initiating_dialogue": "I keep getting calls from the Minister of Health's office checking in on us, telling us what we could be doing better, telling us how to handle things. That's your job, right?",
           "starting_options": [
@@ -5480,7 +5517,8 @@
         {
           "symbol": "poor_stewardship",
           "name": "Poor Stewardship",
-          "priority": 13,
+          "priority": 4,
+          "year": 3,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "I can tell you right now what's happening because I've seen it before. People all along the chain are skimming money because the NGO and Ministry have both backed off of their responsibilities. When there's no clear authority, corruption sets in. This is what's happening here.",
           "starting_options": [
@@ -5566,686 +5604,7 @@
           }
         }
       ],
-      "twists": [
-        {
-          "symbol": "mismanagement",
-          "name": "Mismanagement",
-          "priority": 5,
-          "initiating_npc": "coach",
-          "initiating_dialogue": "I was visiting the hospital for my mentoring visit, and they are still mismanaging funds. The business plan has clear guidelines the Administrator is not sticking to.",
-          "starting_options": [
-            "warning_2",
-            "sanctions_and_retraining_on_use_of_financial_tools"
-          ],
-          "starting_options_affects": [
-            "warning_2",
-            "sanctions_and_retraining_on_use_of_financial_tools"
-          ],
-          "starting_options_cost": [
-            "small",
-            "medium"
-          ],
-          "final_options": [
-            "warning_2",
-            "sanctions_and_retraining_on_use_of_financial_tools",
-            "revise_business_plan_1"
-          ],
-          "final_options_affects": [
-            "warning_2",
-            "sanctions_and_retraining_on_use_of_financial_tools",
-            "revise_business_plan_1"
-          ],
-          "final_options_cost": [
-            "small",
-            "medium",
-            "medium"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "I have been slammed with meetings all week, and don't really have time to discuss this right now. Sorry."
-            },
-            "director_regional_health_services": {
-              "dialogue": "Have you considered that there is a flaw in the business plan? If the Hospital Administrator is straying from it so often, it might need to be reevaluated.",
-              "unlocks": [
-                "revise_business_plan_1"
-              ],
-              "unlocks_affects": [
-                "revise_business_plan_1"
-              ]
-            },
-            "coach": {
-              "feedback": {
-                "revise_business_plan_1": "I will schedule a meeting this week with the purchasing agency and begin the revision process for next quarter.",
-                "sanctions_and_retraining_on_use_of_financial_tools": "I'll make some time this week for a retraining session and try to drill down on exactly how these tools should be used. I'm informing the regulator about the sanctions now."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "If i had to guess, I would say this is simple mismanagement, nothing fraudulent."
-            },
-            "community_verifier": {
-              "dialogue": "I'm not really sure. I haven't even been to this hospital!"
-            },
-            "clinic_manager": {
-              "dialogue": "When was the last time you revised the business plan?"
-            },
-            "hospital_administrator": {
-              "dialogue": "We need to spend money where it's needed, and as the administrator of this hospital, I know where it is needed. That was the purpose of granting us autonomy in the first place.",
-              "feedback": {
-                "warning_2": "I will do my best, but I I'm really worried things are going to start breaking down soon."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "lack_of_transparency",
-          "name": "Lack of Transparency",
-          "priority": 6,
-          "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "There is an ongoing issue with the Clinic Manager. They are small things, but since they have been having issues with record keeping, I looked more closely and found some forms that seem like exact duplicates of others.",
-          "starting_options": [
-            "warning_3",
-            "mild_sanctions"
-          ],
-          "starting_options_affects": [
-            "warning_3",
-            "mild_sanctions"
-          ],
-          "starting_options_cost": [
-            "small",
-            "small"
-          ],
-          "final_options": [
-            "warning_3",
-            "mild_sanctions",
-            "strong_sanctions"
-          ],
-          "final_options_affects": [
-            "warning_3",
-            "mild_sanctions",
-            "strong_sanctions"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "This is very distressing. I urge you to deal with this harshly."
-            },
-            "director_regional_health_services": {
-              "dialogue": "This is troubling to hear. I may begin looking into other providers for you to contract next year. ",
-              "unlocks": [
-                "strong_sanctions"
-              ],
-              "unlocks_affects": [
-                "strong_sanctions"
-              ]
-            },
-            "coach": {
-              "dialogue": "This is a big deal. If these records are not accurate, we have no way of measuring progress. We need to send a very clear message. Unvalidated reports cannot be paid."
-            },
-            "third_party_verifier": {
-              "feedback": {
-                "warning_3": "I'll warn them. Hopefully we will see some improvement next quarter."
-              }
-            },
-            "community_verifier": {
-              "dialogue": "That sounds pretty suspicious."
-            },
-            "clinic_manager": {
-              "dialogue": "I told my staff to start keeping better records. I can talk to them again and stress its importance...",
-              "feedback": {
-                "mild_sanctions": "Our budget has been wearing thin as it is! I will have to fire staff because of this.",
-                "strong_sanctions": "This is a disaster! For such a small error? I will have to fire staff because of this, and will not be able to order needed supplies."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "Don't go too hard on them. These clinics do good work."
-            }
-          }
-        },
-        {
-          "symbol": "inconsistent_indicators",
-          "name": "Inconsistent Indicators",
-          "priority": 7,
-          "initiating_npc": "dep_minister_of_health",
-          "initiating_dialogue": "We are seeing some indicators rise while others stay stagnant. Hospital births are barely rising, though checkups and vaccination rates are improving. We need to see all indicators rising!",
-          "starting_options": [
-            "hire_more_outreach_staff"
-          ],
-          "starting_options_affects": [
-            "hire_more_outreach_staff"
-          ],
-          "starting_options_cost": [
-            "large"
-          ],
-          "final_options": [
-            "hire_more_outreach_staff",
-            "raise_incentives_for_facility_births",
-            "review_indicators_at_end_of_year"
-          ],
-          "final_options_affects": [
-            "hire_more_outreach_staff",
-            "raise_incentives_for_facility_births",
-            "review_indicators_at_end_of_year"
-          ],
-          "final_options_cost": [
-            "large",
-            "large",
-            "medium"
-          ],
-          "characters": {
-            "director_regional_health_services": {
-              "dialogue": "I suggest hiring more outreach staff to operate in facilities near these settlements.",
-              "unlocks": [
-                "hire_more_outreach_staff"
-              ],
-              "unlocks_affects": [
-                "hire_more_outreach_staff"
-              ],
-              "feedback": {
-                "hire_more_outreach_staff": "This makes a good deal of sense to me."
-              }
-            },
-            "coach": {
-              "dialogue": "We've tried many strategies to improve stagnant indicators. Perhaps the indicators need to be reviewed at the end of the year?",
-              "unlocks": [
-                "review_indicators_at_end_of_year"
-              ],
-              "unlocks_affects": [
-                "review_indicators_at_end_of_year"
-              ],
-              "feedback": {
-                "review_indicators_at_end_of_year": "It might make sense to revise goals down, or at the very least, perform another survey to make sure our population estimates were correct."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "Are you concerned about fraud? I haven't seen direct evidence of it."
-            },
-            "community_verifier": {
-              "dialogue": "People here are still reluctant to travel to facilities."
-            },
-            "clinic_manager": {
-              "dialogue": "I admit, we haven't seen as many facility births as we'd like. We're doing everything we can to change that."
-            },
-            "hospital_administrator": {
-              "dialogue": "Vaccinations are easier to manage. Births take more planning. More resources are likely required to make this work.",
-              "unlocks": [
-                "raise_incentives_for_facility_births"
-              ],
-              "unlocks_affects": [
-                "raise_incentives_for_facility_births"
-              ],
-              "feedback": {
-                "raise_incentives_for_facility_births": "That will make this a good deal easier for us."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "more_transparency",
-          "name": "More Transparency",
-          "priority": 8,
-          "initiating_npc": "coach",
-          "initiating_dialogue": "I was visiting one of the clinics in the network for my mentoring visit, and I was unhappy with their transparency. There were some records I was told were unavailable, and I was not able to meet with the staff as I wished.",
-          "starting_options": [
-            "warning_4",
-            "terminate_contract_at_end_of_year_3"
-          ],
-          "starting_options_affects": [
-            "warning_4",
-            "terminate_contract_at_end_of_year_3"
-          ],
-          "starting_options_cost": [
-            "small",
-            "medium"
-          ],
-          "final_options": [
-            "warning_4",
-            "terminate_contract_at_end_of_year_3",
-            "audit",
-            "capacity_building"
-          ],
-          "final_options_affects": [
-            "warning_4",
-            "terminate_contract_at_end_of_year_3",
-            "audit",
-            "capacity_building"
-          ],
-          "final_options_cost": [
-            "small",
-            "medium",
-            "medium",
-            "medium"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "I was under the impression that the plan required transparency."
-            },
-            "director_regional_health_services": {
-              "dialogue": "This has gone far enough. We should order a total audit of all their practices.",
-              "unlocks": [
-                "audit"
-              ],
-              "unlocks_affects": [
-                "audit"
-              ]
-            },
-            "coach": {
-              "feedback": {
-                "terminate_contract_at_end_of_year_3": "I will warn them that their contract is in danger of being terminated at the end of the year.",
-                "capacity_building": "I feel like I've been doing this for a year already, but let's see if we can't make some progress"
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "Their record keeping has been spotty as well, though it has improved since last year."
-            },
-            "community_verifier": {
-              "dialogue": "I would talk to the provider directly on this matter."
-            },
-            "clinic_manager": {
-              "dialogue": "We are simply over worked here, and have little time for meetings when our patients are sick and already have long waits. The Coach should be helping us build capacity, not draining our capacity.",
-              "unlocks": [
-                "capacity_building"
-              ],
-              "unlocks_affects": [
-                "capacity_building"
-              ],
-              "feedback": {
-                "audit": "Very well, I'll clear some time. I'd be interested to hear your suggestions on improving things.",
-                "warning_4": "I'll try to make my staff more available next time."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "I haven't been having this problem, so I'm not sure what to tell you."
-            }
-          }
-        },
-        {
-          "symbol": "wrong_numbers",
-          "name": "Wrong Numbers",
-          "priority": 9,
-          "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "I have been reviewing the Hospital Administrator's records, and they do not check out. There is either fraud or accidental misreporting here.",
-          "starting_options": [
-            "warning_5",
-            "sanctions_3"
-          ],
-          "starting_options_affects": [
-            "warning_5",
-            "sanctions_3"
-          ],
-          "starting_options_cost": [
-            "small",
-            "small",
-            "medium"
-          ],
-          "final_options": [
-            "warning_5",
-            "sanctions_3",
-            "hold_meeting_to_retrain_on_reporting_practices"
-          ],
-          "final_options_affects": [
-            "warning_5",
-            "sanctions_3",
-            "hold_meeting_to_retrain_on_reporting_practices"
-          ],
-          "final_options_cost": [
-            "small",
-            "medium",
-            "medium",
-            "medium"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "If needed, I could suspend their license to practice, but I don't think it will come to that."
-            },
-            "director_regional_health_services": {
-              "dialogue": "I've had some communication issues with the Hospital Administrator in the past, but I believe he is honest. You should talk to him directly to see what the problem is.",
-              "narrows": [
-                "dep_minister_of_health",
-                "director_regional_health_services",
-                "third_party_verifier",
-                "community_verifier",
-                "clinic_manager"
-              ]
-            },
-            "coach": {
-              "dialogue": "This is the first time we've seen this behavior from the Hospital Administrator. I'd recommend a warning."
-            },
-            "community_verifier": {
-              "dialogue": "The sample I surveyed does not align with the numbers you say they reported. Very suspicious."
-            },
-            "clinic_manager": {
-              "dialogue": "I don't think the hospital should get preferential treatment over my clinics. Treat them just as you would treat us."
-            },
-            "hospital_administrator": {
-              "dialogue": "I think my staff is confused about what to report. Frankly, I myself have been confused at times!",
-              "unlocks": [
-                "hold_meeting_to_retrain_on_reporting_practices"
-              ],
-              "feedback": {
-                "hold_meeting_to_retrain_on_reporting_practices": "I think that will probably help. Let me know when works for you and I'll clear some time.",
-                "warning_5": "I'll talk to my staff and try to settle this.",
-                "sanctions_3": "I just put in orders for new equipment. Now I won't be able to afford to pay for them. I think you are talking this too far. It was an honest mistake."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "budget_lines",
-          "name": "Budget Lines",
-          "priority": 10,
-          "initiating_npc": "hospital_administrator",
-          "initiating_dialogue": "I received a memo today going over the new national health budget. The ministry has released new hiring guidelines for all providers, but it does not match our goals.",
-          "starting_options": [
-            "comply_with_ministry_request"
-          ],
-          "starting_options_affects": [
-            "comply_with_ministry_request"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "comply_with_ministry_request",
-            "clarify_separation_of_functions_2",
-            "revise_business_plan_2"
-          ],
-          "final_options_affects": [
-            "comply_with_ministry_request",
-            "clarify_separation_of_functions_2",
-            "revise_business_plan_2"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "medium"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "Our own monitors have found mismanagement of funds. They need strict guidelines to provide the necessary services.",
-              "narrows": [
-                "dep_minister_of_health",
-                "director_regional_health_services",
-                "coach",
-                "community_verifier"
-              ],
-              "feedback": {
-                "clarify_separation_of_functions": "This is within the scope of regulation, which is my role. But if you think it's essential, we will step back on this."
-              }
-            },
-            "director_regional_health_services": {
-              "dialogue": "If the Ministry is claiming this is necessary, I would take it seriously. A compromise might be to re-work the business plan with Ministry oversight.",
-              "unlocks": [
-                "revise_business_plan"
-              ]
-            },
-            "coach": {
-              "dialogue": "I have found some mismanagement of funds in the past as well. However, we are supposed to be granting autonomy.",
-              "unlocks": [
-                "clarify_separation_of_functions_and_responsibilities_2"
-              ]
-            },
-            "third_party_verifier": {
-              "dialogue": "I have noticed some inconsistencies in the data that indicate to me some funds are being mismanaged."
-            },
-            "community_verifier": {
-              "dialogue": "I don't understand the need for these new guidelines, but then again, I am not working in the hospital."
-            },
-            "clinic_manager": {
-              "dialogue": "I need to be able to hire whoever is needed. This is a return to the status quo that I do not agree with.",
-              "unlocks": [
-                "clarify_separation_of_functions_and_responsibilities_2"
-              ]
-            },
-            "hospital_administrator": {
-              "feedback": {
-                "revise_business_plan": " I don't believe this will be constructive, but I'm willing to try.",
-                "comply_with_ministry_request": " If you insist...",
-                "sanctions": "I just put in orders for new equipment. Now I won't be able to afford to pay for them. I think you are talking this too far. It was an honest mistake."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "failed_inspection",
-          "name": "Failed Inspection",
-          "priority": 10,
-          "initiating_npc": "clinic_manager",
-          "initiating_dialogue": "Hey, we just received a memo telling us we failed a quality of care inspection, but I disagree with the assessment. Given the amount of strain we are under, I believe we need to be granted some leeway in order to serve patients.",
-          "starting_options": [
-            "review_the_inspection"
-          ],
-          "starting_options_affects": [
-            "review_the_inspection"
-          ],
-          "starting_options_cost": [
-            "medium"
-          ],
-          "final_options": [
-            "review_the_inspection",
-            "warning_6",
-            "deny_review"
-          ],
-          "final_options_affects": [
-            "review_the_inspection",
-            "warning_6",
-            "deny_review"
-          ],
-          "final_options_cost": [
-            "medium",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "Quality of care is important insofar as it enables better and more services to be deleivered."
-            },
-            "director_regional_health_services": {
-              "dialogue": "I recognize that their job is difficult, but quality of care is one of the indicators we are working to improve."
-            },
-            "coach": {
-              "dialogue": "Quality of care is not something we should grant leeway on. It is crucially important to the plan!",
-              "unlocks": [
-                "warning"
-              ]
-            },
-            "third_party_verifier": {
-              "dialogue": "They failed inspection, plain and simple. A review is not necessary.",
-              "unlocks": [
-                "deny_review"
-              ]
-            },
-            "community_verifier": {
-              "dialogue": "These are small clinics, with very little operating budget. Denying payment will cause immediate harm to the community."
-            },
-            "clinic_manager": {
-              "Feedback": {
-                "review_the_inspection": "Thank you! I think you'll find our quality is sufficient.",
-                "warning_6": "I don't know what we can do to improve things before the year is out.",
-                "deny_review": "This may be a serious problem. I was not paid last quarter, and it looks like I won't be paid this quarter."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "I can tell you it is painful to miss a payment, even when things are going well. What harm is there in reviewing the inspection?"
-            }
-          }
-        },
-        {
-          "symbol": "over_capacity",
-          "name": "Over Capacity",
-          "priority": 11,
-          "initiating_npc": "director_regional_health_services",
-          "initiating_dialogue": "We've seen some great improvements over the past three years, but now the hospital is butting up against capacity. We might need to expand hiring to keep up with demand.",
-          "starting_options": [
-            "expand_hiring_of_hospital_staff"
-          ],
-          "starting_options_affects": [
-            "expand_hiring_of_hospital_staff"
-          ],
-          "starting_options_cost": [
-            "medium"
-          ],
-          "final_options": [
-            "expand_hiring_of_hospital_staff",
-            "expand_hiring_at_all_facilities",
-            "award_bonuses_to_hospital_staff"
-          ],
-          "final_options_affects": [
-            "expand_hiring_of_hospital_staff",
-            "expand_hiring_at_all_facilities",
-            "award_bonuses_to_hospital_staff"
-          ],
-          "final_options_cost": [
-            "medium",
-            "large",
-            "medium"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "This is great news, as far as we're concerned!",
-              "feedback": {
-                "expand_hiring_of_hospital_staff": "Perfect. This should ease our capacity problems."
-              }
-            },
-            "coach": {
-              "dialogue": "From what I've seen, some extra help would go a long way, but I am concerned about the learning curve for new workers."
-            },
-            "third_party_verifier": {
-              "dialogue": "This is a good problem to have."
-            },
-            "community_verifier": {
-              "dialogue": "The people in my most recent sample have been happy with the services they received, but did report long waits."
-            },
-            "clinic_manager": {
-              "dialogue": "I'd love to have more staff. Or is this just for the hospital?  Don't forget to take care of the people doing the hard work at the clinics.",
-              "unlocks": [
-                "expand_hiring_at_all_facilities"
-              ],
-              "feedback": {
-                "expand_hiring_at_all_facilities": "This was needed very badly. I look forward to meeting my new recruits."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "I am worried about on-boarding many new people. Perhaps we should reward the people who have got us this far? Bonuses and overtime would make my staff happy.",
-              "unlocks": [
-                "award_bonuses_to_hospital_staff"
-              ],
-              "feedback": {
-                "award_bonuses_to_hospital_staff": "This will really help motivate my staff. Thanks!"
-              }
-            }
-          }
-        },
-        {
-          "symbol": "checkup_overload",
-          "name": "Checkup Overload",
-          "priority": 12,
-          "initiating_npc": "dep_minister_of_health",
-          "initiating_dialogue": "We have been looking at the numbers, and outpatient consultations have risen much faster than projected. We can't explain it.",
-          "starting_options": [
-            "decrease_incentives"
-          ],
-          "starting_options_affects": [
-            "decrease_incentives"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "decrease_incentives",
-            "warn_providers_to_follow_protocols",
-            "maintain_current_rates"
-          ],
-          "final_options_affects": [
-            "decrease_incentives",
-            "warn_providers_to_follow_protocols",
-            "maintain_current_rates"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "director_regional_health_services": {
-              "dialogue": "For some reason people in this region have been taking advantage of this service much more than others. Perhaps providers are pushing the services too strongly.",
-              "unlocks": [
-                "decrease_incentives"
-              ]
-            },
-            "coach": {
-              "dialogue": "We can reduce the fee for this, but we need to think carefully about what other effects that will have on the plan.",
-              "unlocks": [
-                "decrease_incentives"
-              ],
-              "feedback": {
-                "decrease_incentives": "I'll research the best way to do this without having any undesired effects."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "They all seem to be legitimate, so I don't suspect fraud. Would you like me to go over the paperwork again?"
-            },
-            "community_verifier": {
-              "dialogue": "We have heard rumors of people going to the hospital and being offered services they don't want.",
-              "unlocks": [
-                "warn_providers_to_follow_protocols"
-              ]
-            },
-            "clinic_manager": {
-              "dialogue": "What's wrong with people getting outpatient services? It's better than the alternative.",
-              "unlocks": [
-                "maintain_current_rates"
-              ],
-              "feedback": {
-                "maintain_current_rates": "Smooth sailing ahead. Nice talking to you!"
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "Really? I haven't noticed that at my hospital. Anyway, I thought treating people was a good thing.",
-              "unlocks": [
-                "maintain_current_rates"
-              ],
-              "feedback": {
-                "warn_providers_to_follow_protocols": "I'll have my staff re-assess these practices."
-              }
-            }
-          }
-        }
-      ],
-      "year_end": [
-        {
-          "symbol": "government_overreach_verification",
-          "name": "Government Overreach on Verification",
-          "prompt": "do you want to fire the clinic?",
-          "choices": [
-            {
-              "yes": "Yes",
-              "load": "twist_1"
-            },
-            {
-              "no": "No",
-              "load": "twist_2"
-            }
-          ]
-        },
-        {
-          "symbol": "government_overreach_verification",
-          "name": "Government Overreach on Verification",
-          "prompt": "do you want to fire the clinic?",
-          "choices": [
-            {
-              "yes": "Yes",
-              "load": "scenario_1"
-            },
-            {
-              "no": "No"
-            }
-          ]
-        }
-      ]
+      "year_end": {}
     },
     "scenario_3": {
       "problems": [
@@ -6253,6 +5612,7 @@
           "symbol": "slow_verification",
           "name": "Government overreach on verification",
           "priority": 1,
+          "year": 1,
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "The independant verifier and the health providers seem to have built a coalition to box us out of the verification proccess. This plan gives us the authority to verify any and all reports, but they're pushing back.",
           "starting_options": [
@@ -6320,6 +5680,7 @@
           "symbol": "poor_management",
           "name": "Poor Management",
           "priority": 2,
+          "year": 1,
           "initiating_npc": "coach",
           "initiating_dialogue": "The hospital administrator and I were reviewing the hospital's business plan and they are not doing a good job managing their money. Even with our payments they're operating at a loss.",
           "starting_options": [
@@ -6395,6 +5756,7 @@
           "symbol": "bad_record_keeping",
           "name": "Bad Record Keeping",
           "priority": 3,
+          "year": 1,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "The Clinic submitted their reports to us, but there were some inconsistancies. When we asked to see their records, they couldn't supply them.",
           "starting_options": [
@@ -6463,6 +5825,7 @@
           "symbol": "lack_of_supplies",
           "name": "Lack of Supplies",
           "priority": 4,
+          "year": 1,
           "initiating_npc": "community_verifier",
           "initiating_dialogue": "Community Verifier",
           "starting_options": [
@@ -6529,7 +5892,8 @@
         {
           "symbol": "staff_issues",
           "name": "Staff_Issues",
-          "priority": 5,
+          "priority": 1,
+          "year": 2,
           "initiating_npc": "community_verifier",
           "initiating_dialogue": "In many of my focus groups, there's an air of mistrust of the hospitals and clinics. People who go have experienced terrible service and are telling their neighbors not to go.",
           "starting_options": [
@@ -6602,7 +5966,8 @@
         {
           "symbol": "mismanagement",
           "name": "Mismanagement",
-          "priority": 6,
+          "priority": 2,
+          "year": 2,
           "initiating_npc": "coach",
           "initiating_dialogue": "Coach",
           "starting_options": [
@@ -6662,7 +6027,8 @@
         {
           "symbol": "transparency",
           "name": "Transparency",
-          "priority": 7,
+          "priority": 3,
+          "year": 2,
           "initiating_npc": "third_party_verifier",
           "initiating_dialogue": "There is an ongoing issue with the Clinic Manager. They looked like small stuff, but since they've had issues with record keeping, I looked more closely. I found some forms that are exact duplicates of others, which means they're filing duplicate reports to boost their numbers.",
           "starting_options": [
@@ -6722,7 +6088,8 @@
         {
           "symbol": "government_overreach_on_verification",
           "name": "Government overreach on verification",
-          "priority": 8,
+          "priority": 4,
+          "year": 2,
           "initiating_npc": "hospital_administrator",
           "initiating_dialogue": "We're having a lot of trouble hitting goals for facility births. We're short staffed, especially when it comes to midwives.",
           "starting_options": [
@@ -6792,7 +6159,8 @@
         {
           "symbol": "budget_lines",
           "name": "Budget Lines",
-          "priority": 9,
+          "priority": 1,
+          "year": 3,
           "initiating_npc": "hospital_administrator",
           "initiating_dialogue": "I received a memo today on the new national health budget. The ministry released new hiring guidelines for all providers, but they don't match the goals you gave us. ",
           "starting_options": [
@@ -6864,7 +6232,8 @@
         {
           "symbol": "failed_inspection",
           "name": "Failed Inspection",
-          "priority": 10,
+          "priority": 3,
+          "year": 3,
           "initiating_npc": "clinic_manager",
           "initiating_dialogue": "Hey, we just received a memo telling us we failed a quality of care inspection, but I disagree with the assessment. We're doing a great job, considering the strain we're under.",
           "starting_options": [
@@ -6926,7 +6295,8 @@
         {
           "symbol": "perscriptions",
           "name": "Perscriptions",
-          "priority": 11,
+          "priority": 3,
+          "year": 3,
           "initiating_npc": "community_verifier",
           "initiating_dialogue": "I've been interviewing patients, and at least at the clinics there's a serious quality of care issue. People have been leaving with what appears to be completely wrong perscriptions.",
           "starting_options": [
@@ -7009,7 +6379,8 @@
         {
           "symbol": "missing_goals",
           "name": "Missing Goals",
-          "priority": 12,
+          "priority": 4,
+          "year": 3,
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "I'm disappointed to say this, but things are not going well. Providers routinely miss goals, and our indicators have not risen as predicted. We're thinking about declaring the plan DOE and cancelling it for next year. This would mean a return to traditional financing.",
           "starting_options": [
@@ -7079,655 +6450,6 @@
               ],
               "feedback": {
                 "terminate_hospital_contract_and_redirect_resources": "Well. This is disappointing. I was doing everything I could to make this plan work."
-              }
-            }
-          }
-        }
-      ],
-      "twists": [
-        {
-          "symbol": "mismanagement",
-          "name": "Mismanagement",
-          "priority": 5,
-          "initiating_npc": "coach",
-          "initiating_dialogue": "I was visiting the hospital for my mentoring visit, and they are still mismanaging funds. The business plan has clear guidelines the Administrator is not sticking to.",
-          "starting_options": [
-            "warning_2",
-            "sanctions_and_retraining_on_use_of_financial_tools"
-          ],
-          "starting_options_affects": [
-            "warning_2",
-            "sanctions_and_retraining_on_use_of_financial_tools"
-          ],
-          "starting_options_cost": [
-            "small",
-            "medium"
-          ],
-          "final_options": [
-            "warning_2",
-            "sanctions_and_retraining_on_use_of_financial_tools",
-            "revise_business_plan_1"
-          ],
-          "final_options_affects": [
-            "warning_2",
-            "sanctions_and_retraining_on_use_of_financial_tools",
-            "revise_business_plan_1"
-          ],
-          "final_options_cost": [
-            "small",
-            "medium",
-            "medium"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "I have been slammed with meetings all week, and don't really have time to discuss this right now. Sorry."
-            },
-            "director_regional_health_services": {
-              "dialogue": "Have you considered that there is a flaw in the business plan? If the Hospital Administrator is straying from it so often, it might need to be reevaluated.",
-              "unlocks": [
-                "revise_business_plan_1"
-              ],
-              "unlocks_affects": [
-                "revise_business_plan_1"
-              ]
-            },
-            "coach": {
-              "feedback": {
-                "revise_business_plan_1": "I will schedule a meeting this week with the purchasing agency and begin the revision process for next quarter.",
-                "sanctions_and_retraining_on_use_of_financial_tools": "I'll make some time this week for a retraining session and try to drill down on exactly how these tools should be used. I'm informing the regulator about the sanctions now."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "If i had to guess, I would say this is simple mismanagement, nothing fraudulent."
-            },
-            "community_verifier": {
-              "dialogue": "I'm not really sure. I haven't even been to this hospital!"
-            },
-            "clinic_manager": {
-              "dialogue": "When was the last time you revised the business plan?"
-            },
-            "hospital_administrator": {
-              "dialogue": "We need to spend money where it's needed, and as the administrator of this hospital, I know where it is needed. That was the purpose of granting us autonomy in the first place.",
-              "feedback": {
-                "warning_2": "I will do my best, but I I'm really worried things are going to start breaking down soon."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "lack_of_transparency",
-          "name": "Lack of Transparency",
-          "priority": 6,
-          "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "There is an ongoing issue with the Clinic Manager. They are small things, but since they have been having issues with record keeping, I looked more closely and found some forms that seem like exact duplicates of others.",
-          "starting_options": [
-            "warning_3",
-            "mild_sanctions"
-          ],
-          "starting_options_affects": [
-            "warning_3",
-            "mild_sanctions"
-          ],
-          "starting_options_cost": [
-            "small",
-            "small"
-          ],
-          "final_options": [
-            "warning_3",
-            "mild_sanctions",
-            "strong_sanctions"
-          ],
-          "final_options_affects": [
-            "warning_3",
-            "mild_sanctions",
-            "strong_sanctions"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "This is very distressing. I urge you to deal with this harshly."
-            },
-            "director_regional_health_services": {
-              "dialogue": "This is troubling to hear. I may begin looking into other providers for you to contract next year. ",
-              "unlocks": [
-                "strong_sanctions"
-              ],
-              "unlocks_affects": [
-                "strong_sanctions"
-              ]
-            },
-            "coach": {
-              "dialogue": "This is a big deal. If these records are not accurate, we have no way of measuring progress. We need to send a very clear message. Unvalidated reports cannot be paid."
-            },
-            "third_party_verifier": {
-              "feedback": {
-                "warning_3": "I'll warn them. Hopefully we will see some improvement next quarter."
-              }
-            },
-            "community_verifier": {
-              "dialogue": "That sounds pretty suspicious."
-            },
-            "clinic_manager": {
-              "dialogue": "I told my staff to start keeping better records. I can talk to them again and stress its importance...",
-              "feedback": {
-                "mild_sanctions": "Our budget has been wearing thin as it is! I will have to fire staff because of this.",
-                "strong_sanctions": "This is a disaster! For such a small error? I will have to fire staff because of this, and will not be able to order needed supplies."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "Don't go too hard on them. These clinics do good work."
-            }
-          }
-        },
-        {
-          "symbol": "inconsistent_indicators",
-          "name": "Inconsistent Indicators",
-          "priority": 7,
-          "initiating_npc": "dep_minister_of_health",
-          "initiating_dialogue": "We are seeing some indicators rise while others stay stagnant. Hospital births are barely rising, though checkups and vaccination rates are improving. We need to see all indicators rising!",
-          "starting_options": [
-            "hire_more_outreach_staff"
-          ],
-          "starting_options_affects": [
-            "hire_more_outreach_staff"
-          ],
-          "starting_options_cost": [
-            "large"
-          ],
-          "final_options": [
-            "hire_more_outreach_staff",
-            "raise_incentives_for_facility_births",
-            "review_indicators_at_end_of_year"
-          ],
-          "final_options_affects": [
-            "hire_more_outreach_staff",
-            "raise_incentives_for_facility_births",
-            "review_indicators_at_end_of_year"
-          ],
-          "final_options_cost": [
-            "large",
-            "large",
-            "medium"
-          ],
-          "characters": {
-            "director_regional_health_services": {
-              "dialogue": "I suggest hiring more outreach staff to operate in facilities near these settlements.",
-              "unlocks": [
-                "hire_more_outreach_staff"
-              ],
-              "unlocks_affects": [
-                "hire_more_outreach_staff"
-              ],
-              "feedback": {
-                "hire_more_outreach_staff": "This makes a good deal of sense to me."
-              }
-            },
-            "coach": {
-              "dialogue": "We've tried many strategies to improve stagnant indicators. Perhaps the indicators need to be reviewed at the end of the year?",
-              "unlocks": [
-                "review_indicators_at_end_of_year"
-              ],
-              "unlocks_affects": [
-                "review_indicators_at_end_of_year"
-              ],
-              "feedback": {
-                "review_indicators_at_end_of_year": "It might make sense to revise goals down, or at the very least, perform another survey to make sure our population estimates were correct."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "Are you concerned about fraud? I haven't seen direct evidence of it."
-            },
-            "community_verifier": {
-              "dialogue": "People here are still reluctant to travel to facilities."
-            },
-            "clinic_manager": {
-              "dialogue": "I admit, we haven't seen as many facility births as we'd like. We're doing everything we can to change that."
-            },
-            "hospital_administrator": {
-              "dialogue": "Vaccinations are easier to manage. Births take more planning. More resources are likely required to make this work.",
-              "unlocks": [
-                "raise_incentives_for_facility_births"
-              ],
-              "unlocks_affects": [
-                "raise_incentives_for_facility_births"
-              ],
-              "feedback": {
-                "raise_incentives_for_facility_births": "That will make this a good deal easier for us."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "more_transparency",
-          "name": "More Transparency",
-          "priority": 8,
-          "initiating_npc": "coach",
-          "initiating_dialogue": "I was visiting one of the clinics in the network for my mentoring visit, and I was unhappy with their transparency. There were some records I was told were unavailable, and I was not able to meet with the staff as I wished.",
-          "starting_options": [
-            "warning_4",
-            "terminate_contract_at_end_of_year_3"
-          ],
-          "starting_options_affects": [
-            "warning_4",
-            "terminate_contract_at_end_of_year_3"
-          ],
-          "starting_options_cost": [
-            "small",
-            "medium"
-          ],
-          "final_options": [
-            "warning_4",
-            "terminate_contract_at_end_of_year_3",
-            "audit",
-            "capacity_building"
-          ],
-          "final_options_affects": [
-            "warning_4",
-            "terminate_contract_at_end_of_year_3",
-            "audit",
-            "capacity_building"
-          ],
-          "final_options_cost": [
-            "small",
-            "medium",
-            "medium",
-            "medium"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "I was under the impression that the plan required transparency."
-            },
-            "director_regional_health_services": {
-              "dialogue": "This has gone far enough. We should order a total audit of all their practices.",
-              "unlocks": [
-                "audit"
-              ],
-              "unlocks_affects": [
-                "audit"
-              ]
-            },
-            "coach": {
-              "feedback": {
-                "terminate_contract_at_end_of_year_3": "I will warn them that their contract is in danger of being terminated at the end of the year.",
-                "capacity_building": "I feel like I've been doing this for a year already, but let's see if we can't make some progress"
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "Their record keeping has been spotty as well, though it has improved since last year."
-            },
-            "community_verifier": {
-              "dialogue": "I would talk to the provider directly on this matter."
-            },
-            "clinic_manager": {
-              "dialogue": "We are simply over worked here, and have little time for meetings when our patients are sick and already have long waits. The Coach should be helping us build capacity, not draining our capacity.",
-              "unlocks": [
-                "capacity_building"
-              ],
-              "unlocks_affects": [
-                "capacity_building"
-              ],
-              "feedback": {
-                "audit": "Very well, I'll clear some time. I'd be interested to hear your suggestions on improving things.",
-                "warning_4": "I'll try to make my staff more available next time."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "I haven't been having this problem, so I'm not sure what to tell you."
-            }
-          }
-        },
-        {
-          "symbol": "wrong_numbers",
-          "name": "Wrong Numbers",
-          "priority": 9,
-          "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "I have been reviewing the Hospital Administrator's records, and they do not check out. There is either fraud or accidental misreporting here.",
-          "starting_options": [
-            "warning_5",
-            "sanctions_3"
-          ],
-          "starting_options_affects": [
-            "warning_5",
-            "sanctions_3"
-          ],
-          "starting_options_cost": [
-            "small",
-            "small",
-            "medium"
-          ],
-          "final_options": [
-            "warning_5",
-            "sanctions_3",
-            "hold_meeting_to_retrain_on_reporting_practices"
-          ],
-          "final_options_affects": [
-            "warning_5",
-            "sanctions_3",
-            "hold_meeting_to_retrain_on_reporting_practices"
-          ],
-          "final_options_cost": [
-            "small",
-            "medium",
-            "medium",
-            "medium"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "If needed, I could suspend their license to practice, but I don't think it will come to that."
-            },
-            "director_regional_health_services": {
-              "dialogue": "I've had some communication issues with the Hospital Administrator in the past, but I believe he is honest. You should talk to him directly to see what the problem is.",
-              "narrows": [
-                "dep_minister_of_health",
-                "director_regional_health_services",
-                "third_party_verifier",
-                "community_verifier",
-                "clinic_manager"
-              ]
-            },
-            "coach": {
-              "dialogue": "This is the first time we've seen this behavior from the Hospital Administrator. I'd recommend a warning."
-            },
-            "community_verifier": {
-              "dialogue": "The sample I surveyed does not align with the numbers you say they reported. Very suspicious."
-            },
-            "clinic_manager": {
-              "dialogue": "I don't think the hospital should get preferential treatment over my clinics. Treat them just as you would treat us."
-            },
-            "hospital_administrator": {
-              "dialogue": "I think my staff is confused about what to report. Frankly, I myself have been confused at times!",
-              "unlocks": [
-                "hold_meeting_to_retrain_on_reporting_practices"
-              ],
-              "feedback": {
-                "hold_meeting_to_retrain_on_reporting_practices": "I think that will probably help. Let me know when works for you and I'll clear some time.",
-                "warning_5": "I'll talk to my staff and try to settle this.",
-                "sanctions_3": "I just put in orders for new equipment. Now I won't be able to afford to pay for them. I think you are talking this too far. It was an honest mistake."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "budget_lines",
-          "name": "Budget Lines",
-          "priority": 10,
-          "initiating_npc": "hospital_administrator",
-          "initiating_dialogue": "I received a memo today going over the new national health budget. The ministry has released new hiring guidelines for all providers, but it does not match our goals.",
-          "starting_options": [
-            "comply_with_ministry_request"
-          ],
-          "starting_options_affects": [
-            "comply_with_ministry_request"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "comply_with_ministry_request",
-            "clarify_separation_of_functions_2",
-            "revise_business_plan_2"
-          ],
-          "final_options_affects": [
-            "comply_with_ministry_request",
-            "clarify_separation_of_functions_2",
-            "revise_business_plan_2"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "medium"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "Our own monitors have found mismanagement of funds. They need strict guidelines to provide the necessary services.",
-              "narrows": [
-                "dep_minister_of_health",
-                "director_regional_health_services",
-                "coach",
-                "community_verifier"
-              ],
-              "feedback": {
-                "clarify_separation_of_functions": "This is within the scope of regulation, which is my role. But if you think it's essential, we will step back on this."
-              }
-            },
-            "director_regional_health_services": {
-              "dialogue": "If the Ministry is claiming this is necessary, I would take it seriously. A compromise might be to re-work the business plan with Ministry oversight.",
-              "unlocks": [
-                "revise_business_plan"
-              ]
-            },
-            "coach": {
-              "dialogue": "I have found some mismanagement of funds in the past as well. However, we are supposed to be granting autonomy.",
-              "unlocks": [
-                "clarify_separation_of_functions_and_responsibilities_2"
-              ]
-            },
-            "third_party_verifier": {
-              "dialogue": "I have noticed some inconsistencies in the data that indicate to me some funds are being mismanaged."
-            },
-            "community_verifier": {
-              "dialogue": "I don't understand the need for these new guidelines, but then again, I am not working in the hospital."
-            },
-            "clinic_manager": {
-              "dialogue": "I need to be able to hire whoever is needed. This is a return to the status quo that I do not agree with.",
-              "unlocks": [
-                "clarify_separation_of_functions_and_responsibilities_2"
-              ]
-            },
-            "hospital_administrator": {
-              "feedback": {
-                "revise_business_plan": " I don't believe this will be constructive, but I'm willing to try.",
-                "comply_with_ministry_request": " If you insist...",
-                "sanctions": "I just put in orders for new equipment. Now I won't be able to afford to pay for them. I think you are talking this too far. It was an honest mistake."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "failed_inspection",
-          "name": "Failed Inspection",
-          "priority": 10,
-          "initiating_npc": "clinic_manager",
-          "initiating_dialogue": "Hey, we just received a memo telling us we failed a quality of care inspection, but I disagree with the assessment. Given the amount of strain we are under, I believe we need to be granted some leeway in order to serve patients.",
-          "starting_options": [
-            "review_the_inspection"
-          ],
-          "starting_options_affects": [
-            "review_the_inspection"
-          ],
-          "starting_options_cost": [
-            "medium"
-          ],
-          "final_options": [
-            "review_the_inspection",
-            "warning_6",
-            "deny_review"
-          ],
-          "final_options_affects": [
-            "review_the_inspection",
-            "warning_6",
-            "deny_review"
-          ],
-          "final_options_cost": [
-            "medium",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "Quality of care is important insofar as it enables better and more services to be deleivered."
-            },
-            "director_regional_health_services": {
-              "dialogue": "I recognize that their job is difficult, but quality of care is one of the indicators we are working to improve."
-            },
-            "coach": {
-              "dialogue": "Quality of care is not something we should grant leeway on. It is crucially important to the plan!",
-              "unlocks": [
-                "warning"
-              ]
-            },
-            "third_party_verifier": {
-              "dialogue": "They failed inspection, plain and simple. A review is not necessary.",
-              "unlocks": [
-                "deny_review"
-              ]
-            },
-            "community_verifier": {
-              "dialogue": "These are small clinics, with very little operating budget. Denying payment will cause immediate harm to the community."
-            },
-            "clinic_manager": {
-              "Feedback": {
-                "review_the_inspection": "Thank you! I think you'll find our quality is sufficient.",
-                "warning_6": "I don't know what we can do to improve things before the year is out.",
-                "deny_review": "This may be a serious problem. I was not paid last quarter, and it looks like I won't be paid this quarter."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "I can tell you it is painful to miss a payment, even when things are going well. What harm is there in reviewing the inspection?"
-            }
-          }
-        },
-        {
-          "symbol": "over_capacity",
-          "name": "Over Capacity",
-          "priority": 11,
-          "initiating_npc": "director_regional_health_services",
-          "initiating_dialogue": "We've seen some great improvements over the past three years, but now the hospital is butting up against capacity. We might need to expand hiring to keep up with demand.",
-          "starting_options": [
-            "expand_hiring_of_hospital_staff"
-          ],
-          "starting_options_affects": [
-            "expand_hiring_of_hospital_staff"
-          ],
-          "starting_options_cost": [
-            "medium"
-          ],
-          "final_options": [
-            "expand_hiring_of_hospital_staff",
-            "expand_hiring_at_all_facilities",
-            "award_bonuses_to_hospital_staff"
-          ],
-          "final_options_affects": [
-            "expand_hiring_of_hospital_staff",
-            "expand_hiring_at_all_facilities",
-            "award_bonuses_to_hospital_staff"
-          ],
-          "final_options_cost": [
-            "medium",
-            "large",
-            "medium"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "This is great news, as far as we're concerned!",
-              "feedback": {
-                "expand_hiring_of_hospital_staff": "Perfect. This should ease our capacity problems."
-              }
-            },
-            "coach": {
-              "dialogue": "From what I've seen, some extra help would go a long way, but I am concerned about the learning curve for new workers."
-            },
-            "third_party_verifier": {
-              "dialogue": "This is a good problem to have."
-            },
-            "community_verifier": {
-              "dialogue": "The people in my most recent sample have been happy with the services they received, but did report long waits."
-            },
-            "clinic_manager": {
-              "dialogue": "I'd love to have more staff. Or is this just for the hospital?  Don't forget to take care of the people doing the hard work at the clinics.",
-              "unlocks": [
-                "expand_hiring_at_all_facilities"
-              ],
-              "feedback": {
-                "expand_hiring_at_all_facilities": "This was needed very badly. I look forward to meeting my new recruits."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "I am worried about on-boarding many new people. Perhaps we should reward the people who have got us this far? Bonuses and overtime would make my staff happy.",
-              "unlocks": [
-                "award_bonuses_to_hospital_staff"
-              ],
-              "feedback": {
-                "award_bonuses_to_hospital_staff": "This will really help motivate my staff. Thanks!"
-              }
-            }
-          }
-        },
-        {
-          "symbol": "checkup_overload",
-          "name": "Checkup Overload",
-          "priority": 12,
-          "initiating_npc": "dep_minister_of_health",
-          "initiating_dialogue": "We have been looking at the numbers, and outpatient consultations have risen much faster than projected. We can't explain it.",
-          "starting_options": [
-            "decrease_incentives"
-          ],
-          "starting_options_affects": [
-            "decrease_incentives"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "decrease_incentives",
-            "warn_providers_to_follow_protocols",
-            "maintain_current_rates"
-          ],
-          "final_options_affects": [
-            "decrease_incentives",
-            "warn_providers_to_follow_protocols",
-            "maintain_current_rates"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "director_regional_health_services": {
-              "dialogue": "For some reason people in this region have been taking advantage of this service much more than others. Perhaps providers are pushing the services too strongly.",
-              "unlocks": [
-                "decrease_incentives"
-              ]
-            },
-            "coach": {
-              "dialogue": "We can reduce the fee for this, but we need to think carefully about what other effects that will have on the plan.",
-              "unlocks": [
-                "decrease_incentives"
-              ],
-              "feedback": {
-                "decrease_incentives": "I'll research the best way to do this without having any undesired effects."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "They all seem to be legitimate, so I don't suspect fraud. Would you like me to go over the paperwork again?"
-            },
-            "community_verifier": {
-              "dialogue": "We have heard rumors of people going to the hospital and being offered services they don't want.",
-              "unlocks": [
-                "warn_providers_to_follow_protocols"
-              ]
-            },
-            "clinic_manager": {
-              "dialogue": "What's wrong with people getting outpatient services? It's better than the alternative.",
-              "unlocks": [
-                "maintain_current_rates"
-              ],
-              "feedback": {
-                "maintain_current_rates": "Smooth sailing ahead. Nice talking to you!"
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "Really? I haven't noticed that at my hospital. Anyway, I thought treating people was a good thing.",
-              "unlocks": [
-                "maintain_current_rates"
-              ],
-              "feedback": {
-                "warn_providers_to_follow_protocols": "I'll have my staff re-assess these practices."
               }
             }
           }
@@ -7862,1350 +6584,6 @@
               "feedback": {
                 "comply_with_ministry": "OK, we'll do our best.",
                 "authorize_push_back": "OK I'll bring it up the next time they send in their request, but they can be very firm."
-              }
-            }
-          }
-        }
-      ],
-      "twists": [
-        {
-          "symbol": "process_v_results_again",
-          "name": "Process Versus Results",
-          "priority": 5,
-          "initiating_npc": "ngo_manager",
-          "initiating_dialogue": "Vaccination prices went up, so we couldn't hit our numbers again. But if we don't get our bonus, next quarter it'll be a disaster.",
-          "starting_options": [
-            "deny_payment_2"
-          ],
-          "starting_options_affects": [
-            "deny_payment_2"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "deny_payment_2",
-            "warn_but_allow_payment_once_2",
-            "revise_indicators_at_end_of_year_1"
-          ],
-          "final_options_affects": [
-            "deny_payment_2",
-            "warn_but_allow_payment_once_2",
-            "revise_indicators_at_end_of_year_1"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "You can ask the Regional Director and providers directly. The NGO wants autonomy, so you'll have to do your research.",
-              "narrows": [
-                "dep_minister_of_health",
-                "ngo_manager",
-                "coach",
-                "third_party_verifier",
-                "community_verifier"
-              ]
-            },
-            "director_regional_health_services": {
-              "dialogue": "No, they didn't meet their goals, but that doesn't mean my providers and their patients should suffer for it. We're between a rock and hard place.",
-              "unlocks": [
-                "warn_but_allow_payment_once_2"
-              ],
-              "unlocks_affects": [
-                "warn_but_allow_payment_once_2"
-              ]
-            },
-            "ngo_manager": {
-              "feedback": {
-                "warn_but_allow_payment_once_2": "It's good to know we can count on you, just like you're counting on us.",
-                "deny_payment_2": "We're struggling with these numbers as it is. It hurts patients when we don't have money to work with."
-              }
-            },
-            "coach": {
-              "dialogue": "I don't think the NGO is managing as well as they could, but maybe we need to adjust our expectations.",
-              "unlocks": [
-                "revise_indicators_at_end_of_year_1"
-              ],
-              "unlocks_affects": [
-                "revise_indicators_at_end_of_year_1"
-              ],
-              "feedback": {
-                "revise_indicators": "OK, at year's end I'll sit the fundholder down with the NGO and we'll figure out some realistic goals. In the meantime, we'll hold payment."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "It's the same as last time, and until someone says they're making numbers when they're actually making them up, I'm not much help."
-            },
-            "community_verifier": {
-              "dialogue": "The other day I followed up with a woman who vaccinated her son against dengue right before the mosquitos got bad. The numbers aren't great, but if the payments stop, that'll be worse."
-            },
-            "hospital_administrator": {
-              "dialogue": "The other day I followed up with a woman who vaccinated her son against dengue right before the mosquitos got bad. The numbers aren't great, but if the payments stop, that'll be worse."
-            }
-          }
-        },
-        {
-          "symbol": "reach",
-          "name": "Reach",
-          "priority": 6,
-          "initiating_npc": "dep_minister_of_health",
-          "initiating_dialogue": "We're seeing underserved populations throughout the south. The NGO really seems to be falling short of their promises, at least in this area.",
-          "starting_options": [
-            "terminate_ngo_contract_1"
-          ],
-          "starting_options_affects": [
-            "terminate_ngo_contract_1"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "terminate_ngo_contract_1",
-            "revise_operating_manual",
-            "increase_funding_for_ngo",
-            "contract_additional_ngo_at_years_end"
-          ],
-          "final_options_affects": [
-            "terminate_ngo_contract_1",
-            "revise_operating_manual",
-            "increase_funding_for_ngo",
-            "contract_additional_ngo_at_years_end"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "feedback": {
-                "increase_funding_for_ngo": "You realize you're rewarding these people for failure? I don't want to step in on this issue. Don't make me. "
-              }
-            },
-            "director_regional_health_services": {
-              "dialogue": "The health care providers are working with the NGO according to the guidelines we laid out. We can go back to the manual and fix the problems in our policies.",
-              "unlocks": [
-                "revise_operating_manual"
-              ],
-              "unlocks_affects": [
-                "revise_operating_manual"
-              ]
-            },
-            "ngo_manager": {
-              "dialogue": "It's been a lot harder to reach some populations than we expected, especially down there. Those people are more entrenched in traditional medicine, and that's a big hump for us to get over when we can only afford the health care itself.",
-              "unlocks": [
-                "increase_funding_for_ngo"
-              ],
-              "feedback": {
-                "contract_additional_ngo_at_years_end": "I think we could have done it, but it would be a lot of work to reach that province.",
-                "terminate_ngo_contract_1": "We can't, cannot, get to absolutely everyone, so you're making it impossible to get health care for everyone else."
-              }
-            },
-            "coach": {
-              "dialogue": "Look, we have one group running things pretty well for most of the country. Maybe we need someone to run support for them who's more used to this kind of issue.",
-              "unlocks": [
-                "contract_additional_ngo_at_years_end"
-              ],
-              "unlocks_affects": [
-                "contract_additional_ngo_at_years_end"
-              ],
-              "feedback": {
-                "revise_operating_manual": "OK. I'll hunker down and get to work on the new manual, hammer some things out."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "I'm sure they are having trouble getting to some people, but no informational campaign is going to reach everybody."
-            },
-            "community_verifier": {
-              "dialogue": "You can always just guide the NGO on how they should address this. It might be kind of micro-manage-y, but that's what you have a coach for, right?",
-              "narrows": [
-                "dep_minister_of_health",
-                "director_regional_health_services",
-                "third_party_verifier",
-                "community_verifier",
-                "hospital_administrator"
-              ]
-            },
-            "hospital_administrator": {
-              "dialogue": "That is why you brought the NGO in, to get people treated. There might be someone who could do it better.",
-              "unlocks": [
-                "terminate_contract_1"
-              ],
-              "unlocks_affects": [
-                "terminate_contract_1"
-              ]
-            }
-          }
-        },
-        {
-          "symbol": "arguments",
-          "name": "Arguments",
-          "priority": 7,
-          "initiating_npc": "coach",
-          "initiating_dialogue": "I don't even know what's going on, but our stakeholders are bickering and it's gumming up the works.",
-          "starting_options": [
-            "hold_stakeholder_meeting_2"
-          ],
-          "starting_options_affects": [
-            "hold_stakeholder_meeting_2"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "hold_stakeholder_meeting_2",
-            "warn_ngo_2",
-            "clarification_of_roles_3",
-            "terminate_ngo_contract_2"
-          ],
-          "final_options_affects": [
-            "hold_stakeholder_meeting_2",
-            "warn_ngo_2",
-            "clarification_of_roles_3",
-            "terminate_ngo_contract_2"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "I'm tired of the NGO acting up every opportunity, and I'd really rather not deal with them anymore.",
-              "unlocks": [
-                "terminate_ngo_contract_2"
-              ],
-              "unlocks_affects": [
-                "terminate_ngo_contract_2"
-              ],
-              "feedback": {
-                "clarification_of_roles": "That's sorted out. Just, you know, be sure you're writing all this down so next time these issues don't crop up. "
-              }
-            },
-            "director_regional_health_services": {
-              "dialogue": "The NGO keeps trying to order me around and I know how to do my job. And even if I didn't, I don't work for them.",
-              "unlocks": [
-                "warn_ngo_2"
-              ],
-              "unlocks_affects": [
-                "warn_ngo_2"
-              ]
-            },
-            "ngo_manager": {
-              "dialogue": "I didn't realize I wasn't supposed to oversee the way care was administered.",
-              "unlocks": [
-                "clarification_of_roles_3"
-              ],
-              "unlocks_affects": [
-                "clarification_of_roles_3"
-              ],
-              "feedback": {
-                "warn_ngo_2": "Why is it that whenever there's an issue, we're made out to be the bad guy? We're doing our best to help these people.",
-                "terminate_ngo_contract_2": "I don't understand why you brought us on in the first place if you were going to fire us for doing the work."
-              }
-            },
-            "coach": {
-              "feedback": {
-                "hold_stakeholder_meeting_2": "Considering that the problem in the first place was everyone sniping at each other, I guess the meeting went pretty well. "
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "I can't be of much help with this. It helps for me to be pretty neutral."
-            },
-            "community_verifier": {
-              "dialogue": "I am so tired of all this finger pointing. You have to be too, I know."
-            },
-            "hospital_administrator": {
-              "dialogue": "The way I see it, and this is just my opinion, is that the people at the NGO and the Director of Regional Health Services are the ones who need to figure this out. I just want to run my hospitals.",
-              "narrows": [
-                "dep_minister_of_health",
-                "coach",
-                "third_party_verifier",
-                "community_verifier",
-                "hospital_administrator"
-              ]
-            }
-          }
-        },
-        {
-          "symbol": "unit_costs",
-          "name": "Unit Costs",
-          "priority": 8,
-          "initiating_npc": "hospital_administrator",
-          "initiating_dialogue": "Look, I don't really know what you and the NGO have worked out, but I need to be authorized to purchase supplies at the right costs. Can you tell them to lighten these restrictions some?",
-          "starting_options": [
-            "clarification_of_roles_4"
-          ],
-          "starting_options_affects": [
-            "clarification_of_roles_4"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "clarification_of_roles_4",
-            "move_authority_to_ministry_2",
-            "comply_with_ngo_budget_2"
-          ],
-          "final_options_affects": [
-            "clarification_of_roles_4",
-            "move_authority_to_ministry_2",
-            "comply_with_ngo_budget_2"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "We've been whittling down whose job is whose throughout this process, so you don't have to tell me this isn't my place, but were it up to me, I'd cancel the NGO contract.",
-              "unlocks": [
-                "clarification_of_roles_4"
-              ],
-              "unlocks_affects": [
-                "clarification_of_roles_4"
-              ]
-            },
-            "director_regional_health_services": {
-              "dialogue": "The Ministry of Health has been handling these budgets for a long time. It wasn't perfect, but it worked better than this.",
-              "unlocks": [
-                "move_authority_to_ministry_2"
-              ],
-              "unlocks_affects": [
-                "move_authority_to_ministry_2"
-              ]
-            },
-            "ngo_manager": {
-              "dialogue": "I know that to the Hospital Administrator, these stipulations seem really stringent, but you brought us on in part to reign in spending.",
-              "unlocks": [
-                "comply_with_ngo_budget_2"
-              ],
-              "unlocks_affects": [
-                "comply_with_ngo_budget_2"
-              ],
-              "feedback": {
-                "clarification_of_roles_4": "OK. I'm just trying to make this work as smoothly and efficiently as possible."
-              }
-            },
-            "coach": {
-              "dialogue": "I'll ask, because this seems to be an ongoing problem: is that the NGO's position? They seem to be overstepping their role.",
-              "feedback": {
-                "move_authority_to_ministry": "The Ministry already has a lot going on, but I guess they can handle local hospital budgeting, too."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "If they can't agree on a budget, I'm not going to have any cases to verify. And I like my job."
-            },
-            "community_verifier": {
-              "dialogue": "If I were you, and I'm offering this as someone who lives here, ask the Ministry and your coach what to do. The Ministry gets the last call and the NGO doesn't.",
-              "narrows": [
-                "director_regional_health_services",
-                "ngo_manager",
-                "third_party_verifier",
-                "community_verifier",
-                "hospital_administrator"
-              ]
-            },
-            "hospital_administrator": {
-              "feedback": {
-                "comply_with_ngo_budget_2": "I'll comply, but I'll have to cut that money from somewhere."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "contract_management",
-          "name": "Contract Management",
-          "priority": 9,
-          "initiating_npc": "ngo_manager",
-          "initiating_dialogue": "We're still waiting on the fundholder to pay us. The Finance Minister's approval process has hamstrung us, and we need to get our money to pay our people.",
-          "starting_options": [
-            "terminate_ngo_contract_3"
-          ],
-          "starting_options_affects": [
-            "terminate_ngo_contract_3"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "terminate_ngo_contract_3",
-            "clarification_of_roles_5",
-            "hire_agency",
-            "expidite_payment_and_service_delivery"
-          ],
-          "final_options_affects": [
-            "terminate_ngo_contract_3",
-            "clarification_of_roles_5",
-            "hire_agency",
-            "expidite_payment_and_service_delivery"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "This is something I had to learn early on when I switched from practicing medicine to politics: if you can't cut something out of the budget, just stop budgeting for it. Just terminate the contract so we won't have to go through this.",
-              "unlocks": [
-                "terminate_ngo_contract_3"
-              ],
-              "unlocks_affects": [
-                "terminate_ngo_contract_3"
-              ]
-            },
-            "director_regional_health_services": {
-              "dialogue": "I get where the Dep. Minister is coming from, but I see people getting treated. We need to get everyone on the same page.",
-              "unlocks": [
-                "clarification_of_roles_5"
-              ],
-              "unlocks_affects": [
-                "clarification_of_roles_5"
-              ]
-            },
-            "ngo_manager": {
-              "dialogue": "I know that to the Hospital Administrator, these stipulations seem really stringent, but you brought us on in part to reign in spending.",
-              "feedback": {
-                "terminate_ngo_contract_3": "I get it that this has been stressful, so this might be for the best, but I hope you can handle this. For the patients' sakes.",
-                "expidite_payment_and_service_delivery": "Thank you. This is going to work much better."
-              }
-            },
-            "coach": {
-              "dialogue": "It's probably too late to do it now, but before the year's out we should look into getting someone who can manage the contract so we don't have to go to bat every time there's an argument.",
-              "unlocks": [
-                "hire_agency"
-              ],
-              "unlocks_affects": [
-                "hire_agency"
-              ],
-              "feedback": {
-                "clarification_of_roles_5": "Sure, you can remind the Ministry and NGO, again, who's supposed to do what. But that will only work until the next argument.",
-                "hire_agency": "I know this is more money spent, but we need to focus on lowering the infant mortality rate, not refereeing a fight between adults."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "I'm sure you're getting good advice from the people who are writing the checks. They are, at least, smart enough to know what they want.",
-              "narrows": [
-                "director_regional_health_services",
-                "ngo_manager",
-                "third_party_verifier",
-                "community_verifier",
-                "hospital_administrator"
-              ]
-            },
-            "community_verifier": {
-              "dialogue": "You have an advisor, and that's good. Someone thinking about the big picture. Great. But maybe you should ask the people who are using this money to help people.",
-              "narrows": [
-                "dep_minister_of_health",
-                "director_regional_health_services",
-                "ngo_manager",
-                "third_party_verifier",
-                "community_verifier"
-              ]
-            },
-            "hospital_administrator": {
-              "dialogue": "Get the NGO their money! I have no empty beds! The doctors and nurses keep asking me when we're going to be able to do something about it and the best I can tell them is, well, I try to explain how all this is supposed to work. And that explanation doesn't do anything for a head wound.",
-              "unlocks": [
-                "expidite_payment_and_service_delivery"
-              ],
-              "unlocks_affects": [
-                "expidite_payment_and_service_delivery"
-              ]
-            }
-          }
-        },
-        {
-          "symbol": "more_arguments",
-          "name": "More Arguments",
-          "priority": 10,
-          "initiating_npc": "director_regional_health_services",
-          "initiating_dialogue": "I'm getting a different answer from everyone, so I'll ask you to straighten them out. The Ministry, NGO, and health care providers can't agree on who has jurisdiction where and what we're supposed to do for patients.",
-          "starting_options": [
-            "hold_stakeholder_meeting_3"
-          ],
-          "starting_options_affects": [
-            "hold_stakeholder_meeting_3"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "hold_stakeholder_meeting_3",
-            "warn_ngo_3",
-            "clarification_of_roles_6",
-            "terminate_ngo_contract_4"
-          ],
-          "final_options_affects": [
-            "hold_stakeholder_meeting_3",
-            "warn_ngo_3",
-            "clarification_of_roles_6",
-            "terminate_ngo_contract_4"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "Best way to win an argument? End the conversation.",
-              "unlocks": [
-                "terminate_ngo_contract_4"
-              ],
-              "unlocks_affects": [
-                "terminate_ngo_contract_4"
-              ],
-              "feedback": {
-                "clarification_of_roles_6": "I do hope this is the last time we have to go through this."
-              }
-            },
-            "ngo_manager": {
-              "dialogue": "I'm only doing what I thought you asked me to. If I'm not, let me know.",
-              "unlocks": [
-                "clarification_of_roles_6"
-              ],
-              "unlocks_affects": [
-                "clarification_of_roles_6"
-              ],
-              "feedback": {
-                "warn_ngo_3": "OK, we'll back off of telling the health care providers what they're supposed to do.",
-                "terminate_ngo_contract_4": "The whole reason you brought us on was nothing was getting accomplished. That's what we were doing."
-              }
-            },
-            "coach": {
-              "dialogue": "The health care providers are caught between the people paying them and the Ministry they report to. Those are the problems that need solving.",
-              "narrows": [
-                "director_regional_health_services",
-                "coach",
-                "third_party_verifier",
-                "community_verifier",
-                "hospital_administrator"
-              ],
-              "feedback": {
-                "hold_stakeholder_meeting_3": "For a problem like this, a truce is about as good as we can hope for. Well, maybe not a truce, as such. More of a cease fire."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "There's plenty of work to be done without these arguments."
-            },
-            "community_verifier": {
-              "dialogue": "The other day, a woman was getting her prenatal checkup. She's in the stirrups and the doctor had to leave the exam room to get lectured on what all care she was supposed to give. That has got to stop."
-            },
-            "hospital_administrator": {
-              "dialogue": "I couldn't do what the NGO Director does. No argument there. But they are not so good at their job that they can do mine, too.",
-              "unlocks": [
-                "warn_ngo_3"
-              ],
-              "unlocks_affects": [
-                "warn_ngo_3"
-              ]
-            }
-          }
-        },
-        {
-          "symbol": "excuses",
-          "name": "Excuses",
-          "priority": 11,
-          "initiating_npc": "ngo_manager",
-          "initiating_dialogue": "We've talked about the problems of expectations. We can meet our goals better if we get our bonuses.",
-          "starting_options": [
-            "hold_stakeholder_meeting_4"
-          ],
-          "starting_options_affects": [
-            "hold_stakeholder_meeting_4"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "hold_stakeholder_meeting_4",
-            "warn_but_allow_payment_once_3",
-            "deny_payment_3",
-            "revise_indicators_at_end_of_year_2"
-          ],
-          "final_options_affects": [
-            "hold_stakeholder_meeting_4",
-            "warn_but_allow_payment_once_3",
-            "deny_payment_3",
-            "revise_indicators_at_end_of_year_2"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "They claim they're doing such a bang up job. Are they?",
-              "narrows": [
-                "dep_minister_of_health",
-                "ngo_manager",
-                "coach",
-                "third_party_verifier",
-                "community_verifier"
-              ]
-            },
-            "director_regional_health_services": {
-              "dialogue": "It's a lot easier to work with people when they're getting paid. Just sayin'.",
-              "unlocks": [
-                "warn_but_allow_payment_once_3"
-              ],
-              "unlocks_affects": [
-                "warn_but_allow_payment_once_3"
-              ]
-            },
-            "ngo_manager": {
-              "dialogue": "I'm only doing what I thought you asked me to. If I'm not, let me know.",
-              "feedback": {
-                "warn_but_allow_payment_once_3": "It's good to know we can count on you, just like you're counting on us.",
-                "deny_payment_3": "We're struggling with these numbers as it is. It hurts patients when we don't have money to work with."
-              }
-            },
-            "coach": {
-              "dialogue": "Maybe they're doing the best that can be done. I don't know. It can't hurt to make sure we're being realistic in our expectations.",
-              "unlocks": [
-                "revise_indicators_at_end_of_year_2"
-              ],
-              "unlocks_affects": [
-                "revise_indicators_at_end_of_year_2"
-              ],
-              "feedback": {
-                "revise_indicators_at_end_of_year_2": "OK, at year's end let's all sit everyone down and we'll figure out what would be realistic goals for the money we have to work with."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "Have you read 'Things Fall Apart'? It might be a good idea."
-            },
-            "community_verifier": {
-              "dialogue": "You're within your rights not to pay the NGO, it's true. But people have a right to health care."
-            },
-            "hospital_administrator": {
-              "dialogue": "As much as I've butt heads with the NGO, I'd like to continue treating patients."
-            }
-          }
-        },
-        {
-          "symbol": "micromanagement",
-          "name": "Micromanagement",
-          "priority": 12,
-          "initiating_npc": "ngo_manager",
-          "initiating_dialogue": "I keep getting calls from the Minister of Health's office checking in on us, telling us what we could be doing better, telling us how to handle things. That's your job, right?",
-          "starting_options": [
-            "clarification_of_roles_7"
-          ],
-          "starting_options_affects": [
-            "clarification_of_roles_7"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "clarification_of_roles_7",
-            "terminate_ngo_contract_5",
-            "sanction_ngo_1"
-          ],
-          "final_options_affects": [
-            "clarification_of_roles_7",
-            "terminate_ngo_contract_5",
-            "sanction_ngo_1"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "We need the NGO to be accountable and if that's a problem with them, we're not going to be able to work with them.",
-              "unlocks": [
-                "terminate_ngo_contract_5"
-              ],
-              "feedback": {
-                "clarification_of_roles_7": "We keep going around and around with this. For the future, it is not your position to clarify ours."
-              }
-            },
-            "director_regional_health_services": {
-              "dialogue": "We're not making any unreasonable requests. In fact, they're pretty sound, and the Ministry does not need push back for looking into the health of its constituents. At least make them think harder about complaining next time.",
-              "unlocks": [
-                "sanction_ngo_1"
-              ],
-              "unlocks_affects": [
-                "sanction_ngo_1"
-              ]
-            },
-            "ngo_manager": {
-              "feedback": {
-                "terminate_ngo_contract_5": "Best of luck, but this is not as easy as you think it is.",
-                "sanction_ngo_1": "You can slap us on the wrist, but we are getting people help."
-              }
-            },
-            "coach": {
-              "dialogue": "However unlikely it seems at this point, maybe the NGO doesn't really understand who's calling the shots."
-            },
-            "third_party_verifier": {
-              "dialogue": "*Helpless laugh* I don't know!"
-            },
-            "community_verifier": {
-              "dialogue": "I wouldn't say checking in constitutes micromanagement, but I'm not seeing these memos, so I don't know."
-            },
-            "hospital_administrator": {
-              "dialogue": "The Ministry signs the checks. Sometimes, we get to cash them and get people healthy. Ask them and whoever they have helping you.",
-              "narrows": [
-                "director_regional_health_services",
-                "ngo_manager",
-                "third_party_verifier",
-                "community_verifier",
-                "hospital_administrator"
-              ]
-            }
-          }
-        },
-        {
-          "symbol": "poor_stewardship",
-          "name": "Poor Stewardship",
-          "priority": 13,
-          "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "I can tell you right now what's happening because I've seen it before. People all along the chain are skimming money because the NGO and Ministry have both backed off of their responsibilities. When there's no clear authority, corruption sets in. This is what's happening here.",
-          "starting_options": [
-            "clarification_of_roles_8"
-          ],
-          "starting_options_affects": [
-            "clarification_of_roles_8"
-          ],
-          "starting_options_cost": [
-            "small"
-          ],
-          "final_options": [
-            "clarification_of_roles_8",
-            "terminate_ngo_contract_6",
-            "sanction_ngo_2"
-          ],
-          "final_options_affects": [
-            "clarification_of_roles_8",
-            "terminate_ngo_contract_6",
-            "sanction_ngo_2"
-          ],
-          "final_options_cost": [
-            "small",
-            "small",
-            "small"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "It looks like the NGO is making things worse, not better. If the NGO isn't doing their job, you terminate their contract.",
-              "unlocks": [
-                "terminate_ngo_contract_6"
-              ],
-              "unlocks_affects": [
-                "terminate_ngo_contract_6"
-              ]
-            },
-            "director_regional_health_services": {
-              "dialogue": "I can imagine what the Dep. Minister told you, but I'm going to advise sanctioning them. They've been with us for a while now, after all.",
-              "unlocks": [
-                "sanction_ngo_2"
-              ],
-              "unlocks_affects": [
-                "sanction_ngo_2"
-              ]
-            },
-            "ngo_manager": {
-              "dialogue": "You're going to threaten to terminate our contract because somewhere along the line there's corruption. You should probably see where it's happening.",
-              "unlocks": [
-                "sanction_verifier"
-              ],
-              "unlocks_affects": [
-                "sanction_verifier"
-              ],
-              "feedback": {
-                "terminate_ngo_contract_6": "We've been getting kids vaccinated against fatal diseases, improving care, saving lives. That is what you are screwing up here.",
-                "sanction_ngo_2": "I don't know what you expect me to do with more sanctions. I'm trying to manage a complex network, and this only complicates it more."
-              }
-            },
-            "coach": {
-              "dialogue": "This could ruin everything you've built here. If it does, the Minister and Regional Director will have to deal with it. It's only fair you go to them with this.",
-              "narrows": [
-                "ngo_manager",
-                "coach",
-                "third_party_verifier",
-                "community_verifier",
-                "hospital_administrator"
-              ],
-              "feedback": {
-                "clarification_of_roles_8": "People are starting to think this is a band-aid, smoothing things over and rereading job descriptions every time something serious happens. This is pretty serious, here."
-              }
-            },
-            "third_party_verifier": {
-              "feedback": {
-                "sanction_verifier": "I have been working for you this whole time, and it should tell you something that the NGO wanted me fired."
-              }
-            },
-            "community_verifier": {
-              "dialogue": "This is kind of a mess. I don't want this to turn into a bigger problem than it has to be."
-            },
-            "hospital_administrator": {
-              "dialogue": "There is no evidence that anyone in my hospital is profiting unduly. IF any such information were to become apparent, I would be the first to recognize and rectify the situation, but as there is none, I have no responsibility to dignify your accusation with a response. ... No, you may not take a look at our books for yourself. ... No, not my personal bank account, either."
-            }
-          }
-        },
-        {
-          "symbol": "staff_issues",
-          "name": "Staff_Issues",
-          "priority": 5,
-          "initiating_npc": "community_verifier",
-          "initiating_dialogue": "In many of my focus groups, there's an air of mistrust of the hospitals and clinics. People who go have experienced terrible service and are telling their neighbors not to go.",
-          "starting_options": [
-            "warn_providers_2"
-          ],
-          "starting_options_affects": [
-            "warn_providers_2"
-          ],
-          "final_options": [
-            "sanctions_13",
-            "increase_customer_service_incentives",
-            "reorganize_staff",
-            "warn_providers_2"
-          ],
-          "final_options_affects": [
-            "sanctions_13",
-            "increase_customer_service_incentives",
-            "reorganize_staff",
-            "warn_providers_2"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "Dialogue is Missing",
-              "unlocks": [
-                "sanctions_13"
-              ],
-              "unlocks_affects": [
-                "sanctions_13"
-              ]
-            },
-            "director_regional_health_services": {
-              "dialogue": "Providers in my region complain often of over-stressed staff. They have not enough people working with not enough supplies, and that's bound to affect service."
-            },
-            "coach": {
-              "dialogue": "Customer service is a huge part of quality of care. Increase incentives, whatever we need to do, we have to get staff to be nicer to patients.",
-              "unlocks": [
-                "increase_customer_service_incentives"
-              ],
-              "unlocks_affects": [
-                "increase_customer_service_incentives"
-              ],
-              "feedback": {
-                "increase_customer_service_incentives": "I'll let everyone know. I wouldn't mind something like this around here. Hey, if I smile more, will you give me a raise?"
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "I keep hearing these horror stories. A man told me a nurse yelled at his son when he was scared of getting a shot. That's unacceptable. It might not be my place to say so, but firing staff and hiring new people might be appropriate.",
-              "unlocks": [
-                "reorganize_staff"
-              ],
-              "unlocks_affects": [
-                "reorganize_staff"
-              ]
-            },
-            "clinic_manager": {
-              "dialogue": "I've spoken with my staff about this on a number of occasions. Even with incentives in place, if they can't meet expectations patients can't be made happy. Sure, understaffing is part of it, but we don't have the medicine we need half the time. People get angry when we don't have anything to give them.",
-              "feedback": {
-                "warn_providers_2": "We're overworked as it is. But fine. I'll see what I can do.",
-                "reorganize_staff": "It's great that you can hand down these decrees of who I may and may not hire. I'm sure that while my new phlebotomist keeps sticking people, they'll do it with a smile."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "I can tell my staff to be nicer, but they're working hard to meet goals, deal with patients who come in frustrated, and all on a shoestring budget. With all that, it's hard to tell them to smile or else.",
-              "feedback": {
-                "sanctions_13": "Making it harder for me to do my job is not the answer to our problems. We need to fix the actual problem. No, I don't know what that would be, because I'm trying to hold a hospital together."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "mismanagement",
-          "name": "Mismanagement",
-          "priority": 6,
-          "initiating_npc": "coach",
-          "initiating_dialogue": "Coach",
-          "starting_options": [
-            "warning_13",
-            "sanctions_and_retraining_on_use_of_financial_tools_2"
-          ],
-          "starting_options_affects": [
-            "warning_13",
-            "sanctions_and_retraining_on_use_of_financial_tools_2"
-          ],
-          "final_options": [
-            "warning_13",
-            "sanctions_and_retraining_on_use_of_financial_tools_2",
-            "revise_business_plan_6"
-          ],
-          "final_options_affects": [
-            "warning_13",
-            "sanctions_and_retraining_on_use_of_financial_tools_2",
-            "revise_business_plan_6"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "I have a meeting with the Minister of Education later this week about the curricula in our teaching hospitals. I do not have time to supervise you telling the hospital to spend money like we tell them to."
-            },
-            "director_regional_health_services": {
-              "dialogue": "Have you considered that there is a flaw in the business plan? If the Hospital Administrator is straying from it so often, it might need to be reevaluated.",
-              "unlocks": [
-                "revise_business_plan_6"
-              ],
-              "unlocks_affects": [
-                "revise_business_plan_6"
-              ]
-            },
-            "coach": {
-              "feedback": {
-                "revise_business_plan_6": "I'll set up a meeting with the purchasing agency this week to revise for next quarter.",
-                "sanctions_and_retraining_on_use_of_financial_tools_2": "I'll make some time this week for a retraining session and try to get this facility to understand exactly how these tools should be used. I'm informing the regulator about the sanctions now."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "I'm not saying the coach isn't perceptive, but if a cursory look around the hospital is all you need to tell something's not right, it's probably not fraudulent. "
-            },
-            "community_verifier": {
-              "dialogue": "I doubt they're trying to pull one over on you. I had the worst time with my finances all through my 20's; managing money is hard."
-            },
-            "clinic_manager": {
-              "dialogue": "We're all short staffed, but I've found ways to make it work."
-            },
-            "hospital_administrator": {
-              "dialogue": "I can't control my hiring budget, and my supplies remain squeezed. I'm short staffed and constantly running out of things. So how can I possibly meet the demmands of this business plan?",
-              "feedback": {
-                "warning_13": "I'm doing my best, but I don't know how long I can hold onto my staff like this."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "transparency",
-          "name": "Transparency",
-          "priority": 7,
-          "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "There is an ongoing issue with the Clinic Manager. They looked like small stuff, but since they've had issues with record keeping, I looked more closely. I found some forms that are exact duplicates of others, which means they're filing duplicate reports to boost their numbers.",
-          "starting_options": [
-            "warning_14",
-            "sanctions_14"
-          ],
-          "starting_options_affects": [
-            "warning_14",
-            "sanctions_14"
-          ],
-          "final_options": [
-            "warning_14",
-            "sanctions_14",
-            "strong_sanctions_2"
-          ],
-          "final_options_affects": [
-            "warning_14",
-            "sanctions_14",
-            "strong_sanctions_2"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "We cannot afford this kind of impropriety. Deal with this."
-            },
-            "director_regional_health_services": {
-              "dialogue": "This is troubling. Look into other providers for next year's contract.",
-              "unlocks": [
-                "strong_sanctions_2"
-              ],
-              "unlocks_affects": [
-                "strong_sanctions_2"
-              ]
-            },
-            "coach": {
-              "dialogue": "This is a big deal. Honesty aside, we need accurate numbers to know what kind of progress we're making. We need to send a very clear message: unvalidated reports will not be paid."
-            },
-            "third_party_verifier": {
-              "feedback": {
-                "warning_14": "I'll warn them. Hopefully we won't see this again."
-              }
-            },
-            "community_verifier": {
-              "dialogue": "That's not my department, exactly, but it sounds pretty suspicious."
-            },
-            "clinic_manager": {
-              "dialogue": "I told my staff to start keeping better records. I can talk to them again and stress its importance...",
-              "feedback": {
-                "sanctions_14": "Our budget is strained as it is. I'll have to fire people. Which will make it harder to meet your goals. And so on until we have to close and your plan fails.",
-                "strong_sanctions_2": "This is a disaster! For such a small error? I've been bending over backwards to meet the Ministry's spartan budgetting requirements. We'll need to let staff go. I'm going to have to fire my people because you want to, what, make an example of us? Thanks for putting that on me."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "Don't go too hard on them. These clinics do good work."
-            }
-          }
-        },
-        {
-          "symbol": "government_overreach_on_verification",
-          "name": "Government overreach on verification",
-          "priority": 8,
-          "initiating_npc": "hospital_administrator",
-          "initiating_dialogue": "We're having a lot of trouble hitting goals for facility births. We're short staffed, especially when it comes to midwives.",
-          "starting_options": [
-            "request_a_budget_line_from_ministry"
-          ],
-          "starting_options_affects": [
-            "request_a_budget_line_from_ministry"
-          ],
-          "final_options": [
-            "request_a_budget_line_from_ministry",
-            "grant_providers_autonomy_to_hire_staff",
-            "allow_outreach_staff_to_act_as_midwives"
-          ],
-          "final_options_affects": [
-            "request_a_budget_line_from_ministry",
-            "grant_providers_autonomy_to_hire_staff",
-            "allow_outreach_staff_to_act_as_midwives"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "If you can verify this, we'd be willing to discuss the budget.",
-              "narrows": [
-                "community_verifier",
-                "coach"
-              ],
-              "feedback": {
-                "grant_providers_autonomy_to_hire_staff": "This is a significant change to the plan. Let's discuss this at the end of the year once we see how it's panned out.",
-                "request_a_budget_line_from_ministry": "We can allow this, but I want to see reports on the results."
-              }
-            },
-            "director_regional_health_services": {
-              "dialogue": "That would explain the struggling indicators on facility births.  An alternative I've considered is allowing outreach staff to serve as midwives in the field, if facilities are overstressed.",
-              "unlocks": [
-                "allow_outreach_staff_to_act_as_midwives"
-              ],
-              "unlocks_affects": [
-                "allow_outreach_staff_to_act_as_midwives"
-              ]
-            },
-            "coach": {
-              "dialogue": "The Hospital Administrator has complained to me in private about not being able to hire staff members without Ministry approva. I told him the plan is firm about how these decisions are made.",
-              "feedback": {
-                "allow_outreach_staff_to_act_as_midwives": "This would boost facility births for sure, but it's a bit of a cheat since they won't technically be in facilities. But as long as women are giving birth safely, right?"
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "You should talk to the Clinic Manager: they're working under similar conditions and should have insight. Run it by your RBF Coach, too.",
-              "narrows": [
-                "clinic_manager",
-                "coach"
-              ]
-            },
-            "community_verifier": {
-              "dialogue": "I've heard this complaint from several women in my community. They say there are long waits to meet with midwives. Everyone seems stressed out. Pregnancy is trying even in the best of conditions."
-            },
-            "clinic_manager": {
-              "dialogue": "We have had a similar problem here. And since you mention it, granting us the autonomy to hire whatever staff would go a long way to fix this. ",
-              "unlocks": [
-                "grant_providers_autonomy_to_hire_staff"
-              ],
-              "unlocks_affects": [
-                "grant_providers_autonomy_to_hire_staff"
-              ]
-            }
-          }
-        },
-        {
-          "symbol": "budget_lines",
-          "name": "Budget Lines",
-          "priority": 9,
-          "initiating_npc": "hospital_administrator",
-          "initiating_dialogue": "I received a memo today on the new national health budget. The ministry released new hiring guidelines for all providers, but they don't match the goals you gave us. ",
-          "starting_options": [
-            "comply_with_ministry_2"
-          ],
-          "starting_options_affects": [
-            "comply_with_ministry_2"
-          ],
-          "final_options": [
-            "comply_with_ministry_2",
-            "grant_autonomy_to_providers",
-            "rework_business_plan"
-          ],
-          "final_options_affects": [
-            "comply_with_ministry_2",
-            "grant_autonomy_to_providers",
-            "rework_business_plan"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "Our monitors have found mismanagement of funds. Hospitals should provide the necessary services with what we give them to work with. ",
-              "narrows": [
-                "third_party_verifier",
-                "clinic_manager"
-              ],
-              "feedback": {
-                "grant_autonomy_to_providers": "Hiring and firing is within the scope of regulation, which is my role. But if you think it's essential, we'll step back."
-              }
-            },
-            "director_regional_health_services": {
-              "dialogue": "If the Ministry is claiming this is necessary, I would take it seriously. A compromise might be to re-work the business plan with Ministry oversight.",
-              "unlocks": [
-                "rework_business_plan"
-              ],
-              "unlocks_affects": [
-                "rework_business_plan"
-              ]
-            },
-            "coach": {
-              "dialogue": "We've been running into this problem for three years now. The only way I see this working in the future is cutting the Ministry out of the picture and letting providers hire staff.",
-              "narrows": [
-                "clinic_manager",
-                "director_regional_health_services"
-              ]
-            },
-            "third_party_verifier": {
-              "dialogue": "I have noticed some inconsistencies in the data that indicate funds are being mismanaged. The providers might benefit from tighter rules."
-            },
-            "community_verifier": {
-              "dialogue": "I don't understand the need for these new guidelines, but then again, I don't work in the hospital."
-            },
-            "clinic_manager": {
-              "dialogue": "The RBF Coach shares my concerns about micromanagement, so I know that I'm not going crazy seeing a problem in how things are getting run. We need you to do something before this becomes a real fight.",
-              "unlocks": [
-                "grant_autonomy_to_providers"
-              ],
-              "unlocks_affects": [
-                "grant_autonomy_to_providers"
-              ]
-            },
-            "hospital_administrator": {
-              "feedback": {
-                "rework_business_plan": "I don't believe this will be constructive, but I'm willing to try.",
-                "comply_with_ministry_2": "If you insist..."
-              }
-            }
-          }
-        },
-        {
-          "symbol": "failed_inspection",
-          "name": "Failed Inspection",
-          "priority": 10,
-          "initiating_npc": "clinic_manager",
-          "initiating_dialogue": "Hey, we just received a memo telling us we failed a quality of care inspection, but I disagree with the assessment. We're doing a great job, considering the strain we're under.",
-          "starting_options": [
-            "review_the_inspection_2"
-          ],
-          "starting_options_affects": [
-            "review_the_inspection_2"
-          ],
-          "final_options": [
-            "review_the_inspection_2",
-            "warning_15",
-            "deny_review_2"
-          ],
-          "final_options_affects": [
-            "review_the_inspection_2",
-            "warning_15",
-            "deny_review_2"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "Quality of care is important insofar as it enables better and more services to be delivered. It might be that the clinic is delivering as much good care as they can given they're circumstances."
-            },
-            "director_regional_health_services": {
-              "dialogue": "I recognize that their job is difficult, but quality of care is one of the indicators we are working to improve."
-            },
-            "coach": {
-              "dialogue": "We can't waffle on quality of care. It's crucial to the plan. I understnd they rely on these payments, but they need to know that we don't make exceptions.",
-              "unlocks": [
-                "warning_15"
-              ],
-              "unlocks_affects": [
-                "warning_15"
-              ]
-            },
-            "third_party_verifier": {
-              "dialogue": "They failed my inspection, plain and simple. A review is not necessary.",
-              "unlocks": [
-                "deny_review_2"
-              ],
-              "unlocks_affects": [
-                "deny_review_2"
-              ]
-            },
-            "community_verifier": {
-              "dialogue": "These are small clinics, with very little operating budget. Denying payment will cause immediate harm to the community."
-            },
-            "clinic_manager": {
-              "feedback": {
-                "review_the_inspection_2": "Thank you! I think you'll find our quality sufficient.",
-                "warning_15": "I don't know what we can do to improve things before the year is out, but I guess we'll have to try.",
-                "deny_review_2": "I'm looking at half a year without payments, last quarter and this one, and you won't even consider my point of view."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "I can tell you it is painful to miss a payment, even when things are going well. What harm is there in reviewing the inspection?"
-            }
-          }
-        },
-        {
-          "symbol": "perscriptions",
-          "name": "Perscriptions",
-          "priority": 11,
-          "initiating_npc": "community_verifier",
-          "initiating_dialogue": "I've been interviewing patients, and at least at the clinics there's a serious quality of care issue. People have been leaving with what appears to be completely wrong perscriptions.",
-          "starting_options": [
-            "warning_16",
-            "sanctions_15"
-          ],
-          "starting_options_affects": [
-            "warning_16",
-            "sanctions_15"
-          ],
-          "final_options": [
-            "warning_16",
-            "sanctions_15",
-            "terminate_contract_at_end_of_year_8",
-            "tie_incentives_directly_to_protocol",
-            "reduce_incentives_for_customer_service"
-          ],
-          "final_options_affects": [
-            "warning_16",
-            "sanctions_15",
-            "terminate_contract_at_end_of_year_8",
-            "tie_incentives_directly_to_protocol",
-            "reduce_incentives_for_customer_service"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "dialogue": "That's unnacceptable. I think it's time we looked for someone else to fulfill these duties. There are other health care providers in Zariba. ",
-              "unlocks": [
-                "terminate_contract_at_end_of_year_8"
-              ],
-              "unlocks_affects": [
-                "terminate_contract_at_end_of_year_8"
-              ]
-            },
-            "director_regional_health_services": {
-              "dialogue": "We must conduct an investigation right away. Begin by speaking directly with the health providers and find out why this is happening.",
-              "narrows": [
-                "clinic_manager",
-                "hospital_administrator",
-                "coach"
-              ],
-              "feedback": {
-                "terminate_contract_at_end_of_year_8": "I understand. I will inform the Clinic Manager of this, and begin the search for a replacement ASAP."
-              }
-            },
-            "coach": {
-              "dialogue": "Maybe we've been incentivising the wrong things. Prescriptions make patients happy, whether or not they're correct. I've prioritized happy patients, maybe above best practices.",
-              "unlocks": [
-                "tie_incentives_directly_to_protocol"
-              ],
-              "unlocks_affects": [
-                "tie_incentives_directly_to_protocol"
-              ],
-              "feedback": {
-                "reduce_incentives_for_customer_service": "That's an approach I hadn't thought of. Let's implement it, see what happens.",
-                "tie_incentives_directly_to_protocol": "I'll work on implementing this change. I think this'll be a turning point for the plan."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "How did I miss this!? I'll look more closely to see what else the clinics are misreporting."
-            },
-            "clinic_manager": {
-              "dialogue": "I run an entire network of clinics, and unfortnately I can't be everywhere at once. In the end, I am responsible, but I feel I am not being given the support I need.",
-              "feedback": {
-                "warning_16": "You're asking me to discipline my clinics for avoiding fights with patients who think medicine means walking out with a bottle of pills. I also have to discipline them for not making patients happy. I'll try to figure out some way to balance those.",
-                "sanctions_15": "You cut our funds when patients complain, which they do because we don't prescribe them drugs. Then, when we give them what they want, you cut our funds again. You need to figure out what you want."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "At first I was shocked to hear this, but the more I thought about it, the more it makes sense. Patients don't know the difference, and if we're incentivizing happy patients, the wrong medicine is better than no medicine.",
-              "unlocks": [
-                "reduce_incentives_for_customer_service"
-              ],
-              "unlocks_affects": [
-                "reduce_incentives_for_customer_service"
-              ]
-            }
-          }
-        },
-        {
-          "symbol": "missing_goals",
-          "name": "Missing Goals",
-          "priority": 12,
-          "initiating_npc": "dep_minister_of_health",
-          "initiating_dialogue": "I'm disappointed to say this, but things are not going well. Providers routinely miss goals, and our indicators have not risen as predicted. We're thinking about declaring the plan DOE and cancelling it for next year. This would mean a return to traditional financing.",
-          "starting_options": [
-            "return_to_traditional_financing"
-          ],
-          "starting_options_affects": [
-            "return_to_traditional_financing"
-          ],
-          "final_options": [
-            "return_to_traditional_financing",
-            "terminate_both_health_contracts_of_providers",
-            "grant_providers_autonomy",
-            "terminate_hospital_contract_and_redirect_resources"
-          ],
-          "final_options_affects": [
-            "return_to_traditional_financing",
-            "terminate_both_health_contracts_of_providers",
-            "grant_providers_autonomy",
-            "terminate_hospital_contract_and_redirect_resources"
-          ],
-          "characters": {
-            "dep_minister_of_health": {
-              "feedback": {
-                "grant_providers_autonomy": "Let's schedule a meeting to discuss this at the end of the year. I might be able to persuade the Minister to give us one more year with an altered plan."
-              }
-            },
-            "director_regional_health_services": {
-              "dialogue": "As much as it pains me to say so, I agree with the Deputy Minister. We need to change tactics."
-            },
-            "coach": {
-              "dialogue": "There must be another solution here. I'm committed to making this plan work. Even with new health providers taking on contracts.",
-              "unlocks": [
-                "terminate_both_health_contracts_of_providers"
-              ],
-              "unlocks_affects": [
-                "terminate_both_health_contracts_of_providers"
-              ],
-              "feedback": {
-                "return_to_traditional_financing": "Part of me feels like the past three years have been wasted, but I guess there's no sense in throwing good money out after bad. It's been a pleasure working with you."
-              }
-            },
-            "third_party_verifier": {
-              "dialogue": "I'm seeing some good done at the ground level, but I have no idea how that reflects nationally."
-            },
-            "community_verifier": {
-              "dialogue": "I can tell you that, if the problems I keep seeing in paperwork are any indication, you're in trouble. Then again, filling out forms and caring for patients aren't the same thing."
-            },
-            "clinic_manager": {
-              "dialogue": "My clinics could handle this better if you shifted some resources away from the hospital and to my network. Hire another contractor to fill the gaps and let me do my job.",
-              "unlocks": [
-                "terminate_hospital_contract_and_redirect_resources"
-              ],
-              "unlocks_affects": [
-                "terminate_hospital_contract_and_redirect_resources"
-              ],
-              "feedback": {
-                "terminate_both_health_contracts_of_providers": "If I couldn't make this work, nobody can. The past three years has been one unmitigated disaster."
-              }
-            },
-            "hospital_administrator": {
-              "dialogue": "I heard through the grapevine what's happening. I know there have been issues, but I believe the problem is and has been beurocracy from the Ministry's offices. If you grant us autonomy to hire staff as needed and order supplies to fill our patients' needs, things have to improve.",
-              "unlocks": [
-                "grant_providers_autonomy"
-              ],
-              "unlocks_affects": [
-                "grant_providers_autonomy"
-              ],
-              "feedback": {
-                "terminate_hospital_contract_and_redirect_resources": "Well. This is disappointing. I was doing everything I could to make this plan work."
               }
             }
           }

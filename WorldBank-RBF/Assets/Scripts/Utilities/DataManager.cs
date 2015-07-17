@@ -48,6 +48,15 @@ public class DataManager {
             currentSceneContext = value;
         }
     }
+    
+    /// <summary>
+    /// Get the current phase two year.
+    /// </summary>
+    public static int CurrentYear {
+        get {
+            return gameData.phase_two.Year;
+        }
+    }
 
     public static List<string> tacticNames;
 
@@ -60,7 +69,7 @@ public class DataManager {
     static GameData gameData;
     static GameDataTest gameDataTest;
 
-    static ScenarioCard[] currentScenario;
+    static Scenario currentScenario;
 
     /// <summary>
     /// Set global game config data, such as API endpoints, given a valid input string
@@ -265,18 +274,53 @@ public class DataManager {
     /// Get the phase two scenario card specified by the index input.
     /// </summary>
     /// <param name="cardIndex">Index of the scenario card</param>
+    /// <param name="scenarioTwist">Is the scenario in a twist? (default is false)</param>
     /// <returns>The ScenarioCard for the symbol matching the input</returns>
-    public static ScenarioCard GetScenarioCardByIndex(int cardIndex) {
+    public static ScenarioCard GetScenarioCardByIndex(int cardIndex, bool scenarioTwist=false) {
 
         if(currentScenario == null)
-        {
-            currentScenario =  gameData.phase_two.GetScenario(currentSceneContext);
-            Array.Sort(currentScenario);
-        }
+            currentScenario = gameData.phase_two.GetScenario(currentSceneContext);
 
-        ScenarioCard scenarioRef = currentScenario[cardIndex];
+        ScenarioCard[] scenarioCards = scenarioTwist ? currentScenario.twists : currentScenario.problems; 
+        Array.Sort(scenarioCards);
+
+        // Get scenario cards only for the current phase two year
+        scenarioCards = scenarioCards.Where(scenarioCard => scenarioCard.year == gameData.phase_two.Year).ToArray();
+
+        return scenarioCards[cardIndex];
+
+    }
+
+    /// <summary>
+    /// Get the phase two scenario's config.
+    /// </summary>
+    /// <returns>The ScenarioConfig for the current scenario</returns>
+    public static ScenarioConfig GetScenarioConfig() {
         
-        return scenarioRef;
+        return currentScenario.path_config;
+        
+    }
+
+    /// <summary>
+    /// Advance phase two current year.
+    /// </summary>
+    public static void AdvanceScenarioYear() {
+        
+        gameData.phase_two.Year++;
+        
+    }
+
+    /// <summary>
+    /// Get/set the phase two scenario's player decisions.
+    /// </summary>
+    /// <param name="decisionName">A decision name to add (optional)</param>
+    /// <returns>Phase two's player decisions≥</returns>
+    public static List<string> ScenarioDecisions(string decisionName=null) {
+
+        if(decisionName != null)
+            gameData.phase_two.AddDecision(decisionName);
+        
+        return gameData.phase_two.Decisions;
         
     }
 
@@ -284,7 +328,14 @@ public class DataManager {
     /// Get the length of the current scenario.
     /// </summary>
     /// <returns>Scenario length (int)</returns>
-    public static int ScenarioLength() { return gameData.phase_two.GetScenario(currentSceneContext).Length; }
+    /// <param name="scenarioTwist">Is the scenario in a twist? (default is false)</param>
+    public static int ScenarioLength(bool scenarioTwist=false) {
+        
+        ScenarioCard[] scenarioRef = scenarioTwist ? currentScenario.twists : currentScenario.problems; 
+
+        return scenarioRef.Length;
+    
+    }
 
     /// <summary>
     /// Get the phase two tactic card specified by the tactic's name.
