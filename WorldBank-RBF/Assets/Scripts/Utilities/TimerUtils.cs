@@ -59,6 +59,8 @@ namespace TimerUtils {
 
 		public void Stop() {
 
+			Debug.Log("Timer Stopped");
+
 			aTimer.Stop();
 
 		}

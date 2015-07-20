@@ -198,13 +198,14 @@ public class DialogManager : MonoBehaviour {
 	public void CreateScenarioDecisionDialog(Models.ScenarioConfig scenarioConfig) {
 
 	    ScenarioDecisionDialog yearEndDialog = ObjectPool.Instantiate<ScenarioDecisionDialog>();
-	    
-	    yearEndDialog.transform.SetAsFirstSibling();
-
-	    yearEndDialog.Open();
 
 	    yearEndDialog.Year = DataManager.CurrentYear;
 	    yearEndDialog.Data = scenarioConfig;
+
+	    // System.Threading.Thread.Sleep(3000);
+	    
+	    yearEndDialog.transform.SetAsFirstSibling();
+	    yearEndDialog.Open();
 
 	}
 
@@ -213,7 +214,7 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	public TacticCardDialog CreateTacticDialog(Models.TacticCard tactic) {
 
-	    tacticDialog = ObjectPool.Instantiate<TacticCardDialog>();
+	    TacticCardDialog tacticDialog = ObjectPool.Instantiate<TacticCardDialog>();
 	    tacticDialog.data = tactic;
 
 	    tacticDialog.Content = tactic.initiating_dialogue;
@@ -389,9 +390,9 @@ public class DialogManager : MonoBehaviour {
 		{
 			bool unlockItemUnlocked = false;
 
-			if(arrUnlocks[0].StartsWith ("unlockable_dialogue_")) 
+			if(arrUnlocks[0].StartsWith("unlockable_dialogue_")) 
 				unlockItemUnlocked = PlayerData.DialogueGroup.IsUnlocked(arrUnlocks[0]);
-			else
+			else if(!arrUnlocks[0].StartsWith("unlockable_route_"))
 				unlockItemUnlocked = PlayerData.TacticGroup.IsUnlocked(arrUnlocks[0]);
 
 			if(unlockItemUnlocked)

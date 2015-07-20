@@ -43,7 +43,6 @@ public class ScenarioDecisionDialog : GenericDialogBox {
     }
 
 	public Text textCardPrompt;
-	public Transform promptButtonGroup;
 
 	List<string> currentCardOptions;
 
@@ -82,10 +81,13 @@ public class ScenarioDecisionDialog : GenericDialogBox {
 	// Scenario year end decision was selected
 	void OptionSelected(string strOptionName, string strOptionValue) {
 
+		// Update selected decisions
 		DataManager.ScenarioDecisions(strOptionName);
 
 		// Broadcast to affect current scenario path with the config value
 		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.DECISION_SELECTED, strOptionValue));
+
+		Close();
 
 	}
 	

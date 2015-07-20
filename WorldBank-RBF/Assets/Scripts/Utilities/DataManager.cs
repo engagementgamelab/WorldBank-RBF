@@ -45,6 +45,10 @@ public class DataManager {
             return currentSceneContext;
         }
         set {
+            // Reset scenario
+            if(value.StartsWith("scenario"))
+                currentScenario = gameData.phase_two.GetScenario(value);
+
             currentSceneContext = value;
         }
     }
@@ -274,18 +278,17 @@ public class DataManager {
     /// Get the phase two scenario card specified by the index input.
     /// </summary>
     /// <param name="cardIndex">Index of the scenario card</param>
-    /// <param name="scenarioTwist">Is the scenario in a twist? (default is false)</param>
+    /// <param name="scenarioTwist">The index of the scenario twist, if any (default is 0)</param>
     /// <returns>The ScenarioCard for the symbol matching the input</returns>
-    public static ScenarioCard GetScenarioCardByIndex(int cardIndex, bool scenarioTwist=false) {
+    public static ScenarioCard GetScenarioCardByIndex(int cardIndex, int scenarioTwist=0) {
 
-        if(currentScenario == null)
-            currentScenario = gameData.phase_two.GetScenario(currentSceneContext);
-
-        ScenarioCard[] scenarioCards = scenarioTwist ? currentScenario.twists : currentScenario.problems; 
+        ScenarioCard[] scenarioCards = (scenarioTwist > 0) ? currentScenario.twists : currentScenario.problems; 
         Array.Sort(scenarioCards);
 
         // Get scenario cards only for the current phase two year
-        scenarioCards = scenarioCards.Where(scenarioCard => scenarioCard.year == gameData.phase_two.Year).ToArray();
+        scenarioCards = scenarioCards.Where(scenarioCard => scenarioCard.year == gameData.phase_two.Year && 
+                                                            scenarioCard.twist == scenarioTwist
+                                           ).ToArray();
 
         return scenarioCards[cardIndex];
 

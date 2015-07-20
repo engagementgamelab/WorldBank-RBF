@@ -172,14 +172,19 @@ namespace Models {
 
         public string symbol { get; set; }
         public string name { get; set; }
+        
         public int priority { get; set; }
         public int year { get; set; }
+        public int twist { get; set; }
+
         public string initiating_npc { get; set; }
         public string initiating_dialogue { get; set; }
+        
         public string[] starting_options { get; set; }
         public string[] starting_options_affects { get; set; }
         public string[] final_options { get; set; }
         public string[] final_options_affects { get; set; }
+        
         public Dictionary<string, Advisor> characters { get; set; }
 
         // Sort ScenarioCard by priority

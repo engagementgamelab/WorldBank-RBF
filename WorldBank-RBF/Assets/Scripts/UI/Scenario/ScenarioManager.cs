@@ -27,13 +27,12 @@ public class ScenarioManager : MonoBehaviour {
 
 	static TimerUtils.Cooldown tacticCardCooldown;
 	
-	static int[] tacticCardIntervals = new int[3] {3, 3, 3};
+	static int[] tacticCardIntervals = new int[3] {4, 3, 3};
 	List<string> tacticsAvailable;
 
 	List<string> selectedOptions = new List<string>();
 
 	bool openTacticCard;
-	bool scenarioTwistEnabled;
 	bool yearEnd;
 
 	string tacticState;
@@ -112,7 +111,7 @@ public class ScenarioManager : MonoBehaviour {
 			// Pause tactic card cooldown
 			tacticCardCooldown.Pause();
 
-			ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
+			currentScenarioCard.Close();
 
 			yearEndPanel.PreviousChoices = selectedOptions;
 
@@ -157,7 +156,9 @@ public class ScenarioManager : MonoBehaviour {
 		if(yearEnd) {
 			
 			yearEnd = false;
-			currentCardIndex = 0;
+			
+			// Next year will start at card 0
+			currentCardIndex = -1;
 
 			OpenScenarioDecisionCard();
 
@@ -177,8 +178,10 @@ public class ScenarioManager : MonoBehaviour {
     /// </summary>
 	void OpenScenarioCard() {
 
+		Debug.Log("open scenario card with index " + currentCardIndex);
+
 		// Generate scenario card for the current card index, as well as if the scenario is in a twist
-		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex, scenarioTwistEnabled);
+		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex, scenarioTwistIndex);
 
 		// Create the card dialog
 	 	currentScenarioCard = DialogManager.instance.CreateScenarioDialog(card);
@@ -226,21 +229,24 @@ public class ScenarioManager : MonoBehaviour {
 		
 			}
 			catch(System.Exception e) {
-
-				tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
 				
 				Debug.LogWarning("Unable to locate a tactic card for '" + tacticsAvailable[tacticIndex] + "'. Timer restarting.", this);
+				
+				tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
 
 				return;
 
 			}
 
-			currentTacticCard = DialogManager.instance.CreateTacticDialog(card);
+			DialogManager.instance.CreateTacticDialog(card);
 
 			tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
 
 			if(tacticsAvailable.Count == 0)
 				tacticCardCooldown.Stop();
+			else
+				tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
+
 		}
 		else 
 		{
@@ -251,7 +257,7 @@ public class ScenarioManager : MonoBehaviour {
 		}
 
 		// Pause tactic card cooldown
-		tacticCardCooldown.Pause();
+		// tacticCardCooldown.Pause();
 	
 	}
 
@@ -315,13 +321,13 @@ public class ScenarioManager : MonoBehaviour {
     void SetScenarioPath(string strPathValue) {
 
     	// Path is a twist
-    	if(strPathValue.Contains("twist")) {
-	    	scenarioTwistEnabled = true;
+    	if(strPathValue.Contains("twist"))
 	    	scenarioTwistIndex++;
-    	}
     	// Path is another scenario
     	else
     		DataManager.SceneContext = strPathValue;
+
+    	GetNextCard();
 
     }
 

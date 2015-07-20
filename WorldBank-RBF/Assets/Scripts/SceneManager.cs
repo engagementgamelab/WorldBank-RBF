@@ -44,12 +44,12 @@ public class SceneManager : MonoBehaviour {
 		LoadGameConfig();
 
 		NetworkManager.Instance.Authenticate(ClientAuthenticated);
-
-		DataManager.SceneContext = sceneName;
 	
 		// Set global game data if needed
 		// TODO: This needs to not be in awake method
 		SetGameData();
+
+		DataManager.SceneContext = sceneName;
 
       
 	}
