@@ -173,6 +173,7 @@ public class DialogManager : MonoBehaviour {
 		if(closeAll)
 			CloseAll();
 
+		// TODO: Not hardcoded position!
 	    scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>();
 	    scenarioDialog.Data = scenario;
 

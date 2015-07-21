@@ -60,7 +60,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 		float step = (openCloseDuration * 1000f) * Time.deltaTime;
 		float targetX = close ? -Screen.width : 0;
 
-		cardContainer.localPosition = Vector3.MoveTowards(cardContainer.localPosition, new Vector3(targetX, 0, 0), step);
+		// cardContainer.localPosition = Vector3.MoveTowards(cardContainer.localPosition, new Vector3(targetX, 0, 0), step);
 		
 	}
 

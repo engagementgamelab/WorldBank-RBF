@@ -44,7 +44,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 	public Transform conferencePanel;
 	public Transform conferenceButtonGroup;
 	public Animator conferenceAnimator;
-
+	
 	List<string> currentAdvisorOptions;
 	List<string> currentCardOptions;
 

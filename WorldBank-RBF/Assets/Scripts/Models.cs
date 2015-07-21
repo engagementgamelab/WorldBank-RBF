@@ -63,12 +63,12 @@ namespace Models {
     public class GameDataTest {
 
         public Character[] characters { get; set; }
-        // public City[] cities { get; set; }
-        // public Dictionary<string, Dictionary<string, int>> indicator_affects { get; set; }
-        // public Route[] routes { get; set; }
-        // public Unlockable[] unlockables { get; set; }
+        public City[] cities { get; set; }
+        public Dictionary<string, Dictionary<string, int>> indicator_affects { get; set; }
+        public Route[] routes { get; set; }
+        public Unlockable[] unlockables { get; set; }
         public Dictionary<string, NPC[]> phase_one { get; set; }
-        // public PhaseTwo phase_two { get; set; }
+        public PhaseTwo phase_two { get; set; }
 
     }
 

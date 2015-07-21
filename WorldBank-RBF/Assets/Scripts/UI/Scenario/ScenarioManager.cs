@@ -22,15 +22,30 @@ public class ScenarioManager : MonoBehaviour {
 
 	public ScenarioYearEndDialog yearEndPanel;
 	public RectTransform scenarioEndPanel;
+	public RectTransform tacticCardsTooltip;
+
+	public Animator cameraAnimator;
+	public CoverFlow coverFlowHelper;
+
+	public int[] baseAffectValues;
 
 	static int currentCardIndex;
 
 	static TimerUtils.Cooldown tacticCardCooldown;
+	static TimerUtils.Cooldown phaseCooldown;
 	
 	static int[] tacticCardIntervals = new int[3] {4, 3, 3};
+	static int[] currentAffectValues;
+	
+	// seconds (each month is 25 seconds and there are 3 years)
+	int[] monthLength = new int[1] { 11 };
+	int monthsCount = 36;
+	int currentMonth = 1;
+
 	List<string> tacticsAvailable;
 
 	List<string> selectedOptions = new List<string>();
+	List<int[]> usedAffects = new List<int[]>();
 
 	bool openTacticCard;
 	bool yearEnd;
@@ -52,6 +67,9 @@ public class ScenarioManager : MonoBehaviour {
 			if(PlayerManager.Instance.Authenticated)
 		        NetworkManager.Instance.GetURL("/plan/all/", PlansRetrieved);
 		#endif
+
+		// Set current affect values to base values
+		currentAffectValues = baseAffectValues;
 
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
 
@@ -80,12 +98,14 @@ public class ScenarioManager : MonoBehaviour {
 
 		foreach(Dictionary<string, string> choice in planData) {
 
+			string planId = choice["id"];
+
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 
 			btnChoice.Text = choice["name"];
 
 			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => GetScenarioForPlan(choice["id"]));
+			btnChoice.Button.onClick.AddListener (() => GetScenarioForPlan(planId));
 
 			btnList.Add(btnChoice);
 		}
@@ -173,6 +193,12 @@ public class ScenarioManager : MonoBehaviour {
 
 	}
 
+	public void ShowTacticsCards() {
+
+		cameraAnimator.Play("TacticsCameraEnter");
+
+	}
+
     /// <summary>
     /// Displays a scenario card, given the current card index.
     /// </summary>
@@ -238,7 +264,9 @@ public class ScenarioManager : MonoBehaviour {
 
 			}
 
-			DialogManager.instance.CreateTacticDialog(card);
+		 	TacticCardDialog dialog = DialogManager.instance.CreateTacticDialog(card);
+
+			coverFlowHelper.AddTransform(dialog.transform);
 
 			tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
 
@@ -246,6 +274,8 @@ public class ScenarioManager : MonoBehaviour {
 				tacticCardCooldown.Stop();
 			else
 				tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
+
+			tacticCardsTooltip.gameObject.SetActive(true);
 
 		}
 		else 
@@ -274,6 +304,9 @@ public class ScenarioManager : MonoBehaviour {
     /// <param name="plandId">The plan ID that will trigger a scenario assignment.</param>
     void GetScenarioForPlan(string planId) {
 
+
+		Debug.Log(planId);
+
     	// Create dict for POST
         Dictionary<string, object> saveFields = new Dictionary<string, object>();
         
@@ -294,7 +327,10 @@ public class ScenarioManager : MonoBehaviour {
     void AssignScenario(Dictionary<string, object> response) {
 
 		tacticCardCooldown = new TimerUtils.Cooldown();
+		phaseCooldown = new TimerUtils.Cooldown();
+
 		tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
+		phaseCooldown.Init(monthLength, new ScenarioEvent(ScenarioEvent.MONTH_END));
 
 		Debug.Log("Scenario: " + response["current_scenario"].ToString());
 
@@ -303,6 +339,10 @@ public class ScenarioManager : MonoBehaviour {
 
     	// Set tactics that are a part of this plan
     	tacticsAvailable = ((IEnumerable)response["tactics"]).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+
+    	// Calc the base affect values for the plan
+    	usedAffects.Add(response["default_affects"] as int[]);
+    	CalculateAffects();
 
     	// Debug
     	scenarioLabel.text = DataManager.SceneContext.Replace("_", " ") + ": ";
@@ -331,6 +371,33 @@ public class ScenarioManager : MonoBehaviour {
 
     }
 
+    void CalculateAffects() {
+
+		foreach(int[] dictAffect in usedAffects) {
+
+			currentAffectValues[0] += dictAffect[0];
+			currentAffectValues[1] += dictAffect[1];
+			currentAffectValues[2] += dictAffect[2];
+
+		}
+
+		usedAffects.Clear();
+
+    }
+
+    void MonthEnd() {
+
+
+		Debug.Log("======== END OF MONTH " + currentMonth + " ========");
+		Debug.Log("--> Indicators: " + currentAffectValues[0] + ", " + currentAffectValues[1] + ", " + currentAffectValues[2]);
+		Debug.Log("===================================================");
+
+		currentMonth++;
+
+		phaseCooldown.Init(monthLength, new ScenarioEvent(ScenarioEvent.MONTH_END));
+
+    }
+
     /// <summary>
     // Callback for ScenarioEvent, filtering for type of event
     /// </summary>
@@ -339,7 +406,11 @@ public class ScenarioManager : MonoBehaviour {
     	switch(e.eventType) {
 
     		case "next":
+				Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(e.eventSymbol);
+
     			selectedOptions.Add(e.eventSymbol);
+    			usedAffects.Add(dictAffect.Values.ToArray());
+
     			GetNextCard();
     			break;
 
@@ -359,6 +430,11 @@ public class ScenarioManager : MonoBehaviour {
 
 	   		case "decision_selected":
 	   			SetScenarioPath(e.eventSymbol);
+    			break;
+
+	   		case "month_end":
+	   			CalculateAffects();
+	   			MonthEnd();
     			break;
 
     	}

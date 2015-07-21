@@ -19,7 +19,7 @@ DATE=$(date +"%F");
 target_tar="$EXTERNAL_BUILDS_DIR/$OUTPUT_NAME""_$DATE.tgz";
 
 # Run nightly build only if latest build generated "nightly" tar file
-if [ -f target_tar ]
+if [ -f $target_tar ]
 then
 
 	# Get file info for the current _Nightly tar via gdrive (https://github.com/prasmussen/gdrive)
@@ -58,12 +58,12 @@ then
 	url="$(drive url -i $new_file_id)";
 
 	# Tell slack about the new file
-	echo "$OUTPUT_NAME Nightly build for $(date +"%D") posted ($url)" | ~/go/bin/slackcat -n "EL Dev Server" -i ":lab:"
+	echo "$1 Nightly build for $(date +"%D") posted ($url)" | ~/go/bin/slackcat -n "EL Dev Server" -i ":lab:"
 
 else
 
 	# Tell slack that build will not occur
-	echo "Nightly build for $OUTPUT_NAME will not be posted since build archive was not updated today." | ~/go/bin/slackcat -n "EL Dev Server" -i ":lab:"
+	echo "Nightly build for $1 will not be posted since build archive was not updated today." | ~/go/bin/slackcat -n "EL Dev Server" -i ":lab:"
 	exit 1
 
 fi
