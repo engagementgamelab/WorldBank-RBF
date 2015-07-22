@@ -49,6 +49,8 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 		cardContainer = transform.GetChild(0);
 
+		transform.SetParent(GameObject.Find("TacticsParent").transform);
+
 	}
 
 	// Used to animate card
@@ -203,7 +205,7 @@ public class TacticCardDialog : ScenarioCardDialog {
     /// </summary>
     private void OnCooldownTick(GameEvents.TimerTick e) {
 
-    	cooldownElapsed = cooldownTotal - e.secondsElapsed;
+    	cooldownElapsed = cooldownTotal - e.SecondsElapsed;
 
     }
 

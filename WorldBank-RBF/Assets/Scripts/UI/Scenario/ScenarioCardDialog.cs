@@ -44,7 +44,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 	public Transform conferencePanel;
 	public Transform conferenceButtonGroup;
 	public Animator conferenceAnimator;
-	
+
 	List<string> currentAdvisorOptions;
 	List<string> currentCardOptions;
 
@@ -154,6 +154,8 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 		// Broadcast to open next card
 		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, strOptionSymbol));
+
+		Close();
 
 	}
     

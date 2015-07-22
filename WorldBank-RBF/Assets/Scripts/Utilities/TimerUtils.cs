@@ -21,22 +21,25 @@ namespace TimerUtils {
     /// </summary>
 	public class Cooldown {
 
-	    private Timer aTimer;
+	    Timer aTimer;
 
-	    private GameEvent instanceCallback;
-		private static System.Random random = new System.Random();
+	    GameEvent instanceCallback;
+		static System.Random random = new System.Random();
 
-		private int currentCooldown = 0;
-		private int elapsedSeconds = 0;
+		int currentCooldown = 0;
+		int elapsedSeconds = 0;
+
+		string currentSymbol;
 
 	    /// <summary>
 	    /// Initializes a new instance of the <see cref="Cooldown"/> class, given a double.
 	    /// </summary>
 		public Cooldown() {	}
 
-		public int Init(int[] cooldowns, GameEvent callback) {
+		public int Init(int[] cooldowns, GameEvent callback, string timerSymbol="timer") {
 
 			elapsedSeconds = 0;
+			currentSymbol = timerSymbol;
 
 			if(cooldowns.Length == 1)
 			    currentCooldown = cooldowns[0];
@@ -90,14 +93,14 @@ namespace TimerUtils {
 
 		}
 
-		private void OnTimedEvent(object sender, ElapsedEventArgs eventArgs)
+		void OnTimedEvent(object sender, ElapsedEventArgs eventArgs)
 		{
 
 			elapsedSeconds += 1;
 
-			Debug.Log("Timer Tick: " + elapsedSeconds + "s");
+			// Debug.Log("Timer Tick: " + elapsedSeconds + "s");
 
-			Events.instance.Raise(new GameEvents.TimerTick(elapsedSeconds));
+			Events.instance.Raise(new GameEvents.TimerTick(elapsedSeconds, currentSymbol));
 
 			if(elapsedSeconds == currentCooldown) {
 

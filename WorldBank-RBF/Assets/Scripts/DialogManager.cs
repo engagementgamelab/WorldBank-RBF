@@ -48,7 +48,6 @@ public class DialogManager : MonoBehaviour {
 
 	public delegate void BackButtonDelegate();
 
-	ScenarioCardDialog scenarioDialog;
 	TacticCardDialog tacticDialog;
 
 	Text currentDialogLabel;
@@ -111,9 +110,6 @@ public class DialogManager : MonoBehaviour {
 		if(dialogBox != null)
 			dialogBox.Close();
 
-		if(scenarioDialog != null)
-			scenarioDialog.Close();
-
 	}
 
 	/// <summary>
@@ -173,11 +169,9 @@ public class DialogManager : MonoBehaviour {
 		if(closeAll)
 			CloseAll();
 
-		// TODO: Not hardcoded position!
-	    scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>();
+		ScenarioCardDialog scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>();
 	    scenarioDialog.Data = scenario;
 
-	    // scenarioDialog.transform.SetParent(uiCanvasRoot);
 	    scenarioDialog.transform.SetAsFirstSibling();
 
 	    scenarioDialog.Header = scenario.name;
@@ -202,8 +196,6 @@ public class DialogManager : MonoBehaviour {
 
 	    yearEndDialog.Year = DataManager.CurrentYear;
 	    yearEndDialog.Data = scenarioConfig;
-
-	    // System.Threading.Thread.Sleep(3000);
 	    
 	    yearEndDialog.transform.SetAsFirstSibling();
 	    yearEndDialog.Open();

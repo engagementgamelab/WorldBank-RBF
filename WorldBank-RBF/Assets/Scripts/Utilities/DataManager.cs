@@ -332,11 +332,16 @@ public class DataManager {
     /// </summary>
     /// <returns>Scenario length (int)</returns>
     /// <param name="scenarioTwist">Is the scenario in a twist? (default is false)</param>
-    public static int ScenarioLength(bool scenarioTwist=false) {
+    public static int ScenarioLength(int scenarioTwist=0) {
         
-        ScenarioCard[] scenarioRef = scenarioTwist ? currentScenario.twists : currentScenario.problems; 
+        ScenarioCard[] scenarioCards = (scenarioTwist > 0) ? currentScenario.twists : currentScenario.problems; 
+        
+        // Get scenario cards only for the current phase two year
+        scenarioCards = scenarioCards.Where(scenarioCard => scenarioCard.year == gameData.phase_two.Year && 
+                                                            scenarioCard.twist == scenarioTwist
+                                           ).ToArray();
 
-        return scenarioRef.Length;
+        return scenarioCards.Length;
     
     }
 

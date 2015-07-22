@@ -273,6 +273,8 @@ namespace Models {
         public int score { get; set; }
         [JsonMember]
         public string[] tactics { get; set; }
+        // [JsonMember]
+        // public string[] tactics { get; set; }
     }
 
     public class GameDataConverter : JsonConverter {
