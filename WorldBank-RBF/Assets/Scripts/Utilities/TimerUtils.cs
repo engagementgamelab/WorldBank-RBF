@@ -98,13 +98,13 @@ namespace TimerUtils {
 
 			elapsedSeconds += 1;
 
-			// Debug.Log("Timer Tick: " + elapsedSeconds + "s");
-
 			Events.instance.Raise(new GameEvents.TimerTick(elapsedSeconds, currentSymbol));
 
 			if(elapsedSeconds == currentCooldown) {
 
 	            try {
+
+					Debug.Log(currentSymbol + " Timer done");
 	            	Events.instance.Raise(instanceCallback);
 	            }
 	            catch(Exception e) {

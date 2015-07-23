@@ -31,7 +31,6 @@ public class ScenarioManager : MonoBehaviour {
 	public int[] baseAffectValues;
 	public int problemCardDurationOverride = 0;
 
-	static int currentCardIndex;
 
 	static TimerUtils.Cooldown problemCardCooldown;
 	static TimerUtils.Cooldown tacticCardCooldown;
@@ -50,9 +49,12 @@ public class ScenarioManager : MonoBehaviour {
 	bool openTacticCard;
 	bool openYearEnd;
 	bool inYearEnd;
+	bool indicatorUpdate;
 
 	string tacticState;
+
 	int scenarioTwistIndex;
+	int currentCardIndex;
 
 	int monthsCount = 36;
 	int currentMonth = 1;
@@ -89,19 +91,26 @@ public class ScenarioManager : MonoBehaviour {
 
 	void Update () {
 
+		// Update indicators with current affects
+		if(indicatorUpdate) {
+			indicatorUpdate = false;
+			NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2]);
+		}
+		
 		// If a problem card has been enqueued, open it
-		if(openProblemCard)
+		else if(openProblemCard)
 		{
 			openProblemCard = false;
 			GetNextCard();
 		}
 
 		// If a tactic card has been enqueued, open it
-		if(openTacticCard)
+		else if(openTacticCard)
 		{
 			openTacticCard = false;
 			OpenDialog(true);
 		}
+
 		// The current year has ended
 		else if(openYearEnd) {
 			openYearEnd = false;
@@ -166,7 +175,9 @@ public class ScenarioManager : MonoBehaviour {
 			// Pause tactic card cooldown
 			tacticCardCooldown.Stop();
 
+			problemCardCooldown.Stop();
 
+			// Hide all scenario problem cards
 			ObjectPool.DestroyAll<ScenarioCardDialog>();
 
 			yearEndPanel.PreviousChoices = selectedOptions;
@@ -182,7 +193,7 @@ public class ScenarioManager : MonoBehaviour {
 			if(currentMonth < 12) {
 				int mo = 0;
 				while(mo < 12-currentMonth) {
-					CalculateIndicators();
+					CalculateIndicators(true);
 					mo++;
 				}
 			}
@@ -440,7 +451,7 @@ public class ScenarioManager : MonoBehaviour {
     /// <summary>
     // Calculates indicators, given the currently used affects, and then the affect bias for the current plan
     /// </summary>
-    void CalculateIndicators() {
+    void CalculateIndicators(bool updateNow=false) {
 
 		foreach(int[] dictAffect in usedAffects) {
 
@@ -458,6 +469,11 @@ public class ScenarioManager : MonoBehaviour {
 
 		usedAffects.Clear();
 
+		if(updateNow)
+			NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2]);
+		else
+			indicatorUpdate = true;
+
     }
 
     /// <summary>
@@ -465,17 +481,22 @@ public class ScenarioManager : MonoBehaviour {
     /// </summary>
     void MonthEnd() {
 
+    	if(inYearEnd)
+    		return;
+
 		currentMonth++;
 
     	bool atYearEnd = currentMonth == 12;
 
     	if(atYearEnd) {
 			Debug.Log("======== END OF YEAR " + currentYear + " ========");
+			phaseCooldown.Stop();
+
 			openYearEnd = true;
     	}
 		else {
 			// Debug.Log("======== END OF MONTH " + currentMonth + " ========");
-			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END));
+			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END), "Month " + currentMonth);
 		}
 
 		// Debug.Log("--> Indicators: " + currentAffectValues[0] + ", " + currentAffectValues[1] + ", " + currentAffectValues[2]);
@@ -487,6 +508,8 @@ public class ScenarioManager : MonoBehaviour {
     // Callback for ScenarioEvent, filtering for type of event
     /// </summary>
     void OnScenarioEvent(ScenarioEvent e) {
+
+    	Debug.Log("OnScenarioEvent: " + e.eventType);
 
     	switch(e.eventType) {
 

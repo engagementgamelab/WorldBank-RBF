@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Analytics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -129,6 +130,8 @@ public class PlayerManager : MonoBehaviour {
 
         Events.instance.Raise(new PlayerLoginEvent(true));
 
+        Analytics.SetUserId(_playerId);
+
         TrackEvent("User Login", "API");
         
         return;
@@ -150,7 +153,9 @@ public class PlayerManager : MonoBehaviour {
         Dictionary<string, object> postFields = new Dictionary<string, object>() {{ "eventName", strEventName }, { "eventCategory", strEventCategory }, { "userId", _playerId }};
 
         // Send to Parse SDK
-        ParseAnalytics.TrackEventAsync(strEventName, parseFields);
+        // ParseAnalytics.TrackEventAsync(strEventName, parseFields);
+
+        Analytics.CustomEvent(strEventName, new Dictionary<string, object>() {{ "eventCategory", strEventCategory }, { "userId", _playerId }});
 
         // Send analytic event
         NetworkManager.Instance.PostURL("/analytics/event/", postFields, null, true);

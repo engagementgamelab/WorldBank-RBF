@@ -145,13 +145,6 @@ public class ScenarioCardDialog : GenericDialogBox {
 	// Scenario option was selected
 	void OptionSelected(string strOptionSymbol) {
 
-		string strAffectSymbol = allCardAffects[allCardOptions.IndexOf(strOptionSymbol)];
-
-		Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(strAffectSymbol);
-
-		// Update indicators with affect
-		NotebookManager.Instance.UpdateIndicators(dictAffect["indicator_1"], dictAffect["indicator_2"], dictAffect["indicator_3"]);
-
 		// Broadcast to open next card
 		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, strOptionSymbol));
 
