@@ -25,7 +25,8 @@ public class ModelGroup<T> : ItemGroup<T> where T : ModelItem, new () {
 			if (item.Symbol == symbol)
 				return item;
 		}
-		return null;
+
+		throw new System.Exception("Unable to find unlockable with symbol '" + symbol + "'!");
 	}
 
 	/// <summary>

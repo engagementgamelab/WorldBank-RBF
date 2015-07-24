@@ -25,6 +25,9 @@ public class ScenarioCardDialog : GenericDialogBox {
         set {
         	_data = value;
 
+        	// Cleanup
+        	responseTextPanel.transform.DetachChildren();
+
 			// Generate advisors and starting options
 			currentAdvisorOptions = value.characters.Select(x => x.Key).ToList();
 			currentCardOptions = new List<string>(value.starting_options);
@@ -38,12 +41,14 @@ public class ScenarioCardDialog : GenericDialogBox {
 			// Create buttons for all options if not speaking to advisor
 			AddOptions();
 
+			AddResponseSpeech(value.initiating_dialogue, DataManager.GetDataForCharacter(value.initiating_npc));
+
         }
     }
 
 	public Transform conferencePanel;
-	public Transform conferenceButtonGroup;
-	public Animator conferenceAnimator;
+	public Transform responseTextPanel;
+	public Transform choicesGroup;
 
 	List<string> currentAdvisorOptions;
 	List<string> currentCardOptions;
@@ -51,11 +56,13 @@ public class ScenarioCardDialog : GenericDialogBox {
 	List<string> allCardOptions;
 	List<string> allCardAffects;
 
-	List<GenericButton> btnListAdvisors = new List<GenericButton>();	
+	List<NPCConferenceButton> btnListAdvisors = new List<NPCConferenceButton>();
+
+	bool rightSideResponse = true;
 
 	public void AddAdvisors() {
 
-		// RemoveButtons<GenericButton>();
+		// RemoveButtons<NPCConferenceButton>();
 
 		// Create buttons for all advisors
 		foreach(string characterSymbol in currentAdvisorOptions) {
@@ -64,11 +71,11 @@ public class ScenarioCardDialog : GenericDialogBox {
 			if(!_data.characters[characterSymbol].hasDialogue)
 				continue;
 
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
+			NPCConferenceButton btnChoice = ObjectPool.Instantiate<NPCConferenceButton>();
 
 			Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
 			
-			btnChoice.Text = charRef.display_name;
+			btnChoice.NPCName = charRef.display_name;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
 			btnChoice.Button.onClick.AddListener (() => AdvisorSelected(charRef.symbol));
@@ -78,19 +85,17 @@ public class ScenarioCardDialog : GenericDialogBox {
 			
 		}
 		
-		AddButtons<GenericButton>(btnListAdvisors, false, conferenceButtonGroup);
+		AddButtons<NPCConferenceButton>(btnListAdvisors, false, conferencePanel);
 
 	}
 
 	public virtual void AddOptions() {
 
-		List<OptionButton> btnListOptions = new List<OptionButton>();
+		List<ScenarioChoiceButton> btnListOptions = new List<ScenarioChoiceButton>();
 	
-		// RemoveButtons<OptionButton>();
-
 		foreach(string option in currentCardOptions) {
 
-			OptionButton btnChoice = ObjectPool.Instantiate<OptionButton>();
+			ScenarioChoiceButton btnChoice = ObjectPool.Instantiate<ScenarioChoiceButton>();
 
 			btnChoice.Text = DataManager.GetUnlockableBySymbol(option).title;
 
@@ -100,21 +105,16 @@ public class ScenarioCardDialog : GenericDialogBox {
 				btnChoice.Button.onClick.AddListener (() => DialogManager.instance.CreateScenarioDialog(_data));
 			else
 				btnChoice.Button.onClick.AddListener (() => OptionSelected(option));
-				
-				// ScenarioManager.GetNextCard()
 
 			btnListOptions.Add(btnChoice);
 		}
 
-		AddButtons<OptionButton>(btnListOptions);
+		AddButtons<ScenarioChoiceButton>(btnListOptions, false, choicesGroup);
 	}
 
 	void AdvisorSelected(string strAdvisorSymbol) {
 
 		Models.Advisor advisor = _data.characters[strAdvisorSymbol];
-		
-		Content = advisor.dialogue;
-
 		if(advisor.narrowsNpcs)
 		{
 			foreach(string npc_symbol in advisor.narrows)
@@ -128,6 +128,9 @@ public class ScenarioCardDialog : GenericDialogBox {
 				currentCardOptions.Add(option);
 		}
 
+		if(advisor.dialogue != null)
+			AddResponseSpeech(advisor.dialogue, DataManager.GetDataForCharacter(strAdvisorSymbol));
+
 		currentAdvisorOptions.Remove(strAdvisorSymbol);
 
 		// Create buttons for all advisors
@@ -136,9 +139,26 @@ public class ScenarioCardDialog : GenericDialogBox {
 		// Create buttons for all options if not speaking to advisor
 		AddOptions();
 
-		conferenceAnimator.Play("ConferenceHide");
-		conferencePanel.GetComponent<CanvasGroup>().interactable = false;
-		conferencePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+	}
+
+	void AddResponseSpeech(string strDialogue, Models.Character npc) {
+
+		NPCResponse responseSpeech = ObjectPool.Instantiate<NPCResponse>();
+
+		// Show response portraits/arrows only after initial response
+		if(responseTextPanel.transform.childCount > 0) {
+			if(rightSideResponse)
+				responseSpeech.RightSide = true;
+			else
+				responseSpeech.LeftSide = true;
+		}
+
+		responseSpeech.Content = strDialogue;
+		responseSpeech.NPCSymbol = npc.symbol;
+
+		responseSpeech.transform.SetParent(responseTextPanel.transform);
+
+		rightSideResponse = !rightSideResponse;
 
 	}
 

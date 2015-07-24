@@ -392,7 +392,7 @@ public class ScenarioManager : MonoBehaviour {
 		tacticCardCooldown = new TimerUtils.Cooldown();
 		phaseCooldown = new TimerUtils.Cooldown();
 
-		tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
+		// tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
 		phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END));
 
 		Debug.Log("Scenario: " + response["current_scenario"].ToString());

@@ -62,6 +62,8 @@ namespace TimerUtils {
 
 		public void Stop() {
 
+			if(aTimer == null) return;
+
 			Debug.Log("Timer Stopped");
 
 			aTimer.Stop();
@@ -69,6 +71,8 @@ namespace TimerUtils {
 		}
 
 		public void Pause() {
+
+			if(aTimer == null) return;
 
 			Debug.Log("Timer Paused");
 
@@ -78,6 +82,8 @@ namespace TimerUtils {
 
 		public void Resume() {
 
+			if(aTimer == null) return;
+
 			Debug.Log("Timer Resumed");
 
 			aTimer.Enabled = true;
@@ -85,6 +91,8 @@ namespace TimerUtils {
 		}
 
 		public void Restart() {
+
+			if(aTimer == null) return;
 
 			Debug.Log("Timer Restarted");
 

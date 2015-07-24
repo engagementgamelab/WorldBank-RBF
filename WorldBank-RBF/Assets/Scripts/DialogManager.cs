@@ -173,15 +173,7 @@ public class DialogManager : MonoBehaviour {
 	    scenarioDialog.Data = scenario;
 
 	    scenarioDialog.transform.SetAsFirstSibling();
-
-	    scenarioDialog.Header = scenario.name;
-
-	    // Get initial dialogue or an advisor's?
-	    if(strAdvisorSymbol == null)
-		    scenarioDialog.Content = scenario.initiating_dialogue;
-		
-	    scenarioDialog.Open();
-
+	    
 	    return scenarioDialog;
 
 	}
@@ -260,9 +252,10 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="returning">Specify whether player is returning to previous dialog</param>
 	public void OpenSpeechDialog(Models.NPC currNpc, string strDialogueKey, bool returning=false, bool left=false) {
 
+		Models.Dialogue currDialogue = currNpc.GetDialogue(strDialogueKey);
 		bool initialDialogue = strDialogueKey == "Initial";
 		int dialogTxtIndex = initialDialogue ? GetDialogIndex(currNpc) : 0;
-		int intTxtCount = currNpc.dialogue[strDialogueKey].text.Length-1;
+		int intTxtCount = currDialogue.text.Length-1;
 
 		CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
 		TextInfo textInfo = cultureInfo.TextInfo;
@@ -270,15 +263,15 @@ public class DialogManager : MonoBehaviour {
 		if (returning && currentDialogueChoices == null)
 			throw new Exception ("You are trying to return to the previous dialog, but none exists");
 
-		string strDialogTxt = currNpc.dialogue[strDialogueKey].text[Mathf.Clamp(dialogTxtIndex, 0, intTxtCount)];
+		string strDialogTxt = currDialogue.text[Mathf.Clamp(dialogTxtIndex, 0, intTxtCount)];
 
 		// Match any characters in between [[ and ]]
 		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
 
 		// Does this dialogue unlock something?
-		if(currNpc.dialogue[strDialogueKey].unlocks != null)
+		if(currDialogue.unlocks != null)
 		{
-			string[] unlockableSymbols = currNpc.dialogue[strDialogueKey].unlocks;
+			string[] unlockableSymbols = currDialogue.unlocks;
 
 			foreach(string symbol in unlockableSymbols)
 			{
@@ -346,7 +339,7 @@ public class DialogManager : MonoBehaviour {
 
 			KeyValuePair<string, string> choiceRef = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
 			btnChoice.Button.onClick.AddListener (() => currentDialogueChoices.Remove(choiceRef.Key));
-			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choice.Key, false, left));
+			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, false, left));
 
 			btnList.Add(btnChoice);
 		}

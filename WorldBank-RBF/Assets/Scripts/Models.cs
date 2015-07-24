@@ -237,6 +237,12 @@ namespace Models {
         public string character { get; set; }
 		public Dictionary<string, Dialogue> dialogue { get; set; }
 
+        public Dialogue GetDialogue(string dialogueKey)
+        {
+            Dictionary<string, Dialogue> refDict = new Dictionary<string, Dialogue>(dialogue, StringComparer.OrdinalIgnoreCase);
+            return refDict[dialogueKey];
+        }
+
     }
 
     public class Advisor {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 [ExecuteInEditMode]
 public class ObjectPool : MonoBehaviour {
@@ -101,15 +102,34 @@ public class ObjectPool : MonoBehaviour {
 
 	static Transform CreatePrefab (string prefabName) {
 		GameObject go = null;
-		try {
-			go = Instantiate (Resources.Load ("Prefabs/" + prefabName)) as GameObject;
-		} catch (System.Exception e) {
-			throw new System.Exception ("The prefab '" + prefabName + "' was not found in the Resources/Prefabs folder.", e);
+
+		Object resourceObj = Resources.Load ("Prefabs/" + prefabName);
+		
+		if(resourceObj == null) {		
+			// Try subfolders in "Prefabs"
+			DirectoryInfo directory = new DirectoryInfo(Application.dataPath + "/Resources/Prefabs");
+			DirectoryInfo[] directories = directory.GetDirectories();
+			
+			// Attempt to instantiate from subfolders
+			foreach(DirectoryInfo folder in directories) {
+				resourceObj = Resources.Load ("Prefabs/" + folder.Name + "/" + prefabName);
+				if(resourceObj != null) break;
+			}
 		}
+
+		try {
+			go = Instantiate (resourceObj) as GameObject;
+		}
+		catch {
+			if(go == null)
+				throw new System.Exception ("The prefab '" + prefabName + "' was not found in the Resources/Prefabs folder or any of its subfolders.");
+		}
+
 		#if UNITY_EDITOR
 		if (go == null)
 			Debug.Log (string.Format ("{0} was not found. Is it in the Resources/Prefabs directory?", prefabName));
 		#endif
+
 		return go.transform;
 	}
 

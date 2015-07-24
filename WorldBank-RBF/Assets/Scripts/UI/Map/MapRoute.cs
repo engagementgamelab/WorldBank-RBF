@@ -60,6 +60,9 @@ public class MapRoute : MB {
 	public RouteItem RouteItem { 
 		get { return routeItem; }
 		set {
+			if(value == null)
+				throw new System.Exception("Route item is null!");
+				
 			if (routeItem == null) {
 				routeItem = value;
 				routeItem.onUpdateUnlocked += OnUpdateUnlocked;

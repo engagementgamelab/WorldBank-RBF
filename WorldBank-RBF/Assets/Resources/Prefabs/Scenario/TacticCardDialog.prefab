@@ -240,7 +240,7 @@ GameObject:
   - 114: {fileID: 11473644}
   m_Layer: 0
   m_Name: TacticCardDialog
-  m_TagString: Untagged
+  m_TagString: Scenario
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -645,8 +645,8 @@ MonoBehaviour:
   worldSpaceBox: {fileID: 0}
   activeBox: {fileID: 11473644}
   conferencePanel: {fileID: 22454848}
+  responseTextPanel: {fileID: 0}
   conferenceButtonGroup: {fileID: 22449814}
-  conferenceAnimator: {fileID: 9539718}
   tooltipAlertImg: {fileID: 11471218}
   tooltipClockImg: {fileID: 11445160}
   tooltipDoneImg: {fileID: 11447038}
@@ -2485,7 +2485,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: Scenario
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 152206}
