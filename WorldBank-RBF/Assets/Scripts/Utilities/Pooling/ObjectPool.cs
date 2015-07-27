@@ -105,17 +105,20 @@ public class ObjectPool : MonoBehaviour {
 
 		Object resourceObj = Resources.Load ("Prefabs/" + prefabName);
 		
-		if(resourceObj == null) {		
-			// Try subfolders in "Prefabs"
-			DirectoryInfo directory = new DirectoryInfo(Application.dataPath + "/Resources/Prefabs");
-			DirectoryInfo[] directories = directory.GetDirectories();
-			
-			// Attempt to instantiate from subfolders
-			foreach(DirectoryInfo folder in directories) {
-				resourceObj = Resources.Load ("Prefabs/" + folder.Name + "/" + prefabName);
-				if(resourceObj != null) break;
+		#if !UNITY_WEBPLAYER
+			// TODO: We need to figure out how to handle webplayer. We'll probably need to make asset bundles and stream them in.
+			if(resourceObj == null) {		
+				// Try subfolders in "Prefabs"
+				DirectoryInfo directory = new DirectoryInfo(Application.dataPath + "/Resources/Prefabs");
+				DirectoryInfo[] directories = directory.GetDirectories();
+				
+				// Attempt to instantiate from subfolders
+				foreach(DirectoryInfo folder in directories) {
+					resourceObj = Resources.Load ("Prefabs/" + folder.Name + "/" + prefabName);
+					if(resourceObj != null) break;
+				}
 			}
-		}
+		#endif
 
 		try {
 			go = Instantiate (resourceObj) as GameObject;
