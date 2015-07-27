@@ -45,9 +45,11 @@ public class ScenarioManager : MonoBehaviour {
 	List<string> selectedOptions = new List<string>();
 	List<int[]> usedAffects = new List<int[]>();
 
+	bool queueProblemCard;
 	bool openProblemCard;
 	bool openTacticCard;
 	bool openYearEnd;
+
 	bool inYearEnd;
 	bool indicatorUpdate;
 
@@ -97,8 +99,8 @@ public class ScenarioManager : MonoBehaviour {
 			NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2]);
 		}
 		
-		// If a problem card has been enqueued, open it
-		else if(openProblemCard)
+		// If a problem card has been enqueued or we're waiting for one to open, determine next card
+		else if(queueProblemCard || openProblemCard)
 		{
 			openProblemCard = false;
 			GetNextCard();
@@ -187,6 +189,7 @@ public class ScenarioManager : MonoBehaviour {
 
 			inYearEnd = true;
 			openTacticCard = false;
+			queueProblemCard = false;
 
 			// If current month is fewer than 12 (player managed to finish all problems before year end), calculate affects for all missing months
 			// TODO: WILL THIS CHANGE?
@@ -269,8 +272,24 @@ public class ScenarioManager : MonoBehaviour {
 		// Generate scenario card for the current card index, as well as if the scenario is in a twist
 		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex, scenarioTwistIndex);
 
+		problemCardCooldown.Init(
+			new int[] { (problemCardDurationOverride == 0) ? problemCardDuration : problemCardDurationOverride }, 
+			new ScenarioEvent(ScenarioEvent.PROBLEM_OPEN), "problem_card"
+		);
+
+		if(queueProblemCard) {
+			ScenarioQueue.AddProblemCard(card);
+			Events.instance.Raise(new ScenarioEvent(ScenarioEvent.PROBLEM_QUEUE));
+		
+			queueProblemCard = false;
+			return;
+		}
+
 		// Create the card dialog
 	 	DialogManager.instance.CreateScenarioDialog(card);
+
+	 	// Remove card from queue
+	 	ScenarioQueue.RemoveProblemCard(card);
 
     	// Debug
     	// cardLabel.text = card.symbol;
@@ -283,11 +302,6 @@ public class ScenarioManager : MonoBehaviour {
 			currentTacticCard.gameObject.SetActive(false);
 			currentTacticCard.gameObject.SetActive(true);		    	
     	}
-
-		problemCardCooldown.Init(
-			new int[] { (problemCardDurationOverride == 0) ? problemCardDuration : problemCardDurationOverride }, 
-			new ScenarioEvent(ScenarioEvent.PROBLEM_OPEN), "problem_card"
-		);
 
 	}
 
@@ -354,6 +368,11 @@ public class ScenarioManager : MonoBehaviour {
 		// Pause tactic card cooldown
 		// tacticCardCooldown.Pause();
 	
+	}
+
+	bool QueueProblemCard() {
+
+		return true;
 	}
 
 	bool QueueTacticCard() {
@@ -519,12 +538,13 @@ public class ScenarioManager : MonoBehaviour {
     			selectedOptions.Add(e.eventSymbol);
     			usedAffects.Add(dictAffect.Values.ToArray());
 
-    			// GetNextCard();
+    			openProblemCard = true;
     			break;
 
     		case "problem_open":
 
-    			openProblemCard = true;
+    			if(!inYearEnd)
+	    			queueProblemCard = true;
 
     			break;
 

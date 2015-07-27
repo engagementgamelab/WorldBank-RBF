@@ -23,29 +23,15 @@ public class ScenarioCardDialog : GenericDialogBox {
     /// </summary>
     public Models.ScenarioCard Data {
         set {
+
         	_data = value;
 
-        	// Cleanup
-        	responseTextPanel.transform.DetachChildren();
-
-			// Generate advisors and starting options
-			currentAdvisorOptions = value.characters.Select(x => x.Key).ToList();
-			currentCardOptions = new List<string>(value.starting_options);
-
-			allCardOptions = currentCardOptions.Concat(new List<string>(value.final_options)).ToList();
-			allCardAffects = new List<string>(value.starting_options_affects).Concat(new List<string>(value.final_options_affects)).ToList();
-
-			// Create buttons for all advisors
-			AddAdvisors();
-
-			// Create buttons for all options if not speaking to advisor
-			AddOptions();
-
-			AddResponseSpeech(value.initiating_dialogue, DataManager.GetDataForCharacter(value.initiating_npc));
+        	Initialize();
 
         }
     }
 
+	public Transform upcomingCardsPanel;
 	public Transform conferencePanel;
 	public Transform responseTextPanel;
 	public Transform choicesGroup;
@@ -59,10 +45,68 @@ public class ScenarioCardDialog : GenericDialogBox {
 	List<NPCConferenceButton> btnListAdvisors = new List<NPCConferenceButton>();
 
 	bool rightSideResponse = true;
+	bool showNewQueuedCard;
+
+	void Update() {
+
+		if(showNewQueuedCard) 
+		{
+			DisplayOtherCards();
+			showNewQueuedCard = false;
+		}
+
+	}
+
+	void Initialize() {
+
+    	// Cleanup
+    	responseTextPanel.transform.DetachChildren();
+
+		// Generate advisors and starting options
+		currentAdvisorOptions = _data.characters.Select(x => x.Key).ToList();
+		currentCardOptions = new List<string>(_data.starting_options);
+
+		allCardOptions = currentCardOptions.Concat(new List<string>(_data.final_options)).ToList();
+		allCardAffects = new List<string>(_data.starting_options_affects).Concat(new List<string>(_data.final_options_affects)).ToList();
+
+		// Create buttons for all advisors
+		AddAdvisors();
+
+		// Create buttons for all options if not speaking to advisor
+		AddOptions();
+
+		AddResponseSpeech(_data.initiating_dialogue, DataManager.GetDataForCharacter(_data.initiating_npc));
+
+		DisplayOtherCards();
+
+		// Listen for ScenarioEvent
+		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
+
+	}
+
+	void DisplayOtherCards() {
+
+		upcomingCardsPanel.transform.DetachChildren();
+
+		foreach(Models.ScenarioCard card in ScenarioQueue.Problems)
+		{
+
+   			NPCConferenceButton btnChoice = ObjectPool.Instantiate<NPCConferenceButton>();
+   
+   			Models.Character charRef = DataManager.GetDataForCharacter(card.initiating_npc);
+
+			btnChoice.NPCName = charRef.display_name;
+			btnChoice.Text = card.initiating_dialogue;
+
+			btnChoice.transform.SetParent(upcomingCardsPanel.transform);
+
+		}
+
+	}
 
 	public void AddAdvisors() {
 
-		// RemoveButtons<NPCConferenceButton>();
+		conferencePanel.transform.DetachChildren();
 
 		// Create buttons for all advisors
 		foreach(string characterSymbol in currentAdvisorOptions) {
@@ -112,6 +156,12 @@ public class ScenarioCardDialog : GenericDialogBox {
 		AddButtons<ScenarioChoiceButton>(btnListOptions, false, choicesGroup);
 	}
 
+	public void ToggleConferencePanel() {
+
+		conferencePanel.gameObject.SetActive(!conferencePanel.gameObject.activeSelf);
+
+	}
+
 	void AdvisorSelected(string strAdvisorSymbol) {
 
 		Models.Advisor advisor = _data.characters[strAdvisorSymbol];
@@ -138,6 +188,9 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 		// Create buttons for all options if not speaking to advisor
 		AddOptions();
+
+		// Hide panel
+		ToggleConferencePanel();
 
 	}
 
@@ -171,5 +224,14 @@ public class ScenarioCardDialog : GenericDialogBox {
 		Close();
 
 	}
+
+    /// <summary>
+    // Callback for ScenarioEvent, filtering for type of event
+    /// </summary>
+    void OnScenarioEvent(ScenarioEvent e) {
+
+    	showNewQueuedCard = true;
+
+    }
     
 }
