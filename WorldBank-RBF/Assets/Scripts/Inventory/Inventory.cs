@@ -21,7 +21,14 @@ public class Inventory {
 	/// Get an ItemGroup using bracket notation.
 	/// </summary>
 	public ItemGroup this[string id] {
-		get { return Groups[id]; }
+		get { 
+			try {
+				return Groups[id];
+			}	 
+			catch(System.Exception e) {
+				throw new System.Exception("Unable to find ItemGroup for ID '" + id + "'");
+			} 
+		}
 	}
 
 	/// <summary>

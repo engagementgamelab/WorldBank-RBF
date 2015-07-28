@@ -1,6 +1,34 @@
 {
   "characters": [
     {
+      "symbol": "rahb_capitol_city",
+      "display_name": "Observation Team Supervisor--Rahb",
+      "description": [
+        "This is Rahb, the Observation Team Supervisor who will be assisting you in this office."
+      ]
+    },
+    {
+      "symbol": "deputy_minister_of_health_capitol_city",
+      "display_name": "Deputy Minister of Health",
+      "description": [
+        "You recognize this person as the Deputy Minister of Health, a very important partner for you in this process."
+      ]
+    },
+    {
+      "symbol": "finance_minister_capitol_city",
+      "display_name": "Finance Minister",
+      "description": [
+        "This is the Finance Minister, who has been brought in today to explain the financial situation in Zariba as it relates to the health sector."
+      ]
+    },
+    {
+      "symbol": "regional_director_of_health_services_capitol_city",
+      "display_name": "Regional Director of Health Services",
+      "description": [
+        "This is the Director of Regional Health Services for the Highlands region of Zariba. As you understand, this person works under the Deputy Minister and is probably the most knowledgeable person here when it comes to healthcare in the Highlands."
+      ]
+    },
+    {
       "symbol": "capitol_city_traveler_malcom",
       "display_name": "Traveler from the Capitol City",
       "description": [
@@ -1994,9 +2022,133 @@
       "indicator_1": 0,
       "indicator_2": 0,
       "indicator_3": 2
+    },
+    "unlockable_provide_funding_to_hire_new_staff_t2": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "unlockable_increase_incentives_for_meeting_campaign_goals_t2": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "unlockable_reevaluate_whether_this_campaign_is_necessary_t2": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "unlockable_change_methodologies_t1": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "unlockable_end_campaign_t2": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "unlockable_revise_language_in_campaign_t2": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "unlockable_halt_campaign_t2": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "unlockable_request_meeting_with_candidate_t2": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
     }
   },
   "phase_one": {
+    "capitol": [
+      {
+        "symbol": "dialogue_deputy_minister_of_health_capitol_city",
+        "character": "deputy_minister_of_health_capitol_city",
+        "dialogue": {
+          "Initial": {
+            "text": [
+              "Thank you again for coming all the way here. Your expertise is much appreciated. Our health system has been drastically underperforming despite our best efforts. Our mortality rates for children under five are unacceptable. \n We have identified three indicators to address to improve these numbers: Vaccinations, Facility Births, and Quality of Care. We have pushed facilities to improve on these indicators, but so far the results have been underwhelming. First and foremost, I recommend that you find a way to boost these key services and quality indicators."
+            ],
+            "unlocks": [
+              "unlockable_incentivise_providers_to_deliver_services"
+            ],
+            "unlocks_context": [
+              "The Deputy Minister of Health says facilities are not providing enough of these services. If they are incentivised to provide more, they probably will."
+            ]
+          }
+        }
+      },
+      {
+        "symbol": "dialogue_finance_minister_capitol_city",
+        "character": "finance_minister_capitol_city",
+        "dialogue": {
+          "Initial": {
+            "text": [
+              "This is the Finance Minister, who has been brought in today to explain the financial situation in Zariba as it relates to the health sector. The Finance Minister looks at you intently with a serious expression. \"We have increased the budget for healthcare in each region year after year, but results have not increased to match it. This year, we will spend more than ever before. We need to try something new. That/'s why you are here.\""
+            ]
+          }
+        }
+      },
+      {
+        "symbol": "dialogue_rahb_capitol_city",
+        "character": "rahb_capitol_city",
+        "dialogue": {
+          "Initial": {
+            "text": [
+              "This is Rahb, the Observation Team Supervisor who will be assisting you in this office. \"Welcome again to Zariba,\" Rahb says, \"I hope you've had some time to yourself in the Capitol City to get your bearings, but of course, you are here to work. You'll be [[making a plan]] that will transform our health system over the next three years, but to figure out what should be in that plan, you will need to explore the country and [[talk to people]].\""
+            ]
+          },
+          "Making a Plan": {
+            "text": [
+              "\"You can use your notebook to keep track of where you have been, what you have learned, and what options seem to make sense for your plan. Click it now and explore it. As you can see, for now, it is mostly blank. That will change.\""
+            ]
+          },
+          "Talking to People": {
+            "text": [
+              "\"In each area you visit, you will be able to talk to people just like you are talking to me, by clicking and spending options. You can only spend so much time in each city, though, so choose who you talk to wisely. I have taken the liberty of setting up a meeting with the Deputy Minister of Health, the Finance Minister, and the Regional Health Supervisor for the Highlands Region. It's starting now! Click on them to talk.\""
+            ]
+          }
+        }
+      },
+      {
+        "symbol": "dialogue_regional_director_of_health_services_capitol_city",
+        "character": "regional_director_of_health_services_capitol_city",
+        "dialogue": {
+          "Initial": {
+            "text": [
+              "The Regional Director speaks up. \"I have been trying to improve the health system in the Highlands region for a few years now, but there are [[many obstacles]].\""
+            ]
+          },
+          "Many Obstacles": {
+            "text": [
+              "\"The situation is not good, and we lag behind the rest of the country, and our neighbors,\" he says. \"More than 80% of the people in the Highlands live in extreme poverty, and cannot purchase even basic health services. There is also some [[confusion]] about what to expect at health care facilities.\""
+            ],
+            "unlocks": [
+              "unlockables_vouchers_for_services"
+            ],
+            "unlocks_context": [
+              "The Regional Director of Health Services for the Highlands says 80% of people live in extreme poverty."
+            ]
+          },
+          "Confusion": {
+            "text": [
+              "When you ask about the confusion, he nods. \"Those with little money also have little time to educate themselves on matters of health,\" he says. \"If we are going to be implementing radical changes, I'm honestly not sure how people in the rural communities of the highlands will be able to keep up.\""
+            ],
+            "unlocks": [
+              "unlockable_information_campaign_to_explain_changes_to_system"
+            ],
+            "unlocks_context": [
+              "The Regional Director claims that it will be difficult to sensitize the populace on changes, so care must be taken."
+            ]
+          }
+        }
+      }
+    ],
     "crup": [
       {
         "symbol": "dialogue_dr_maramuta_crup",
@@ -4038,7 +4190,7 @@
           ],
           "characters": {
             "dep_minister_of_health": {
-              "dialogue": "TBD (No Help)"
+              "dialogue": "Sorry, I’m kind of up to my elbows in work here, I don’t know if I have much advice to contribute to this situation."
             },
             "director_regional_health_services": {
               "dialogue": "Have you considered that there is a flaw in the business plan? If Provider 2 is straying from it so often, it might need to be reevaluated.",
@@ -4056,13 +4208,10 @@
               }
             },
             "third_party_verifier": {
-              "dialogue": "TBD (No Help)"
+              "dialogue": "I really don’t think that this is in my wheelhouse; maybe somebody else on your team would have a better idea?"
             },
             "community_verifier": {
-              "dialogue": "TBD (No Help)"
-            },
-            "clinic_manager": {
-              "dialogue": "TBD (No Help)"
+              "dialogue": "Wow, uh, I’m not really sure what I would do in your shoes. That might be in somebody else’s job description, though."
             },
             "hospital_administrator": {
               "dialogue": "The business plan is far too restrictive! You need to give us all more latitude in how we spend the funds you give us.",
@@ -5266,7 +5415,10 @@
               ]
             },
             "coach": {
-              "dialogue": "It's always handy to have something written down for people to look at."
+              "dialogue": "It's always handy to have something written down for people to look at.",
+              "feedback": {
+                "stakeholder_meeting": "I'll talk to everyone and make sure they understand what we tried to get across about proper roles.\"\""
+              }
             },
             "third_party_verifier": {
               "dialogue": "It would be good to deal with this before the different agencies start getting testy with each other."
@@ -8434,6 +8586,40 @@
         }
       },
       {
+        "symbol": "poor_campaign_coverage",
+        "tactic_name": "unlockable_information_campaign_to_change_cultural_behaviors",
+        "name": "Poor Campaign Coverage",
+        "year": 1,
+        "initiating_dialogue": "This campaign is having difficulty covering all of the target regions. Providers say they don't have the staff to support it and perform necessary healthcare functions.",
+        "investigate_dialogue": "They do appear short-staffed. Providing funding for new hires could help, or we could reorganize our sensitization strategy.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_provide_funding_to_hire_new_staff_t2",
+          "unlockable_increase_incentives_for_meeting_campaign_goals_t2",
+          "unlockable_reevaluate_whether_this_campaign_is_necessary_t2"
+        ],
+        "new_options_affects": [
+          "unlockable_provide_funding_to_hire_new_staff_t2",
+          "unlockable_increase_incentives_for_meeting_campaign_goals_t2",
+          "unlockable_reevaluate_whether_this_campaign_is_necessary_t2"
+        ],
+        "feedback_dialogue": {
+          "unlockable_provide_funding_to_hire_new_staff_t2": "Everywhere I've worked we were short-staffed and were told to make do. We're telling people to do a job and giving them the money to do it. We are in uncharted territory!",
+          "unlockable_increase_incentives_for_meeting_campaign_goals_t2": "This could certainly spur people to meet goals. I'm worried, though, that they're spread thin already.",
+          "unlockable_reevaluate_whether_this_campaign_is_necessary_t2": "We might not need to spend all the money for this staff, but if not, we should probably cut the plan at year's end.",
+          "observe": "If we don't engage it'll probably just fizzle out."
+        }
+      },
+      {
         "symbol": "tactic_poor_voucher_usage",
         "tactic_name": "unlockable_vouchers_for_services",
         "name": "Poor Voucher Usage",
@@ -8497,6 +8683,37 @@
           "unlockable_warning_t1": "I'll issue the warning and let the fundholder know that payments should be withheld for the false cases.",
           "unlockable_sanctions_t1": "We'll levy sanctions, then. My analysis suggests they can afford to pay the penalty.",
           "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "inconclusive_metrics",
+        "tactic_name": "unlockable_information_campaign_to_change_cultural_behaviors",
+        "name": "Inconclusive Metrics",
+        "year": 2,
+        "initiating_dialogue": "This campaign doesn't appear to be having the effect we'd hoped for. It's not causing any harm but we also can't prove it is helping.",
+        "investigate_dialogue": "We could re-consider our methodology, both in how we practice this campaign, and how we evaluate it. But it might be best to just end it now.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_change_methodologies_t1",
+          "unlockable_end_campaign_t2"
+        ],
+        "new_options_affects": [
+          "unlockable_change_methodologies_t1",
+          "unlockable_end_campaign_t2"
+        ],
+        "feedback_dialogue": {
+          "unlockable_change_methodologies_t1": "I'll see to this. Although I'm still not convinced it will have any effect, at least we can say we did everything we could to get this to work!",
+          "unlockable_end_campaign_t2": "We can talk again at the end of the year and decide if this is worth the expenditure.",
+          "observe": "If we don't engage it'll probably just fizzle out."
         }
       },
       {
@@ -8570,6 +8787,45 @@
           "unlockable_sanctions_t2": "This warrants a strong response. If it continues, we might need to go further and look for other providers in the area.",
           "unlockable_modify_business_plan_t1": "We can set new targets for the Voucher program.",
           "observe": "OK, we'll wait and see if anything changes."
+        }
+      },
+      {
+        "symbol": "nationalist_backlash",
+        "tactic_name": "unlockable_information_campaign_to_change_cultural_behaviors",
+        "name": "Nationalist Backlash",
+        "year": 3,
+        "initiating_dialogue": "There has been some backlash about this campaign from a nationalist element in Zariba. They're using the word \"imperialism.\" It's not good.",
+        "investigate_dialogue": "Some people want the campaign to be revised for cultural sensitivity, while others want it halted altogether. It's a minority that is opposed to this, but very vocal. I wonder what has them so upset after more than two years?",
+        "investigate_further_dialogue": "This seems tied to the election. The conservative candidate for governor is stirring the pot against foreign influences, including us! We could speak with him directly, perhaps.",
+        "investigate_cooldown": [
+          5,
+          5,
+          10
+        ],
+        "investigate_further_cooldown": [
+          10,
+          15,
+          20
+        ],
+        "new_options": [
+          "unlockable_revise_language_in_campaign_t2",
+          "unlockable_halt_campaign_t2"
+        ],
+        "new_options_affects": [
+          "unlockable_revise_language_in_campaign_t2",
+          "unlockable_halt_campaign_t2"
+        ],
+        "further_options": [
+          "unlockable_request_meeting_with_candidate_t2"
+        ],
+        "further_options_affects": [
+          "unlockable_request_meeting_with_candidate_t2"
+        ],
+        "feedback_dialogue": {
+          "unlockable_revise_language_in_campaign_t2": "We could write some copy about how our language is inflammatory, but if you have actual inflammation, real medicine helps! No? Okay, I'll tone down the copy.",
+          "unlockable_halt_campaign_t2": "It's not going to raise awareness to stop advertising. Some nationalist politician is jeopardizing public health to gain traction.",
+          "unlockable_request_meeting_with_candidate_t2": "I admire you wanting to sit down with this politico. I think it'll frustrate you to no end, but I respect you for it.",
+          "observe": "If we don't engage it'll probably just fizzle out."
         }
       },
       {
@@ -9112,51 +9368,6 @@
         }
       },
       {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 1,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don't know why at this point, but we're not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": [
-          "information_campaign",
-          "transportation_vouchers",
-          "increase_budget"
-        ],
-        "new_options_affects": [
-          "information_campaign",
-          "transportation_vouchers",
-          "increase_budget"
-        ],
-        "further_options": [
-          "something_1",
-          "something_2",
-          "something_3"
-        ],
-        "further_options_affects": [
-          "information_campaign",
-          "transportation_vouchers",
-          "increase_budget"
-        ],
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
         "symbol": "tactic_complaints",
         "tactic_name": "unlockable_improve_patient_and_provider_relationship_not_selected",
         "name": "Complaints",
@@ -9188,51 +9399,6 @@
         }
       },
       {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 2,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don't know why at this point, but we're not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": [
-          "information_campaign",
-          "transportation_vouchers",
-          "increase_budget"
-        ],
-        "new_options_affects": [
-          "information_campaign",
-          "transportation_vouchers",
-          "increase_budget"
-        ],
-        "further_options": [
-          "something_1",
-          "something_2",
-          "something_3"
-        ],
-        "further_options_affects": [
-          "information_campaign",
-          "transportation_vouchers",
-          "increase_budget"
-        ],
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
         "symbol": "tactic_poor_surveys",
         "tactic_name": "unlockable_improve_patient_and_provider_relationship_not_selected",
         "name": "Poor Surveys",
@@ -9260,51 +9426,6 @@
         "feedback_dialogue": {
           "unlockable_directly_incensitive_service_better": "Patients can be really demanding, but if you get paid for making them happy, that should prioritize that for them.",
           "unlockable_sensitization_campaign": "I'm thinking, for effectiveness' sake, we shouldn't just tell doctors to not be jerks. But sometimes they could stand to hear just that.",
-          "observe": "OK, we'll wait and see if anything changes."
-        }
-      },
-      {
-        "symbol": "tactic_card_1",
-        "tactic_name": "unlockable_more_autonomy",
-        "name": "Tactic card name",
-        "year": 3,
-        "initiating_dialogue": "The manager of the voucher agency is concerned. We don't know why at this point, but we're not hitting our targets for voucher use. Do you want me to investigate this? Or shall we just observe for now?",
-        "investigate_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_further_dialogue": "It's possible that people don't want the services for some reason. A more targeted information campaign could be of use. It also seems that people are having difficulty getting to hospitals. Here are our recommendations:",
-        "investigate_cooldown": [
-          5,
-          5,
-          10
-        ],
-        "investigate_further_cooldown": [
-          10,
-          15,
-          20
-        ],
-        "new_options": [
-          "information_campaign",
-          "transportation_vouchers",
-          "increase_budget"
-        ],
-        "new_options_affects": [
-          "information_campaign",
-          "transportation_vouchers",
-          "increase_budget"
-        ],
-        "further_options": [
-          "something_1",
-          "something_2",
-          "something_3"
-        ],
-        "further_options_affects": [
-          "information_campaign",
-          "transportation_vouchers",
-          "increase_budget"
-        ],
-        "feedback_dialogue": {
-          "transportation_vouchers": "That's simple enough to do. Hopefully that solves it.",
-          "information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
-          "increase_budget": "I will make the arrangements. Hopefully there are enough nurses available to fill the new positions...",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
@@ -9414,7 +9535,7 @@
       {
         "symbol": "tactic_TBD",
         "tactic_name": "unlockable_make_aesthetic_improvements",
-        "name": "TBD",
+        "name": "Aesthetic Improvements",
         "year": 3,
         "initiating_dialogue": "Providers are complaining that the aesthetic improvements were a waste of time and money, and are asking that we not require them to complete the renovations.",
         "investigate_dialogue": "It seems that most customers were pretty happy with the facilities as they were before. I don't think they will have too much of an impact. I'm not sure how this will effect staff morale, though.",
@@ -9430,16 +9551,12 @@
           20
         ],
         "new_options": [
-          "unlockable_grant_permission"
+          "unlockable_grant_permission",
+          "unlockable_continue_with_plan_aesthetic"
         ],
         "new_options_affects": [
-          "unlockable_grant_permission"
-        ],
-        "further_options": [
-          "unlockable_grant_permission"
-        ],
-        "further_options_affects": [
-          "unlockable_grant_permission"
+          "unlockable_grant_permission",
+          "unlockable_continue_with_plan_aesthetic"
         ],
         "feedback_dialogue": {
           "unlockable_continue_with_plan_aesthetic": "I'll tell them to follow the plan as it was designed.",
@@ -9895,7 +10012,7 @@
       "symbol": "unlockable_make_aesthetic_improvements",
       "title": "Make Aesthetic Improvements",
       "description": [
-        "If the facilities look uncleanunsafe, or just unattractive, patients will stay away. Improvements could include proper maintenance, renovations, paint, new uniforms for staff, or other upgrades."
+        "If the facilities look unclean, unsafe, or just unattractive, patients will stay away. Improvements could include proper maintenance, renovations, paint, new uniforms for staff, or other upgrades."
       ],
       "priority": -1,
       "type": "behavior_knowledge_and_professionalism"
@@ -9916,15 +10033,6 @@
         "This would provide vouchers to poor people so they can receive necessary services at a greatly reduces price."
       ],
       "priority": 2,
-      "type": "demand_side_resource_allocation"
-    },
-    {
-      "symbol": "unlockable_travel_reimbursement",
-      "title": "Travel Reimbursement",
-      "description": [
-        "If patients cannot afford to travel to facilities, they cannot use services there. A voucher program for travel could help offset this cost."
-      ],
-      "priority": 0,
       "type": "demand_side_resource_allocation"
     },
     {
@@ -9982,7 +10090,7 @@
     },
     {
       "symbol": "clarify_separation_of_functions_1",
-      "title": "Clarify the seperation of functions and responsibilities"
+      "title": "Clarify the separation of functions and responsibilities"
     },
     {
       "symbol": "hold_payment_1",
@@ -10026,7 +10134,7 @@
     },
     {
       "symbol": "revise_business_plan_1",
-      "title": "Revise the buisness plan"
+      "title": "Revise the business plan"
     },
     {
       "symbol": "warning_3",
@@ -10090,7 +10198,7 @@
     },
     {
       "symbol": "revise_business_plan_2",
-      "title": "Revise buisness plan"
+      "title": "Revise business plan"
     },
     {
       "symbol": "review_the_inspection",
@@ -10114,7 +10222,7 @@
     },
     {
       "symbol": "award_bonuses_to_hospital_staff",
-      "title": "Award bonsues to hospital staff"
+      "title": "Award bonuses to hospital staff"
     },
     {
       "symbol": "decrease_incentives",
@@ -10154,7 +10262,7 @@
     },
     {
       "symbol": "expand_travelling_nurses_1",
-      "title": "Expand Travelling Nurses' Program"
+      "title": "Expand Traveling Nurses' Program"
     },
     {
       "symbol": "placeholder_option_1",
@@ -10166,7 +10274,7 @@
     },
     {
       "symbol": "expand_travelling_nurses_2",
-      "title": "Expand Travelling Nurses' Program"
+      "title": "Expand Traveling Nurses' Program"
     },
     {
       "symbol": "revise_indicators_at_end_of_year_3",
@@ -10450,7 +10558,7 @@
     },
     {
       "symbol": "expidite_payment_and_service_delivery",
-      "title": "Expidite payment and service delivery"
+      "title": "Expedite payment and service delivery"
     },
     {
       "symbol": "hold_stakeholder_meeting_3",
@@ -10514,7 +10622,7 @@
     },
     {
       "symbol": "reaffirm_ministry_authority",
-      "title": "Reaffirm Ministiry's Authority"
+      "title": "Reaffirm Ministry's Authority"
     },
     {
       "symbol": "ask_reduce_oversight",
@@ -11066,7 +11174,7 @@
     },
     {
       "symbol": "unlockable_directly_incensitive_service_improve",
-      "title": "Directly Incensitive Improved Service"
+      "title": "Directly Incentivise Improved Service"
     },
     {
       "symbol": "unlockable_increase_incentives_service_deliveries",
@@ -11074,7 +11182,7 @@
     },
     {
       "symbol": "unlockable_directly_incensitive_service_better",
-      "title": "Directly Incensitive Better Service"
+      "title": "Directly Incentivise Better Service"
     },
     {
       "symbol": "unlockable_sensitization_campaign",
@@ -11154,7 +11262,7 @@
     },
     {
       "symbol": "unlockable_increase_incentives_for_meeting_campaign_goals",
-      "title": "Increase Insentives for Meeting Campaign Goals"
+      "title": "Increase Incentivise for Meeting Campaign Goals"
     },
     {
       "symbol": "unlockable_reevaluate_whether_this_campaign_is_necessary",
@@ -11210,7 +11318,7 @@
     },
     {
       "symbol": "unlockable_limit_perscriptions",
-      "title": "Limit Perscriptions"
+      "title": "Limit Prescriptions"
     },
     {
       "symbol": "unlockable_incentivise_following_set_protocols",
@@ -11222,7 +11330,7 @@
     },
     {
       "symbol": "unlockable_create_robust_referral_system",
-      "title": "Create Robust Refferal System"
+      "title": "Create Robust Referral System"
     },
     {
       "symbol": "unlockable_incentivise_following_set_protocols_rewards",
@@ -11230,11 +11338,11 @@
     },
     {
       "symbol": "unlockable_incentivise_referrals",
-      "title": "Incentivise Refferals"
+      "title": "Incentivise Referrals"
     },
     {
       "symbol": "unlockable_incentivise_sanitization_protocols",
-      "title": "Incentivise Sanitization Protocols"
+      "title": "Incentivise Sanitation Protocols"
     },
     {
       "symbol": "unlockable_incentivise_best_practices",
@@ -11270,7 +11378,39 @@
     },
     {
       "symbol": "unlockable_sanction_providers_who_fail_safety_inspection",
-      "title": "Sanctoin Providers Who Fail Safety Inspections"
+      "title": "Sanction Providers Who Fail Safety Inspections"
+    },
+    {
+      "symbol": "unlockable_provide_funding_to_hire_new_staff_t2",
+      "title": "Provide Funding to Hire New Staff"
+    },
+    {
+      "symbol": "unlockable_increase_incentives_for_meeting_campaign_goals_t2",
+      "title": "Increase Incentives for Meeting Campaign Goals"
+    },
+    {
+      "symbol": "unlockable_reevaluate_whether_this_campaign_is_necessary_t2",
+      "title": "Re-evaluate Whether This Campaign is Necessary"
+    },
+    {
+      "symbol": "unlockable_change_methodologies_t1",
+      "title": "Change Methodologies"
+    },
+    {
+      "symbol": "unlockable_end_campaign_t2",
+      "title": "End Campaign"
+    },
+    {
+      "symbol": "unlockable_revise_language_in_campaign_t2",
+      "title": "Revise Language in Campaign"
+    },
+    {
+      "symbol": "unlockable_halt_campaign_t2",
+      "title": "Halt Campaign"
+    },
+    {
+      "symbol": "unlockable_request_meeting_with_candidate_t2",
+      "title": "Request a Meeting With the Candidate"
     }
   ]
 }

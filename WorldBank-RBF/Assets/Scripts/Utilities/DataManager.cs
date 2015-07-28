@@ -261,6 +261,8 @@ public class DataManager {
     /// <returns>An array of Models.Unlockable.</returns>
     public static Models.Unlockable[] GetUnlockablesWithPrefix (string prefix) {
         
+        Debug.Log(gameData.unlockables);
+
         try {
             if (prefix == "") {
                 // not a great way of handling this - tactics should have a prefix like route and dialogue unlockables
@@ -269,7 +271,7 @@ public class DataManager {
                 return Array.FindAll (gameData.unlockables, x => x.symbol.StartsWith ("unlockable_" + prefix + "_"));
             }
         } catch {
-            throw new Exception ("Could not load unlockables");
+            throw new Exception ("Could not load unlockables with prefix of '" + prefix + "'");
         }
 
     }
