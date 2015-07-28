@@ -1,4 +1,4 @@
-﻿/*
+/*
 World Bank RBF
 Created by Engagement Lab, 2015
 ==============
@@ -173,7 +173,7 @@ public class DialogManager : MonoBehaviour {
 	    scenarioDialog.Data = scenario;
 
 	    scenarioDialog.transform.SetAsFirstSibling();
-	    
+
 	    return scenarioDialog;
 
 	}
@@ -285,8 +285,8 @@ public class DialogManager : MonoBehaviour {
 			}
 
 		}
-
-		string strToDisplay = strDialogTxt.Replace("[[", "<color=orange>").Replace("]]", "</color>");
+ 		
+ 		string strToDisplay = strDialogTxt;
 
 		/*
 		currentDialogueText = new List<string>();
@@ -305,19 +305,43 @@ public class DialogManager : MonoBehaviour {
 		{
 			currentDialogueChoices = new Dictionary<string, string>();
 
+			currentDialogueUnlockables = currNpc.dialogue
+												.Where(kvp => kvp.Key.StartsWith("unlockable_dialogue_"))
+												.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
 			foreach(Match m in keyMatches) {
 			    if (m.Success)
 				{
 			        string strKeyword = m.Groups[3].ToString();
+			        string strKeywordTitle = textInfo.ToTitleCase(m.Groups[3].ToString());
 
-			        currentDialogueChoices.Add(textInfo.ToTitleCase(strKeyword), textInfo.ToTitleCase(strKeyword));
+			        // This is kind of a mess but it's currently how I am deciding which dialogue option to highlight, based on if something is unlocked (or not unlockable) 
+			       	IEnumerable<KeyValuePair<string, Models.Dialogue>> unlockLookup = currentDialogueUnlockables
+																				      .Where(diag => diag.Value.display_name == strKeywordTitle);
+			       	string unlockableKey = null;
+
+			       	// This key is unlockable dialogue?
+			       	if(unlockLookup.Any())
+			       		unlockableKey = unlockLookup.Select(diag => diag.Key).First(); 
+
+			       	// Highlight options that are unlocked or not an unlockable
+			       	if((unlockableKey != null && PlayerData.DialogueGroup.IsUnlocked(unlockableKey)) || unlockableKey == null) {
+						
+						strToDisplay = strToDisplay.Replace("[[" + strKeyword + "]]", "<color=orange>" + strKeyword + "</color>");
+	
+						if(unlockableKey == null)
+							currentDialogueChoices.Add(strKeywordTitle, strKeywordTitle);
+						else
+							currentDialogueChoices.Add(unlockableKey, strKeywordTitle);
+
+				    }
+				    // Remove brackets but do not highlight keyword
+				    else
+					    strToDisplay = strToDisplay.Replace("[[" + strKeyword + "]]", strKeyword);
 				}
 			}
 
-			currentDialogueUnlockables = currNpc.dialogue
-														.Where(kvp => kvp.Key.StartsWith("unlockable_dialogue_"))
-														.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
+			// Add dialogue options not in text
 			foreach(KeyValuePair<string, Models.Dialogue> dialogue in currentDialogueUnlockables)
 			{
 				if(PlayerData.DialogueGroup.IsUnlocked(dialogue.Key))
@@ -325,11 +349,11 @@ public class DialogManager : MonoBehaviour {
 			}
 		}
 
-
 		List<GenericButton> btnList = new List<GenericButton>();
 
 		foreach(KeyValuePair<string, string> choice in currentDialogueChoices) {
 
+			string choiceKey = choice.Key;
 			string choiceName = choice.Value;
 
 			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
@@ -339,7 +363,7 @@ public class DialogManager : MonoBehaviour {
 
 			KeyValuePair<string, string> choiceRef = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
 			btnChoice.Button.onClick.AddListener (() => currentDialogueChoices.Remove(choiceRef.Key));
-			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceName, false, left));
+			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceKey, false, left));
 
 			btnList.Add(btnChoice);
 		}

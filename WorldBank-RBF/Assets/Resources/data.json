@@ -3041,8 +3041,8 @@
   "phase_two": {
     "scenario_1": {
       "path_config": {
-        "prompt_year_1": "do you want to do something?",
-        "prompt_year_2": "do you want to do something?",
+        "prompt_year_1": "Thank you for joining us for the end of year meeting. It seems like your plan implementation is going smoothly, yes? That said, we would like to know if you need anything approved through us to make the plan run more efficiently.",
+        "prompt_year_2": "You've made it to the end of year two. I hope you are checking your indicators and making sure the RBF plan is running smoothly. Is there anything you need from us?",
         "choices": [
           {
             "text": "Fire Clinic",
@@ -3061,7 +3061,7 @@
           "priority": 1,
           "year": 1,
           "initiating_npc": "hospital_administrator",
-          "initiating_dialogue": "Problem 1",
+          "initiating_dialogue": "The ministry has asked us to send copies of all our reports to them for verification. I thought that was supposed to stop that and send only to the third party verifier? I guess I'm still a little confused.",
           "starting_options": [
             "comply_with_ministry_1"
           ],
@@ -3143,7 +3143,7 @@
           "priority": 2,
           "year": 1,
           "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "Problem 2",
+          "initiating_dialogue": "The Clinic submitted their reports to us, but there were some inconsistencies. When we asked to see their records, they could not supply them.",
           "starting_options": [
             "hold_payment_1"
           ],
@@ -3223,7 +3223,7 @@
           "priority": 3,
           "year": 1,
           "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "Problem 3",
+          "initiating_dialogue": "The clinic submitted their reports to us, but there were some inconsistencies. When we asked to see their records, they could not supply them.",
           "starting_options": [
             "warning_and_retraining_1",
             "terminate_contract_effective_end_of_year_1"
@@ -3283,7 +3283,7 @@
           "priority": 4,
           "year": 1,
           "initiating_npc": "coach",
-          "initiating_dialogue": "Scenario 1 Year 1 Base Problem 4",
+          "initiating_dialogue": "I requested a meeting with the Clinic Manager recently to go over their record-keeping practices, but it keeps getting rescheduled and canceled. I can't get a firm commitment from them. It is a little suspicious, frankly.",
           "starting_options": [
             "warning_1"
           ],
@@ -6460,7 +6460,7 @@
           "priority": 3,
           "year": 1,
           "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "The Clinic submitted their reports to us, but there were some inconsistancies. When we asked to see their records, they couldn't supply them.",
+          "initiating_dialogue": "The Clinic submitted their reports to us, but there were some inconsistencies. When we asked to see their records, they couldn't supply them.",
           "starting_options": [
             "hold_payment_2"
           ],
@@ -6488,10 +6488,13 @@
               ]
             },
             "director_regional_health_services": {
-              "dialogue": "We need the authority to verify things as we have always done in the past. It seems unethical to OK payments that we haven't verified.",
+              "dialogue": "All providers in my region know the requirements for keeping records. Something must be wrong. I'd talk to them.",
               "narrows": [
-                "clinic_manager",
-                "hospital_administrator"
+                "dep_minister_of_health",
+                "director_regional_health_services",
+                "coach",
+                "third_party_verifier",
+                "community_verifier"
               ]
             },
             "coach": {
@@ -6529,7 +6532,7 @@
           "priority": 4,
           "year": 1,
           "initiating_npc": "community_verifier",
-          "initiating_dialogue": "Community Verifier",
+          "initiating_dialogue": "Bad news: We're running surveys of patients from the hospitals and local clinics, and at every focus group, someone reports being turned away without services.",
           "starting_options": [
             "warn_providers"
           ],
@@ -6567,11 +6570,26 @@
                 "increase_supply_budget": "We've increased the budget every year and that hasn't solved the problem yet. That isn't to say our health care providers are the problem, only that it might not be budgetary."
               }
             },
+            "coach": {
+              "dialogue": "I'm not sure why, but these facilities are always low on supplies. Maybe they just need more money.",
+              "unlocks": [
+                "increase_supply_budget"
+              ],
+              "unlocks_affects": [
+                "increase_supply_budget"
+              ]
+            },
+            "third_party_verifier": {
+              "dialogue": "The numbers are poor, but at least the facilities are being honest about it."
+            },
             "clinic_manager": {
               "dialogue": "I've spoken to the RBF coach about this a number of times. If we don't have basic supplies, we cannot treat patients.",
               "narrows": [
-                "coach",
-                "hospital_administrator"
+                "dep_minister_of_health",
+                "director_regional_health_services",
+                "clinic_manager",
+                "third_party_verifier",
+                "community_verifier"
               ],
               "feedback": {
                 "unlocks_sanction_providers": "You can't seriously be asking us to do more with even less. It costs money to provide quality care."
@@ -6788,8 +6806,8 @@
           }
         },
         {
-          "symbol": "government_overreach_on_verification",
-          "name": "Government overreach on verification",
+          "symbol": "midwives",
+          "name": "Midwives",
           "priority": 4,
           "year": 2,
           "initiating_npc": "hospital_administrator",
@@ -6814,8 +6832,11 @@
             "dep_minister_of_health": {
               "dialogue": "If you can verify this, we'd be willing to discuss the budget.",
               "narrows": [
-                "community_verifier",
-                "coach"
+                "dep_minister_of_health",
+                "director_regional_health_services",
+                "third_party_verifier",
+                "clinic_manager",
+                "hospital_administrator"
               ],
               "feedback": {
                 "grant_providers_autonomy_to_hire_staff": "This is a significant change to the plan. Let's discuss this at the end of the year once we see how it's panned out.",
@@ -6840,8 +6861,11 @@
             "third_party_verifier": {
               "dialogue": "You should talk to the Clinic Manager: they're working under similar conditions and should have insight. Run it by your RBF Coach, too.",
               "narrows": [
-                "clinic_manager",
-                "coach"
+                "dep_minister_of_health",
+                "director_regional_health_services",
+                "third_party_verifier",
+                "community_verifier",
+                "hospital_administrator"
               ]
             },
             "community_verifier": {
@@ -6885,8 +6909,11 @@
             "dep_minister_of_health": {
               "dialogue": "Our monitors have found mismanagement of funds. Hospitals should provide the necessary services with what we give them to work with. ",
               "narrows": [
-                "third_party_verifier",
-                "clinic_manager"
+                "dep_minister_of_health",
+                "director_regional_health_services",
+                "coach",
+                "community_verifier",
+                "hospital_administrator"
               ],
               "feedback": {
                 "grant_autonomy_to_providers": "Hiring and firing is within the scope of regulation, which is my role. But if you think it's essential, we'll step back."
@@ -6904,8 +6931,11 @@
             "coach": {
               "dialogue": "We've been running into this problem for three years now. The only way I see this working in the future is cutting the Ministry out of the picture and letting providers hire staff.",
               "narrows": [
-                "clinic_manager",
-                "director_regional_health_services"
+                "dep_minister_of_health",
+                "coach",
+                "third_party_verifier",
+                "community_verifier",
+                "hospital_administrator"
               ]
             },
             "third_party_verifier": {
@@ -6995,8 +7025,8 @@
           }
         },
         {
-          "symbol": "perscriptions",
-          "name": "Perscriptions",
+          "symbol": "prescriptions",
+          "name": "Prescriptions",
           "priority": 3,
           "year": 3,
           "initiating_npc": "community_verifier",
@@ -9715,6 +9745,12 @@
     },
     {
       "symbol": "unlockable_dialogue_clinician"
+    },
+    {
+      "symbol": "unlockable_dialogue_plantation_owner"
+    },
+    {
+      "symbol": "unlockable_dialogue_mr_todd_2"
     },
     {
       "symbol": "unlockable_route_malcom_to_kibari",
