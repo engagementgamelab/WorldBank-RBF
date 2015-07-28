@@ -24,6 +24,7 @@ public class ScenarioManager : MonoBehaviour {
 	public ScenarioYearEndDialog yearEndPanel;
 	public RectTransform scenarioEndPanel;
 	public RectTransform tacticCardsTooltip;
+	public RectTransform tacticCardsParent;
 
 	public Animator cameraAnimator;
 	public CoverFlow coverFlowHelper;
@@ -258,7 +259,8 @@ public class ScenarioManager : MonoBehaviour {
 
 	public void ShowTacticsCards() {
 
-		cameraAnimator.Play("TacticsCameraEnter");
+		// cameraAnimator.Play("TacticsCameraEnter");
+		tacticCardsParent.gameObject.SetActive(!tacticCardsParent.gameObject.activeSelf);
 
 	}
 
