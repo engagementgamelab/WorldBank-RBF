@@ -151,6 +151,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 				btnChoice.Button.onClick.AddListener (() => OptionSelected(option));
 
 			btnListOptions.Add(btnChoice);
+			
 		}
 
 		AddButtons<ScenarioChoiceButton>(btnListOptions, false, choicesGroup);

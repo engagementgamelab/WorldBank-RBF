@@ -10,7 +10,7 @@
 # ==============
 
 EXTERNAL_ASSET_DIR=$2"/Content/Art"
-UNITY_ASSET_DIR=$2"WorldBank-RBF/Assets/Textures"
+UNITY_ASSET_DIR=$2"/WorldBank-RBF/Assets/Textures"
 
 # Clear prior log
 > automate.log;

@@ -239,8 +239,13 @@ namespace Models {
 
         public Dialogue GetDialogue(string dialogueKey)
         {
-            Dictionary<string, Dialogue> refDict = new Dictionary<string, Dialogue>(dialogue, StringComparer.OrdinalIgnoreCase);
-            return refDict[dialogueKey];
+            try {
+                Dictionary<string, Dialogue> refDict = new Dictionary<string, Dialogue>(dialogue, StringComparer.OrdinalIgnoreCase);
+                return refDict[dialogueKey];
+            }
+            catch(System.Exception e) {
+                throw new System.Exception("Dialogue key '" + dialogueKey + "' not found for dialogue file '" + symbol + "'");
+            }
         }
 
     }
