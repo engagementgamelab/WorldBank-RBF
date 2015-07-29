@@ -12,6 +12,7 @@ public class ScenarioEvent : GameEvent {
 
 	public readonly string eventType;
 	public readonly string eventSymbol;
+	public readonly int[] cooldown;
 
 	public static readonly string NEXT = "next";
 	public static readonly string PROBLEM_OPEN = "problem_open";
@@ -24,9 +25,10 @@ public class ScenarioEvent : GameEvent {
 	public static readonly string TACTIC_CLOSED = "tactic_closed";
 	public static readonly string DECISION_SELECTED = "decision_selected";
 
-	public ScenarioEvent (string strType, string strSymbol=null) {
+	public ScenarioEvent (string strType, string strSymbol=null, int[] intCooldowns=null) {
 		this.eventType = strType;
 		this.eventSymbol = strSymbol;
+		this.cooldown = intCooldowns;
 	}
 
 }

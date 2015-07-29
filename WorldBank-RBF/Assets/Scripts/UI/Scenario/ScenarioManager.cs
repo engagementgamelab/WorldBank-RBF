@@ -23,7 +23,6 @@ public class ScenarioManager : MonoBehaviour {
 
 	public ScenarioYearEndDialog yearEndPanel;
 	public RectTransform scenarioEndPanel;
-	public RectTransform tacticCardsTooltip;
 	public RectTransform tacticCardsParent;
 
 	public Animator cameraAnimator;
@@ -34,27 +33,20 @@ public class ScenarioManager : MonoBehaviour {
 
 
 	static TimerUtils.Cooldown problemCardCooldown;
-	static TimerUtils.Cooldown tacticCardCooldown;
 	static TimerUtils.Cooldown phaseCooldown;
 	
-	int[] tacticCardIntervals = new int[3] {4, 3, 3};
 	int[] currentAffectValues;
 	int[] currentAffectBias;
-	
-	List<string> tacticsAvailable;
 
 	List<string> selectedOptions = new List<string>();
 	List<int[]> usedAffects = new List<int[]>();
 
 	bool queueProblemCard;
 	bool openProblemCard;
-	bool openTacticCard;
 	bool openYearEnd;
 
 	bool inYearEnd;
 	bool indicatorUpdate;
-
-	string tacticState;
 
 	int scenarioTwistIndex;
 	int currentCardIndex;
@@ -107,13 +99,6 @@ public class ScenarioManager : MonoBehaviour {
 			GetNextCard();
 		}
 
-		// If a tactic card has been enqueued, open it
-		else if(openTacticCard)
-		{
-			openTacticCard = false;
-			OpenDialog(true);
-		}
-
 		// The current year has ended
 		else if(openYearEnd) {
 			openYearEnd = false;
@@ -128,7 +113,6 @@ public class ScenarioManager : MonoBehaviour {
 	void OnApplicationQuit() {
         
         problemCardCooldown.Stop();
-        tacticCardCooldown.Stop();
         phaseCooldown.Stop();
 
     }
@@ -174,9 +158,6 @@ public class ScenarioManager : MonoBehaviour {
 
 			// Go to next year
 			DataManager.AdvanceScenarioYear();
-			
-			// Pause tactic card cooldown
-			tacticCardCooldown.Stop();
 
 			problemCardCooldown.Stop();
 
@@ -189,7 +170,6 @@ public class ScenarioManager : MonoBehaviour {
 			yearEndPanel.gameObject.SetActive(true);
 
 			inYearEnd = true;
-			openTacticCard = false;
 			queueProblemCard = false;
 
 			// If current month is fewer than 12 (player managed to finish all problems before year end), calculate affects for all missing months
@@ -233,8 +213,7 @@ public class ScenarioManager : MonoBehaviour {
     /// <summary>
     /// Open either a scenario or tactic card dialog.
     /// </summary>
-    /// <param name="isTactic">Is this card for a tactic? (Default: false)</param>
-	public void OpenDialog(bool isTactic=false) {
+	public void OpenDialog() {
 
 		// Open Scenario, Scenario Decision, or Tactic Card?
 		if(inYearEnd) {
@@ -250,10 +229,7 @@ public class ScenarioManager : MonoBehaviour {
 
 		}
 
-		if(!isTactic)
-			OpenScenarioCard();
-		else
-			OpenTacticCard();
+		OpenScenarioCard();
 
 	}
 
@@ -320,66 +296,7 @@ public class ScenarioManager : MonoBehaviour {
 	    	
 	}
 
-    /// <summary>
-    /// Tries to open either a tactic card dialog, and if tactic card not found, restarts tactic card timer.
-    /// </summary>
-	void OpenTacticCard() {
-
-		if(tacticState == "open")
-		{
-			Models.TacticCard card = null;		
-			int tacticIndex = new System.Random().Next(0, tacticsAvailable.Count);
-
-			try {
-		
-				card = DataManager.GetTacticCardByName(tacticsAvailable[tacticIndex]);
-		
-			}
-			catch(System.Exception e) {
-				
-				Debug.LogWarning("Unable to locate a tactic card for '" + tacticsAvailable[tacticIndex] + "'. Timer restarting.", this);
-				
-				tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
-
-				return;
-
-			}
-
-		 	TacticCardDialog dialog = DialogManager.instance.CreateTacticDialog(card);
-
-			// coverFlowHelper.AddTransform(dialog.transform);
-
-			tacticsAvailable.Remove(tacticsAvailable[tacticIndex]);
-
-			if(tacticsAvailable.Count == 0)
-				tacticCardCooldown.Stop();
-			else
-				tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
-
-			tacticCardsTooltip.gameObject.SetActive(true);
-
-		}
-		else 
-		{
-			// Show tactic card
-			currentTacticCard.Enable();
-
-			currentTacticCard.GetResultOptions();
-		}
-
-		// Pause tactic card cooldown
-		// tacticCardCooldown.Pause();
-	
-	}
-
 	bool QueueProblemCard() {
-
-		return true;
-	}
-
-	bool QueueTacticCard() {
-
-		openTacticCard = true;
 
 		return true;
 	}
@@ -410,10 +327,8 @@ public class ScenarioManager : MonoBehaviour {
     void UserScenarioResponse(Dictionary<string, object> response) {
 
 		problemCardCooldown = new TimerUtils.Cooldown();
-		tacticCardCooldown = new TimerUtils.Cooldown();
 		phaseCooldown = new TimerUtils.Cooldown();
 
-		tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
 		phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END));
 
 		Debug.Log("Scenario: " + response["current_scenario"].ToString());
@@ -422,7 +337,7 @@ public class ScenarioManager : MonoBehaviour {
     	AssignScenario(response["current_scenario"].ToString());
 
     	// Set tactics that are a part of this plan
-    	tacticsAvailable = ((IEnumerable)response["tactics"]).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+    	TacticsCanvas.Available = ((IEnumerable)response["tactics"]).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
 
     	// Calc the base affect values for the plan
     	currentAffectBias = response["affects_bias"] as int[];
@@ -534,6 +449,11 @@ public class ScenarioManager : MonoBehaviour {
 
     	switch(e.eventType) {
 
+	   		case "investigate":
+	   			CalculateIndicators();
+	   			MonthEnd();
+    			break;
+
     		case "next":
 				Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(e.eventSymbol);
 
@@ -548,20 +468,6 @@ public class ScenarioManager : MonoBehaviour {
     			if(!inYearEnd)
 	    			queueProblemCard = true;
 
-    			break;
-
-    		case "tactic_open":
-    			tacticState = "open";
-				QueueTacticCard();
-				break;
-
-	   		case "tactic_results":
-    			tacticState = "options";
-				QueueTacticCard();
-    			break;
-
-	   		case "tactic_closed":
-	   			tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
     			break;
 
 	   		case "decision_selected":

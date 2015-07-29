@@ -57,7 +57,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 	}
 
-	void Initialize() {
+	public virtual void Initialize() {
 
     	// Cleanup
     	responseTextPanel.transform.DetachChildren();

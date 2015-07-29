@@ -199,16 +199,19 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	public TacticCardDialog CreateTacticDialog(Models.TacticCard tactic) {
 
-	    TacticCardDialog tacticDialog = ObjectPool.Instantiate<TacticCardDialog>();
-	    tacticDialog.data = tactic;
+	    // ;
+	    //
 
-	    tacticDialog.Content = tactic.initiating_dialogue;
+	    // tacticDialog.RemoveButtons<GenericButton>(tacticDialog.HorizontalGroup);
 
-	    tacticDialog.RemoveButtons<GenericButton>(tacticDialog.HorizontalGroup);
+		// tacticDialog.Init();
 
-		tacticDialog.Init();
+		List<GenericButton> btnList = new List<GenericButton>();
 
-	    return tacticDialog;
+		TacticCardDialog tacticDialog = ObjectPool.Instantiate<TacticCardDialog>();
+		tacticDialog.Data = tactic;
+		
+		return tacticDialog;
 
 	}
 

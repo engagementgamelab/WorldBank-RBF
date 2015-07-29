@@ -35,4 +35,25 @@ public class ScenarioQueue : MonoBehaviour {
 
 	}
 
+//////
+	static List<Models.TacticCard> tacticCards = new List<Models.TacticCard>();
+
+	public static Models.TacticCard[] Tactics {
+		get {
+			return tacticCards.ToArray();
+		}
+	}
+
+	public static void AddTacticCard(Models.TacticCard card) {
+
+		tacticCards.Add(card);
+
+	}
+
+	public static void RemoveTacticCard(Models.TacticCard card) {
+
+		if(tacticCards.Contains(card))
+			tacticCards.Remove(card);
+
+	}
 }
