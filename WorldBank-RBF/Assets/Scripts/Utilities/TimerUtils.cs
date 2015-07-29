@@ -54,7 +54,7 @@ namespace TimerUtils {
 	        aTimer.Elapsed += OnTimedEvent;
 	        aTimer.Enabled = true;
 
-			Debug.Log("Timer Started with cooldown of " + currentCooldown + "s");
+			Debug.Log("Timer Started - " + timerSymbol + " / " + currentCooldown + "s");
 
 			// Get determined cooldown
 			return currentCooldown;
@@ -76,7 +76,7 @@ namespace TimerUtils {
 
 			Debug.Log("Timer Paused");
 
-			// aTimer.Enabled = false;
+			aTimer.Enabled = false;
 
 		}
 

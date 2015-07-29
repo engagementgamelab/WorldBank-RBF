@@ -67,6 +67,8 @@ public class TacticsCanvas : MonoBehaviour {
 		// Listen for problem card cooldown tick
 		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
 
+		gameObject.SetActive(true);
+
 		canvasGroup = gameObject.GetComponent<CanvasGroup>();
 		canvasGroup.interactable = false;
 		canvasGroup.blocksRaycasts = false;
@@ -140,15 +142,19 @@ public class TacticsCanvas : MonoBehaviour {
 
 				}
 
+				AddCardButton(card, ScenarioQueue.Tactics.Length-1);
+
 				dialog = DialogManager.instance.CreateTacticDialog(card);
 			 	dialog.transform.SetParent(transform);
 			 	dialog.gameObject.SetActive(false);
 
 			 	dialog.Index = ScenarioQueue.Tactics.Length;
 
+			 	if(ScenarioQueue.Tactics.Length == 0)
+			 		HideCardButton(0);
+
 				ScenarioQueue.AddTacticCard(dialog);
 
-				AddCardButton(card, ScenarioQueue.Tactics.Length-1);
 				tacticsAvailable.Remove(tacticsAvailable[cardIndex]);
 
 			}
@@ -200,14 +206,24 @@ public class TacticsCanvas : MonoBehaviour {
 		btnChoice.transform.SetParent(buttonsPanel.transform);
 
 		btnChoice.Button.onClick.RemoveAllListeners();
-		btnChoice.Button.onClick.AddListener (() => ReplaceCard(btnChoice.transform.GetSiblingIndex(), cardIndex));
+		btnChoice.Button.onClick.AddListener (() => ReplaceCard(btnChoice.transform.GetSiblingIndex(), btnChoice.gameObject));
 
 	}
 
-	void RemoveCardButton(int cardIndex) {
+	void HideCardButton(int buttonIndex) {
+
+		buttonsPanel.transform.GetChild(buttonIndex).gameObject.SetActive(false);
+
+	}
+
+	void RemoveCard(int cardIndex) {
 
 		ObjectPool.Destroy<GenericButton>(buttonsPanel.transform.GetChild(cardIndex).transform);
 
+		ScenarioQueue.RemoveTacticCard(cardIndex);
+
+		OpenTacticCard(0, true);
+		HideCardButton(0);
 	}
 
 	bool QueueTacticCard() {
@@ -275,14 +291,14 @@ public class TacticsCanvas : MonoBehaviour {
 
 	}
 
-	public void ReplaceCard(int cardIndex, int buttonIndex) {
+	public void ReplaceCard(int cardIndex, GameObject buttonRef) {
 
 		OpenTacticCard(cardIndex, true);
 
 		foreach(Transform child in buttonsPanel.transform)
 			child.gameObject.SetActive(true);
 
-		buttonsPanel.transform.GetChild(buttonIndex).gameObject.SetActive(false);
+		buttonRef.SetActive(false);
 
 	}
 
@@ -308,7 +324,7 @@ public class TacticsCanvas : MonoBehaviour {
 	   		case "tactic_closed":
 	   			// tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
 
-	   			RemoveCardButton(System.Int32.Parse(e.eventSymbol));
+	   			RemoveCard(System.Int32.Parse(e.eventSymbol));
 
     			break;
 
