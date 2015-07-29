@@ -36,24 +36,25 @@ public class ScenarioQueue : MonoBehaviour {
 	}
 
 //////
-	static List<Models.TacticCard> tacticCards = new List<Models.TacticCard>();
+	static List<TacticCardDialog> tacticCards = new List<TacticCardDialog>();
 
-	public static Models.TacticCard[] Tactics {
+	public static TacticCardDialog[] Tactics {
 		get {
 			return tacticCards.ToArray();
 		}
 	}
 
-	public static void AddTacticCard(Models.TacticCard card) {
+	public static void AddTacticCard(TacticCardDialog card) {
 
 		tacticCards.Add(card);
 
 	}
 
-	public static void RemoveTacticCard(Models.TacticCard card) {
+	public static void RemoveTacticCard(TacticCardDialog card) {
 
 		if(tacticCards.Contains(card))
 			tacticCards.Remove(card);
 
 	}
+	
 }

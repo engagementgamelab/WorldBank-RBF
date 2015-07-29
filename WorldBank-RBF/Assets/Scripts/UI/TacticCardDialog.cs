@@ -16,6 +16,7 @@ using System.Collections.Generic;
 public class TacticCardDialog : ScenarioCardDialog {
 
 	Models.TacticCard _data;
+	int _cardIndex;
 
     /// <summary>
     /// Set the data for this card
@@ -28,6 +29,15 @@ public class TacticCardDialog : ScenarioCardDialog {
         	Initialize();
 
         }
+        get {
+        	return _data;
+        }
+    }
+
+    public int Index {
+    	set {
+    		_cardIndex = value;
+    	}
     }
 
 	public Text tooltipTxt;
@@ -38,11 +48,10 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 	string selectedOption;
 
-	bool open = false;
-	bool close = true;
-	bool finished = false;
-	bool investigateDone = false;
-	bool investigateFurther = false;
+	bool open;
+	bool finished;
+	bool investigateDone;
+	bool investigateFurther;
 
 	Transform cardContainer;
 
@@ -50,56 +59,12 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 		Content = _data.initiating_dialogue;
 		Header = _data.name;
-/*
-		GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
 
-		btnChoice.Text = "Invee"
-		btnChoice.Button.onClick.RemoveAllListeners();
-		btnChoice.Button.onClick.AddListener (() => AdvisorSelected(charRef.symbol));
-*/
-	}
-
-	public void Init() {
-
-		// if(cardContainer == null)
-		// 	cardContainer = transform.GetChild(0);
-
-		// cardContainer.localPosition = new Vector3(-Screen.width, 0, cardContainer.localPosition.z);
-
-		open = false;
-		close = true;
-
-		// Show default icon
-		// tooltipDoneImg.gameObject.SetActive(false);
-		// tooltipAlertImg.gameObject.SetActive(true);
-		
-		// Show tooltip
-		// tooltipDoneImg.transform.parent.gameObject.SetActive(true);
+		// Cleanup
+		RemoveButtons <GenericButton>(choicesGroup);
 
 	}
 
-	public void Animate(bool isFinished=false) {
-
-		// Set to close
-		if(open) {
-			close = true;
-			open = false;
-
-			finished = isFinished;
-			
-			// if(finished)
-			// 	tooltipDoneImg.transform.parent.gameObject.SetActive(false);
-		}
-		// Set to open
-		else if(close) {
-
-			open = true;
-			close = false;
-
-		}
-
-	}
-    
     public void GetResultOptions() {
 
     	investigateDone = true;
@@ -177,11 +142,11 @@ public class TacticCardDialog : ScenarioCardDialog {
 		buttonObserve.Text = "Close";
 
 		buttonObserve.Button.onClick.RemoveAllListeners();
-		buttonObserve.Button.onClick.AddListener (() => Close() );
+
 		buttonObserve.Button.onClick.AddListener (() => Events.instance.Raise(
-														new ScenarioEvent(ScenarioEvent.TACTIC_CLOSED)
-													)
-											 );
+														new ScenarioEvent(ScenarioEvent.TACTIC_CLOSED, _cardIndex.ToString())
+												 ));
+		buttonObserve.Button.onClick.AddListener (() => ObjectPool.Destroy<TacticCardDialog>(transform) );
 
 		buttonInvestigate.gameObject.SetActive(false);
 

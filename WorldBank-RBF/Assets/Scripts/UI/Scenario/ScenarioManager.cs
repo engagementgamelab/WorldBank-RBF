@@ -31,6 +31,7 @@ public class ScenarioManager : MonoBehaviour {
 	public int[] baseAffectValues;
 	public int problemCardDurationOverride = 0;
 
+	public bool enableCooldown;
 
 	static TimerUtils.Cooldown problemCardCooldown;
 	static TimerUtils.Cooldown phaseCooldown;
@@ -233,13 +234,6 @@ public class ScenarioManager : MonoBehaviour {
 
 	}
 
-	public void ShowTacticsCards() {
-
-		// cameraAnimator.Play("TacticsCameraEnter");
-		tacticCardsParent.gameObject.SetActive(!tacticCardsParent.gameObject.activeSelf);
-
-	}
-
     /// <summary>
     /// Displays a scenario card, given the current card index.
     /// </summary>
@@ -250,10 +244,12 @@ public class ScenarioManager : MonoBehaviour {
 		// Generate scenario card for the current card index, as well as if the scenario is in a twist
 		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex, scenarioTwistIndex);
 
-		problemCardCooldown.Init(
-			new int[] { (problemCardDurationOverride == 0) ? problemCardDuration : problemCardDurationOverride }, 
-			new ScenarioEvent(ScenarioEvent.PROBLEM_OPEN), "problem_card"
-		);
+		if(enableCooldown) {
+			problemCardCooldown.Init(
+				new int[] { (problemCardDurationOverride == 0) ? problemCardDuration : problemCardDurationOverride }, 
+				new ScenarioEvent(ScenarioEvent.PROBLEM_OPEN), "problem_card"
+			);
+		}
 
 		if(queueProblemCard) {
 			ScenarioQueue.AddProblemCard(card);
@@ -329,7 +325,8 @@ public class ScenarioManager : MonoBehaviour {
 		problemCardCooldown = new TimerUtils.Cooldown();
 		phaseCooldown = new TimerUtils.Cooldown();
 
-		phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END));
+		if(enableCooldown)
+			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END));
 
 		Debug.Log("Scenario: " + response["current_scenario"].ToString());
 
