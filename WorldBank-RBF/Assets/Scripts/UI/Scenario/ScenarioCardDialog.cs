@@ -95,17 +95,15 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 	void DisplayOtherCards() {
 
-		ObjectPool.DestroyChildren<NPCConferenceButton>(upcomingCardsPanel);
+		ObjectPool.DestroyChildren<PortraitTextBox>(upcomingCardsPanel);
 
 		foreach(Models.ScenarioCard card in ScenarioQueue.Problems)
 		{
-
-   			NPCConferenceButton btnChoice = ObjectPool.Instantiate<NPCConferenceButton>();
+   			PortraitTextBox btnChoice = ObjectPool.Instantiate<PortraitTextBox>();
    
    			Models.Character charRef = DataManager.GetDataForCharacter(card.initiating_npc);
 
-			btnChoice.NPCName = charRef.display_name;
-			btnChoice.Text = card.initiating_dialogue;
+			btnChoice.Text = card.name;
 
 			btnChoice.transform.SetParent(upcomingCardsPanel.transform);
 

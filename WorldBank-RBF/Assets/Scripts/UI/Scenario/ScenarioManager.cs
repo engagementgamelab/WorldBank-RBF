@@ -54,7 +54,7 @@ public class ScenarioManager : MonoBehaviour {
 
 	int scenarioTwistIndex;
 	int currentCardIndex;
-	int currentQueueIndex;
+	int currentQueueIndex = 1;
 
 	int monthsCount = 36;
 	int currentMonth = 1;
@@ -238,6 +238,9 @@ public class ScenarioManager : MonoBehaviour {
 			
 			// Next year will start at card 0
 			currentCardIndex = -1;
+
+			// Queue always starts at 1
+			currentQueueIndex = 1;
 
 			OpenScenarioDecisionCard();
 

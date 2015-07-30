@@ -285,12 +285,13 @@ public class DataManager {
     public static ScenarioCard GetScenarioCardByIndex(int cardIndex, int scenarioTwist=0) {
 
         ScenarioCard[] scenarioCards = (scenarioTwist > 0) ? currentScenario.twists : currentScenario.problems; 
-        Array.Sort(scenarioCards);
 
         // Get scenario cards only for the current phase two year
         scenarioCards = scenarioCards.Where(scenarioCard => scenarioCard.year == gameData.phase_two.Year && 
                                                             scenarioCard.twist == scenarioTwist
                                            ).ToArray();
+		
+		Array.Sort(scenarioCards);
 
         return scenarioCards[cardIndex];
 
