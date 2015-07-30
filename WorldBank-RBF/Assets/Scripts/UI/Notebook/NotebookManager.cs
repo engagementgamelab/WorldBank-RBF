@@ -61,7 +61,6 @@ public class NotebookManager : MB {
 			return (
 				(open
 				&& currentCity == DataManager.SceneContext
-				&& currentCity != "capitol" // temp
 				&& state != State.MakingPlan)
 				|| !isPhaseOne
 			);

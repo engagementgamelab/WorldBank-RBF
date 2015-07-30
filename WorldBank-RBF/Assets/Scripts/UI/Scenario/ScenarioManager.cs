@@ -20,6 +20,7 @@ public class ScenarioManager : MonoBehaviour {
 	public Text scenarioLabel;
 	public Text cardLabel;
 	public Text scenarioCardCooldownText;
+	public Text scenarioCooldownText;
 
 	public ScenarioYearEndDialog yearEndPanel;
 	public RectTransform scenarioEndPanel;
@@ -39,6 +40,8 @@ public class ScenarioManager : MonoBehaviour {
 	int[] currentAffectValues;
 	int[] currentAffectBias;
 
+	string[] monthsLabels = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct",	"Nov", "Dec" };
+
 	List<string> selectedOptions = new List<string>();
 	List<int[]> usedAffects = new List<int[]>();
 
@@ -51,12 +54,14 @@ public class ScenarioManager : MonoBehaviour {
 
 	int scenarioTwistIndex;
 	int currentCardIndex;
+	int currentQueueIndex;
 
 	int monthsCount = 36;
 	int currentMonth = 1;
 	int currentYear = 1;
 	int problemCardDuration;
 	int cardCooldownElapsed;
+	int phaseCooldownElapsed;
 
 	// seconds (each month is 25 seconds and there are 3 years)
 	public int monthLengthSeconds = 25;
@@ -83,6 +88,8 @@ public class ScenarioManager : MonoBehaviour {
 		// Listen for problem card cooldown tick
 		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
 
+		phaseCooldownElapsed = monthLengthSeconds;
+
 	}
 
 	void Update () {
@@ -108,6 +115,10 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Update card cooldown label
     	scenarioCardCooldownText.text = "Waiting for next Problem Card: " + cardCooldownElapsed + "s";
+
+    	// Update scenario cooldown label
+    	if(!inYearEnd)
+    		scenarioCooldownText.text = monthsLabels[currentMonth-1] + " - Year " + currentYear + " - " + phaseCooldownElapsed + "s";
 
 	}
 
@@ -151,23 +162,25 @@ public class ScenarioManager : MonoBehaviour {
     /// </summary>
     /// <param name="newYear">Load new year (skip year break check). Default is false.</param>
 	public void GetNextCard(bool newYear=false) {
-
-		int nextCard = currentCardIndex+1;
-
+	
+		int cardIndex = queueProblemCard ? currentQueueIndex : currentCardIndex;
+		int nextCard = currentCardIndex + 1;
+		int scenarioLength = DataManager.ScenarioLength(scenarioTwistIndex) - 1;
+ 
 		// Should we display a year break (happens at 4th and 8th card or if forced by timer)?
 		if(newYear || (nextCard > 0 && nextCard <= 8) && (nextCard % 4 == 0)) {
 
 			// Go to next year
 			DataManager.AdvanceScenarioYear();
 
+			// Stop card cooldown
 			problemCardCooldown.Stop();
 
 			// Hide all scenario problem cards
 			ObjectPool.DestroyAll<ScenarioCardDialog>();
 
-			yearEndPanel.PreviousChoices = selectedOptions;
-
 			// Show year end panel
+			yearEndPanel.PreviousChoices = selectedOptions;
 			yearEndPanel.gameObject.SetActive(true);
 
 			inYearEnd = true;
@@ -185,26 +198,26 @@ public class ScenarioManager : MonoBehaviour {
 
 			currentMonth = 1;
 
+			// Update timer text
+    		scenarioCooldownText.text = "Break - Year " + currentYear;
+
 			return;
 			
 		}
 
 		// Load next card
-		if(DataManager.ScenarioLength(scenarioTwistIndex)-1 > currentCardIndex) {
-			
+		if(scenarioLength > cardIndex) {
+
 			// Hide year end panel
 			yearEndPanel.gameObject.SetActive(false);
 
-			if(!queueProblemCard)
-				currentCardIndex++;
+			cardIndex = queueProblemCard ? currentQueueIndex++ : currentCardIndex++;	
 
-			OpenDialog();
+			OpenScenarioCard(cardIndex);
 
 		}
 		// Show end of scenario
 		else {
-
-			// ObjectPool.Destroy<ScenarioCardDialog>(currentScenarioCard.transform);
 
 			// Show scenario end panel
 			scenarioEndPanel.gameObject.SetActive(true);
@@ -214,11 +227,11 @@ public class ScenarioManager : MonoBehaviour {
 	}
 
     /// <summary>
-    /// Open either a scenario or tactic card dialog.
+    /// Open either a scenario problem or decision dialog.
     /// </summary>
 	public void OpenDialog() {
 
-		// Open Scenario, Scenario Decision, or Tactic Card?
+		// Open Scenario Problem or Scenario Decision?
 		if(inYearEnd) {
 			
 			inYearEnd = false;
@@ -232,19 +245,19 @@ public class ScenarioManager : MonoBehaviour {
 
 		}
 
-		OpenScenarioCard();
+		OpenScenarioCard(currentCardIndex);
 
 	}
 
     /// <summary>
     /// Displays a scenario card, given the current card index.
     /// </summary>
-	void OpenScenarioCard() {
+	void OpenScenarioCard(int cardIndex) {
 
-		Debug.Log("open scenario card with index " + currentCardIndex);
+		Debug.Log("open scenario card with index " + cardIndex);
 
 		// Generate scenario card for the current card index, as well as if the scenario is in a twist
-		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(currentCardIndex, scenarioTwistIndex);
+		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(cardIndex, scenarioTwistIndex);
 
 		if(enableCooldown) {
 			problemCardCooldown.Init(
@@ -328,7 +341,7 @@ public class ScenarioManager : MonoBehaviour {
 		phaseCooldown = new TimerUtils.Cooldown();
 
 		if(enableCooldown)
-			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END));
+			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END), "phase_cooldown");
 
 		Debug.Log("Scenario: " + response["current_scenario"].ToString());
 
@@ -431,7 +444,7 @@ public class ScenarioManager : MonoBehaviour {
     	}
 		else {
 			Debug.Log("======== END OF MONTH " + currentMonth + " ========");
-			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END), "Month " + currentMonth);
+			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END), "phase_cooldown");
 		}
 
 		// Debug.Log("--> Indicators: " + currentAffectValues[0] + ", " + currentAffectValues[1] + ", " + currentAffectValues[2]);
@@ -489,6 +502,11 @@ public class ScenarioManager : MonoBehaviour {
 
     	if(e.Symbol == "problem_card")
 			cardCooldownElapsed = problemCardDuration - e.SecondsElapsed;
+    	else if(e.Symbol == "phase_cooldown") {
+			phaseCooldownElapsed = monthLengthSeconds - e.SecondsElapsed;
+			if(phaseCooldownElapsed == 0) 
+				phaseCooldownElapsed = monthLengthSeconds;
+    	}
 
 
     }
