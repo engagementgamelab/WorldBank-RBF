@@ -14,6 +14,8 @@ using UnityEngine.UI;
 public class NPCResponse : PortraitTextBox {
 
 	public Text responseTextBox;
+	public Image leftPortrait;
+	public Image rightPortrait;
 
 	bool initial = false;
 	bool leftSide = false;
@@ -43,17 +45,20 @@ public class NPCResponse : PortraitTextBox {
 	public override string NPCSymbol {
 
 		set {
+			Image portrait = null;
 
-			GameObject portrait = null;
+			if(rightSide)
+				portrait = rightPortrait;
+			else if(leftSide)
+				portrait = leftPortrait;
 
-			if(rightSide) {
-				portrait = GetComponent<Transform>().FindChild("RightPortrait").gameObject;
-				portrait.SetActive(true);
-			}
-			else if(leftSide) {
-				portrait = GetComponent<Transform>().FindChild("LeftPortrait").gameObject;
-				portrait.SetActive(true);
-			}
+			if(portrait == null)
+				return;
+
+			portrait.gameObject.SetActive(true);
+
+			// Obtain portrait image and load corresponding sprite
+			portrait.sprite = Resources.Load<Sprite>("Portraits/PhaseTwo/" + value);
 
 			GetComponent<Transform>().FindChild("LeftArrow").gameObject.SetActive(leftSide);
 			GetComponent<Transform>().FindChild("RightArrow").gameObject.SetActive(rightSide);

@@ -36,6 +36,10 @@ public class ScenarioCardDialog : GenericDialogBox {
 	public Transform responseTextPanel;
 	public Transform choicesGroup;
 
+	public Image mainPortraitImage;
+
+	public Text debugText;
+
 	List<string> currentAdvisorOptions;
 	List<string> currentCardOptions;
 
@@ -60,7 +64,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 	public virtual void Initialize() {
 
     	// Cleanup
-    	responseTextPanel.transform.DetachChildren();
+    	ObjectPool.DestroyChildren<NPCResponse>(responseTextPanel.transform);
 
 		// Generate advisors and starting options
 		currentAdvisorOptions = _data.characters.Select(x => x.Key).ToList();
@@ -82,11 +86,16 @@ public class ScenarioCardDialog : GenericDialogBox {
 		// Listen for ScenarioEvent
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
 
+		// Load in main portrait
+		mainPortraitImage.sprite = Resources.Load<Sprite>("Portraits/PhaseTwo/" + _data.initiating_npc);
+
+		debugText.text = _data.symbol;
+
 	}
 
 	void DisplayOtherCards() {
 
-		upcomingCardsPanel.transform.DetachChildren();
+		ObjectPool.DestroyChildren<NPCConferenceButton>(upcomingCardsPanel);
 
 		foreach(Models.ScenarioCard card in ScenarioQueue.Problems)
 		{
@@ -106,7 +115,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 	public void AddAdvisors() {
 
-		conferencePanel.transform.DetachChildren();
+		ObjectPool.DestroyChildren<NPCConferenceButton>(conferencePanel);
 
 		// Create buttons for all advisors
 		foreach(string characterSymbol in currentAdvisorOptions) {
@@ -115,11 +124,14 @@ public class ScenarioCardDialog : GenericDialogBox {
 			if(!_data.characters[characterSymbol].hasDialogue)
 				continue;
 
+			string npcDialogue = _data.characters[characterSymbol].dialogue;
+
 			NPCConferenceButton btnChoice = ObjectPool.Instantiate<NPCConferenceButton>();
 
 			Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
 			
 			btnChoice.NPCName = charRef.display_name;
+			btnChoice.Text = npcDialogue.Substring(0, Mathf.Clamp(80, 0, npcDialogue.Length)) + "...";
 
 			btnChoice.Button.onClick.RemoveAllListeners();
 			btnChoice.Button.onClick.AddListener (() => AdvisorSelected(charRef.symbol));

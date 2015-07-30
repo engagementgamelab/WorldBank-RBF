@@ -195,7 +195,9 @@ public class ScenarioManager : MonoBehaviour {
 			// Hide year end panel
 			yearEndPanel.gameObject.SetActive(false);
 
-			currentCardIndex++;
+			if(!queueProblemCard)
+				currentCardIndex++;
+
 			OpenDialog();
 
 		}
@@ -428,7 +430,7 @@ public class ScenarioManager : MonoBehaviour {
 			openYearEnd = true;
     	}
 		else {
-			// Debug.Log("======== END OF MONTH " + currentMonth + " ========");
+			Debug.Log("======== END OF MONTH " + currentMonth + " ========");
 			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END), "Month " + currentMonth);
 		}
 
