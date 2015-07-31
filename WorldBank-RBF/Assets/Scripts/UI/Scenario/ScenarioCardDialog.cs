@@ -241,7 +241,8 @@ public class ScenarioCardDialog : GenericDialogBox {
     /// </summary>
     void OnScenarioEvent(ScenarioEvent e) {
 
-    	showNewQueuedCard = true;
+    	if(e.eventType == ScenarioEvent.PROBLEM_QUEUE)
+	    	showNewQueuedCard = true;
 
     }
     

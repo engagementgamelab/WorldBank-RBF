@@ -34,12 +34,18 @@ namespace TimerUtils {
 	    /// <summary>
 	    /// Initializes a new instance of the <see cref="Cooldown"/> class, given a double.
 	    /// </summary>
-		public Cooldown() {	}
+		public Cooldown(string strSymbol="timer") {
 
-		public int Init(int[] cooldowns, GameEvent callback, string timerSymbol="timer") {
+			currentSymbol = strSymbol;
+
+		}
+
+		public int Init(int[] cooldowns, GameEvent callback, string timerSymbol=null) {
 
 			elapsedSeconds = 0;
-			currentSymbol = timerSymbol;
+
+			if(timerSymbol != null)
+				currentSymbol = timerSymbol;
 
 			if(cooldowns.Length == 1)
 			    currentCooldown = cooldowns[0];
@@ -48,11 +54,16 @@ namespace TimerUtils {
 
 	        instanceCallback = callback;
 	        
+	   //      if(aTimer != null)
+				// aTimer.Stop();
+
 			aTimer = new Timer(1000);
 
 			aTimer.AutoReset = true;
 	        aTimer.Elapsed += OnTimedEvent;
 	        aTimer.Enabled = true;
+
+	        aTimer.Start();
 
 			Debug.Log("Timer Started - " + timerSymbol + " / " + currentCooldown + "s");
 
@@ -66,7 +77,9 @@ namespace TimerUtils {
 
 			Debug.Log("Timer Stopped");
 
+			aTimer.Enabled = false;
 			aTimer.Stop();
+			aTimer.Dispose();
 
 		}
 
@@ -104,7 +117,7 @@ namespace TimerUtils {
 		void OnTimedEvent(object sender, ElapsedEventArgs eventArgs)
 		{
 
-			elapsedSeconds += 1;
+			elapsedSeconds++;
 
 			Events.instance.Raise(new GameEvents.TimerTick(elapsedSeconds, currentSymbol));
 
@@ -119,7 +132,7 @@ namespace TimerUtils {
 	                throw new Exception("No callback registered for cooldown!");
 	            }
 				
-				aTimer.Stop();
+				Stop();
 	            
 	        }
 

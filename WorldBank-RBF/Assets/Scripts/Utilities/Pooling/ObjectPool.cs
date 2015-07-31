@@ -213,10 +213,14 @@ public class ObjectPool : MonoBehaviour {
 	}
 
 	public static void DestroyChildren<T> (Transform instance) where T : MonoBehaviour {
-		if (instance == null || instance.childCount == 0) return;
+		if (instance == null) return;
 
-		foreach (Transform tr in instance)
-			Destroy<T>(tr);
+		T[] removeObjects = instance.GetComponentsInChildren<T>();
+
+		if(removeObjects.Length == 0) return;
+
+		foreach (T obj in removeObjects)
+			Destroy<T>(obj.transform);
 	}
 
 	public static void DestroyAll<T> () where T : MonoBehaviour {

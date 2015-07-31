@@ -163,7 +163,8 @@ public class ScenarioManager : MonoBehaviour {
     /// <param name="newYear">Load new year (skip year break check). Default is false.</param>
 	public void GetNextCard(bool newYear=false) {
 	
-		int cardIndex = queueProblemCard ? currentQueueIndex : currentCardIndex;
+		// currentQueueIndex starts at 1, so decrement it
+		int cardIndex = queueProblemCard ? currentQueueIndex-1 : currentCardIndex;
 		int nextCard = currentCardIndex + 1;
 		int scenarioLength = DataManager.ScenarioLength(scenarioTwistIndex) - 1;
  
@@ -211,7 +212,7 @@ public class ScenarioManager : MonoBehaviour {
 			// Hide year end panel
 			yearEndPanel.gameObject.SetActive(false);
 
-			cardIndex = queueProblemCard ? currentQueueIndex++ : currentCardIndex++;	
+			cardIndex = queueProblemCard ? ++currentQueueIndex : ++currentCardIndex;	
 
 			OpenScenarioCard(cardIndex);
 
@@ -341,7 +342,7 @@ public class ScenarioManager : MonoBehaviour {
     void UserScenarioResponse(Dictionary<string, object> response) {
 
 		problemCardCooldown = new TimerUtils.Cooldown();
-		phaseCooldown = new TimerUtils.Cooldown();
+		phaseCooldown = new TimerUtils.Cooldown("phase_cooldown");
 
 		if(enableCooldown)
 			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END), "phase_cooldown");
@@ -444,10 +445,12 @@ public class ScenarioManager : MonoBehaviour {
 			phaseCooldown.Stop();
 
 			openYearEnd = true;
+
+			phaseCooldownElapsed = monthLengthSeconds;
     	}
 		else {
 			Debug.Log("======== END OF MONTH " + currentMonth + " ========");
-			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END), "phase_cooldown");
+			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END));
 		}
 
 		// Debug.Log("--> Indicators: " + currentAffectValues[0] + ", " + currentAffectValues[1] + ", " + currentAffectValues[2]);
@@ -509,6 +512,8 @@ public class ScenarioManager : MonoBehaviour {
 			phaseCooldownElapsed = monthLengthSeconds - e.SecondsElapsed;
 			if(phaseCooldownElapsed == 0) 
 				phaseCooldownElapsed = monthLengthSeconds;
+
+			Debug.Log("############ phaseCooldownElapsed: " + phaseCooldownElapsed);
     	}
 
 
