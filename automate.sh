@@ -31,12 +31,12 @@ echo "Started automation from git commit head ($(git rev-parse HEAD)):" | tee -a
 # wait
 
 # Find all .png files in external dir
-for f in $(find $EXTERNAL_ASSET_DIR -name "*.png")
+find $EXTERNAL_ASSET_DIR -iname "*.png" | while read f
 do
 
 	# Get parent dir of file
-	dir=$(dirname $f)
-	dir=${dir#$EXTERNAL_ASSET_DIR}
+	dir="$(dirname "$f")";
+	dir=${dir#$EXTERNAL_ASSET_DIR};
 
 	# Get filename w/o extension
 	file_no_ext=${f%.png};
@@ -50,11 +50,19 @@ do
 	mkdir -p $base_new_path;
 
 	if [[ $file_no_ext == *"layer"* ]] && [[ ${#file_no_ext} == 6 ]]; then
-		convert $f -crop 2048x2048 $new_path;
-		echo "Split '$f' and moved tiles to $base_new_path" | tee -a automate.log;
+		convert "$f" -crop 2048x2048 "$new_path";
+		if [ $? -ne 0 ] ; then
+		    echo "Could not split '$f'"
+		else
+			echo "Split '$f' and moved tiles to $base_new_path" | tee -a automate.log;
+		fi
 	else
-		mv $f $new_path && git add -N $new_path;
-		echo "Moved $f to $new_path" | tee -a automate.log;
+		mv "$f" "$new_path" && git add -N "$new_path";
+		if [ $? -ne 0 ] ; then
+		    echo "Could not move '$f'"
+		else
+			echo "Moved $f to $new_path" | tee -a automate.log;
+		fi
 	fi
 
 done  

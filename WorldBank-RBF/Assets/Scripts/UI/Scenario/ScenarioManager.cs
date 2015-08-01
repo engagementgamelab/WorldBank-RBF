@@ -1,4 +1,4 @@
-﻿/* 
+/* 
 World Bank RBF
 Created by Engagement Lab, 2015
 ==============
@@ -22,7 +22,6 @@ public class ScenarioManager : MonoBehaviour {
 	public Text scenarioCardCooldownText;
 	public Text scenarioCooldownText;
 
-	public ScenarioYearEndDialog yearEndPanel;
 	public RectTransform scenarioEndPanel;
 	public RectTransform tacticCardsParent;
 
@@ -37,6 +36,8 @@ public class ScenarioManager : MonoBehaviour {
 	static TimerUtils.Cooldown problemCardCooldown;
 	static TimerUtils.Cooldown phaseCooldown;
 	
+	ScenarioYearEndDialog yearEndPanel;
+
 	int[] currentAffectValues;
 	int[] currentAffectBias;
 
@@ -151,6 +152,7 @@ public class ScenarioManager : MonoBehaviour {
 			btnChoice.Button.onClick.AddListener (() => GetScenarioForPlan(planId));
 
 			btnList.Add(btnChoice);
+
 		}
 
 		DialogManager.instance.CreateChoiceDialog("Choose Plan:", btnList);
@@ -170,19 +172,20 @@ public class ScenarioManager : MonoBehaviour {
  
 		// Should we display a year break (happens at 4th and 8th card or if forced by timer)?
 		if(newYear || (nextCard > 0 && nextCard <= 8) && (nextCard % 4 == 0)) {
+			
+			// Next year will start at card 0
+			currentCardIndex = -1;
 
-			// Go to next year
-			DataManager.AdvanceScenarioYear();
+			// Queue always starts at 1
+			currentQueueIndex = 1;
+
+			OpenScenarioDecisionCard();
 
 			// Stop card cooldown
 			problemCardCooldown.Stop();
 
 			// Hide all scenario problem cards
 			ObjectPool.DestroyAll<ScenarioCardDialog>();
-
-			// Show year end panel
-			yearEndPanel.PreviousChoices = selectedOptions;
-			yearEndPanel.gameObject.SetActive(true);
 
 			inYearEnd = true;
 			queueProblemCard = false;
@@ -197,8 +200,6 @@ public class ScenarioManager : MonoBehaviour {
 				}
 			}
 
-			currentMonth = 1;
-
 			// Update timer text
     		scenarioCooldownText.text = "Break - Year " + currentYear;
 
@@ -210,7 +211,7 @@ public class ScenarioManager : MonoBehaviour {
 		if(scenarioLength > cardIndex) {
 
 			// Hide year end panel
-			yearEndPanel.gameObject.SetActive(false);
+			// yearEndPanel.gameObject.SetActive(false);
 
 			cardIndex = queueProblemCard ? ++currentQueueIndex : ++currentCardIndex;	
 
@@ -225,31 +226,7 @@ public class ScenarioManager : MonoBehaviour {
 
 		}
 
-	}
-
-    /// <summary>
-    /// Open either a scenario problem or decision dialog.
-    /// </summary>
-	public void OpenDialog() {
-
-		// Open Scenario Problem or Scenario Decision?
-		if(inYearEnd) {
-			
-			inYearEnd = false;
-			
-			// Next year will start at card 0
-			currentCardIndex = -1;
-
-			// Queue always starts at 1
-			currentQueueIndex = 1;
-
-			OpenScenarioDecisionCard();
-
-			return;
-
-		}
-
-		OpenScenarioCard(currentCardIndex);
+		ObjectPool.DestroyAll<ScenarioDecisionDialog>();
 
 	}
 
@@ -307,7 +284,8 @@ public class ScenarioManager : MonoBehaviour {
 		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
 
 		// Create the card dialog
-		DialogManager.instance.CreateScenarioDecisionDialog(scenarioConf);
+		ScenarioDecisionDialog yearEndPanel = DialogManager.instance.CreateScenarioDecisionDialog(scenarioConf);
+		yearEndPanel.PreviousChoices = selectedOptions;
 	    	
 	}
 
@@ -360,7 +338,7 @@ public class ScenarioManager : MonoBehaviour {
     	usedAffects.Add(response["default_affects"] as int[]);
     	CalculateIndicators();
 
-    	OpenDialog();
+    	OpenScenarioCard(0);
 
 		PlayerManager.Instance.TrackEvent("Scenario Assigned", "Phase Two");
 
@@ -479,6 +457,23 @@ public class ScenarioManager : MonoBehaviour {
     			usedAffects.Add(dictAffect.Values.ToArray());
 
     			openProblemCard = true;
+    			break;
+
+    		case "next_year":
+
+				// Go to next year
+				DataManager.AdvanceScenarioYear();
+
+				currentYear++;
+				currentMonth = 1;
+				
+				inYearEnd = true;
+
+				GetNextCard();
+
+				if(enableCooldown)
+					phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END), "phase_cooldown");
+
     			break;
 
     		case "problem_open":

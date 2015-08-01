@@ -15,8 +15,13 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class ScenarioDecisionDialog : GenericDialogBox {
-
+	
+	public Text _textPreviousChoices;
+	public Button _btnViewIndicators;
+	public Button _btnNextYear;
+	
 	Models.ScenarioConfig _data;
+	
 	int _year = 0;
 
     /// <summary>
@@ -29,6 +34,12 @@ public class ScenarioDecisionDialog : GenericDialogBox {
 
         	Content = (_year == 0) ? _data.prompt_year_1 : _data.prompt_year_2;
 
+        	_btnViewIndicators.onClick.RemoveAllListeners ();
+			_btnViewIndicators.onClick.AddListener(() => NotebookManager.Instance.OpenIndicators());
+
+        	_btnNextYear.onClick.RemoveAllListeners ();
+			_btnNextYear.onClick.AddListener(() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT_YEAR)));
+
         	AddChoices();
 
         }
@@ -40,6 +51,15 @@ public class ScenarioDecisionDialog : GenericDialogBox {
     		_year = value;
 
     	}
+    }
+    
+    /// <summary>
+    /// Set the previous choices the player has made (currently just splits an array and shows as a list).
+    /// </summary>
+    public List<string> PreviousChoices {
+        set {
+            _textPreviousChoices.text = "Choices: " + string.Join(", ", value.ToArray());
+        }
     }
 
 	public Text textCardPrompt;

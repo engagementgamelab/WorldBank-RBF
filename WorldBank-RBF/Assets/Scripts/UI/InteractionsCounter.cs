@@ -8,6 +8,10 @@ public class InteractionsCounter : MB {
 	Text Text {
 		get {
 			if (text == null) {
+				if(Transform.childCount < 2) {
+					Debug.LogWarning("Cannot access text component of InteractionsCounter!! This will cause problems.");
+					return null;
+				}
 				text = Transform.GetChild (2).GetComponent<Text> ();
 			}
 			return text;

@@ -75,7 +75,7 @@ namespace TimerUtils {
 
 			if(aTimer == null) return;
 
-			Debug.Log("Timer Stopped");
+			Debug.Log("Timer Stopped: " + currentSymbol);
 
 			aTimer.Enabled = false;
 			aTimer.Stop();
@@ -87,7 +87,7 @@ namespace TimerUtils {
 
 			if(aTimer == null) return;
 
-			Debug.Log("Timer Paused");
+			Debug.Log("Timer Paused: " + currentSymbol);
 
 			aTimer.Enabled = false;
 
@@ -97,7 +97,7 @@ namespace TimerUtils {
 
 			if(aTimer == null) return;
 
-			Debug.Log("Timer Resumed");
+			Debug.Log("Timer Resumed: " + currentSymbol);
 
 			aTimer.Enabled = true;
 
@@ -107,7 +107,7 @@ namespace TimerUtils {
 
 			if(aTimer == null) return;
 
-			Debug.Log("Timer Restarted");
+			Debug.Log("Timer Restarted: " + currentSymbol);
 
 			aTimer.Stop();
 			aTimer.Start();

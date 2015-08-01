@@ -98,7 +98,7 @@ public class TacticsCanvas : MonoBehaviour {
 		if(tacticCardCooldown == null)
 			tacticCardCooldown = new TimerUtils.Cooldown();
 
-		tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
+		tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN), "tactic_open");
 
 	}
 
