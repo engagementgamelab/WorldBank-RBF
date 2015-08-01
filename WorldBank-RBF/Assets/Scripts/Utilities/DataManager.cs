@@ -79,8 +79,10 @@ public class DataManager {
     /// Set global game config data, such as API endpoints, given a valid input string
     /// </summary>
     /// <param name="data">Data to be used to set config; must conform to GameConfig model.</param>
-    public static void SetGameConfig(string data)
+    /// <param name="configTypeOverride">May be used to override config type in editor only (development, staging, production).</param>
+    public static void SetGameConfig(string data, string configTypeOverride=null)
     {
+        Debug.Log("SetGameConfig: " + configTypeOverride);
 
         // Set config only if there is none set
         if(config != null) 
@@ -92,12 +94,23 @@ public class DataManager {
         // Set the current game config based on the environment
         #if UNITY_EDITOR
            currentConfig = config.local;
+
+            // If override set, use that
+            if(configTypeOverride != null) {
+                if(configTypeOverride == "development")
+                    currentConfig = config.development;
+                else if(configTypeOverride == "staging")
+                    currentConfig = config.staging;
+                // else if(configTypeOverride == "production")
+                //     currentConfig = config.production;
+            }
+
+
         #elif DEVELOPMENT_BUILD
            currentConfig = config.development;
         #else
            currentConfig = config.staging;
         #endif
-
     }
 
     /// <summary>
@@ -261,8 +274,6 @@ public class DataManager {
     /// <returns>An array of Models.Unlockable.</returns>
     public static Models.Unlockable[] GetUnlockablesWithPrefix (string prefix) {
         
-        Debug.Log(gameData.unlockables);
-
         try {
             if (prefix == "") {
                 // not a great way of handling this - tactics should have a prefix like route and dialogue unlockables

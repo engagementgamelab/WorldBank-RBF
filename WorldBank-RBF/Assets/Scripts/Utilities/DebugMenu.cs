@@ -23,6 +23,10 @@ public class DebugMenu : MonoBehaviour {
 			}
 		}
 		if (GUILayout.Button ("unlock tactics")) {
+			PlayerData.UnlockItem ("unlockable_vouchers_for_services");
+			PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system");
+			PlayerData.UnlockItem ("unlockable_incentivise_providers_to_deliver_services");
+
     		PlayerData.UnlockItem ("unlockable_incentivise_providers_to_follow_protocols");
     		PlayerData.UnlockItem ("unlockable_improve_patient_and_provider_relationship");
     		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements");

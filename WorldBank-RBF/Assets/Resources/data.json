@@ -1308,6 +1308,11 @@
       "indicator_2": -1,
       "indicator_3": 0
     },
+    "ask_reduce_oversight_2": {
+      "Indicator_1": 0,
+      "indicator_2": 2,
+      "indicator_3": 1
+    },
     "deny_payment_4": {
       "indicator_1": 1,
       "indicator_2": 0,
@@ -2072,7 +2077,7 @@
         "dialogue": {
           "Initial": {
             "text": [
-              "Thank you again for coming all the way here. Your expertise is much appreciated. Our health system has been drastically underperforming despite our best efforts. Our mortality rates for children under five are unacceptable. \n We have identified three indicators to address to improve these numbers: Vaccinations, Facility Births, and Quality of Care. We have pushed facilities to improve on these indicators, but so far the results have been underwhelming. First and foremost, I recommend that you find a way to boost these key services and quality indicators."
+              "Thank you again for coming all the way here. Your expertise is much appreciated. Our health system has been drastically underperforming despite our best efforts. Our mortality rates for children under five are unacceptable. We have identified three indicators to address to improve these numbers: Vaccinations, Facility Births, and Quality of Care. We have pushed facilities to improve on these indicators, but so far the results have been underwhelming. First and foremost, I recommend that you find a way to boost these key services and quality indicators."
             ],
             "unlocks": [
               "unlockable_incentivise_providers_to_deliver_services"
@@ -2089,7 +2094,7 @@
         "dialogue": {
           "Initial": {
             "text": [
-              "This is the Finance Minister, who has been brought in today to explain the financial situation in Zariba as it relates to the health sector. The Finance Minister looks at you intently with a serious expression. \"We have increased the budget for healthcare in each region year after year, but results have not increased to match it. This year, we will spend more than ever before. We need to try something new. That/'s why you are here.\""
+              "The Finance Minister looks at you intently with a serious expression. \"We have increased the budget for healthcare in each region year after year, but results have not increased to match it. This year, we will spend more than ever before. We need to try something new. That is why you are here.\""
             ]
           }
         }
@@ -2100,7 +2105,7 @@
         "dialogue": {
           "Initial": {
             "text": [
-              "This is Rahb, the Observation Team Supervisor who will be assisting you in this office. \"Welcome again to Zariba,\" Rahb says, \"I hope you've had some time to yourself in the Capitol City to get your bearings, but of course, you are here to work. You'll be [[making a plan]] that will transform our health system over the next three years, but to figure out what should be in that plan, you will need to explore the country and [[talk to people]].\""
+              "Welcome again to Zariba! I hope you've had some time to yourself in the Capitol City to get your bearings, but of course, you are here to work. You'll be [[making a plan]] that will transform our health system over the next three years, but to figure out what should be in that plan, you will need to explore the country and [[talk to people]]"
             ]
           },
           "Making a Plan": {
@@ -6431,8 +6436,7 @@
             }
           }
         }
-      ],
-      "year_end": {}
+      ]
     },
     "scenario_3": {
       "path_config": {
@@ -7360,13 +7364,15 @@
             "warn_verifier_2",
             "revert_counterverification_1",
             "streamline_speed_verification_process_2",
-            "circulate_memo_reaffirming_ministry_authority_2"
+            "circulate_memo_reaffirming_ministry_authority_2",
+            "ask_reduce_oversight_2"
           ],
           "final_options_affects": [
             "warn_verifier_2",
             "revert_counterverification_1",
             "streamline_speed_verification_process_2",
-            "circulate_memo_reaffirming_ministry_authority_2"
+            "circulate_memo_reaffirming_ministry_authority_2",
+            "ask_reduce_oversight_2"
           ],
           "characters": {
             "dep_minister_of_health": {
@@ -7700,6 +7706,7 @@
               "dialogue": "Providers in my region have complained often of over-stressed staff. There are not enough workers, and supplies are still running out frequently."
             },
             "ngo_manager": {
+              "dialogue": "I am not sure what the issue is exactly.",
               "feedback": {
                 "warn_ngo_5": "I'll do what I can, but we're struggling as it is. I don't know how we can improve."
               }
@@ -7746,7 +7753,6 @@
           "final_options": [
             "terminate_contract_at_end_of_year_9",
             "increase_funding_for_ngo_2",
-            "terminate_contract_at_end_of_year_9",
             "contract_additional_ngo_2"
           ],
           "final_options_affects": [
@@ -9876,9 +9882,6 @@
       "symbol": "unlockable_dialogue_mr_todd_2"
     },
     {
-      "symbol": "unlockable_limit_prescriptions"
-    },
-    {
       "symbol": "unlockable_route_malcom_to_kibari",
       "title": "Route to Kibari",
       "unlocked": false
@@ -9934,7 +9937,7 @@
       "description": [
         "A straightforward way to increase use of specific services, such as facility births and vaccinations, is to give bonuses to providers that deliver more of those services. This would set specific goals, and incentivise providers to reach them."
       ],
-      "priority": 2,
+      "priority": 1,
       "type": "supply_side_resource_allocation"
     },
     {
@@ -10781,6 +10784,10 @@
     {
       "symbol": "circulate_memo_reaffirming_ministry_authority_2",
       "title": "Circulate Memo Reaffirming Ministry Authority"
+    },
+    {
+      "symbol": "ask_reduce_oversight_2",
+      "title": "Ask Ministry to Reduce Oversight"
     },
     {
       "symbol": "deny_payment_4",

@@ -13,9 +13,8 @@ public class Slot : MonoBehaviour, IDropHandler {
 	}
 
 	#region IDropHandler implementation
-		public void OnDrop (PointerEventData eventData)
-		{
-
+	public void OnDrop (PointerEventData eventData)
+	{
 		if (!item) {
 			ThisDragHandler.itemBeingDragged.transform.SetParent (transform);
 			return;
@@ -23,10 +22,17 @@ public class Slot : MonoBehaviour, IDropHandler {
 
 		if (item) {
 			ThisDragHandler.itemBeingDragged.transform.SetParent (transform);
+
 			item.transform.SetParent (ThisDragHandler.startParent);
-//			print (DragHandler.startParent);
-			}
+
+			UITactic tactic = ThisDragHandler.itemBeingDragged.GetComponent<UITactic>();
+			UITacticSlot slot = transform.GetComponent<UITacticSlot>();
+			
+			// Tell tactic it has moved
+			tactic.MoveToSlot(slot);
+				
 		}
+	}
 	#endregion
 	}
 }

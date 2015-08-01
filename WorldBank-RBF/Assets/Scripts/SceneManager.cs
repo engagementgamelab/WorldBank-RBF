@@ -34,6 +34,11 @@ public class SceneManager : MonoBehaviour {
 	public string sceneName;
 	public bool phaseOne;
 
+	[HideInInspector]
+	public int environmentIndex = 0;
+	[HideInInspector]
+	public string environment;
+
 	public delegate void AuthCallbackDelegate();
 
 	private PlayerLoginRegisterUI loginUI;
@@ -53,6 +58,20 @@ public class SceneManager : MonoBehaviour {
 
       
 	}
+
+
+    #if UNITY_EDITOR
+	void OnGUI() {
+		GUIStyle style = new GUIStyle();
+		
+		style.fontSize = 13;
+		style.fontStyle = FontStyle.BoldAndItalic;
+	    
+	    GUI.contentColor = Color.white;
+
+        GUI.Label(new Rect(4, 4, 100, 20), "ENVIRONMENT: " + environment, style);
+    }
+    #endif
 
 	/// <summary>
 	/// Client was authenticated to API; we can now get game data and ask player to log in
@@ -111,8 +130,8 @@ public class SceneManager : MonoBehaviour {
 		TextAsset apiJson = (TextAsset)Resources.Load("api", typeof(TextAsset));
 		StringReader strConfigData = new StringReader(apiJson.text);
 
-		// Set in data manager class
-		DataManager.SetGameConfig(strConfigData.ReadToEnd());
+		// Set in data manager class with chosen environment config
+		DataManager.SetGameConfig(strConfigData.ReadToEnd(), environment);
 
 		strConfigData.Close();
 	}
