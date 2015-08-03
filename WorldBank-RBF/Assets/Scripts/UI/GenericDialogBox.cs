@@ -38,7 +38,7 @@ public class GenericDialogBox : MB {
 	float RPercent {
 		get {
 			if (rPercent == -1) {
-				rPercent = 0.45f + 0.13f * Aspect;
+				rPercent = 0.50f + 0.13f * Aspect;
 			}
 			return rPercent;
 		}
@@ -48,7 +48,7 @@ public class GenericDialogBox : MB {
 	float LPercent {
 		get {
 			if (lPercent == -1) {
-				lPercent = 0.55f - 0.13f * Aspect;
+				lPercent = 0.60f - 0.13f * Aspect;
 			}
 			return lPercent;
 		}

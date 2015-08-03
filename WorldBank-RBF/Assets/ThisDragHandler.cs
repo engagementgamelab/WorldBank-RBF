@@ -7,6 +7,10 @@ public class ThisDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	public static Vector3 startPosition;
 	public static Transform startParent;
 
+	public GameObject disableText;
+	public GameObject disablePic;
+	public GameObject disableQuote;
+
 	public void OnBeginDrag (PointerEventData eventData)
 	{
 		itemBeingDragged = gameObject;
@@ -30,11 +34,22 @@ public class ThisDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 		if(transform.parent != startParent) {
 			transform.position = startPosition;
 
+			disableText.gameObject.SetActive (false);
+			disablePic.gameObject.SetActive (false);
+			disableQuote.gameObject.SetActive (false);
+
+			if (transform.parent.gameObject.tag == "Player"){
+			disableText.gameObject.SetActive (true);
+			disablePic.gameObject.SetActive (true);
+			disableQuote.gameObject.SetActive (true);
+			}
+
 			return;
 			}
 
 		if(transform.parent = startParent) {			
 			transform.position = startPosition;
+
 
 		}
 	}
