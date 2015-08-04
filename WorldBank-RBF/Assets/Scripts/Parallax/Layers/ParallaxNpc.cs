@@ -85,7 +85,7 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 		if (Scale > 1f) {
 			SendClickMessage ();
 		} else {
-			// Don't focus if the player ends up doing a drag
+			// Don't trigger if the player begins dragging the mouse
 			StartCoroutine (CoCheckForDrag ());
 		}
 	}

@@ -86,7 +86,7 @@ public class CitiesManager : MB {
 	}
 
 	/// <summary>
-	/// Stay an extra day in the given city. Remove 1 day and set the interaction count.
+	/// Stay an extra day in the given city. Removes 1 day and updates the interaction count.
 	/// </summary>
 	/// <param name="city">The city to stay an extra day in.</param>
 	public void StayExtraDay (CityItem city) {

@@ -5,10 +5,14 @@ using System.Collections.Generic;
 public class TacticsColumn : Column {
 
 	List<UITactic> uiTactics = new List<UITactic> ();
+	bool initialized = false;
 
-	void Awake () {
-		PlayerData.TacticGroup.onUpdate += OnUpdate;
-		PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
+	void OnEnable () {
+		if (!initialized) {
+			PlayerData.TacticGroup.onUpdate += OnUpdate;
+			PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
+			initialized = true;
+		}
 	}
 
 	void OnUpdate () {

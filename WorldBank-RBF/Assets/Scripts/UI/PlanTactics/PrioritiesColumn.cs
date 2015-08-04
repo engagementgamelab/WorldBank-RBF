@@ -7,10 +7,17 @@ public class PrioritiesColumn : Column {
 	int slotCount = 6;
 	List<UITacticSlot> uiSlots = new List<UITacticSlot> ();
 	List<UITactic> uiTactics = new List<UITactic> ();
+	bool initialized = false;
 
 	void Awake () {
 		CreateTacticSlots ();
-		PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
+	}
+
+	void OnEnable () {
+		if (!initialized) {
+			PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
+			initialized = true;
+		}
 	}
 
 	public void OnUpdate () {
