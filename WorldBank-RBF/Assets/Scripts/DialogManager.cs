@@ -217,6 +217,73 @@ public class DialogManager : MonoBehaviour {
 
 	}
 
+	public void OpenNpcDialog (Models.NPC currNpc, bool left) {
+
+		Models.Dialogue currDialog = currNpc.GetDialogue ("Initial");
+		Dictionary<string, string> choices = GetDialogChoices (currDialog.text[0]);
+		Dictionary<string, string> unlockableChoices = GetUnlockableChoices (currNpc);
+
+		/*foreach (var choice in choices) {
+			Debug.Log (choice.Value);
+		}
+
+		foreach (var choice in unlockableChoices) {
+			Debug.Log (choice.Value);
+		}*/
+	}
+
+	public void OpenNpcDescription (Models.NPC currNpc, bool left) {
+		string description = PlayerData.CharacterGroup[currNpc.symbol].GetDescription ();
+		Debug.Log (description);
+	}
+
+	void GetNpcDescription () {
+
+	}
+
+	Dictionary<string, string> GetDialogChoices (string strDialogText) {
+
+		// string strToDisplay = strDialogText;
+		Dictionary<string, string> choices = new Dictionary<string, string> ();
+		
+		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
+		Regex regexKeywords = new Regex(strKeywordRegex, RegexOptions.IgnoreCase);
+		MatchCollection keyMatches = regexKeywords.Matches(strDialogText);
+
+		CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+		TextInfo textInfo = cultureInfo.TextInfo;
+		
+		foreach (Match m in keyMatches) {
+
+			if (!m.Success) continue;
+			
+			string strKeyword = m.Groups[3].ToString ();
+	        string strKeywordTitle = textInfo.ToTitleCase(m.Groups[3].ToString ());
+
+	        choices.Add (strKeywordTitle, strKeywordTitle);
+
+	        // This is kind of a mess but it's currently how I am deciding which dialogue 
+	        // option to highlight, based on if something is unlocked (or not unlockable) 
+	       	// IEnumerable<KeyValuePair<string, Models.Dialogue>> unlockLookup = 
+	       	// 	currentDialogueUnlockables.Where(diag => diag.Value.display_name == strKeywordTitle);
+
+	       	// strToDisplay = strToDisplay.Replace("[[" + strKeyword + "]]", "<color=orange>" + strKeyword + "</color>");
+
+		}
+
+		return choices;
+	}
+
+	Dictionary<string, string> GetUnlockableChoices (Models.NPC currNpc) {
+
+		Dictionary<string, string> unlockableChoices = currNpc.dialogue
+			.Where (kvp => kvp.Key.StartsWith("unlockable_dialogue_"))
+			.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.display_name);
+
+		return unlockableChoices;
+	}
+
+	// Phase 1
 	/// <summary>
 	/// Open intro dialog for a given character
 	/// </summary>
@@ -249,6 +316,7 @@ public class DialogManager : MonoBehaviour {
 
 	}
 
+	// Phase 1
 	/// <summary>
 	/// Open specified dialog for a given character
 	/// </summary>
@@ -418,6 +486,7 @@ public class DialogManager : MonoBehaviour {
 
 	}
 
+	// Phase 1
 	public void CloseCharacterDialog (bool openNext=true) {
 		if (dialogBox != null) {
 			dialogBox.Close ();

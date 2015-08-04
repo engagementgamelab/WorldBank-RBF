@@ -132,7 +132,9 @@ public class NPCFocusBehavior : MonoBehaviour {
 			npc = null;
 			CameraPositioner.Drag.Enabled = true;
 		} else if (FocusLevel == FocusLevel.Preview) {
-			DialogManager.instance.OpenIntroDialog (NpcManager.GetNpc (npc.symbol), npc.FacingLeft);
+			//DialogManager.instance.OpenIntroDialog (NpcManager.GetNpc (npc.symbol), npc.FacingLeft);
+			// DialogManager.instance.OpenNpcDialog (NpcManager.GetNpc (npc.symbol), npc.FacingLeft);
+			DialogManager.instance.OpenNpcDescription (NpcManager.GetNpc (npc.symbol), npc.FacingLeft);
 		} else if (FocusLevel == FocusLevel.Dialog) {
 			DialogManager.instance.OpenSpeechDialog (npc.symbol, "Initial", false, npc.FacingLeft);
 		}
