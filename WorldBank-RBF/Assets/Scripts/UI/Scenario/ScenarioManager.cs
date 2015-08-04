@@ -46,6 +46,8 @@ public class ScenarioManager : MonoBehaviour {
 	List<string> selectedOptions = new List<string>();
 	List<int[]> usedAffects = new List<int[]>();
 
+	object tacticsAvailable;
+
 	bool queueProblemCard;
 	bool openProblemCard;
 	bool openYearEnd;
@@ -55,7 +57,7 @@ public class ScenarioManager : MonoBehaviour {
 
 	int scenarioTwistIndex;
 	int currentCardIndex;
-	int currentQueueIndex = 1;
+	int currentQueueIndex;
 
 	int monthsCount = 36;
 	int currentMonth = 1;
@@ -166,7 +168,7 @@ public class ScenarioManager : MonoBehaviour {
 	public void GetNextCard(bool newYear=false) {
 	
 		// currentQueueIndex starts at 1, so decrement it
-		int cardIndex = queueProblemCard ? currentQueueIndex-1 : currentCardIndex;
+		int cardIndex = queueProblemCard ? currentQueueIndex : currentCardIndex;
 		int nextCard = currentCardIndex + 1;
 		int scenarioLength = DataManager.ScenarioLength(scenarioTwistIndex) - 1;
  
@@ -176,8 +178,8 @@ public class ScenarioManager : MonoBehaviour {
 			// Next year will start at card 0
 			currentCardIndex = -1;
 
-			// Queue always starts at 1
-			currentQueueIndex = 1;
+			// Queue always starts at 0
+			currentQueueIndex = 0;
 
 			OpenScenarioDecisionCard();
 
@@ -186,6 +188,9 @@ public class ScenarioManager : MonoBehaviour {
 
 			// Hide all scenario problem cards
 			ObjectPool.DestroyAll<ScenarioCardDialog>();
+
+			// Clear queue
+			ScenarioQueue.Clear();
 
 			inYearEnd = true;
 			queueProblemCard = false;
@@ -215,25 +220,30 @@ public class ScenarioManager : MonoBehaviour {
 
 			cardIndex = queueProblemCard ? ++currentQueueIndex : ++currentCardIndex;	
 
-			OpenScenarioCard(cardIndex);
+			OpenScenarioCard(cardIndex, queueProblemCard);
 
 		}
 		// Show end of scenario
 		else {
 
-			// Show scenario end panel
+			// Show scenario end panel and hide cooldown
 			scenarioEndPanel.gameObject.SetActive(true);
+			scenarioCooldownText.gameObject.SetActive(false);
+
+			phaseCooldown.Stop();
 
 		}
 
-		ObjectPool.DestroyAll<ScenarioDecisionDialog>();
+		queueProblemCard = false;
+
+		ObjectPool.DestroyAll<ScenarioDecisionDialog>("Scenario");
 
 	}
 
     /// <summary>
     /// Displays a scenario card, given the current card index.
     /// </summary>
-	void OpenScenarioCard(int cardIndex) {
+	void OpenScenarioCard(int cardIndex, bool queue=false) {
 
 		Debug.Log("open scenario card with index " + cardIndex);
 
@@ -247,19 +257,19 @@ public class ScenarioManager : MonoBehaviour {
 			);
 		}
 
-		if(queueProblemCard) {
+		if(queue) {
+			
 			ScenarioQueue.AddProblemCard(card);
 			Events.instance.Raise(new ScenarioEvent(ScenarioEvent.PROBLEM_QUEUE));
 		
-			queueProblemCard = false;
 			return;
 		}
 
-		// Create the card dialog
-	 	DialogManager.instance.CreateScenarioDialog(card);
-
 	 	// Remove card from queue
 	 	ScenarioQueue.RemoveProblemCard(card);
+
+		// Create the card dialog
+	 	DialogManager.instance.CreateScenarioDialog(card);
 
     	// Debug
     	// cardLabel.text = card.symbol;
@@ -330,8 +340,8 @@ public class ScenarioManager : MonoBehaviour {
     	// Set scene context from current scenario
     	AssignScenario(response["current_scenario"].ToString());
 
-    	// Set tactics that are a part of this plan
-    	TacticsCanvas.Available = ((IEnumerable)response["tactics"]).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+    	// Save tactics that are a part of this plan
+    	tacticsAvailable = response["tactics"];
 
     	// Calc the base affect values for the plan
     	currentAffectBias = response["affects_bias"] as int[];
@@ -457,6 +467,11 @@ public class ScenarioManager : MonoBehaviour {
     			usedAffects.Add(dictAffect.Values.ToArray());
 
     			openProblemCard = true;
+
+    			// Initialize tactics cards after first problem card done
+    			if(currentYear == 1 && currentCardIndex == 0)
+    			   	TacticsCanvas.Available = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+
     			break;
 
     		case "next_year":
@@ -467,7 +482,7 @@ public class ScenarioManager : MonoBehaviour {
 				currentYear++;
 				currentMonth = 1;
 				
-				inYearEnd = true;
+				inYearEnd = false;
 
 				GetNextCard();
 

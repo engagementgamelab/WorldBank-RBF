@@ -17,6 +17,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!1 &107212
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 22407482}
+  - 222: {fileID: 22214988}
+  m_Layer: 5
+  m_Name: Cards
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &148426
 GameObject:
   m_ObjectHideFlags: 0
@@ -33,7 +49,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &164338
 GameObject:
   m_ObjectHideFlags: 1
@@ -168,6 +184,7 @@ MonoBehaviour:
   cooldownText: {fileID: 11452680}
   buttonsPanel: {fileID: 22467914}
   overlayPanel: {fileID: 22472940}
+  cardsPanel: {fileID: 22407482}
   tacticCardsTooltip: {fileID: 0}
   tooltipAlertImg: {fileID: 0}
   tooltipClockImg: {fileID: 0}
@@ -226,7 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 20
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
@@ -282,6 +299,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 164338}
+--- !u!222 &22214988
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107212}
 --- !u!222 &22233964
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -322,7 +345,24 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
+--- !u!224 &22407482
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107212}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 22463320}
+  m_RootOrder: 3
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 645, y: -104}
+  m_SizeDelta: {x: -1291, y: -208}
+  m_Pivot: {x: .5, y: .5}
 --- !u!224 &22409520
 RectTransform:
   m_ObjectHideFlags: 1
@@ -371,6 +411,7 @@ RectTransform:
   - {fileID: 22467914}
   - {fileID: 22472940}
   - {fileID: 22409520}
+  - {fileID: 22407482}
   m_Father: {fileID: 22449758}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
@@ -392,8 +433,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 455, y: 197}
-  m_SizeDelta: {x: 911, y: 395}
+  m_AnchoredPosition: {x: 465, y: 197.5}
+  m_SizeDelta: {x: 930, y: 395}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22472940
 RectTransform:

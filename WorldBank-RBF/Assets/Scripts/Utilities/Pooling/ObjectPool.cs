@@ -69,10 +69,10 @@ public class ObjectPool : MonoBehaviour {
 		pools[name] = this;
 	}
 
-	static ObjectPool GetPool<T> () where T : MonoBehaviour {
+	static ObjectPool GetPool<T> (string additionalPath=null) where T : MonoBehaviour {
 		string poolName = GetPoolName<T> ();
 		if (!pools.ContainsKey (poolName)) {
-			CreatePool<T> ();
+			CreatePool<T> (additionalPath);
 		}
 		return pools[poolName];
 	}
@@ -85,12 +85,12 @@ public class ObjectPool : MonoBehaviour {
 		return pools[poolName];
 	}
 
-	static void CreatePool<T> () where T : MonoBehaviour {
+	static void CreatePool<T> (string additionalPath=null) where T : MonoBehaviour {
 		string prefabName = GetPrefabName<T> ();
 		string poolName = GetPoolName<T> ();
 		GameObject go = new GameObject (poolName);
 		DontDestroyOnLoad (go);
-		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (prefabName).transform);
+		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (prefabName, additionalPath).transform);
 	}
 
 	static void CreatePool (string typeName) {
@@ -100,25 +100,12 @@ public class ObjectPool : MonoBehaviour {
 		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (typeName).transform);	
 	}
 
-	static Transform CreatePrefab (string prefabName) {
+	static Transform CreatePrefab (string prefabName, string additionalPath=null) {
 		GameObject go = null;
 
-		Object resourceObj = Resources.Load ("Prefabs/" + prefabName);
-		
-		#if !UNITY_WEBPLAYER
-			// TODO: We need to figure out how to handle webplayer. We'll probably need to make asset bundles and stream them in.
-			if(resourceObj == null) {		
-				// Try subfolders in "Prefabs"
-				DirectoryInfo directory = new DirectoryInfo(Application.dataPath + "/Resources/Prefabs");
-				DirectoryInfo[] directories = directory.GetDirectories();
-				
-				// Attempt to instantiate from subfolders
-				foreach(DirectoryInfo folder in directories) {
-					resourceObj = Resources.Load ("Prefabs/" + folder.Name + "/" + prefabName);
-					if(resourceObj != null) break;
-				}
-			}
-		#endif
+		Debug.Log(additionalPath);
+
+		Object resourceObj = Resources.Load ("Prefabs/" + ((additionalPath == null) ? "" : additionalPath + "/")  + prefabName);
 
 		try {
 			go = Instantiate (resourceObj) as GameObject;
@@ -178,9 +165,9 @@ public class ObjectPool : MonoBehaviour {
 		activeInstances.Clear ();
 	}
 
-	public static T Instantiate<T> (Vector3 position = new Vector3 ()) where T : MonoBehaviour {
+	public static T Instantiate<T> (string additionalPath=null, Vector3 position = new Vector3 ()) where T : MonoBehaviour {
 
-		ObjectPool thisPool = GetPool<T> ();
+		ObjectPool thisPool = GetPool<T> (additionalPath);
 		Transform thisInstance = thisPool.CreateInstance (position);
 		T returnType = thisInstance.GetScript<T> ();
 
@@ -215,7 +202,7 @@ public class ObjectPool : MonoBehaviour {
 	public static void DestroyChildren<T> (Transform instance) where T : MonoBehaviour {
 		if (instance == null) return;
 
-		T[] removeObjects = instance.GetComponentsInChildren<T>();
+		T[] removeObjects = instance.GetComponentsInChildren<T>(true);
 
 		if(removeObjects.Length == 0) return;
 
@@ -223,9 +210,9 @@ public class ObjectPool : MonoBehaviour {
 			Destroy<T>(obj.transform);
 	}
 
-	public static void DestroyAll<T> () where T : MonoBehaviour {
+	public static void DestroyAll<T> (string additionalPath=null) where T : MonoBehaviour {
 		StartupLoad ();
-		GetPool<T> ().ReleaseAllInstances ();
+		GetPool<T> (additionalPath).ReleaseAllInstances ();
 	}
 
 	public static List<Transform> GetInstances<T> () where T : MonoBehaviour {

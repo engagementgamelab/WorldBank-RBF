@@ -21,6 +21,7 @@ public class TacticsCanvas : MonoBehaviour {
 
 	public RectTransform buttonsPanel;
 	public RectTransform overlayPanel;
+	public RectTransform cardsPanel;
 	public RectTransform tacticCardsTooltip;
 
 	public Image tooltipAlertImg;
@@ -32,6 +33,8 @@ public class TacticsCanvas : MonoBehaviour {
 
 	// ScenarioCardDialog currentScenarioCard;
 	TacticCardDialog currentTacticCard;
+
+	Transform parentPanel;
 
 	static List<string> tacticsAvailable;
 	static List<string> allTactics;
@@ -66,6 +69,8 @@ public class TacticsCanvas : MonoBehaviour {
 
 		// Listen for problem card cooldown tick
 		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
+
+		parentPanel = transform.GetChild(0);
 
 		gameObject.SetActive(true);
 
@@ -145,7 +150,7 @@ public class TacticsCanvas : MonoBehaviour {
 				AddCardButton(card, ScenarioQueue.Tactics.Length-1);
 
 				dialog = DialogManager.instance.CreateTacticDialog(card);
-			 	dialog.transform.SetParent(transform);
+			 	dialog.transform.SetParent(cardsPanel.transform, false);
 			 	dialog.gameObject.SetActive(false);
 
 			 	dialog.Index = ScenarioQueue.Tactics.Length;
@@ -248,6 +253,8 @@ public class TacticsCanvas : MonoBehaviour {
 		canvasGroup.blocksRaycasts = !canvasGroup.blocksRaycasts;
 
 		canvasGroup.alpha = (canvasGroup.alpha == 1) ? 0 : 1;
+
+		parentPanel.gameObject.SetActive(!parentPanel.gameObject.activeSelf);
 
 
 	}

@@ -63,8 +63,6 @@ public class NPCResponse : PortraitTextBox {
 			GetComponent<Transform>().FindChild("LeftArrow").gameObject.SetActive(leftSide);
 			GetComponent<Transform>().FindChild("RightArrow").gameObject.SetActive(rightSide);
 
-			// TODO: Set image using symbol as name
-
 		}
 
 	}

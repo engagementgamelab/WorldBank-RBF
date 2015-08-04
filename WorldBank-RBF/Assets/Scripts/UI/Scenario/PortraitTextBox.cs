@@ -15,6 +15,8 @@ using System.Collections.Generic;
 
 public class PortraitTextBox : GenericButton {
 
+	public Image portrait;
+
 	/// <summary>
     /// Set the NPC Name on the button
     /// </summary>
@@ -23,6 +25,10 @@ public class PortraitTextBox : GenericButton {
 		set {
 
 			Transform npcName = GetComponent<Transform>().FindChild("NPCName");
+
+			if(value.Length > 20)
+				value = value.Substring(0, 17) + "...";
+
 			npcName.GetComponent<Text>().text = value;
 
 		}
@@ -35,7 +41,9 @@ public class PortraitTextBox : GenericButton {
 	public virtual string NPCSymbol {
 
 		set {
-
+			
+			// Obtain portrait image and load corresponding sprite
+			portrait.sprite = Resources.Load<Sprite>("Portraits/PhaseTwo/" + value);
 
 		}
 

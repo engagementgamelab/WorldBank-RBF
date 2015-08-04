@@ -91,6 +91,9 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 		debugText.text = _data.symbol;
 
+		// Hide conference panel by default
+		conferencePanel.gameObject.SetActive(false);
+
 	}
 
 	void DisplayOtherCards() {
@@ -99,7 +102,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 		foreach(Models.ScenarioCard card in ScenarioQueue.Problems)
 		{
-   			PortraitTextBox btnChoice = ObjectPool.Instantiate<PortraitTextBox>();
+   			PortraitTextBox btnChoice = ObjectPool.Instantiate<PortraitTextBox>("Scenario");
    
    			Models.Character charRef = DataManager.GetDataForCharacter(card.initiating_npc);
 
@@ -108,6 +111,8 @@ public class ScenarioCardDialog : GenericDialogBox {
 			btnChoice.transform.SetParent(upcomingCardsPanel.transform);
 
 		}
+		
+		upcomingCardsPanel.gameObject.SetActive(ScenarioQueue.Problems.Length > 0);
 
 	}
 
@@ -124,11 +129,12 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 			string npcDialogue = _data.characters[characterSymbol].dialogue;
 
-			NPCConferenceButton btnChoice = ObjectPool.Instantiate<NPCConferenceButton>();
+			NPCConferenceButton btnChoice = ObjectPool.Instantiate<NPCConferenceButton>("Scenario");
 
 			Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
 			
 			btnChoice.NPCName = charRef.display_name;
+			btnChoice.NPCSymbol = charRef.symbol;
 			btnChoice.Text = npcDialogue.Substring(0, Mathf.Clamp(80, 0, npcDialogue.Length)) + "...";
 
 			btnChoice.Button.onClick.RemoveAllListeners();
@@ -149,7 +155,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 	
 		foreach(string option in currentCardOptions) {
 
-			ScenarioChoiceButton btnChoice = ObjectPool.Instantiate<ScenarioChoiceButton>();
+			ScenarioChoiceButton btnChoice = ObjectPool.Instantiate<ScenarioChoiceButton>("Scenario");
 
 			btnChoice.Text = DataManager.GetUnlockableBySymbol(option).title;
 
@@ -207,7 +213,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 	void AddResponseSpeech(string strDialogue, Models.Character npc) {
 
-		NPCResponse responseSpeech = ObjectPool.Instantiate<NPCResponse>();
+		NPCResponse responseSpeech = ObjectPool.Instantiate<NPCResponse>("Scenario");
 
 		// Show response portraits/arrows only after initial response
 		if(responseTextPanel.transform.childCount > 0) {
