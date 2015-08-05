@@ -8,11 +8,10 @@ public class TacticsColumn : Column {
 	bool initialized = false;
 
 	void OnEnable () {
-		if (!initialized) {
-			PlayerData.TacticGroup.onUpdate += OnUpdate;
-			PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
-			initialized = true;
-		}
+		// PlayerData.TacticGroup.onUpdate += OnUpdate;
+		// PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
+
+		OnUpdate();
 	}
 
 	void OnUpdate () {

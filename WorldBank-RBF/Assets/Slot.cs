@@ -16,16 +16,16 @@ public class Slot : MonoBehaviour, IDropHandler {
 	public void OnDrop (PointerEventData eventData)
 	{
 		if (!item) {
-			ThisDragHandler.itemBeingDragged.transform.SetParent (transform);
+			UITactic.itemBeingDragged.transform.SetParent (transform);
 			return;
 		} else {
 
 		if (item) {
-			ThisDragHandler.itemBeingDragged.transform.SetParent (transform);
+			UITactic.itemBeingDragged.transform.SetParent (transform);
 
-			item.transform.SetParent (ThisDragHandler.startParent);
+			item.transform.SetParent (UITactic.startParent);
 
-			UITactic tactic = ThisDragHandler.itemBeingDragged.GetComponent<UITactic>();
+			UITactic tactic = UITactic.itemBeingDragged.GetComponent<UITactic>();
 			UITacticSlot slot = transform.GetComponent<UITacticSlot>();
 			
 			// Tell tactic it has moved

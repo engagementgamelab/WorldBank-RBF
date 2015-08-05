@@ -28,12 +28,11 @@ public class PrioritizationChart : MonoBehaviour {
     // Callback for TacticSlotEvent, filtering for type of event
     /// </summary>
     void OnTacticEvent(TacticSlotEvent e) {
+
     	if (e.tactic.Priority > -1)
 			PlayerData.TacticPriorityGroup.AddTactic (e.tactic);
 		else
 			PlayerData.TacticPriorityGroup.Remove (e.tactic);
-
-			Debug.Log(PlayerData.TacticPriorityGroup.Count);
 
    		continuePlanButton.gameObject.SetActive(PlayerData.TacticPriorityGroup.Count == 6);
     }

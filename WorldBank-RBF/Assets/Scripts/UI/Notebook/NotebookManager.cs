@@ -130,6 +130,12 @@ public class NotebookManager : MB {
 		}
 	}
 
+	public void ToggleTabs () {
+	
+		tabGroup.SetActive (!tabGroup.activeSelf);
+
+	}
+	
 	public void Open () {
 		if (open) return;
 		UpdateState ();

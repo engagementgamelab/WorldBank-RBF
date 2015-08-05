@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 
 public class ColumnNoSwap : MonoBehaviour, IDropHandler {
+	
 	public GameObject targetMenu ;
 	public GameObject item {
 		get {
@@ -17,20 +18,14 @@ public class ColumnNoSwap : MonoBehaviour, IDropHandler {
 	public void OnDrop (PointerEventData eventData)
 	{
 		
-//		if (!item) {
-			ThisDragHandler.itemBeingDragged.transform.SetParent (targetMenu.transform);
-//			return;
-//		} else {
-//			
-////			if (item) {
-//				ThisDragHandler.itemBeingDragged.transform.SetParent (transform);
-//				//			item.transform.SetParent (DragHandler.startParent);
-//				
-//				ThisDragHandler.itemBeingDragged.transform.SetParent (ThisDragHandler.startParent);
-//				
-//				//			print (DragHandler.startParent);
-//			}
-//		}
-		#endregion
+		UITactic.itemBeingDragged.transform.SetParent (targetMenu.transform);
+
+		TacticItem tacticItem = UITactic.itemBeingDragged.GetComponent<UITactic>().Tactic;
+		
+		// Broadcast to say removed from plan
+		Events.instance.Raise (new TacticSlotEvent (tacticItem));
+
 	}
+	#endregion
+
 }

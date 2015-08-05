@@ -169,11 +169,11 @@ public class ScenarioManager : MonoBehaviour {
 	
 		// currentQueueIndex starts at 1, so decrement it
 		int cardIndex = queueProblemCard ? currentQueueIndex : currentCardIndex;
-		int nextCard = currentCardIndex + 1;
-		int scenarioLength = DataManager.ScenarioLength(scenarioTwistIndex) - 1;
+		int nextCardIndex = currentCardIndex + 1;
+		int yearLength = DataManager.ScenarioLength(scenarioTwistIndex);
  
 		// Should we display a year break (happens at 4th and 8th card or if forced by timer)?
-		if(newYear || (nextCard > 0 && nextCard <= 8) && (nextCard % 4 == 0)) {
+		if(newYear || (yearLength == cardIndex)) {
 			
 			// Next year will start at card 0
 			currentCardIndex = -1;
@@ -213,7 +213,7 @@ public class ScenarioManager : MonoBehaviour {
 		}
 
 		// Load next card
-		if(scenarioLength > cardIndex) {
+		if((yearLength-1) > cardIndex) {
 
 			// Hide year end panel
 			// yearEndPanel.gameObject.SetActive(false);
@@ -224,7 +224,7 @@ public class ScenarioManager : MonoBehaviour {
 
 		}
 		// Show end of scenario
-		else {
+		else if(!queueProblemCard) {
 
 			// Show scenario end panel and hide cooldown
 			scenarioEndPanel.gameObject.SetActive(true);
@@ -296,12 +296,46 @@ public class ScenarioManager : MonoBehaviour {
 		// Create the card dialog
 		ScenarioDecisionDialog yearEndPanel = DialogManager.instance.CreateScenarioDecisionDialog(scenarioConf);
 		yearEndPanel.PreviousChoices = selectedOptions;
+
+		NotebookManager.Instance.ToggleTabs();
 	    	
 	}
 
-	bool QueueProblemCard() {
+	void NextProblemCard(string strSymbol) {
+	
+		System.Globalization.CultureInfo cultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
+		System.Globalization.TextInfo textInfo = cultureInfo.TextInfo;
 
-		return true;
+		Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(strSymbol);
+
+		selectedOptions.Add(textInfo.ToTitleCase(strSymbol.Replace("_", " ")));
+		usedAffects.Add(dictAffect.Values.ToArray());
+
+		openProblemCard = true;
+		currentQueueIndex++;
+
+		// Initialize tactics cards after first problem card done
+		if(currentYear == 1 && currentCardIndex == 0)
+		   	TacticsCanvas.Available = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+
+	}
+
+	void NextYear() {
+
+		// Go to next year
+		DataManager.AdvanceScenarioYear();
+
+		currentYear++;
+		currentMonth = 1;
+		
+		inYearEnd = false;
+
+		GetNextCard();
+
+		NotebookManager.Instance.ToggleTabs();
+
+		phaseCooldown.Restart();
+
 	}
 
     /// <summary>
@@ -427,6 +461,8 @@ public class ScenarioManager : MonoBehaviour {
 		currentMonth++;
 
     	bool atYearEnd = currentMonth == 12;
+		
+		phaseCooldownElapsed = monthLengthSeconds;
 
     	if(atYearEnd) {
 			Debug.Log("======== END OF YEAR " + currentYear + " ========");
@@ -434,11 +470,10 @@ public class ScenarioManager : MonoBehaviour {
 
 			openYearEnd = true;
 
-			phaseCooldownElapsed = monthLengthSeconds;
     	}
 		else {
 			Debug.Log("======== END OF MONTH " + currentMonth + " ========");
-			phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END));
+			phaseCooldown.Restart();
 		}
 
 		// Debug.Log("--> Indicators: " + currentAffectValues[0] + ", " + currentAffectValues[1] + ", " + currentAffectValues[2]);
@@ -461,33 +496,14 @@ public class ScenarioManager : MonoBehaviour {
     			break;
 
     		case "next":
-				Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(e.eventSymbol);
 
-    			selectedOptions.Add(e.eventSymbol);
-    			usedAffects.Add(dictAffect.Values.ToArray());
-
-    			openProblemCard = true;
-
-    			// Initialize tactics cards after first problem card done
-    			if(currentYear == 1 && currentCardIndex == 0)
-    			   	TacticsCanvas.Available = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+    			NextProblemCard(e.eventSymbol);
 
     			break;
 
     		case "next_year":
 
-				// Go to next year
-				DataManager.AdvanceScenarioYear();
-
-				currentYear++;
-				currentMonth = 1;
-				
-				inYearEnd = false;
-
-				GetNextCard();
-
-				if(enableCooldown)
-					phaseCooldown.Init(new int[] { monthLengthSeconds }, new ScenarioEvent(ScenarioEvent.MONTH_END), "phase_cooldown");
+    			NextYear();
 
     			break;
 

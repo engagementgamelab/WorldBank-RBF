@@ -21,7 +21,7 @@ public class PrioritiesColumn : Column {
 
 	public void OnUpdate () {
 		
-		ObjectPool.Destroy<UITactic> (uiTactics.ConvertAll (x => x.Transform));
+/*		ObjectPool.Destroy<UITactic> (uiTactics.ConvertAll (x => x.Transform));
 		uiTactics.Clear ();
 
 		ActivateSlots ();
@@ -31,7 +31,7 @@ public class PrioritiesColumn : Column {
 			UITactic t = CreateUITactic (tactic);
 			DeactivateSlot (uiSlots[priority]);
 			t.Transform.SetSiblingIndex (priority);
-		}		
+		}	*/	
 	}
 
 	public void CreateTacticSlots () {
