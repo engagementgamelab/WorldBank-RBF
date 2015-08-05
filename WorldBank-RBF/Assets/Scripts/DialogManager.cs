@@ -67,35 +67,6 @@ public class DialogManager : MonoBehaviour {
 
 	}
 
-	// TODO: Will be used for fading in text
-	/*	void Update() {
-
-		if(currentDialogueText != null)
-		{
-
-			string[] arrTxt = new string[currentDialogueText.Count];
-
-			for(int i = 0; i < currentDialogIndex-1; i++)
-			{
-				// if(currentDialogueOpacity[i] == null)
-				// 	currentDialogueOpacity[i] = 00;
-				// else
-					currentDialogueOpacity[i]++;
-
-				if(currentDialogueText[i].IndexOf("<color") == -1 && currentDialogueOpacity[i] < 100)
-					arrTxt[i] = "<color=#ffffff" + currentDialogueOpacity[i] + ">" + currentDialogueText[i] + "</color>";
-				else
-					arrTxt[i] = currentDialogueText[i];
-			}
-
-			// builder.Append();
-			currentDialogLabel.text = string.Join("", arrTxt);
-
-			currentDialogIndex++;
-
-		}
-	}*/
-
 	void CloseAll () {
 		if (dialogBox != null) {
 			dialogBox.Close();
@@ -232,6 +203,8 @@ public class DialogManager : MonoBehaviour {
 			});
 			dialogBox.AddButtons (new List<GenericButton> () { btn });
 		}
+
+		// StartCoroutine (CoFadeText ());
 	}
 
 	/// <summary>
@@ -276,6 +249,7 @@ public class DialogManager : MonoBehaviour {
 		}
 
 		CreateBackButton (CloseAndUnfocus);
+		// StartCoroutine (CoFadeText ());
 	}
 
 	GenericButton CreateButton (string text, UnityAction onClick) {
@@ -327,5 +301,38 @@ public class DialogManager : MonoBehaviour {
 	void CloseAndUnfocus () {
 		NPCFocusBehavior.Instance.DefaultFocus ();
 		CloseAll ();
+	}
+	
+	// TODO: This needs some work - text doesn't fade correctly, and also it needs to handle
+	// text that already has color tags
+	IEnumerator CoFadeText () {
+	
+		List<string> fadeText = new List<string> ();
+		List<double> textOpacity = new List<double> ();
+		foreach (char c in dialogBox.Content) {
+			fadeText.Add (c.ToString ());
+			textOpacity.Add (0);
+		}
+		
+		int textLength = fadeText.Count;
+		int index = 0;
+		string[] arrText = new string[textLength];
+
+		while (index < textLength) {
+			for (int i = 0; i < index; i ++) {
+
+				textOpacity[i] ++;
+
+				if (fadeText[i].IndexOf ("<color") == -1 && textOpacity[i] < 100)
+					arrText[i] = "<color=#ffffff" + textOpacity[i] + ">" + fadeText[i] + "</color>";			
+				else
+					arrText[i] = fadeText[i];
+			}
+
+			dialogBox.Content = string.Join ("", arrText);
+			index ++;
+
+			yield return null;
+		}
 	}
 }
