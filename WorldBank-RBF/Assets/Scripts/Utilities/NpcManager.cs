@@ -11,7 +11,7 @@ public class NpcManager {
 	}	
 
 	public static Models.NPC GetNpc (string symbol) {
-
+		
 		Models.NPC npc = new Models.NPC[] { Array.Find(npcs, row => row.character == symbol) }[0];
 		
 		if (npc == null)

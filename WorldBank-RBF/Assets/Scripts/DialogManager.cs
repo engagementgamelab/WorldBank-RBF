@@ -10,6 +10,7 @@ Created by Engagement Lab, 2015
 */
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,17 +50,7 @@ public class DialogManager : MonoBehaviour {
 	public delegate void BackButtonDelegate();
 
 	TacticCardDialog tacticDialog;
-
-	Text currentDialogLabel;
-	int currentDialogIndex;
 	double[] currentDialogueOpacity;
-	List<string> currentDialogueText;
-	
-	Dictionary<string, string> currentDialogueChoices;
-	Dictionary<string, Models.Dialogue> currentDialogueUnlockables;
-
-	List<Models.NPC> talkedToNpcs = new List<Models.NPC>();
-	StringBuilder builder = new StringBuilder();
 
 	void Awake() {
 
@@ -76,40 +67,11 @@ public class DialogManager : MonoBehaviour {
 
 	}
 
-	// TODO: Will be used for fading in text
-	/*	void Update() {
-
-		if(currentDialogueText != null)
-		{
-
-			string[] arrTxt = new string[currentDialogueText.Count];
-
-			for(int i = 0; i < currentDialogIndex-1; i++)
-			{
-				// if(currentDialogueOpacity[i] == null)
-				// 	currentDialogueOpacity[i] = 00;
-				// else
-					currentDialogueOpacity[i]++;
-
-				if(currentDialogueText[i].IndexOf("<color") == -1 && currentDialogueOpacity[i] < 100)
-					arrTxt[i] = "<color=#ffffff" + currentDialogueOpacity[i] + ">" + currentDialogueText[i] + "</color>";
-				else
-					arrTxt[i] = currentDialogueText[i];
-			}
-
-			// builder.Append();
-			currentDialogLabel.text = string.Join("", arrTxt);
-
-			currentDialogIndex++;
-
-		}
-	}*/
-
-	void CloseAll() {
-
-		if(dialogBox != null)
+	void CloseAll () {
+		if (dialogBox != null) {
 			dialogBox.Close();
-
+			dialogBox = null;
+		}
 	}
 
 	/// <summary>
@@ -149,8 +111,11 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="strDialogTxt">Text to show in the dialogue</param>
 	public GenericDialogBox CreateGenericDialog(string strDialogTxt, bool worldSpace, bool left) {
 
-	    dialogBox = ObjectPool.Instantiate<GenericDialogBox> ();
-	    dialogBox.Open(null, worldSpace, left);
+		if (dialogBox == null) {
+		    dialogBox = ObjectPool.Instantiate<GenericDialogBox> ();
+		}
+
+		dialogBox.Open(null, worldSpace, left);
 	    dialogBox.Content = strDialogTxt;
 
 	    return dialogBox;
@@ -218,210 +183,153 @@ public class DialogManager : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Open intro dialog for a given character
+	/// Opens a new dialogue box with a description of the selected NPC and the option to learn more or exit
 	/// </summary>
-	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
-	public void OpenIntroDialog(Models.NPC currNpc, bool left) {
+	/// <param name="currNpc">The NPC to get the description from</param>
+	/// <param name="left">If true, the dialog box will appear on the left side of the screen</param>
+	public void OpenNpcDescription (Models.NPC currNpc, bool left) {
 
-		int introTxtIndex = GetDialogIndex(currNpc);
+		CharacterItem character = PlayerData.CharacterGroup[currNpc.symbol];
+		string description = character.GetDescription ();
 
-		// If the "initial" text array index is over zero, or we've not talked to this NPC, show "Learn More"
-		bool enableLearnMore = introTxtIndex > 0 || !talkedToNpcs.Contains (currNpc);
+		CreateGenericDialog (description, true, left);
+		dialogBox.Header = character.DisplayName;
+		CreateBackButton (CloseAndUnfocus);
 
-		List<GenericButton> btnChoices = new List<GenericButton> ();
-
-		if (enableLearnMore && !PlayerData.InteractionGroup.Empty) {
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton> ();
-			btnChoice.Text = "Learn More";
-			btnChoice.Button.onClick.RemoveAllListeners ();
-			btnChoice.Button.onClick.AddListener (() => OpenDialog (currNpc));
-			btnChoices.Add (btnChoice);
+		if (!character.NoChoices) {
+			GenericButton btn = CreateButton ("Learn More", () => {
+				CloseAll ();
+				NPCFocusBehavior.Instance.DialogFocus ();
+			});
+			dialogBox.AddButtons (new List<GenericButton> () { btn });
 		}
 
-		Models.Character character = DataManager.GetDataForCharacter(currNpc.character);
-		CreateChoiceDialog (
-			character.description[Mathf.Clamp(introTxtIndex, 0, character.description.Length-1)],
-			btnChoices,
-			character.display_name,
-			CloseAndUnfocus,
-			true, left, true
-		);
-
+		// StartCoroutine (CoFadeText ());
 	}
 
-	/// <summary>
-	/// Open specified dialog for a given character
-	/// </summary>
-	/// <param name="currNpc">Instance of Models.NPC for this NPC</param>
-	/// <param name="strDialogueKey">The key corresponding to the dialogue to show</param>
-	/// <param name="returning">Specify whether player is returning to previous dialog</param>
-	public void OpenSpeechDialog(Models.NPC currNpc, string strDialogueKey, bool returning=false, bool left=false) {
+	/// <param name="currNpc">The NPC to get dialogue from</param>
+	/// <param name="left">If true, the dialogue box will appear on the left side of the screen</param>
+	/// <param name="initial">If true, will check for choices the player can select to further the dialogue</param>
+	public void OpenNpcDialog (Models.NPC currNpc, bool left, bool initial=true) {
 
-		Models.Dialogue currDialogue = currNpc.GetDialogue(strDialogueKey);
-		bool initialDialogue = strDialogueKey == "Initial";
-		int dialogTxtIndex = initialDialogue ? GetDialogIndex(currNpc) : 0;
-		int intTxtCount = currDialogue.text.Length-1;
+		CharacterItem character = PlayerData.CharacterGroup[currNpc.symbol];
+		string dialog = (initial) 
+			? character.InitialDialog
+			: character.CurrentDialog.text[0];
 
-		CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
-		TextInfo textInfo = cultureInfo.TextInfo;
+		if (initial) dialog = HighlightChoices (character, dialog);
 
-		if (returning && currentDialogueChoices == null)
-			throw new Exception ("You are trying to return to the previous dialog, but none exists");
+		CreateGenericDialog (dialog, true, left);
+		dialogBox.Header = character.DisplayName;
 
-		string strDialogTxt = currDialogue.text[Mathf.Clamp(dialogTxtIndex, 0, intTxtCount)];
+		if (initial && !character.NoChoices) {
+			List<GenericButton> btnChoices = new List<GenericButton> ();
+			foreach (var choice in character.Choices) {
+				
+				Models.Dialogue model = choice.Value;
+				
+				string ck = choice.Key;
+				string displayName = ck;
 
+				if (!DialogueUnlocked (model, ck, ref displayName))
+					continue;
+
+				btnChoices.Add (CreateButton (displayName, () => {
+					PlayerData.InteractionGroup.Remove ();
+					character.SelectChoice (ck);
+					OpenNpcDialog (currNpc, left, false);
+				}));
+			}
+			dialogBox.AddButtons (btnChoices);
+		} else {
+			ObjectPool.DestroyAll<GenericButton> ();
+		}
+
+		CreateBackButton (CloseAndUnfocus);
+		// StartCoroutine (CoFadeText ());
+	}
+
+	GenericButton CreateButton (string text, UnityAction onClick) {
+		GenericButton btn = ObjectPool.Instantiate<GenericButton> ();
+		btn.Text = text;
+		btn.Button.onClick.RemoveAllListeners ();
+		btn.Button.onClick.AddListener (onClick);
+		btn.Button.interactable = !PlayerData.InteractionGroup.Empty;
+		return btn;
+	}
+
+	void CreateBackButton (BackButtonDelegate backEvent) {
+		Button backButton = dialogBox.BackButton;
+		dialogBox.BackButton.gameObject.SetActive (true);
+		backButton.onClick.RemoveAllListeners ();
+		backButton.onClick.AddListener(() => backEvent ());
+	}
+
+	string HighlightChoices (CharacterItem character, string dialog) {
+		
 		// Match any characters in between [[ and ]]
 		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
+		Regex regexKeywords = new Regex (strKeywordRegex, RegexOptions.IgnoreCase);
+		MatchCollection keyMatches = regexKeywords.Matches (dialog);
+		TextInfo textInfo = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo;
 
-		// Does this dialogue unlock something?
-		if(currDialogue.unlocks != null)
-		{
-			string[] unlockableSymbols = currDialogue.unlocks;
-
-			foreach(string symbol in unlockableSymbols)
-			{
-
-				Models.Unlockable unlockableRef = DataManager.GetUnlockableBySymbol(symbol);
-				strDialogTxt += "\n\n<color=yellow>Unlocked</color> " + unlockableRef.title + " ";
-
-				// Unlock this implementation option for player
-				PlayerData.UnlockItem(symbol, "context_here");
-
-			}
-
+		foreach (Match m in keyMatches) {
+		    if (m.Success) {
+		    	string strKeyword = m.Groups[3].ToString();
+		    	if (character.Choices.ContainsKey (textInfo.ToTitleCase (strKeyword.ToLower ()))) {
+			    	dialog = dialog.Replace ("[[" + strKeyword + "]]", "<color=orange>" + strKeyword + "</color>");
+		    	} else {
+		    		dialog = dialog.Replace ("[[" + strKeyword + "]]", strKeyword);	
+		    	}
+		    }
 		}
- 		
- 		string strToDisplay = strDialogTxt;
-
-		/*
-		currentDialogueText = new List<string>();
-
-		foreach(char c in strDialogTxt)
-			currentDialogueText.Add(c.ToString());
-
-		currentDialogueOpacity = new double[currentDialogueText.Count];
-		*/
-
-		// Search for "keywords" in between [[ and ]]
-		Regex regexKeywords = new Regex(strKeywordRegex, RegexOptions.IgnoreCase);
-		MatchCollection keyMatches = regexKeywords.Matches(strDialogTxt);
-
-		if(strDialogueKey == "Initial" && !returning)
-		{
-			currentDialogueChoices = new Dictionary<string, string>();
-
-			currentDialogueUnlockables = currNpc.dialogue
-												.Where(kvp => kvp.Key.StartsWith("unlockable_dialogue_"))
-												.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-			foreach(Match m in keyMatches) {
-			    if (m.Success)
-				{
-			        string strKeyword = m.Groups[3].ToString();
-			        string strKeywordTitle = textInfo.ToTitleCase(m.Groups[3].ToString());
-
-			        // This is kind of a mess but it's currently how I am deciding which dialogue option to highlight, based on if something is unlocked (or not unlockable) 
-			       	IEnumerable<KeyValuePair<string, Models.Dialogue>> unlockLookup = currentDialogueUnlockables
-																				      .Where(diag => diag.Value.display_name == strKeywordTitle);
-			       	string unlockableKey = null;
-
-			       	// This key is unlockable dialogue?
-			       	if(unlockLookup.Any())
-			       		unlockableKey = unlockLookup.Select(diag => diag.Key).First(); 
-
-			       	// Highlight options that are unlocked or not an unlockable
-			       	if((unlockableKey != null && PlayerData.DialogueGroup.IsUnlocked(unlockableKey)) || unlockableKey == null) {
-						
-						strToDisplay = strToDisplay.Replace("[[" + strKeyword + "]]", "<color=orange>" + strKeyword + "</color>");
-	
-						if(unlockableKey == null)
-							currentDialogueChoices.Add(strKeywordTitle, strKeywordTitle);
-						else
-							currentDialogueChoices.Add(unlockableKey, strKeywordTitle);
-
-				    }
-				    // Remove brackets but do not highlight keyword
-				    else
-					    strToDisplay = strToDisplay.Replace("[[" + strKeyword + "]]", strKeyword);
-				}
-			}
-
-			// Add dialogue options not in text
-			foreach(KeyValuePair<string, Models.Dialogue> dialogue in currentDialogueUnlockables)
-			{
-				if(PlayerData.DialogueGroup.IsUnlocked(dialogue.Key))
-			        currentDialogueChoices.Add(dialogue.Key, dialogue.Value.display_name);
-			}
-		}
-
-		List<GenericButton> btnList = new List<GenericButton>();
-
-		foreach(KeyValuePair<string, string> choice in currentDialogueChoices) {
-
-			string choiceKey = choice.Key;
-			string choiceName = choice.Value;
-
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
-			btnChoice.Text = choiceName;
-
-			btnChoice.Button.onClick.RemoveAllListeners();
-
-			KeyValuePair<string, string> choiceRef = choice; // I don't understand why this is necessary, but if you just pass in 'choice' below, it will break
-			btnChoice.Button.onClick.AddListener (() => currentDialogueChoices.Remove(choiceRef.Key));
-			btnChoice.Button.onClick.AddListener(() => OpenSpeechDialog(currNpc, choiceKey, false, left));
-
-			btnList.Add(btnChoice);
-		}
-
-		BackButtonDelegate del = CloseAndUnfocus;
-
-		CreateChoiceDialog(strToDisplay, btnList, "", del, true, left);
+		return dialog;
 	}
 
-	public void OpenSpeechDialog(string symbol, string strDialogueKey, bool returning=false, bool left=false) {
-		OpenSpeechDialog (NpcManager.GetNpc (symbol), strDialogueKey, returning, left);
-	}
-
-	void OpenDialog (Models.NPC currNpc) {
-		NPCFocusBehavior.Instance.DialogFocus ();
-		talkedToNpcs.Add (currNpc);
+	bool DialogueUnlocked (Models.Dialogue model, string choiceKey, ref string displayName) {
+		if (choiceKey.StartsWith ("unlockable_dialogue_")) {
+			displayName = model.display_name;
+			if (!PlayerData.DialogueGroup.Unlockables.FirstOrDefault (x => x.Symbol == choiceKey).Unlocked)
+				return false;
+		}
+		return true;
 	}
 
 	void CloseAndUnfocus () {
 		NPCFocusBehavior.Instance.DefaultFocus ();
-		CloseCharacterDialog ();
+		CloseAll ();
 	}
-
-    /// <summary>
-    /// Determine which text index (for description and initial text) to show by looking at if player has previously unlocked 1 or more of the referenced NPC's unlockables
-    /// </summary>
-    /// <param name="npcRef">The NPC reference</param>
-    /// <returns>The text index</returns>
-	int GetDialogIndex(Models.NPC npcRef) {
-
-		int intDialogIndex = 0;
-
-		foreach(string[] arrUnlocks in DataManager.GetUnlocksForCharacter(npcRef))
-		{
-			bool unlockItemUnlocked = false;
-
-			if(arrUnlocks[0].StartsWith("unlockable_dialogue_")) 
-				unlockItemUnlocked = PlayerData.DialogueGroup.IsUnlocked(arrUnlocks[0]);
-			else if(!arrUnlocks[0].StartsWith("unlockable_route_"))
-				unlockItemUnlocked = PlayerData.TacticGroup.IsUnlocked(arrUnlocks[0]);
-
-			if(unlockItemUnlocked)
-				intDialogIndex++;
+	
+	// TODO: This needs some work - text doesn't fade correctly, and also it needs to handle
+	// text that already has color tags
+	IEnumerator CoFadeText () {
+	
+		List<string> fadeText = new List<string> ();
+		List<double> textOpacity = new List<double> ();
+		foreach (char c in dialogBox.Content) {
+			fadeText.Add (c.ToString ());
+			textOpacity.Add (0);
 		}
+		
+		int textLength = fadeText.Count;
+		int index = 0;
+		string[] arrText = new string[textLength];
 
-		return intDialogIndex;
+		while (index < textLength) {
+			for (int i = 0; i < index; i ++) {
 
-	}
+				textOpacity[i] ++;
 
-	public void CloseCharacterDialog (bool openNext=true) {
-		if (dialogBox != null) {
-			dialogBox.Close ();
-			dialogBox = null;
+				if (fadeText[i].IndexOf ("<color") == -1 && textOpacity[i] < 100)
+					arrText[i] = "<color=#ffffff" + textOpacity[i] + ">" + fadeText[i] + "</color>";			
+				else
+					arrText[i] = fadeText[i];
+			}
+
+			dialogBox.Content = string.Join ("", arrText);
+			index ++;
+
+			yield return null;
 		}
 	}
 }

@@ -34,6 +34,7 @@ public class PlayerData {
 				inventory.Add (new InteractionGroup ());
 				inventory.Add (new RouteGroup ());
 				inventory.Add (new CityGroup ());
+				inventory.Add (new CharacterGroup ());
 			}
 			return inventory; 
 		}
@@ -89,6 +90,13 @@ public class PlayerData {
 	/// </summary>
 	public static CityGroup CityGroup {
 		get { return (CityGroup)Inventory["cities"]; }
+	}
+
+	/// <summary>
+	/// Gets the CharacterGroup, which contains all the characters in the game.
+	/// </summary>
+	public static CharacterGroup CharacterGroup {
+		get { return (CharacterGroup)Inventory["characters"]; }
 	}
 
 	/// <summary>

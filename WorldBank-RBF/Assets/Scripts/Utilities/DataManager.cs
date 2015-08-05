@@ -233,8 +233,31 @@ public class DataManager {
         
     }
 
+    public static NPC GetNpc (string symbol) {
+        foreach (var npc in gameData.phase_one) {
+            NPC found = npc.Value.ToList ().Find (e => e.character == symbol);
+            if (found != null)
+                return found;
+        }
+        return null;
+    }
+
     public static int GetCityNPCCount (string citySymbol) {
         return gameData.phase_one[citySymbol].Length;
+    }
+
+    /// <summary>
+    /// Get all characters available in game data.
+    /// </summary>
+    /// <returns>An array of Character.</returns>
+    public static Character[] GetAllCharacters ()    {
+        
+        try {
+            return gameData.characters;
+        } catch {
+            throw new Exception ("Could not load characters.");
+        }
+
     }
 
     /// <summary>
