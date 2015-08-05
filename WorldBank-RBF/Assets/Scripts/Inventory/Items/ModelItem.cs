@@ -32,6 +32,14 @@ public class ModelItem : InventoryItem {
 		}
 	}
 
+	/// <summary>
+	/// Gets/sets the unlockable context.
+	/// </summary>
+	public string Context {
+		set { Model.context = value; }
+		get { return Model.context; }
+	}
+
 	protected Models.Unlockable model;
 
 	/// <summary>

@@ -48,6 +48,16 @@ public class ModelGroup<T> : ItemGroup<T> where T : ModelItem, new () {
 	}
 
 	/// <summary>
+	/// Unlocks the item with the given symbol and set context.
+	/// </summary>
+	/// <param name="symbol">The symbol of the item to unlock.</param>
+	/// <param name="symbol">The item's context string.</param>
+	public void UnlockWithContext (string symbol, string context) {
+		Unlock(symbol);
+		Find (symbol).Context = context;
+	}
+
+	/// <summary>
 	/// Is the item with the given symbol unlocked?
 	/// </summary>
 	/// <param name="symbol">The symbol of the item.</param>

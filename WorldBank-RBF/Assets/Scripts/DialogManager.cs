@@ -169,7 +169,7 @@ public class DialogManager : MonoBehaviour {
 		if(closeAll)
 			CloseAll();
 
-		ScenarioCardDialog scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>();
+		ScenarioCardDialog scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>("Scenario");
 	    scenarioDialog.Data = scenario;
 
 	    scenarioDialog.transform.SetAsFirstSibling();
@@ -184,7 +184,7 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="scenarioConfig">The instance of the current scenario's config.</param>
 	public ScenarioDecisionDialog CreateScenarioDecisionDialog(Models.ScenarioConfig scenarioConfig) {
 
-	    ScenarioDecisionDialog yearEndDialog = ObjectPool.Instantiate<ScenarioDecisionDialog>();
+	    ScenarioDecisionDialog yearEndDialog = ObjectPool.Instantiate<ScenarioDecisionDialog>("Scenario");
 
 	    yearEndDialog.Year = DataManager.CurrentYear;
 	    yearEndDialog.Data = scenarioConfig;
@@ -210,7 +210,7 @@ public class DialogManager : MonoBehaviour {
 
 		List<GenericButton> btnList = new List<GenericButton>();
 
-		TacticCardDialog tacticDialog = ObjectPool.Instantiate<TacticCardDialog>();
+		TacticCardDialog tacticDialog = ObjectPool.Instantiate<TacticCardDialog>("Scenario");
 		tacticDialog.Data = tactic;
 		
 		return tacticDialog;
@@ -285,7 +285,7 @@ public class DialogManager : MonoBehaviour {
 				strDialogTxt += "\n\n<color=yellow>Unlocked</color> " + unlockableRef.title + " ";
 
 				// Unlock this implementation option for player
-				PlayerData.UnlockItem(symbol);
+				PlayerData.UnlockItem(symbol, "context_here");
 
 			}
 

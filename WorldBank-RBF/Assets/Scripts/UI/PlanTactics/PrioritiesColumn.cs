@@ -20,6 +20,12 @@ public class PrioritiesColumn : Column {
 		}
 	}
 
+	void OnEnable() {
+
+		OnUpdate();
+		
+	}
+
 	public void OnUpdate () {
 		
 		ObjectPool.Destroy<UITactic> (uiTactics.ConvertAll (x => x.Transform));

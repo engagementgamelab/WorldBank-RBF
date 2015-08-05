@@ -35,6 +35,12 @@ public class ScenarioQueue : MonoBehaviour {
 
 	}
 
+	public static void Clear() {
+
+		problemCards.Clear();
+
+	}
+
 //////
 	static List<TacticCardDialog> tacticCards = new List<TacticCardDialog>();
 

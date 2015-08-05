@@ -106,6 +106,7 @@ public class ScenarioDecisionDialog : GenericDialogBox {
 
 		// Broadcast to affect current scenario path with the config value
 		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.DECISION_SELECTED, strOptionValue));
+		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT_YEAR));
 
 		Close();
 
