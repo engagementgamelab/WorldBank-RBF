@@ -217,12 +217,13 @@ public class DialogManager : MonoBehaviour {
 			? character.InitialDialog
 			: character.CurrentDialog.text[0];
 
-		if (initial) dialog = HighlightChoices (character, dialog);
+		Dictionary<string, bool> choices = GetChoices (character, dialog);
+		dialog = HighlightChoices (character, dialog, choices);
 
 		CreateGenericDialog (dialog, true, left);
 		dialogBox.Header = character.DisplayName;
 
-		if (initial && !character.NoChoices) {
+		if (!character.NoChoices) {
 			List<GenericButton> btnChoices = new List<GenericButton> ();
 			foreach (var choice in character.Choices) {
 				
@@ -232,6 +233,9 @@ public class DialogManager : MonoBehaviour {
 				string displayName = ck;
 
 				if (!DialogueUnlocked (model, ck, ref displayName))
+					continue;
+
+				if (!choices.ContainsKey (ck.ToLower ()))
 					continue;
 
 				btnChoices.Add (CreateButton (displayName, () => {
@@ -265,24 +269,41 @@ public class DialogManager : MonoBehaviour {
 		backButton.onClick.AddListener(() => backEvent ());
 	}
 
-	string HighlightChoices (CharacterItem character, string dialog) {
-		
+	Dictionary<string, bool> GetChoices (CharacterItem character, string dialog) {
+
 		// Match any characters in between [[ and ]]
 		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
 		Regex regexKeywords = new Regex (strKeywordRegex, RegexOptions.IgnoreCase);
 		MatchCollection keyMatches = regexKeywords.Matches (dialog);
 		TextInfo textInfo = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo;
+		Dictionary<string, bool> choices = new Dictionary<string, bool> ();
 
 		foreach (Match m in keyMatches) {
 		    if (m.Success) {
 		    	string strKeyword = m.Groups[3].ToString();
-		    	if (character.Choices.ContainsKey (textInfo.ToTitleCase (strKeyword.ToLower ()))) {
-			    	dialog = dialog.Replace ("[[" + strKeyword + "]]", "<color=orange>" + strKeyword + "</color>");
+		    	string choiceKey = textInfo.ToTitleCase (strKeyword.ToLower ());
+		    	if (character.Choices.ContainsKey (choiceKey)) {
+		    		choices.Add (strKeyword, true);
 		    	} else {
-		    		dialog = dialog.Replace ("[[" + strKeyword + "]]", strKeyword);	
+		    		choices.Add (strKeyword, false);
 		    	}
 		    }
 		}
+		return choices;
+	}
+
+	string HighlightChoices (CharacterItem character, string dialog, Dictionary<string, bool> choices) {
+		
+		foreach (var choice in choices) {
+			string strKeyword = choice.Key;
+			bool unlocked = choice.Value;
+			if (unlocked) {
+				dialog = dialog.Replace ("[[" + strKeyword + "]]", "<color=orange>" + strKeyword + "</color>");
+			} else {
+				dialog = dialog.Replace ("[[" + strKeyword + "]]", strKeyword);
+			}
+		}
+
 		return dialog;
 	}
 
