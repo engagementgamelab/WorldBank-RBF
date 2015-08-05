@@ -235,7 +235,7 @@ public class DialogManager : MonoBehaviour {
 				if (!DialogueUnlocked (model, ck, ref displayName))
 					continue;
 
-				if (!choices.ContainsKey (ck.ToLower ()))
+				if (!(character.Returning && initial) && !choices.ContainsKey (ck.ToLower ()))
 					continue;
 
 				btnChoices.Add (CreateButton (displayName, () => {

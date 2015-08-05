@@ -44,12 +44,12 @@ public class CharacterItem : ModelItem {
 		}
 	}
 
-	bool Returning {
+	public bool Returning {
 		get { return Choices.Count < Npc.dialogue.Count-1; }
 	}
 
 	public bool NoChoices {
-		get { return Choices.Count == 0; }
+		get { return Choices.Count == 0 && Returning; }
 	}
 
 	KeyValuePair<string, Dialogue> currentDialog;
