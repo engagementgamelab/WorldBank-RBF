@@ -13,13 +13,6 @@ public class PrioritiesColumn : Column {
 		CreateTacticSlots ();
 	}
 
-	void OnEnable () {
-		if (!initialized) {
-			PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
-			initialized = true;
-		}
-	}
-
 	void OnEnable() {
 
 		OnUpdate();
