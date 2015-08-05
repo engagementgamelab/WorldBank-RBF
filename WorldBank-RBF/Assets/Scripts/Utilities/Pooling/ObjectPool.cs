@@ -103,8 +103,6 @@ public class ObjectPool : MonoBehaviour {
 	static Transform CreatePrefab (string prefabName, string additionalPath=null) {
 		GameObject go = null;
 
-		Debug.Log(additionalPath);
-
 		Object resourceObj = Resources.Load ("Prefabs/" + ((additionalPath == null) ? "" : additionalPath + "/")  + prefabName);
 
 		try {

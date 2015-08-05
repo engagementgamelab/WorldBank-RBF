@@ -95,7 +95,7 @@ public class PlayerData {
 	/// Unlocks the specified implementation for player.
 	/// </summary>
 	/// <param name="strSymbol">Symbol of the unlockable</param>
-	public static void UnlockItem (string strSymbol) {
+	public static void UnlockItem (string strSymbol, string npcContext=null) {
 
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
 		
@@ -104,7 +104,10 @@ public class PlayerData {
 		} else if (strSymbol.StartsWith ("unlockable_dialogue_")) {
 			DialogueGroup.Unlock (strSymbol);
 		} else {
-			TacticGroup.Unlock (strSymbol);
+			if(npcContext != null)
+				TacticGroup.UnlockWithContext (strSymbol, npcContext);
+			else
+				TacticGroup.Unlock (strSymbol);
 		}
 	}
 }

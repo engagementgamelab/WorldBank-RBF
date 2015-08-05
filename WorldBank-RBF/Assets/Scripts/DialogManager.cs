@@ -285,7 +285,7 @@ public class DialogManager : MonoBehaviour {
 				strDialogTxt += "\n\n<color=yellow>Unlocked</color> " + unlockableRef.title + " ";
 
 				// Unlock this implementation option for player
-				PlayerData.UnlockItem(symbol);
+				PlayerData.UnlockItem(symbol, "context_here");
 
 			}
 

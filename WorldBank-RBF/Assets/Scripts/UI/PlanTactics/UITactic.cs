@@ -6,15 +6,9 @@ public class UITactic : TacticButton {
 
 	public static UITactic selectedTactic = null;
 
-	Button removeButton = null;
-	Button RemoveButton {
-		get {
-			if (removeButton == null) {
-				removeButton = Transform.GetChild (1).GetComponent<Button> ();
-			}
-			return removeButton;
-		}
-	}
+	public Text titleText;
+	public Text descriptionText;
+	public Text contextText;
 
 	LayoutElement layoutElement = null;
 	LayoutElement Layout {
@@ -33,7 +27,12 @@ public class UITactic : TacticButton {
 
 	public void Init (Column column, Transform contentParent, TacticItem tactic) {
 		this.tactic = tactic;
-		RemoveButton.gameObject.SetActive (tactic.Priority > -1);	
+
+		// Set various text elements
+		titleText.text = tactic.Title;
+		descriptionText.text = tactic.Description;
+		contextText.text = tactic.Context;
+		
 		Init (column, contentParent, tactic.Title);
 	}
 

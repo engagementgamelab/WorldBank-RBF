@@ -23,15 +23,15 @@ public class DebugMenu : MonoBehaviour {
 			}
 		}
 		if (GUILayout.Button ("unlock tactics")) {
-			PlayerData.UnlockItem ("unlockable_vouchers_for_services");
-			PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system");
-			PlayerData.UnlockItem ("unlockable_incentivise_providers_to_deliver_services");
+			PlayerData.UnlockItem ("unlockable_vouchers_for_services", "This would provide vouchers to poor people so they can receive necessary services at a greatly reduces price.");
+			PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system", "If major changes are going to take place in the health system, and educational information campaign to explain these changes may be necessary to avoid confusion.");
+			PlayerData.UnlockItem ("unlockable_incentivise_providers_to_deliver_services", "Context text");
 
-    		PlayerData.UnlockItem ("unlockable_incentivise_providers_to_follow_protocols");
-    		PlayerData.UnlockItem ("unlockable_improve_patient_and_provider_relationship");
-    		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements");
-    		PlayerData.UnlockItem ("unlockable_information_campaign_to_change_cultural_customs_and_behavior");
-    		PlayerData.UnlockItem ("unlockable_dialogue_mr_todd");
+    		PlayerData.UnlockItem ("unlockable_incentivise_providers_to_follow_protocols", "Context text");
+    		PlayerData.UnlockItem ("unlockable_improve_patient_and_provider_relationship", "Context text");
+    		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements", "Context text");
+    		PlayerData.UnlockItem ("unlockable_information_campaign_to_change_cultural_customs_and_behavior", "Context text");
+    		PlayerData.UnlockItem ("unlockable_dialogue_mr_todd", "Context text");
     	}
 	}
 	#endif

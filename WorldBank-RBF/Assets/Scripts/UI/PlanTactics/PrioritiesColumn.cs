@@ -13,6 +13,12 @@ public class PrioritiesColumn : Column {
 		PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
 	}
 
+	void OnEnable() {
+
+		OnUpdate();
+		
+	}
+
 	public void OnUpdate () {
 		
 		ObjectPool.Destroy<UITactic> (uiTactics.ConvertAll (x => x.Transform));
