@@ -224,7 +224,7 @@ public class ScenarioManager : MonoBehaviour {
 
 		}
 		// Show end of scenario
-		else if(!queueProblemCard) {
+		else if(!queueProblemCard && currentYear > 3) {
 
 			// Show scenario end panel and hide cooldown
 			scenarioEndPanel.gameObject.SetActive(true);
