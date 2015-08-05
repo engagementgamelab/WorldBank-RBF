@@ -7,7 +7,14 @@ public class CharacterGroup : ModelGroup<CharacterItem> {
 	public override string ID { get { return "characters"; } }
 
 	public CharacterItem this[string symbol] {
-		get { return Characters.Find (x => x.Symbol == symbol); }
+		get { 
+			symbol = symbol.Replace ("dialogue_", "");
+			try {
+				return Characters.Find (x => x.Symbol == symbol); 
+			} catch {
+				throw new System.Exception ("No character with the symbol '" + symbol + "' exists.");
+			}
+		}
 	}
 
 	List<CharacterItem> characters;

@@ -7,21 +7,27 @@ using Models;
 
 public class CharacterItem : ModelItem {
 
-	public string Symbol { get { 
-		if (Model == null) {
-			Debug.Log (Model + " does not have a symbol");
-			return "";
-		}
-		return Model.symbol; } }
-	public Character Model { get; private set; }
+	new public string Symbol { get; private set; }
+	new public Character Model { get; private set; }
+
 	public NPC Npc { get; private set; }
-		
+	public string DisplayName { get; private set; }
+	
+	Dialogue initialDialog;
+	public string InitialDialog { 
+		get { return initialDialog.text[Returning ? 1 : 0]; }
+	}
+
 	Dictionary<string, Dialogue> choices;
-	Dictionary<string, Dialogue> Choices {
+	public Dictionary<string, Dialogue> Choices {
 		get {
 			if (choices == null) {
-				choices = new Dictionary<string, Dialogue> (
-					Npc.dialogue, StringComparer.OrdinalIgnoreCase);
+				if (!phaseOneCharacter) {
+					choices = new Dictionary<string, Dialogue> ();
+				} else {
+					choices = new Dictionary<string, Dialogue> (
+						Npc.dialogue, StringComparer.OrdinalIgnoreCase);
+				}
 			}
 			return choices;
 		}
@@ -39,19 +45,35 @@ public class CharacterItem : ModelItem {
 	}
 
 	bool Returning {
-		get { return Choices.Count < Npc.dialogue.Count; }
+		get { return Choices.Count < Npc.dialogue.Count-1; }
 	}
 
-	bool NoChoices {
+	public bool NoChoices {
 		get { return Choices.Count == 0; }
 	}
+
+	KeyValuePair<string, Dialogue> currentDialog;
+	public Dialogue CurrentDialog { // TODO: should this be a string?
+		get { return currentDialog.Value; }
+	}
+
+	bool phaseOneCharacter;
 
 	public CharacterItem () {}
 
 	public CharacterItem (Character model) {
 		this.Model = model;
-		Debug.Log (Model.symbol);
+		Symbol = Model.symbol;
 		this.Npc = DataManager.GetNpc (Symbol);
+		phaseOneCharacter = (Npc != null);
+		DisplayName = Model.display_name;
+		SetInitialDialog ();
+	}
+
+	void SetInitialDialog () {
+		if (!phaseOneCharacter) return;
+		initialDialog = Choices.FirstOrDefault (x => x.Key == "Initial").Value;
+		Choices.Remove ("Initial");
 	}
 
 	public string GetDescription () {
@@ -60,11 +82,21 @@ public class CharacterItem : ModelItem {
 		return Descriptions[0];
 	}
 
-	/*public Dialogue GetInitialDialog () {
-		return Choices["Initial"];
-	}*/
+	public void SelectChoice (string choice) {
+		
+		currentDialog = Choices.FirstOrDefault (x => x.Key == choice);
+		Dialogue dialog = currentDialog.Value;
+		
+		if (dialog.unlocks != null) {
 
-	/*public string GetDialog (string dialogKey) {
-		return Npc.GetDialogue (dialogKey);
-	}*/
+			string[] unlockableSymbols = dialog.unlocks;
+			foreach (string symbol in unlockableSymbols) {
+				Models.Unlockable unlockableRef = DataManager.GetUnlockableBySymbol(symbol);
+				PlayerData.UnlockItem(symbol);
+				Debug.Log ("unlocked: " + symbol);
+			}
+		}
+
+		Choices.Remove (choice);
+	}
 }

@@ -234,7 +234,12 @@ public class DataManager {
     }
 
     public static NPC GetNpc (string symbol) {
-        return Array.Find (gameData.phase_one[currentSceneContext], x => x.character == symbol);
+        foreach (var npc in gameData.phase_one) {
+            NPC found = npc.Value.ToList ().Find (e => e.character == symbol);
+            if (found != null)
+                return found;
+        }
+        return null;
     }
 
     public static int GetCityNPCCount (string citySymbol) {

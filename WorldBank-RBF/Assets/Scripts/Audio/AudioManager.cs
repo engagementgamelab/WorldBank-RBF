@@ -17,10 +17,10 @@ public class AudioManager : MonoBehaviour {
 
 	void Start () {
 		PlayerData.CityGroup.onUpdateCurrentCity += OnSetCity;
-		Ambiences.Play ("capitol");
+		// Ambiences.Play ("capitol");
 	}
 
 	void OnSetCity (string city) {
-		Ambiences.Play (city);
+		// Ambiences.Play (city);
 	}
 }
