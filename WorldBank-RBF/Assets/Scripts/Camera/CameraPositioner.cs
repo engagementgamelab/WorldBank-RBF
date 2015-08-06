@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class CameraPositioner : MB {
 
+	public bool enableMovement = true;
+
 	public class CameraDrag {
 
 		bool enabled = true;
@@ -135,15 +137,23 @@ public class CameraPositioner : MB {
 	}
 
 	void Update () {
+
+		if(!enableMovement) return;
+
 		Drag.OnDrag ();
 		if (Drag.Enabled) XPosition = Position.x + Input.GetAxis ("Horizontal") * Time.deltaTime * 10f;
+
 	}
 
 	void OnDragDownEvent (DragDownEvent e) {
+		if(!enableMovement) return;
+
 		Drag.OnDragDown ();
 	}
 
 	void OnDragUpEvent (DragUpEvent e) {
+		if(!enableMovement) return;
+		
 		Drag.OnDragUp ();
 	}
 

@@ -78,8 +78,6 @@ namespace TimerUtils {
 			Debug.Log("Timer Stopped: " + currentSymbol);
 
 			aTimer.Enabled = false;
-			aTimer.Stop();
-			aTimer.Dispose();
 
 		}
 
@@ -109,6 +107,8 @@ namespace TimerUtils {
 
 			Debug.Log("Timer Restarted: " + currentSymbol);
 
+			elapsedSeconds = 0;
+
 			aTimer.Stop();
 			aTimer.Start();
 
@@ -120,8 +120,10 @@ namespace TimerUtils {
 			elapsedSeconds++;
 
 			Events.instance.Raise(new GameEvents.TimerTick(elapsedSeconds, currentSymbol));
-
+			
 			if(elapsedSeconds == currentCooldown) {
+
+				Stop();
 
 	            try {
 
@@ -131,8 +133,6 @@ namespace TimerUtils {
 	            catch(Exception e) {
 	                throw new Exception("No callback registered for cooldown!");
 	            }
-				
-				Stop();
 	            
 	        }
 
