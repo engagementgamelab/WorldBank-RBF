@@ -7,6 +7,7 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 	
 	public static UITactic selectedTactic = null;
 
+	public PortraitTextBox portrait;
 	public Text titleText;
 	public Text descriptionText;
 	public Text contextText;

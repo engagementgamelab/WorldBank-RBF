@@ -54,7 +54,8 @@ public class PrioritiesColumn : Column {
 
 				UITacticHeader header = ObjectPool.Instantiate<UITacticHeader> ();
 				header.Text = title;
-				header.transform.SetParent(content.transform);
+				header.Transform.SetParent(content.transform);
+				header.Transform.SetLocalScale (1);
 
 			}
 

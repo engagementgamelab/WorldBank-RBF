@@ -81,7 +81,7 @@ public class CitiesManager : MB {
 	/// <param name="route">The route to move along.</param>
 	public void VisitCity (CityItem city, RouteItem route) {
 		city.Visited = true;
-		PlayerData.InteractionGroup.Set (city.Model.npc_interactions);
+		PlayerData.InteractionGroup.SetInteractions (city.Symbol);
 		TravelToCity (city, route, OnVisit);
 	}
 

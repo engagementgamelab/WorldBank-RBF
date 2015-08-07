@@ -16,6 +16,7 @@ using System.Collections.Generic;
 public class PortraitTextBox : GenericButton {
 
 	public Image portrait;
+	public bool phaseOne = false;
 
 	/// <summary>
     /// Set the NPC Name on the button
@@ -43,8 +44,14 @@ public class PortraitTextBox : GenericButton {
 		set {
 			
 			// Obtain portrait image and load corresponding sprite
-			portrait.sprite = Resources.Load<Sprite>("Portraits/PhaseTwo/" + value);
-
+			if (phaseOne) {
+				Sprite sprite = Resources.Load<Sprite>("Portraits/PhaseOne/" + value);
+				if (sprite == null || value == "") 
+					sprite = Resources.Load<Sprite>("Portraits/PhaseOne/capitol_city_traveler_malcom");
+				portrait.sprite = sprite;
+			} else {
+				portrait.sprite = Resources.Load<Sprite>("Portraits/PhaseTwo/" + value);
+			}
 		}
 
 	}

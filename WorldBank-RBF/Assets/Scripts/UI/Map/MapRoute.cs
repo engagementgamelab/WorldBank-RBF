@@ -82,7 +82,10 @@ public class MapRoute : MB {
 	}
 
 	void OnEnable () {
-		if (newUnlock) StartCoroutine (CoBlink ());
+		if (newUnlock) {
+			StartCoroutine (CoBlink ());
+			newUnlock = false;
+		}
 	}
 
 	IEnumerator CoBlink () {

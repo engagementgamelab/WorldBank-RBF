@@ -249,7 +249,11 @@ public class DialogManager : MonoBehaviour {
 
 				btnChoices.Add (CreateButton (displayName, () => {
 					PlayerData.InteractionGroup.Remove ();
-					character.SelectChoice (ck, (model.unlocks_context != null) ? model.unlocks_context[0] : "");
+					character.SelectChoice (
+						ck, 
+						(model.unlocks_context != null) ? model.unlocks_context[0] : "",
+						character.Symbol
+					);
 					OpenNpcDialog (currNpc, left, false);
 				}));
 			}

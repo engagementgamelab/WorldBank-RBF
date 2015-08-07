@@ -103,16 +103,18 @@ public class PlayerData {
 	/// Unlocks the specified implementation for player.
 	/// </summary>
 	/// <param name="strSymbol">Symbol of the unlockable</param>
-	public static void UnlockItem (string strSymbol, string npcContext=null) {
+	/// <param name="npcContext">Context of the unlockable</param>
+	/// <param name="npcContext">NPC that unlocked this item</param>
+	public static void UnlockItem (string strSymbol, string npcContext="", string npcSymbol="") {
 
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
 		
 		if (strSymbol.StartsWith ("unlockable_route_")) {
-			RouteGroup.UnlockWithContext (strSymbol, npcContext);
+			RouteGroup.UnlockWithContext (strSymbol, npcContext, npcSymbol);
 		} else if (strSymbol.StartsWith ("unlockable_dialogue_")) {
-			DialogueGroup.UnlockWithContext (strSymbol, npcContext);
+			DialogueGroup.UnlockWithContext (strSymbol, npcContext, npcSymbol);
 		} else {
-			TacticGroup.UnlockWithContext (strSymbol, npcContext);
+			TacticGroup.UnlockWithContext (strSymbol, npcContext, npcSymbol);
 		}
 	}
 }

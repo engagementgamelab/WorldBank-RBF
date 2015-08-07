@@ -11,9 +11,6 @@ public class TacticsColumn : Column {
 	bool initialized = false;
 
 	void OnEnable () {
-		// PlayerData.TacticGroup.onUpdate += OnUpdate;
-		// PlayerData.TacticPriorityGroup.onUpdate += OnUpdate;
-
 		OnUpdate();
 	}
 
@@ -32,6 +29,7 @@ public class TacticsColumn : Column {
 		
 		UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
 		uiTactic.ParentScrollRect = scrollView;
+		uiTactic.portrait.NPCSymbol = tactic.Npc;
 
 		uiTactic.Init (this, content, tactic);
 		uiTactics.Add (uiTactic);
