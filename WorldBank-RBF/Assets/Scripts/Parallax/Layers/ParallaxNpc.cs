@@ -96,7 +96,7 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 
 	IEnumerator CoCheckForDrag () {
 		
-		float time = 0.3f;
+		float time = 0.2f;
 		float eTime = 0f;
 	
 		while (eTime < time) {

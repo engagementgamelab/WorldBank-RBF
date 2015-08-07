@@ -207,6 +207,9 @@ public class DialogManager : MonoBehaviour {
 		// StartCoroutine (CoFadeText ());
 	}
 
+	//// <summary>
+	/// Opens a new dialogue box with dialogue from the given NPC.
+	/// </summary>
 	/// <param name="currNpc">The NPC to get dialogue from</param>
 	/// <param name="left">If true, the dialogue box will appear on the left side of the screen</param>
 	/// <param name="initial">If true, will check for choices the player can select to further the dialogue</param>
@@ -217,8 +220,14 @@ public class DialogManager : MonoBehaviour {
 			? character.InitialDialog
 			: character.CurrentDialog.text[0];
 
+		// Find choices in the dialogue
 		Dictionary<string, bool> choices = GetChoices (character, dialog);
+
+		// Highlight the choices
 		dialog = HighlightChoices (character, dialog, choices);
+
+		// Convert all choices to lowercase for cross referencing with the character's choices
+		choices = choices.ToDictionary (x => x.Key.ToLower (), x => x.Value);
 
 		CreateGenericDialog (dialog, true, left);
 		dialogBox.Header = character.DisplayName;
@@ -240,7 +249,7 @@ public class DialogManager : MonoBehaviour {
 
 				btnChoices.Add (CreateButton (displayName, () => {
 					PlayerData.InteractionGroup.Remove ();
-					character.SelectChoice (ck);
+					character.SelectChoice (ck, (model.unlocks_context != null) ? model.unlocks_context[0] : "");
 					OpenNpcDialog (currNpc, left, false);
 				}));
 			}

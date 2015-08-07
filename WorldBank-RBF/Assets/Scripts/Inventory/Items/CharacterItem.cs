@@ -15,7 +15,13 @@ public class CharacterItem : ModelItem {
 	
 	Dialogue initialDialog;
 	public string InitialDialog { 
-		get { return initialDialog.text[Returning ? 1 : 0]; }
+		get { 
+			try {
+				return initialDialog.text[Returning ? 1 : 0]; 
+			} catch {
+				throw new System.Exception (Symbol + " is missing its second initial text");
+			}
+		}
 	}
 
 	Dictionary<string, Dialogue> choices;
@@ -82,7 +88,7 @@ public class CharacterItem : ModelItem {
 		return Descriptions[0];
 	}
 
-	public void SelectChoice (string choice) {
+	public void SelectChoice (string choice, string context="") {
 		
 		currentDialog = Choices.FirstOrDefault (x => x.Key == choice);
 		Dialogue dialog = currentDialog.Value;
@@ -92,7 +98,7 @@ public class CharacterItem : ModelItem {
 			string[] unlockableSymbols = dialog.unlocks;
 			foreach (string symbol in unlockableSymbols) {
 				Models.Unlockable unlockableRef = DataManager.GetUnlockableBySymbol(symbol);
-				PlayerData.UnlockItem(symbol);
+				PlayerData.UnlockItem (symbol, context);
 				Debug.Log ("unlocked: " + symbol);
 			}
 		}

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public delegate void OnUpdate ();
 public delegate void OnEmpty ();
+public delegate void OnAdd<T> (List<T> items) where T : InventoryItem;
 
 /// <summary>
 /// An ItemGroup contains InventoryItems. This abstract class is useful for grouping ItemGroups
@@ -82,6 +83,11 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	public override string ID { get { return ""; } }
 
 	/// <summary>
+	/// Called any time items are added.
+	/// </summary>
+	public OnAdd<T> onAdd;
+
+	/// <summary>
 	/// Initialize by setting the Inventory that contains this ItemGroup. There is generally no need
 	/// to explicitly use this function because Inventory already calls it whenever an ItemGroup is added.
 	/// </summary>
@@ -127,15 +133,18 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	/// <param name="newItems">A list of InventoryItems to be added.</param>
 	public override void Add (List<InventoryItem> newItems) {
 		
+		List<InventoryItem> addedItems = new List<InventoryItem> ();
 		while (newItems.Count > 0) {
 			InventoryItem newItem = newItems[0];
 			if (newItem != null) {
 				newItem.Initialize (Inventory, this);
-				items.Add ((T)newItem);
+				addedItems.Add ((T)newItem);
 			}
 			newItems.RemoveAt (0);
 		}
+		items.AddRange (addedItems);
 
+		SendAddMessage (addedItems.ConvertAll (x => (T)x));
 		SendUpdateMessage ();
 	}
 
@@ -206,6 +215,10 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 
 	protected override void SendEmptyMessage () {
 		if (onEmpty != null) onEmpty ();
+	}
+
+	protected void SendAddMessage (List<T> items) {
+		if (onAdd != null) onAdd (items);
 	}
 
 	/// <summary>

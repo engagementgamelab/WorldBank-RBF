@@ -108,14 +108,11 @@ public class PlayerData {
 		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
 		
 		if (strSymbol.StartsWith ("unlockable_route_")) {
-			RouteGroup.Unlock (strSymbol);
+			RouteGroup.UnlockWithContext (strSymbol, npcContext);
 		} else if (strSymbol.StartsWith ("unlockable_dialogue_")) {
-			DialogueGroup.Unlock (strSymbol);
+			DialogueGroup.UnlockWithContext (strSymbol, npcContext);
 		} else {
-			if(npcContext != null)
-				TacticGroup.UnlockWithContext (strSymbol, npcContext);
-			else
-				TacticGroup.Unlock (strSymbol);
+			TacticGroup.UnlockWithContext (strSymbol, npcContext);
 		}
 	}
 }

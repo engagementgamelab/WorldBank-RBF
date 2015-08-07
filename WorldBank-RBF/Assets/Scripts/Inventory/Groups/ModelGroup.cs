@@ -2,10 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public delegate void OnUnlock<T> (T item) where T : ModelItem;
+
 /// <summary>
 /// Group of ModelItems.
 /// </summary>
 public class ModelGroup<T> : ItemGroup<T> where T : ModelItem, new () {
+
+	public OnUnlock<T> onUnlock;
 
 	/// <summary>
 	/// Populates the group with all models containing the given prefix.
@@ -43,7 +47,9 @@ public class ModelGroup<T> : ItemGroup<T> where T : ModelItem, new () {
 	/// </summary>
 	/// <param name="symbol">The symbol of the item to unlock.</param>
 	public void Unlock (string symbol) {
-		Find (symbol).Unlocked = true;
+		T item = Find (symbol) as T;
+		item.Unlocked = true;
+		SendUnlockMessage (item);
 		SendUpdateMessage ();
 	}
 
@@ -53,8 +59,8 @@ public class ModelGroup<T> : ItemGroup<T> where T : ModelItem, new () {
 	/// <param name="symbol">The symbol of the item to unlock.</param>
 	/// <param name="symbol">The item's context string.</param>
 	public void UnlockWithContext (string symbol, string context) {
-		Unlock(symbol);
 		Find (symbol).Context = context;
+		Unlock(symbol);
 	}
 
 	/// <summary>
@@ -64,5 +70,9 @@ public class ModelGroup<T> : ItemGroup<T> where T : ModelItem, new () {
     /// <returns>Is the item unlocked?</returns>
 	public bool IsUnlocked (string symbol) {
 		return Find(symbol).Unlocked;
+	}
+
+	void SendUnlockMessage (T item) {
+		if (onUnlock != null) onUnlock (item);
 	}
 }
