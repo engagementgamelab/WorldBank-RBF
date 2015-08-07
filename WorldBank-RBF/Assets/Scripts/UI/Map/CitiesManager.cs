@@ -107,6 +107,7 @@ public class CitiesManager : MB {
 		NpcManager.InitNpcs ();
 		ParallaxLayerManager.Instance.LoadFromSymbol (currentCity);
 		
-		NotebookManager.Instance.Close ();
+		// NotebookManager.Instance.Close ();
+		NotebookManagerPhaseOne.Instance.CloseCanvases ();
 	}
 }

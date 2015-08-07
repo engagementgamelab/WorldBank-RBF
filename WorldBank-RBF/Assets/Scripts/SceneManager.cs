@@ -114,8 +114,8 @@ public class SceneManager : MonoBehaviour {
 			return;
 
 		// Open map; this may be something different later
-		if(phaseOne)
-			NotebookManager.Instance.OpenMap();
+		// if(phaseOne)
+		// 	NotebookManager.Instance.OpenMap();
 
 		Debug.Log("Player auth successful? " + success);
 
