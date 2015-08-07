@@ -29,6 +29,7 @@ public class TacticsColumn : Column {
 	}
 
 	UITactic CreateUITactic (TacticItem tactic) {
+		
 		UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
 		uiTactic.ParentScrollRect = scrollView;
 
@@ -36,5 +37,6 @@ public class TacticsColumn : Column {
 		uiTactics.Add (uiTactic);
 		
 		return uiTactic;
+
 	}
 }

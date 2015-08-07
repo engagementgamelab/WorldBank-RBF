@@ -50,13 +50,13 @@ public class PrioritiesColumn : Column {
 			else if (i == 2) { title = "Medium priority"; }
 			else if (i == 5)	{ title = "Lower priority"; }
 
-			// if(title != "") {
+			if(title != "") {
 
-			// 	UITacticHeader header = ObjectPool.Instantiate<UITacticHeader> ();
-			// 	header.Text = title;
-			// 	header.transform.SetParent(content.transform);
+				UITacticHeader header = ObjectPool.Instantiate<UITacticHeader> ();
+				header.Text = title;
+				header.transform.SetParent(content.transform);
 
-			// }
+			}
 
 		
 			UITacticSlot slot = ObjectPool.Instantiate<UITacticSlot> ();

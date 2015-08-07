@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 
 public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragHandler {
-
+	
 	public static UITactic selectedTactic = null;
 
 	public Text titleText;
@@ -91,6 +91,7 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 
 	public void OnEndDrag (PointerEventData eventData)
 	{
+		Debug.Log("OnEndDrag");
 
 		itemBeingDragged = null;
 
@@ -99,16 +100,17 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 
 		GetComponent<CanvasGroup>().blocksRaycasts = true;
 
-		/*if(transform.parent != startParent) {
-			transform.position = startPosition;
+		Layout.enabled = (transform.parent == scrollParent.transform.GetChild(0).transform);
+
+		if(transform.parent != startParent) {
+			// transform.position = startPosition;
 
 			return;
 		}
 
-		if(transform.parent == startParent) {			
+		if(transform.parent == startParent)
 			transform.position = startPosition;
-
-		}*/
+	
 	}
 	
 	#endregion

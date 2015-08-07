@@ -5,6 +5,14 @@ using UnityEngine.EventSystems;
 public class ColumnNoSwap : MonoBehaviour, IDropHandler {
 	
 	public GameObject targetMenu;
+	public GameObject item {
+		get {
+			if (transform.childCount>0) {
+				return transform.GetChild (0).gameObject;
+			}
+			return null;
+		}
+	}
 	
 	#region IDropHandler implementation
 	public void OnDrop (PointerEventData eventData)
