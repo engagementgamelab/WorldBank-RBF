@@ -38,6 +38,7 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 	public Image mainPortraitImage;
 
+	public Text npcNameText;
 	public Text debugText;
 
 	List<string> currentAdvisorOptions;
@@ -63,6 +64,9 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 	public virtual void Initialize() {
 
+		// Get initial character info
+		Models.Character charRef = DataManager.GetDataForCharacter(_data.initiating_npc);
+
     	// Cleanup
     	ObjectPool.DestroyChildren<NPCResponse>(responseTextPanel.transform);
 
@@ -79,15 +83,16 @@ public class ScenarioCardDialog : GenericDialogBox {
 		// Create buttons for all options if not speaking to advisor
 		AddOptions();
 
-		AddResponseSpeech(_data.initiating_dialogue, DataManager.GetDataForCharacter(_data.initiating_npc));
+		AddResponseSpeech(_data.initiating_dialogue, charRef);
 
 		DisplayOtherCards();
 
 		// Listen for ScenarioEvent
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
 
-		// Load in main portrait
+		// Load in main portrait and initial NPC name
 		mainPortraitImage.sprite = Resources.Load<Sprite>("Portraits/PhaseTwo/" + _data.initiating_npc);
+		npcNameText.text = charRef.display_name;
 
 		debugText.text = _data.symbol;
 
@@ -102,13 +107,14 @@ public class ScenarioCardDialog : GenericDialogBox {
 
 		foreach(Models.ScenarioCard card in ScenarioQueue.Problems)
 		{
-   			PortraitTextBox btnChoice = ObjectPool.Instantiate<PortraitTextBox>("Scenario");
+   			PortraitTextBox cardBox = ObjectPool.Instantiate<PortraitTextBox>("Scenario");
    
    			Models.Character charRef = DataManager.GetDataForCharacter(card.initiating_npc);
 
-			btnChoice.Text = card.name;
+			cardBox.Text = card.name;
+			cardBox.NPCSymbol = charRef.symbol;
 
-			btnChoice.transform.SetParent(upcomingCardsPanel.transform);
+			cardBox.transform.SetParent(upcomingCardsPanel.transform);
 
 		}
 		

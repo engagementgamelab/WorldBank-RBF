@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 public class PrioritiesColumn : Column {
+
+	public ScrollRect tacticsScrollView;
 
 	int slotCount = 6;
 	List<UITacticSlot> uiSlots = new List<UITacticSlot> ();
@@ -10,7 +13,7 @@ public class PrioritiesColumn : Column {
 	bool initialized = false;
 
 	void Awake () {
-		CreateTacticSlots ();
+		// CreateTacticSlots ();
 	}
 
 	void OnEnable() {
@@ -32,17 +35,51 @@ public class PrioritiesColumn : Column {
 			DeactivateSlot (uiSlots[priority]);
 			t.Transform.SetSiblingIndex (priority);
 		}	*/	
+
+		ObjectPool.DestroyChildren<UITacticSlot>(transform);
+		ObjectPool.DestroyChildren<UITacticHeader>(transform);
+
+		CreateTacticSlots();
 	}
 
 	public void CreateTacticSlots () {
 		for (int i = 0; i < slotCount; i ++) {
-			UITacticSlot slot = ObjectPool.Instantiate<UITacticSlot> ();
+			
 			string title = "";
-			if (i < 2) { title = "Top priority"; }
-			if (i >= 2 && i < 5) { title = "Medium priority"; }
-			if (i == 5)	{ title = "Lower priority"; }
+			if (i == 0) { title = "Top priority"; }
+			else if (i == 2) { title = "Medium priority"; }
+			else if (i == 5)	{ title = "Lower priority"; }
+
+			if(title != "") {
+
+				UITacticHeader header = ObjectPool.Instantiate<UITacticHeader> ();
+				header.Text = title;
+				header.transform.SetParent(content.transform);
+
+			}
+
+		
+			UITacticSlot slot = ObjectPool.Instantiate<UITacticSlot> ();
+			ObjectPool.DestroyChildren<UITactic>(slot.transform);
+
 			slot.Init (this, content, title);
 			uiSlots.Add (slot);
+
+			if(PlayerData.TacticPriorityGroup.Items.Count <= i)
+				continue;
+
+			if(PlayerData.TacticPriorityGroup.Items[i] != null)
+			{
+				TacticItem tactic = PlayerData.TacticPriorityGroup.Items[i] as TacticItem;
+
+				UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
+				uiTactic.ParentScrollRect = tacticsScrollView;
+
+				uiTactic.Init (this, content, tactic);
+				uiTactic.transform.SetParent(slot.transform);
+
+			}
+
 		}
 	}
 

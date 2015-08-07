@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 public class TacticsColumn : Column {
+
+	public ScrollRect scrollView;
 
 	List<UITactic> uiTactics = new List<UITactic> ();
 	bool initialized = false;
@@ -26,9 +29,14 @@ public class TacticsColumn : Column {
 	}
 
 	UITactic CreateUITactic (TacticItem tactic) {
+		
 		UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
+		uiTactic.ParentScrollRect = scrollView;
+
 		uiTactic.Init (this, content, tactic);
 		uiTactics.Add (uiTactic);
+		
 		return uiTactic;
+
 	}
 }

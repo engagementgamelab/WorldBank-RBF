@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 
 public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragHandler {
-
+	
 	public static UITactic selectedTactic = null;
 
 	public Text titleText;
@@ -27,6 +27,15 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 
 	public TacticItem Tactic { get { return tactic; } }
 
+	public ScrollRect ParentScrollRect {
+
+		set {
+			scrollParent = value;
+		}
+
+	}
+
+	ScrollRect scrollParent;
 	TacticItem tactic;
 	UITacticSlot slot = null;
 
@@ -66,30 +75,42 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 		startPosition = transform.position;
 		startParent = transform.parent;
 
+		scrollParent.gameObject.GetComponent<Mask>().enabled = false;
+		scrollParent.gameObject.GetComponent<Image>().enabled = false;
+
 		GetComponent<CanvasGroup>().blocksRaycasts = false;
 	}
 	
 	public void OnDrag (PointerEventData eventData)
 	{
 		transform.position = Input.mousePosition;
+
+		// foreach(GameObject hved in eventData.hovered)
+		// 	Debug.Log(hved);
 	}
 
 	public void OnEndDrag (PointerEventData eventData)
 	{
+		Debug.Log("OnEndDrag");
 
 		itemBeingDragged = null;
+
+		scrollParent.gameObject.GetComponent<Mask>().enabled = true;
+		scrollParent.gameObject.GetComponent<Image>().enabled = true;
+
 		GetComponent<CanvasGroup>().blocksRaycasts = true;
 
+		Layout.enabled = (transform.parent == scrollParent.transform.GetChild(0).transform);
+
 		if(transform.parent != startParent) {
-			transform.position = startPosition;
+			// transform.position = startPosition;
 
 			return;
 		}
 
-		if(transform.parent == startParent) {			
+		if(transform.parent == startParent)
 			transform.position = startPosition;
-
-		}
+	
 	}
 	
 	#endregion
