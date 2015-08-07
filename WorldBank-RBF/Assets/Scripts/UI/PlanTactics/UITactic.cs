@@ -68,6 +68,12 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 		selectedTactic = null;
 	}
 
+	public void DisableLayout() {
+
+		Layout.enabled = false;
+
+	}
+
 	#region IBeginDragHandler, IDragHandler, IEndDragHandler implementation
 	public void OnBeginDrag (PointerEventData eventData)
 	{
@@ -91,7 +97,6 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 
 	public void OnEndDrag (PointerEventData eventData)
 	{
-		Debug.Log("OnEndDrag");
 
 		itemBeingDragged = null;
 

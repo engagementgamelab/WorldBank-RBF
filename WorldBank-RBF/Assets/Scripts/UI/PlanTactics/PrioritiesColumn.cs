@@ -76,6 +76,7 @@ public class PrioritiesColumn : Column {
 				uiTactic.ParentScrollRect = tacticsScrollView;
 
 				uiTactic.Init (this, content, tactic);
+				uiTactic.DisableLayout();
 				uiTactic.transform.SetParent(slot.transform);
 
 			}
