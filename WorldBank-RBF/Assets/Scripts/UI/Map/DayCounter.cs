@@ -4,15 +4,7 @@ using System.Collections;
 
 public class DayCounter : MB {
 
-	Text text = null;
-	Text Text {
-		get {
-			if (text == null) {
-				text = Transform.GetChild (1).GetComponent<Text> ();
-			}
-			return text;
-		}
-	}
+	public Text text;
 
 	void Awake () {
 		PlayerData.DayGroup.onUpdate += OnUpdateCount;
@@ -20,6 +12,6 @@ public class DayCounter : MB {
 	}
 
 	void OnUpdateCount () {
-		Text.text = "Days: " + PlayerData.DayGroup.Count;
+		text.text = "Days: " + PlayerData.DayGroup.Count;
 	}
 }

@@ -17,22 +17,22 @@ public class MapRoute : MB {
 		}
 	}
 
-	Transform line = null;
-	Transform Line {
+	Transform routeImage = null;
+	Transform RouteImage {
 		get {
-			if (line == null) {
-				line = Transform.GetChild (0);
+			if (routeImage == null) {
+				routeImage = Transform.GetChild (0);
 			}
-			return line;
+			return routeImage;
 		}
 	}
 
 	/// <summary>
-	/// Sets the unlocked state of the route. Hides the line and text if the route is not unlocked.
+	/// Sets the unlocked state of the route. Hides the route image and text if the route is not unlocked.
 	/// </summary>
 	bool Unlocked {
 		set {
-			Line.gameObject.SetActive (value);
+			RouteImage.gameObject.SetActive (value);
 			Text.gameObject.SetActive (value);
 		}
 	}
@@ -74,8 +74,28 @@ public class MapRoute : MB {
 	
 	public string city1;
 	public string city2;
+	bool newUnlock = false;
 
 	public void OnUpdateUnlocked () {
 		Unlocked = routeItem.Unlocked;
+		newUnlock = true;
+	}
+
+	void OnEnable () {
+		if (newUnlock) StartCoroutine (CoBlink ());
+	}
+
+	IEnumerator CoBlink () {
+		
+		float time = 5f;
+		float eTime = 0f;
+		float speed = 1.5f;
+		Image image = RouteImage.GetComponent<Image> ();
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime * speed;
+			image.color = new Color (1, 1, 1, Mathf.PingPong (eTime, 1f));
+			yield return null;
+		}
 	}
 }

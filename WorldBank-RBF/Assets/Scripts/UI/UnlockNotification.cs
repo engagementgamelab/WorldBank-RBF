@@ -108,10 +108,6 @@ public class UnlockNotification : MB {
 		sliding = false;
 	}
 
-	void GetContext (string symbol) {
-		// PlayerData.CharacterGroup.
-	}
-
 	public void OnClick () {
 		SlideOut ();
 	}
