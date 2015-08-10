@@ -149,6 +149,10 @@ public class PlayerManager : MonoBehaviour {
 
     public void TrackEvent(string strEventName, string strEventCategory) {
 
+        #if UNITY_EDITOR
+            return;
+        #endif
+
         var parseFields = new Dictionary<string, string>() {{ "user", _playerId }};
         Dictionary<string, object> postFields = new Dictionary<string, object>() {{ "eventName", strEventName }, { "eventCategory", strEventCategory }, { "userId", _playerId }};
 
