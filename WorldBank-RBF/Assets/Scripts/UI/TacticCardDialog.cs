@@ -65,6 +65,12 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 	}
 
+	public void ResetButtons() {
+
+		buttonInvestigate.gameObject.SetActive(!investigateDone || (_data.further_options != null && !investigateFurther));
+
+	}
+
     public void GetResultOptions() {
 
     	investigateDone = true;
@@ -121,7 +127,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 
     	int[] thisCooldown = investigateFurther ? _data.investigate_further_cooldown : _data.investigate_cooldown;
 
-		Events.instance.Raise(new ScenarioEvent( "investigate" + (investigateFurther ? "_further" : ""), null, thisCooldown));
+		Events.instance.Raise(new TacticsEvent( "investigate" + (investigateFurther ? "_further" : ""), null, thisCooldown));
 
 		// Listen for cooldown tick
 		// Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
@@ -144,7 +150,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 		buttonObserve.Button.onClick.RemoveAllListeners();
 
 		buttonObserve.Button.onClick.AddListener (() => Events.instance.Raise(
-														new ScenarioEvent(ScenarioEvent.TACTIC_CLOSED, _cardIndex.ToString())
+														new TacticsEvent(TacticsEvent.TACTIC_CLOSED, _cardIndex.ToString())
 												 ));
 		buttonObserve.Button.onClick.AddListener (() => ObjectPool.Destroy<TacticCardDialog>(transform) );
 

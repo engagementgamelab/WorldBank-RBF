@@ -28,6 +28,8 @@ public class TacticsCanvas : MonoBehaviour {
 	public Image tooltipClockImg;
 	public Image tooltipDoneImg;
 
+	public static int[] tacticCardIntervals = new int[3] {3, 4, 4};
+
 	static TimerUtils.Cooldown tacticCardCooldown;
 	static TimerUtils.Cooldown investigateCooldown;
 
@@ -38,8 +40,6 @@ public class TacticsCanvas : MonoBehaviour {
 
 	static List<string> tacticsAvailable;
 	static List<string> allTactics;
-
-	static int[] tacticCardIntervals = new int[3] {4, 3, 3};
 	
 	CanvasGroup canvasGroup;
 
@@ -65,7 +65,7 @@ public class TacticsCanvas : MonoBehaviour {
 
 	void Start () {
 
-		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
+		Events.instance.AddListener<TacticsEvent>(OnTacticsEvent);
 
 		// Listen for problem card cooldown tick
 		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
@@ -103,7 +103,7 @@ public class TacticsCanvas : MonoBehaviour {
 		if(tacticCardCooldown == null)
 			tacticCardCooldown = new TimerUtils.Cooldown();
 
-		tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN), "tactic_open");
+		tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
 
 	}
 
@@ -141,7 +141,7 @@ public class TacticsCanvas : MonoBehaviour {
 					
 					Debug.LogWarning("Unable to locate a tactic card for '" + tacticName + "'. Timer restarting.", this);
 					
-					tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN), "tactic_open");
+					tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
 
 					return;
 
@@ -165,6 +165,22 @@ public class TacticsCanvas : MonoBehaviour {
 			}
 			else
 			{
+
+			 	if(ScenarioQueue.Tactics.Length > 0 && cardIndex <= ScenarioQueue.Tactics.Length) {
+					dialog = ScenarioQueue.Tactics[cardIndex];
+					dialog.ResetButtons();
+
+					if(currentTacticCard != null)
+						currentTacticCard.gameObject.SetActive(false);
+				}
+
+			}
+
+		}
+		else 
+		{
+
+		 	if(ScenarioQueue.Tactics.Length > 0 && cardIndex <= ScenarioQueue.Tactics.Length) {
 				dialog = ScenarioQueue.Tactics[cardIndex];
 
 				if(currentTacticCard != null)
@@ -172,23 +188,14 @@ public class TacticsCanvas : MonoBehaviour {
 			}
 
 		}
-		else 
-		{
-
-			dialog = ScenarioQueue.Tactics[cardIndex];
-
-			if(currentTacticCard != null)
-				currentTacticCard.gameObject.SetActive(false);
-
-		}
 
 		
 		if(tacticsAvailable.Count == 0)
 			tacticCardCooldown.Stop();
 		else
-			tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN), "tactic_open");
+			tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
 
-		if(currentTacticCard != null && !replace)
+		if((currentTacticCard != null && !replace) || dialog == null)
 			return;
 
 	 	currentTacticCard = dialog;
@@ -203,10 +210,11 @@ public class TacticsCanvas : MonoBehaviour {
 
 	void AddCardButton(Models.TacticCard card, int cardIndex) {
 
-		GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
+		TacticChoiceButton btnChoice = ObjectPool.Instantiate<TacticChoiceButton>("Scenario");
 		
 		btnChoice.transform.localScale = Vector3.one;
 		btnChoice.Text = card.name;
+		btnChoice.GetComponent<Button>().interactable = true;
 
 		btnChoice.transform.SetParent(buttonsPanel.transform);
 
@@ -217,13 +225,13 @@ public class TacticsCanvas : MonoBehaviour {
 
 	void HideCardButton(int buttonIndex) {
 
-		buttonsPanel.transform.GetChild(buttonIndex).gameObject.SetActive(false);
+		buttonsPanel.transform.GetChild(buttonIndex).gameObject.GetComponent<Button>().interactable = false;
 
 	}
 
 	void RemoveCard(int cardIndex) {
 
-		ObjectPool.Destroy<GenericButton>(buttonsPanel.transform.GetChild(cardIndex).transform);
+		ObjectPool.Destroy<TacticChoiceButton>(buttonsPanel.transform.GetChild(cardIndex).transform);
 
 		ScenarioQueue.RemoveTacticCard(cardIndex);
 
@@ -273,7 +281,7 @@ public class TacticsCanvas : MonoBehaviour {
     	if(investigateCooldown == null)
 			investigateCooldown = new TimerUtils.Cooldown();
 		
-	 	investigateCooldown.Init(cooldownTime, new ScenarioEvent(ScenarioEvent.TACTIC_RESULTS), "tactic_results");
+	 	investigateCooldown.Init(cooldownTime, new TacticsEvent(TacticsEvent.TACTIC_RESULTS), "tactic_results");
 	 	tacticCardCooldown.Pause();
 
 	 	cooldownText.gameObject.SetActive(true);	
@@ -302,19 +310,19 @@ public class TacticsCanvas : MonoBehaviour {
 
 		OpenTacticCard(cardIndex, true);
 
-		foreach(Transform child in buttonsPanel.transform)
-			child.gameObject.SetActive(true);
+		foreach(Button child in buttonsPanel.transform.GetComponentsInChildren<Button>())
+			child.interactable = true;
 
-		buttonRef.SetActive(false);
+		buttonRef.GetComponent<Button>().interactable = false;
 
 	}
 
     /// <summary>
-    // Callback for ScenarioEvent, filtering for type of event
+    // Callback for TacticsEvent, filtering for type of event
     /// </summary>
-    void OnScenarioEvent(ScenarioEvent e) {
+    void OnTacticsEvent(TacticsEvent e) {
 
-    	Debug.Log("OnScenarioEvent: " + e.eventType);
+    	Debug.Log("OnTacticsEvent: " + e.eventType);
 
     	switch(e.eventType) {
 
@@ -329,7 +337,7 @@ public class TacticsCanvas : MonoBehaviour {
     			break;
 
 	   		case "tactic_closed":
-	   			// tacticCardCooldown.Init(tacticCardIntervals, new ScenarioEvent(ScenarioEvent.TACTIC_OPEN));
+	   			// tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN));
 
 	   			RemoveCard(System.Int32.Parse(e.eventSymbol));
 
