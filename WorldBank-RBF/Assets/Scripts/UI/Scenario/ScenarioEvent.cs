@@ -19,11 +19,6 @@ public class ScenarioEvent : GameEvent {
 	public static readonly string PROBLEM_OPEN = "problem_open";
 	public static readonly string PROBLEM_QUEUE = "problem_queue";
 	public static readonly string MONTH_END = "month_end";
-	public static readonly string TACTIC_OPEN = "tactic_open";
-	public static readonly string TACTIC_INVESTIGATE = "investigate";
-	public static readonly string TACTIC_INVESTIGATE_FURTHER = "investigate_further";
-	public static readonly string TACTIC_RESULTS = "tactic_results";
-	public static readonly string TACTIC_CLOSED = "tactic_closed";
 	public static readonly string DECISION_SELECTED = "decision_selected";
 
 	public ScenarioEvent (string strType, string strSymbol=null, int[] intCooldowns=null) {

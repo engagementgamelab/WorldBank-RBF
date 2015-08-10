@@ -13,12 +13,6 @@ public class NotebookManager : MB {
 	public GameObject tabGroup;
 	public GameObject notebookCollider;
 
-	public RectTransform namingPanel;
-	public RectTransform feedbackPanel;
-
-	public Text scoreText;
-	public Text feedbackText;
-
 	Dictionary<string, NotebookCanvas> canvases;
 	Dictionary<string, NotebookCanvas> Canvases {
 		get {
@@ -170,30 +164,6 @@ public class NotebookManager : MB {
 		
 	}
 
-	public void NamePlan() {
-
-		namingPanel.gameObject.SetActive(true);
-
-	}
-
-
-	public void SubmitPlan(Text planNameInput) {
-
-		state =	State.MakingPlan;
-
-        Dictionary<string, object> formFields = new Dictionary<string, object>();
-
-        Models.Plan plan = new Models.Plan();
-
-        plan.name = planNameInput.text;
-        plan.tactics = PlayerData.TacticPriorityGroup.Tactics;
-
-        formFields.Add("plan", plan);
-
-		PlayerManager.Instance.SaveData (formFields, SubmitPlanCallback);
-
-	}
-
 	void OpenCanvas (string id) {
 		foreach (var canvas in Canvases) {
 			bool open = canvas.Key == id;
@@ -217,30 +187,5 @@ public class NotebookManager : MB {
 		if (PlayerData.DayGroup.Empty && PlayerData.InteractionGroup.Empty) {
 			state = State.MakingPlan;
 		}
-	}
-
-	// Continues to phase  two
-	// Also, skips to phase two via "skip tab" button (won't be in test or final game)
-	public void Continue() {
-
-		// Clear all Object Pool objects and pools before loading new scene
-		ObjectPool.Clear();
-
-		Application.LoadLevel("PhaseTwo");
-
-	}
-
-	// Get response from submitting a plan
-	void SubmitPlanCallback(Dictionary<string, object> response) {
-
-	 	scoreText.text = "Score: " + response["score"].ToString();
-	 	feedbackText.text = response["description"].ToString();
-
-	 	// Show feedback in data panel (allows player to continue)
-		feedbackPanel.gameObject.SetActive(true);
-		OpenData();
-
-		PlayerManager.Instance.TrackEvent("Plan Saved", "Phase One");
-
 	}
 }
