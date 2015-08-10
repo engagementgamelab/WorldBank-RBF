@@ -15,10 +15,9 @@ public class DebugMenu : MonoBehaviour {
 		if (GUILayout.Button ("0 interactions")) {
 			PlayerData.InteractionGroup.Clear ();
 		}
-		List<RouteItem> routes = PlayerData.RouteGroup.Routes;
-		foreach (RouteItem route in routes) {
-			if (route.Unlocked) continue;
-			if (GUILayout.Button ("unlock " + route.Terminals.city1 + " to " + route.Terminals.city2)) {
+		if (GUILayout.Button ("unlock routes")) {
+			List<RouteItem> routes = PlayerData.RouteGroup.Routes;
+			foreach (RouteItem route in routes) {
 				route.Unlocked = true;
 			}
 		}
@@ -26,7 +25,6 @@ public class DebugMenu : MonoBehaviour {
 			PlayerData.UnlockItem ("unlockable_vouchers_for_services", "This would provide vouchers to poor people so they can receive necessary services at a greatly reduces price.");
 			PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system", "If major changes are going to take place in the health system, and educational information campaign to explain these changes may be necessary to avoid confusion.");
 			PlayerData.UnlockItem ("unlockable_incentivise_providers_to_deliver_services", "Context text");
-
     		PlayerData.UnlockItem ("unlockable_incentivise_providers_to_follow_protocols", "Context text");
     		PlayerData.UnlockItem ("unlockable_improve_patient_and_provider_relationship", "Context text");
     		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements", "Context text");

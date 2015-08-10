@@ -77,6 +77,7 @@ public class CityButton : MB {
 	}
 
 	RouteItem activeRoute = null;
+	bool visitedCapitol = false;
 
 	/// <summary>
 	/// Gets the route that the player is currently on.
@@ -90,6 +91,7 @@ public class CityButton : MB {
 	}
 
 	void OnUpdateCurrentCity (string symbol) {
+		if (symbol == "capitol") visitedCapitol = true;
 		UpdateInteractableState ();
 	}
 
@@ -103,6 +105,10 @@ public class CityButton : MB {
 	}
 
 	void UpdateInteractableState () {
+		if (!visitedCapitol && symbol != "capitol") {
+			Button.interactable = false;
+			return;
+		}
 		bool onRoute = IsOnCurrentCityRoute (PlayerData.CityGroup.CurrentCity);
 		if (!PlayerData.InteractionGroup.Empty) {
 			Button.interactable = false;

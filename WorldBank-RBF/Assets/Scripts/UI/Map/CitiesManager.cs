@@ -69,8 +69,9 @@ public class CitiesManager : MB {
 	/// <param name="route">The route to move along.</param>
 	/// <param name="onArrive">An action to take when the indicator arrives at the city (optional)</param>
 	public void TravelToCity (CityItem city, RouteItem route, System.Action onArrive=null) {
+		if (PlayerData.CityGroup.CurrentCity != city.Symbol)
+			PlayerData.DayGroup.Remove (route.Cost);
 		PlayerData.CityGroup.CurrentCity = city.Symbol;
-		PlayerData.DayGroup.Remove (route.Cost);
 		MoveIndicator (onArrive);
 	}
 
