@@ -173,7 +173,7 @@ public class ScenarioManager : MonoBehaviour {
 		int yearLength = DataManager.ScenarioLength(scenarioTwistIndex);
  
 		// Should we display a year break (happens at 4th and 8th card or if forced by timer)?
-		if(newYear || (yearLength == cardIndex)) {
+		if(newYear || (yearLength == nextCardIndex)) {
 			
 			// Next year will start at card 0
 			currentCardIndex = -1;
@@ -286,7 +286,7 @@ public class ScenarioManager : MonoBehaviour {
 	}
 
     /// <summary>
-    /// Displays a secnario card, given the current card index.
+    /// Displays a scenario card, given the current card index.
     /// </summary>
 	void OpenScenarioDecisionCard() {
 
