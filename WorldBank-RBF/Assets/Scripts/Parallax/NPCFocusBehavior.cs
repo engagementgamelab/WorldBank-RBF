@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public delegate void OnSetFocus (FocusLevel focusLevel);
+
 public enum FocusLevel {
 	Null,
 	Default = 0,
@@ -34,7 +36,8 @@ public class NPCFocusBehavior : MonoBehaviour {
 	public FocusLevel FocusLevel {
 		get { return focusLevel; }
 		set { 
-			focusLevel = value; 
+			focusLevel = value;
+			if (onSetFocus != null) onSetFocus (value);
 			targetFocus = (float)focusLevel / 100f;
 			StartCoroutine (CoFocus ());
 		}
@@ -63,6 +66,8 @@ public class NPCFocusBehavior : MonoBehaviour {
 			return cameraPositioner;
 		}
 	}
+
+	public OnSetFocus onSetFocus;
 
 	float startCamPosition = 0f;
 	float endCamPosition = 0f;

@@ -16,6 +16,16 @@ public class NotebookManagerPhaseOne : MonoBehaviour {
 
 	public bool IsOpen { get; set; }
 
+	public bool CanCloseNotebook {
+		get {
+			string currentCity = PlayerData.CityGroup.CurrentCity;
+			return (
+				(currentCity == DataManager.SceneContext
+				&& !NotebookManager.Instance.MakingPlan)
+			);
+		}
+	}
+
 	public List<CanvasToggle> toggles;
 
 	public void CloseCanvases () {

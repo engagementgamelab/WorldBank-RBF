@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DayCounter : MB {
 
 	public Text text;
+	public List<Text> outlines;
 
 	void Awake () {
 		PlayerData.DayGroup.onUpdate += OnUpdateCount;
@@ -12,6 +14,10 @@ public class DayCounter : MB {
 	}
 
 	void OnUpdateCount () {
-		text.text = "Days: " + PlayerData.DayGroup.Count;
+		string newText = "Days: " + PlayerData.DayGroup.Count;
+		text.text = newText;
+		foreach (Text outline in outlines) {
+			outline.text = newText;
+		}
 	}
 }

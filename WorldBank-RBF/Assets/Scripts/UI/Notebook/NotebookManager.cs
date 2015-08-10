@@ -12,8 +12,6 @@ public class NotebookManager : MB {
 
 	public GameObject tabGroup;
 	public GameObject notebookCollider;
-	public DayCounter dayCounter;
-	public CitiesManager citiesManager;
 
 	public RectTransform namingPanel;
 	public RectTransform feedbackPanel;
@@ -91,18 +89,19 @@ public class NotebookManager : MB {
 		// Need to find a better way to approach this, but for now
 		if (openAtStart) {
 			
-			open = false;
-			Open ();
+			// open = false;
+			// Open ();
 
 			// Hide indicators tab and show interactions counter in phase one
-			if(isPhaseOne)
+			/*if(isPhaseOne)
 				tabGroup.transform.GetChild(3).gameObject.SetActive(false);
-			else
+			else*/
+			if (!isPhaseOne)
 				GameObject.Find("PhaseOne/UI/InteractionsCounter").gameObject.SetActive(false);
 
 		} else {
-			open = true;
-			Close ();
+			// open = true;
+			// Close ();
 		}
 	}
 
@@ -139,12 +138,12 @@ public class NotebookManager : MB {
 	public void Open () {
 		if (open) return;
 		UpdateState ();
-		SetActiveCanvasOnOpen ();
+		/*SetActiveCanvasOnOpen ();
 		OpenCanvas (activeCanvas);
 		tabGroup.SetActive (true);
 		notebookCollider.SetActive (true);
 		CameraPositioner.Drag.Enabled = false;
-		open = true;
+		open = true;*/
 	}
 
 	public void Close () {
@@ -214,8 +213,6 @@ public class NotebookManager : MB {
 	}
 
 	void UpdateState () {
-		if(dayCounter == null)
-			return;
 
 		if (PlayerData.DayGroup.Empty && PlayerData.InteractionGroup.Empty) {
 			state = State.MakingPlan;
