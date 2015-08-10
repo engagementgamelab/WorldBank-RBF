@@ -223,6 +223,9 @@ public class NotebookManager : MB {
 	// Also, skips to phase two via "skip tab" button (won't be in test or final game)
 	public void Continue() {
 
+		// Clear all Object Pool objects and pools before loading new scene
+		ObjectPool.Clear();
+
 		Application.LoadLevel("PhaseTwo");
 
 	}

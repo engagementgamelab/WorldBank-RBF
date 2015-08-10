@@ -136,8 +136,15 @@ public class ObjectPool : MonoBehaviour {
 		} else {
 			t = Instantiate (prefab) as Transform;
 		}
+		
+		if(t == null) {
+			Debug.LogWarning("Prefab " + prefab + " to be positioned is null!");
+			return null;
+		}
+
 		t.position = position;
 		InitializeInstance (t);
+
 		return t;
 	}
 
@@ -167,6 +174,13 @@ public class ObjectPool : MonoBehaviour {
 
 		ObjectPool thisPool = GetPool<T> (additionalPath);
 		Transform thisInstance = thisPool.CreateInstance (position);
+
+		if(thisInstance == null)
+		{
+			Debug.LogWarning("Instance is null!");
+			return null;
+		}
+
 		T returnType = thisInstance.GetScript<T> ();
 
 		return returnType as T;
