@@ -194,6 +194,8 @@ public class TacticsCanvas : MonoBehaviour {
 			tacticCardCooldown.Stop();
 		else
 			tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
+		
+		tacticCardsTooltip.gameObject.SetActive(true);
 
 		if((currentTacticCard != null && !replace) || dialog == null)
 			return;
@@ -201,7 +203,6 @@ public class TacticsCanvas : MonoBehaviour {
 	 	currentTacticCard = dialog;
 
 	 	dialog.gameObject.SetActive(true);
-		tacticCardsTooltip.gameObject.SetActive(true);
 
 		// Pause tactic card cooldown
 		// tacticCardCooldown.Pause();
@@ -229,11 +230,23 @@ public class TacticsCanvas : MonoBehaviour {
 
 	}
 
-	void RemoveCard(int cardIndex) {
+	void RemoveCard(string strButtonName) {
+
+		int cardIndex = 0;
+
+		foreach(TacticChoiceButton child in buttonsPanel.transform.GetComponentsInChildren<TacticChoiceButton>()) {
+			if(child.Text == strButtonName)
+				break;
+
+			cardIndex++;
+		}
 
 		ObjectPool.Destroy<TacticChoiceButton>(buttonsPanel.transform.GetChild(cardIndex).transform);
 
-		ScenarioQueue.RemoveTacticCard(cardIndex);
+		if(ScenarioQueue.Tactics.Length == 0) {
+			Toggle();
+			return;
+		}
 
 		OpenTacticCard(0, true);
 		HideCardButton(0);
@@ -263,7 +276,12 @@ public class TacticsCanvas : MonoBehaviour {
 		canvasGroup.alpha = (canvasGroup.alpha == 1) ? 0 : 1;
 
 		parentPanel.gameObject.SetActive(!parentPanel.gameObject.activeSelf);
+		tacticCardsTooltip.gameObject.SetActive(ScenarioQueue.Tactics.Length > 0);
 
+		if(currentTacticCard != null) {
+			currentTacticCard.gameObject.SetActive(true);
+			currentTacticCard.ResetButtons();
+		}
 
 	}
 
@@ -339,7 +357,7 @@ public class TacticsCanvas : MonoBehaviour {
 	   		case "tactic_closed":
 	   			// tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN));
 
-	   			RemoveCard(System.Int32.Parse(e.eventSymbol));
+	   			RemoveCard(e.eventSymbol);
 
     			break;
 

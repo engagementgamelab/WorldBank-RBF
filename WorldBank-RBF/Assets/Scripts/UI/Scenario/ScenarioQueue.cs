@@ -56,9 +56,9 @@ public class ScenarioQueue : MonoBehaviour {
 
 	}
 
-	public static void RemoveTacticCard(int cardIndex) {
+	public static void RemoveTacticCard(TacticCardDialog card) {
 
-		tacticCards.RemoveAt(cardIndex);
+		tacticCards.Remove(card);
 
 	}
 	
