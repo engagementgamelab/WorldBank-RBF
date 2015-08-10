@@ -935,7 +935,7 @@ GameObject:
   - 4: {fileID: 439040}
   - 114: {fileID: 11428736}
   m_Layer: 0
-  m_Name: ZemaToKibari
+  m_Name: ZimaToKibari
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1052,7 +1052,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 428818}
   m_Layer: 0
-  m_Name: PhaseOneCopy
+  m_Name: PhaseOne
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1290,6 +1290,22 @@ GameObject:
   - 114: {fileID: 11499076}
   m_Layer: 5
   m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &145026
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 473094}
+  - 114: {fileID: 11499520}
+  m_Layer: 0
+  m_Name: RoutesRecorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3100,6 +3116,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 439040}
   - {fileID: 472832}
   - {fileID: 498258}
   - {fileID: 489722}
@@ -3109,7 +3126,6 @@ Transform:
   - {fileID: 437736}
   - {fileID: 420604}
   - {fileID: 422468}
-  - {fileID: 439040}
   m_Father: {fileID: 22472928}
   m_RootOrder: 3
 --- !u!4 &412676
@@ -3149,7 +3165,7 @@ Transform:
   - {fileID: 22469568}
   - {fileID: 22441408}
   m_Father: {fileID: 412072}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!4 &422468
 Transform:
   m_ObjectHideFlags: 1
@@ -3163,7 +3179,7 @@ Transform:
   - {fileID: 22418456}
   - {fileID: 22404750}
   m_Father: {fileID: 412072}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!4 &422470
 Transform:
   m_ObjectHideFlags: 1
@@ -3192,7 +3208,7 @@ Transform:
   - {fileID: 22459448}
   - {fileID: 22481824}
   m_Father: {fileID: 438814}
-  m_RootOrder: 4
+  m_RootOrder: 3
 --- !u!4 &428818
 Transform:
   m_ObjectHideFlags: 1
@@ -3242,7 +3258,7 @@ Transform:
   - {fileID: 22455276}
   - {fileID: 22474332}
   m_Father: {fileID: 412072}
-  m_RootOrder: 6
+  m_RootOrder: 7
 --- !u!4 &438814
 Transform:
   m_ObjectHideFlags: 1
@@ -3253,11 +3269,12 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 473094}
   - {fileID: 22469290}
   - {fileID: 22472928}
+  - {fileID: 425468}
   - {fileID: 22486288}
   - {fileID: 22452960}
-  - {fileID: 425468}
   - {fileID: 22448560}
   m_Father: {fileID: 428818}
   m_RootOrder: 9
@@ -3274,7 +3291,7 @@ Transform:
   - {fileID: 22411242}
   - {fileID: 22421024}
   m_Father: {fileID: 412072}
-  m_RootOrder: 9
+  m_RootOrder: 0
 --- !u!4 &449716
 Transform:
   m_ObjectHideFlags: 1
@@ -3339,6 +3356,18 @@ Transform:
   - {fileID: 22418054}
   - {fileID: 22437258}
   m_Father: {fileID: 412072}
+  m_RootOrder: 1
+--- !u!4 &473094
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 145026}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 438814}
   m_RootOrder: 0
 --- !u!4 &476628
 Transform:
@@ -3377,7 +3406,7 @@ Transform:
   - {fileID: 22474338}
   - {fileID: 22449932}
   m_Father: {fileID: 412072}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!4 &485732
 Transform:
   m_ObjectHideFlags: 1
@@ -3437,7 +3466,7 @@ Transform:
   - {fileID: 22448094}
   - {fileID: 22464098}
   m_Father: {fileID: 412072}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &490122
 Transform:
   m_ObjectHideFlags: 1
@@ -3487,7 +3516,7 @@ Transform:
   - {fileID: 22436862}
   - {fileID: 22434600}
   m_Father: {fileID: 412072}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &497030
 Transform:
   m_ObjectHideFlags: 1
@@ -3501,7 +3530,7 @@ Transform:
   - {fileID: 22403622}
   - {fileID: 22403826}
   m_Father: {fileID: 412072}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!4 &498258
 Transform:
   m_ObjectHideFlags: 1
@@ -3515,14 +3544,14 @@ Transform:
   - {fileID: 22408754}
   - {fileID: 22448940}
   m_Father: {fileID: 412072}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!20 &2016464
 Camera:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128472}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
@@ -5454,8 +5483,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Workers on the plantation in Crup believe delivering the traditional way
-    is best.
+  m_Text: Incentivizing providers to deliver services may go at the expense of quality,
+    so it is important to also incentivize providers to follow protocols and therapeutic
+    guidelines.
 --- !u!114 &11435122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8130,7 +8160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead28a1d9afe348508c442d928ba8b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inEditMode: 0
+  inEditMode: 1
 --- !u!114 &11474468
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8729,8 +8759,8 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 7dfc2e1472ac84e1bb749a8a9f934483, type: 3}
-    m_FontSize: 22
+    m_Font: {fileID: 12800000, guid: 91d288f04828a44fea5a19aa5cd19375, type: 3}
+    m_FontSize: 66
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -9601,6 +9631,21 @@ MonoBehaviour:
     Vaccinations: 20%
 
     Quality of Care: 60%'
+--- !u!114 &11499520
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 145026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa86e22034dc04ce98097d3b6980ffeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recordRoute: 0
+  city1: 
+  city2: 
+  routePositions: []
 --- !u!114 &11499880
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11691,7 +11736,7 @@ RectTransform:
   m_Children:
   - {fileID: 22459006}
   m_Father: {fileID: 438814}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -11737,16 +11782,16 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100686}
-  m_LocalRotation: {x: 0, y: 0, z: -.254348785, w: .967112541}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: .5, y: .5, z: 1}
   m_Children: []
   m_Father: {fileID: 498258}
   m_RootOrder: 1
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 0, y: 15.3999996}
-  m_SizeDelta: {x: 20, y: 60}
+  m_AnchoredPosition: {x: -100, y: 185}
+  m_SizeDelta: {x: 40, y: 120}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22449518
 RectTransform:
@@ -11962,7 +12007,7 @@ RectTransform:
   - {fileID: 22428932}
   - {fileID: 22490660}
   m_Father: {fileID: 438814}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -12392,7 +12437,7 @@ RectTransform:
   - {fileID: 22451884}
   - {fileID: 22419542}
   m_Father: {fileID: 438814}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -12568,7 +12613,7 @@ RectTransform:
   - {fileID: 486332}
   - {fileID: 22468842}
   m_Father: {fileID: 438814}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -12846,7 +12891,7 @@ RectTransform:
   - {fileID: 22449518}
   - {fileID: 22450698}
   m_Father: {fileID: 438814}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}

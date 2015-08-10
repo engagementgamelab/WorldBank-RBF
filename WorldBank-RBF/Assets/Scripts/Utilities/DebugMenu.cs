@@ -5,8 +5,17 @@ using System.Collections.Generic;
 public class DebugMenu : MonoBehaviour {
 
 	bool showOptions = false;
+	bool capitolVisited = false;
 
 	#if DEVELOPMENT_BUILD || UNITY_EDITOR
+	void Start () {
+		PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
+	}
+
+	void OnUpdateCurrentCity (string symbol) {
+		if (symbol == "capitol") capitolVisited = true;
+	}
+
 	void OnGUI () {
 		GUI.color = Color.black;
 		showOptions = GUILayout.Toggle (showOptions, "Show debug options");
@@ -14,6 +23,9 @@ public class DebugMenu : MonoBehaviour {
 		GUI.color = Color.white;
 		if (GUILayout.Button ("0 interactions")) {
 			PlayerData.InteractionGroup.Clear ();
+		}
+		if (!capitolVisited && GUILayout.Button ("visit capitol")) {
+			PlayerData.CityGroup.CurrentCity = "capitol";
 		}
 		if (GUILayout.Button ("unlock routes")) {
 			List<RouteItem> routes = PlayerData.RouteGroup.Routes;
