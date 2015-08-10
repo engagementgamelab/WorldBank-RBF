@@ -194,6 +194,7 @@ public class DialogManager : MonoBehaviour {
 
 		CreateGenericDialog (description, true, left);
 		dialogBox.Header = character.DisplayName;
+		ObjectPool.DestroyAll<GenericButton> ();
 		CreateBackButton (CloseAndUnfocus);
 
 		if (!character.NoChoices) {

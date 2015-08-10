@@ -56,7 +56,7 @@ public class CityInfoBox : MB {
 				if (currentCity) {
 					SetButtons ("Cancel", Close, "Extra Day", () => StayExtraDay (city));
 				} else {
-					SetButtons ("Cancel", Close, "Visit", () => Visit (city, button.ActiveRoute));	
+					SetButtons ("Cancel", Close, "Visit", () => TravelTo (city, button.ActiveRoute));	
 				}
 			}
 		} else {

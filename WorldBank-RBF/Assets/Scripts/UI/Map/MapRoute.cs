@@ -27,6 +27,16 @@ public class MapRoute : MB {
 		}
 	}
 
+	Image image = null;
+	Image Image {
+		get {
+			if (image == null) {
+				image = RouteImage.GetComponent<Image> ();
+			}
+			return image;
+		}
+	}
+
 	/// <summary>
 	/// Sets the unlocked state of the route. Hides the route image and text if the route is not unlocked.
 	/// </summary>
@@ -85,6 +95,8 @@ public class MapRoute : MB {
 		if (newUnlock) {
 			StartCoroutine (CoBlink ());
 			newUnlock = false;
+		} else {
+			Image.color = Color.white;
 		}
 	}
 
@@ -93,11 +105,10 @@ public class MapRoute : MB {
 		float time = 5f;
 		float eTime = 0f;
 		float speed = 1.5f;
-		Image image = RouteImage.GetComponent<Image> ();
 	
 		while (eTime < time) {
 			eTime += Time.deltaTime * speed;
-			image.color = new Color (1, 1, 1, Mathf.PingPong (eTime, 1f));
+			Image.color = new Color (1, 1, 1, Mathf.PingPong (eTime, 1f));
 			yield return null;
 		}
 	}

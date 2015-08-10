@@ -15,10 +15,15 @@ public class RouteRecorder : MonoBehaviour {
 	public List<Vector3> routePositions = new List<Vector3> ();
 
 	void Start () {
+		#if UNITY_EDITOR
 		if (System.IO.File.Exists (RecordingPath))
 			System.IO.File.Delete (RecordingPath);
+		#else
+			gameObject.SetActive (false);
+		#endif
 	}
 
+	#if UNITY_EDITOR
 	void Update () {
 		if (recording && !recordRoute) {
 			if (!ValidateCityNames ()) {
@@ -75,4 +80,5 @@ public class RouteRecorder : MonoBehaviour {
 			|| name == "malcom" 
 			|| name == "mile";
 	}
+	#endif
 }
