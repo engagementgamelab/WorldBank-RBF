@@ -32,7 +32,7 @@ public class ScenarioDecisionDialog : GenericDialogBox {
 
         	_data = value;
 
-        	Content = (_year == 0) ? _data.prompt_year_1 : _data.prompt_year_2;
+        	Content = (_year == 1) ? _data.prompt_year_1 : _data.prompt_year_2;
 
         	_btnViewIndicators.onClick.RemoveAllListeners ();
 			_btnViewIndicators.onClick.AddListener(() => NotebookManager.Instance.OpenIndicators());
