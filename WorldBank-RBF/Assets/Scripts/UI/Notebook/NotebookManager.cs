@@ -11,7 +11,6 @@ public class NotebookManager : MB {
 	public NotebookCanvas indicators;
 
 	public GameObject tabGroup;
-	public GameObject notebookCollider;
 
 	Dictionary<string, NotebookCanvas> canvases;
 	Dictionary<string, NotebookCanvas> Canvases {
@@ -151,7 +150,6 @@ public class NotebookManager : MB {
 		if(isPhaseOne)
 			tabGroup.SetActive (false);
 	
-		notebookCollider.SetActive (false);
 		CameraPositioner.Drag.Enabled = true;
 		open = false;
 	}

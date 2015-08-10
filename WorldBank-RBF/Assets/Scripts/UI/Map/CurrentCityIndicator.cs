@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CurrentCityIndicator : MB {
 
@@ -14,6 +15,12 @@ public class CurrentCityIndicator : MB {
 		if (moving) return;
 		moving = true;
 		StartCoroutine (CoMove (Position, to, onEnd));
+	}
+
+	public void Move (List<Vector3> positions, System.Action onEnd=null) {
+		if (moving) return;
+		moving = true;
+		StartCoroutine (CoMove (positions, onEnd));
 	}
 
 	void OnEnable () {
@@ -43,6 +50,29 @@ public class CurrentCityIndicator : MB {
 			eTime += Time.deltaTime;
 			float progress = Mathf.SmoothStep (0, 1, eTime / time);
 			Position = Vector3.Lerp (startPosition, endPosition, progress);
+			yield return null;
+		}
+
+		moving = false;
+		if (onEnd != null) onEnd ();
+	}
+
+	IEnumerator CoMove (List<Vector3> positions, System.Action onEnd) {
+		
+		float time = 2f;
+		float eTime = 0f;
+		float positionCount = (float)positions.Count-1;
+		float interval = time / positionCount;
+
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float progress = eTime / time;
+
+			int nextPosition = Mathf.FloorToInt (positionCount * progress);
+			int prevPosition = nextPosition > 0 ? nextPosition-1 : 0;
+			float p = progress - interval * (float)prevPosition;
+			// TODO: this needs to be smoother
+			Position = Vector3.Lerp (positions[prevPosition], positions[nextPosition], p);
 			yield return null;
 		}
 

@@ -30,7 +30,6 @@ public class RouteRecorder : MonoBehaviour {
 				recordRoute = true;
 				return;
 			}
-			// string output = string.Format ("routeLines.Add (new Terminals ({0}, {1}, new List<Vector3> () {\n\t", city1, city2);string output = string.Format ("routeLines.Add (new Terminals ({0}, {1}, new List<Vector3> () {\n\t", city1, city2);string output = string.Format ("routeLines.Add (new Terminals ({0}, {1}, new List<Vector3> () {\n\t", city1, city2);
 			
 			string output =
 				"routeLines.Add (" +
@@ -39,7 +38,7 @@ public class RouteRecorder : MonoBehaviour {
 
 			for (int i = 0; i < routePositions.Count; i ++) {
 				Vector3 p = routePositions[i];
-				output += string.Format ("new Vector3 ({0}, {1}, {2})", p.x, p.y, p.z);
+				output += string.Format ("new Vector3 ({0}f, {1}f, {2}f)", p.x, p.y, p.z);
 				if (i == routePositions.Count-1) {
 					output += "\n});\n";
 				} else {
