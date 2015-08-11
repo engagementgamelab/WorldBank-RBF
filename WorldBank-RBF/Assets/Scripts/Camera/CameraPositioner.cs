@@ -116,9 +116,18 @@ public class CameraPositioner : MB {
 		}
 	}
 
+	float xMax;
+	public float XMax {
+		get { return xMax; }
+		set {
+			xMax = value;
+			Transform.SetPositionX (Mathf.Min (xMax, Position.x));
+		}
+	}
+
 	public float XPosition {
 		get { return Position.x; }
-		set { Transform.SetPositionX (Mathf.Max (XMin, value)); }
+		set { Transform.SetPositionX (Mathf.Clamp (value, XMin, XMax)); }
 	}
 
 	CameraDrag drag;

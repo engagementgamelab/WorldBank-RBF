@@ -97,8 +97,8 @@ public class CitiesManager : MB {
 	}
 
 	void MoveIndicator (RouteItem route, System.Action onArrive) {
-		currentCityIndicator.Move (route.Positions, onArrive);
-		// currentCityIndicator.Move (Cities[PlayerData.CityGroup.CurrentCity].Position, onArrive);
+		// currentCityIndicator.Move (route.Positions, onArrive);
+		currentCityIndicator.Move (Cities[PlayerData.CityGroup.CurrentCity].Position, onArrive);
 	}
 
 	void OnVisit () {

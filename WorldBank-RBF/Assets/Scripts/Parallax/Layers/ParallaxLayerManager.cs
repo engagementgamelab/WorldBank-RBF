@@ -63,6 +63,21 @@ public class ParallaxLayerManager : MonoBehaviour {
 		}
 	}
 
+	public float FurthestNPCDistance {
+		get {
+			float furthestDistance = 0;
+			foreach (ParallaxLayer layer in Layers) {
+				foreach (ParallaxNpc npc in layer.npcs) {
+					furthestDistance = Mathf.Max (furthestDistance, npc.Position.x);
+				}
+			}
+			return furthestDistance;
+		}
+	}
+
+	public delegate void OnLoad ();
+	public OnLoad onLoad;
+
 	#if DEBUG
 	public bool designerScene = false;
 	string texPath = "Command+V to paste file path";
@@ -86,6 +101,7 @@ public class ParallaxLayerManager : MonoBehaviour {
 		// Also- cities would load faster if existing layers were updated rather than destroyed & instantiated
 		ParallaxLayer[] pLayers = GameObject.FindObjectsOfType (typeof (ParallaxLayer)) as ParallaxLayer[];
 		layers = pLayers.ToList ();
+		if (onLoad != null) onLoad ();
     }
 
     public void LoadFromSymbol (string symbol) {

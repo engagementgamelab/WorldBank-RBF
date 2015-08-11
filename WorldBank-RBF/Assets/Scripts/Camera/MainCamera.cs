@@ -111,6 +111,10 @@ public class MainCamera : MB {
 	const float MIN_ZOOM = 0f;
 	const float MAX_ZOOM = 12f;
 
+	void Awake () {
+		ParallaxLayerManager.Instance.onLoad += OnLoadCity;
+	}
+
 	void Start () {
 		Zoom = 0;
 		TargetZoom = initialZoomLevel;
@@ -133,5 +137,9 @@ public class MainCamera : MB {
 	public void ZoomTo (float target, float velocity=-1) {
 		TargetZoom = target;
 		if (velocity != -1) ZoomVelocity = velocity;
+	}
+
+	void OnLoadCity () {
+		Positioner.XMax = ParallaxLayerManager.Instance.FurthestNPCDistance;
 	}
 }

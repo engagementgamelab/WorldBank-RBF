@@ -15,7 +15,7 @@ public class RouteRecorder : MonoBehaviour {
 	public List<Vector3> routePositions = new List<Vector3> ();
 
 	void Start () {
-		#if UNITY_EDITOR
+		#if UNITY_EDITOR && !UNITY_WEBPLAYER
 		if (System.IO.File.Exists (RecordingPath))
 			System.IO.File.Delete (RecordingPath);
 		#else
@@ -23,7 +23,7 @@ public class RouteRecorder : MonoBehaviour {
 		#endif
 	}
 
-	#if UNITY_EDITOR
+	#if UNITY_EDITOR && !UNITY_WEBPLAYER
 	void Update () {
 		if (recording && !recordRoute) {
 			if (!ValidateCityNames ()) {

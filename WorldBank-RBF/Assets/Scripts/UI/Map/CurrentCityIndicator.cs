@@ -70,8 +70,7 @@ public class CurrentCityIndicator : MB {
 
 			int nextPosition = Mathf.FloorToInt (positionCount * progress);
 			int prevPosition = nextPosition > 0 ? nextPosition-1 : 0;
-			float p = progress - interval * (float)prevPosition;
-			// TODO: this needs to be smoother
+			float p = Mathf.InverseLerp (interval * (float)prevPosition * 0.5f, interval * (float)nextPosition * 0.5f, progress);
 			Position = Vector3.Lerp (positions[prevPosition], positions[nextPosition], p);
 			yield return null;
 		}
