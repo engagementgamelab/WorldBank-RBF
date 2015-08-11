@@ -176,15 +176,13 @@ public class ScenarioManager : MonoBehaviour {
 		int yearLength = DataManager.ScenarioLength(scenarioTwistIndex);
  
 		// Should we display a year break (happens at 4th and 8th card or if forced by timer)?
-		if(newYear || (yearLength == nextCardIndex)) {
+		if((newYear || (yearLength == nextCardIndex)) && !queueProblemCard) {
 			
 			// Next year will start at card 0
 			currentCardIndex = -1;
 
 			// Queue always starts at 0
 			currentQueueIndex = 0;
-
-			OpenScenarioDecisionCard();
 
 			// Stop card cooldown
 			problemCardCooldown.Stop();
@@ -195,8 +193,21 @@ public class ScenarioManager : MonoBehaviour {
 			// Clear queue
 			ScenarioQueue.Clear();
 
-			inYearEnd = true;
-			queueProblemCard = false;
+			// Show end of scenario
+			if(currentYear == 3) {
+
+				// Show indicators
+				NotebookManager.Instance.OpenIndicators();
+
+				// Show scenario end panel and hide cooldown
+				scenarioEndPanel.gameObject.SetActive(true);
+				scenarioCooldownText.gameObject.SetActive(false);
+
+				phaseCooldown.Stop();
+
+				return;
+
+			}
 
 			// If current month is fewer than 12 (player managed to finish all problems before year end), calculate affects for all missing months
 			// TODO: WILL THIS CHANGE?
@@ -207,6 +218,11 @@ public class ScenarioManager : MonoBehaviour {
 					mo++;
 				}
 			}
+
+			OpenScenarioDecisionCard();
+
+			inYearEnd = true;
+			queueProblemCard = false;
 
 			// Update timer text
     		scenarioCooldownText.text = "Break - Year " + currentYear;
@@ -224,16 +240,6 @@ public class ScenarioManager : MonoBehaviour {
 			cardIndex = queueProblemCard ? ++currentQueueIndex : ++currentCardIndex;	
 
 			OpenScenarioCard(cardIndex, queueProblemCard);
-
-		}
-		// Show end of scenario
-		else if(!queueProblemCard && currentYear > 3) {
-
-			// Show scenario end panel and hide cooldown
-			scenarioEndPanel.gameObject.SetActive(true);
-			scenarioCooldownText.gameObject.SetActive(false);
-
-			phaseCooldown.Stop();
 
 		}
 
