@@ -14,7 +14,14 @@ public class NotebookManagerPhaseOne : MonoBehaviour {
 		}
 	}
 
-	public bool IsOpen { get; set; }
+	bool isOpen = false;
+	public bool IsOpen { 
+		get { return isOpen; }
+		set {
+			isOpen = value;
+			MainCamera.Instance.Positioner.Drag.Enabled = !isOpen;
+		}
+	}
 
 	public bool CanCloseNotebook {
 		get {

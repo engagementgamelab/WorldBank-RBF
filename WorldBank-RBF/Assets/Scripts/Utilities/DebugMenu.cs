@@ -21,11 +21,11 @@ public class DebugMenu : MonoBehaviour {
 		showOptions = GUILayout.Toggle (showOptions, "Show debug options");
 		if (!showOptions) return;
 		GUI.color = Color.white;
-		if (GUILayout.Button ("0 interactions")) {
-			PlayerData.InteractionGroup.Clear ();
-		}
 		if (!capitolVisited && GUILayout.Button ("visit capitol")) {
 			PlayerData.CityGroup.CurrentCity = "capitol";
+		}
+		if (GUILayout.Button ("0 interactions")) {
+			PlayerData.InteractionGroup.Clear ();
 		}
 		if (GUILayout.Button ("unlock routes")) {
 			List<RouteItem> routes = PlayerData.RouteGroup.Routes;
@@ -42,6 +42,10 @@ public class DebugMenu : MonoBehaviour {
     		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements", "Context text");
     		PlayerData.UnlockItem ("unlockable_information_campaign_to_change_cultural_customs_and_behavior", "Context text");
     		PlayerData.UnlockItem ("unlockable_dialogue_mr_todd", "Context text");
+    	}
+    	if (GUILayout.Button ("skip to phase 2")) {
+    		ObjectPool.Clear();
+			Application.LoadLevel("PhaseTwo");		
     	}
 	}
 	#endif

@@ -10,6 +10,7 @@ Created by Engagement Lab, 2015
 */
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -32,8 +33,11 @@ public class PlayerLoginRegisterUI : MB {
 	public delegate void AuthCallback(bool success);
 
 	private bool loggedIn;
+	private EventSystem system;
 
 	void Start() {
+
+		system = EventSystem.current;
 
 		// Ensure UI is under our canvas
 		// transform.SetParent(GameObject.FindGameObjectsWithTag("CanvasRoot")[0].transform);
@@ -94,4 +98,29 @@ public class PlayerLoginRegisterUI : MB {
 
     }
 
+    private void Update () {
+
+    	// Tab navigation - really rough
+    	if (Input.GetKeyDown (KeyCode.Tab)) {
+    		Selectable next = Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)
+    			? system.currentSelectedGameObject.GetComponent<Selectable> ().FindSelectableOnUp ()
+    			: system.currentSelectedGameObject.GetComponent<Selectable> ().FindSelectableOnDown ();
+
+    		if (next != null) {
+    			InputField input = next.GetComponent<InputField> ();
+    			if (input != null) {
+
+    				// Navigate forwards
+    				input.OnPointerClick (new PointerEventData (system));
+    				system.SetSelectedGameObject (next.gameObject);
+    				
+    			} else {
+    				
+    				// Navigate backwards
+    				next = Selectable.allSelectables[0];
+    				system.SetSelectedGameObject(next.gameObject);
+    			}
+    		}
+    	}
+    }
 }
