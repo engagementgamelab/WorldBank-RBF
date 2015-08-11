@@ -2809,6 +2809,7 @@ GameObject:
   - 114: {fileID: 11429558}
   - 114: {fileID: 11499880}
   - 114: {fileID: 11420896}
+  - 114: {fileID: 11432614}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -3639,7 +3640,7 @@ Camera:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128472}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
@@ -5305,7 +5306,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 189828}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
@@ -5536,6 +5537,24 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &11432614
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 189828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: 545
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
 --- !u!114 &11433314
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7206,7 +7225,6 @@ MonoBehaviour:
   data: {fileID: 0}
   indicators: {fileID: 0}
   tabGroup: {fileID: 0}
-  notebookCollider: {fileID: 0}
   openAtStart: 1
   isPhaseOne: 1
 --- !u!114 &11457096
@@ -7814,7 +7832,6 @@ MonoBehaviour:
   data: {fileID: 0}
   indicators: {fileID: 11474662}
   tabGroup: {fileID: 142238}
-  notebookCollider: {fileID: 125702}
   openAtStart: 1
   isPhaseOne: 1
 --- !u!114 &11466974
@@ -8387,7 +8404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead28a1d9afe348508c442d928ba8b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inEditMode: 1
+  inEditMode: 0
 --- !u!114 &11473980
 MonoBehaviour:
   m_ObjectHideFlags: 1

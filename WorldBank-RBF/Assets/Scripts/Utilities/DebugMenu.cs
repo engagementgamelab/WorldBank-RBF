@@ -40,8 +40,8 @@ public class DebugMenu : MonoBehaviour {
     		PlayerData.UnlockItem ("unlockable_incentivise_providers_to_follow_protocols", "Context text");
     		PlayerData.UnlockItem ("unlockable_improve_patient_and_provider_relationship", "Context text");
     		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements", "Context text");
-    		PlayerData.UnlockItem ("unlockable_information_campaign_to_change_cultural_customs_and_behavior", "Context text");
-    		PlayerData.UnlockItem ("unlockable_dialogue_mr_todd", "Context text");
+    		// PlayerData.UnlockItem ("unlockable_information_campaign_to_change_cultural_customs_and_behavior", "Context text");
+    		// PlayerData.UnlockItem ("unlockable_dialogue_mr_todd", "Context text");
     	}
     	if (GUILayout.Button ("skip to phase 2")) {
     		ObjectPool.Clear();

@@ -10,8 +10,30 @@ public class TacticsColumn : Column {
 	List<UITactic> uiTactics = new List<UITactic> ();
 	bool initialized = false;
 
+	LayoutElement contentLayout;
+	float ContentHeight {
+		get {
+			if (contentLayout == null) {
+				contentLayout = content.GetComponent<LayoutElement> ();
+			}
+			return contentLayout.minHeight;
+		}
+		set {
+			if (contentLayout == null) {
+				contentLayout = content.GetComponent<LayoutElement> ();
+			}
+			contentLayout.minHeight = value;
+		}
+	}
+
 	void OnEnable () {
 		OnUpdate();
+		PlayerData.TacticPriorityGroup.onUpdate += UpdateContentHeight;
+		UpdateContentHeight ();
+	}
+
+	void OnDisable () {
+		PlayerData.TacticPriorityGroup.onUpdate -= UpdateContentHeight;
 	}
 
 	void OnUpdate () {
@@ -36,5 +58,9 @@ public class TacticsColumn : Column {
 		
 		return uiTactic;
 
+	}
+
+	void UpdateContentHeight () {
+		ContentHeight = content.childCount < 2 ? 545 : 0;
 	}
 }
