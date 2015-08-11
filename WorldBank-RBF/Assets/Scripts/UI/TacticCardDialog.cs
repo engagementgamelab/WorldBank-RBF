@@ -150,9 +150,11 @@ public class TacticCardDialog : ScenarioCardDialog {
 		buttonObserve.Button.onClick.RemoveAllListeners();
 
 		buttonObserve.Button.onClick.AddListener (() => Events.instance.Raise(
-														new TacticsEvent(TacticsEvent.TACTIC_CLOSED, _cardIndex.ToString())
+														new TacticsEvent(TacticsEvent.TACTIC_CLOSED, _data.name)
 												 ));
 		buttonObserve.Button.onClick.AddListener (() => ObjectPool.Destroy<TacticCardDialog>(transform) );
+
+		ScenarioQueue.RemoveTacticCard(this);
 
 		buttonInvestigate.gameObject.SetActive(false);
 

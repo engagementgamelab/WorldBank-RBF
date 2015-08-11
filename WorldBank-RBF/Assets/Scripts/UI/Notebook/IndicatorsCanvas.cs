@@ -26,6 +26,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 			indicators.transform.SetParent(dataColumns.transform);
 
+			indicators.transform.localScale = Vector3.one;
+
 		}
 
 		ShowYear(currentYearShown);
