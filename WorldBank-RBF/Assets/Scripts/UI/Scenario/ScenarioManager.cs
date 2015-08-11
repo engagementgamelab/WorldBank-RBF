@@ -67,7 +67,7 @@ public class ScenarioManager : MonoBehaviour {
 	int phaseCooldownElapsed;
 
 	// seconds (each month is 25 seconds and there are 3 years)
-	public int monthLengthSeconds = 25;
+	int monthLengthSeconds = 25;
 
 	// ScenarioCardDialog currentScenarioCard;
 	TacticCardDialog currentTacticCard;
@@ -126,6 +126,9 @@ public class ScenarioManager : MonoBehaviour {
 	}
 
 	void OnApplicationQuit() {
+
+		if(problemCardCooldown == null)
+			return;
         
         problemCardCooldown.Stop();
         phaseCooldown.Stop();
@@ -362,6 +365,9 @@ public class ScenarioManager : MonoBehaviour {
     /// </summary>
     /// <param name="response">Dictionary response from /user/scenario/ endpoint.</param>
     void UserScenarioResponse(Dictionary<string, object> response) {
+
+    	// Get config values
+    	monthLengthSeconds = DataManager.PhaseTwoConfig.month_length_seconds;
 
 		problemCardCooldown = new TimerUtils.Cooldown();
 		phaseCooldown = new TimerUtils.Cooldown("phase_cooldown");

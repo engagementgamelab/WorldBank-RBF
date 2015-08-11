@@ -7,8 +7,8 @@ public class MB : MonoBehaviour {
 	Transform myTransform;
 	public Transform Transform {
 		get {
-			if(this == null)
-				throw new Exception("MB Transform is null!");
+			// if(this == null)
+			// 	throw new Exception("MB Transform is null!");
 
 			if (myTransform == null) {
 				myTransform = transform;

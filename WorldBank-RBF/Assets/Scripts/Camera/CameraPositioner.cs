@@ -166,9 +166,11 @@ public class CameraPositioner : MB {
 		Drag.OnDragUp ();
 	}
 
-	void OnDestroy () {
+	void OnDestroy() {
+
 		Events.instance.RemoveListener<DragDownEvent> (OnDragDownEvent);
-		Events.instance.RemoveListener<DragUpEvent> (OnDragUpEvent);
+		Events.instance.RemoveListener<DragUpEvent> (OnDragUpEvent);		
+
 	}
 
 	#if SHOW_SETTINGS

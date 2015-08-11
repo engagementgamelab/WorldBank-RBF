@@ -124,10 +124,13 @@ namespace Models {
     // This a little ugly, but helps me keep phase two data strongly typed (since these siblings are multiple types)
     public class PhaseTwo { 
 
+        public PhaseTwoConfig phase_two_config { get; set; }
+
         public Scenario scenario_1 { get; set; }
         public Scenario scenario_2 { get; set; }
         public Scenario scenario_3 { get; set; }
         public Scenario scenario_4 { get; set; }
+        
         public TacticCard[] tactics { get; set; }
 
         List<string> selectedDecisions = new List<string>();
@@ -159,6 +162,13 @@ namespace Models {
             }
         }
 
+    }
+
+    public class PhaseTwoConfig {
+
+        public int[] tactic_card_intervals { get; set; }
+        public int month_length_seconds { get; set; }
+        
     }
 
     public class Scenario {

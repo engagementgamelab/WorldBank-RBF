@@ -61,6 +61,15 @@ public class DataManager {
             return gameData.phase_two.Year;
         }
     }
+    
+    /// <summary>
+    /// Get the current phase two config.
+    /// </summary>
+    public static PhaseTwoConfig PhaseTwoConfig {
+        get {
+            return gameData.phase_two.phase_two_config;
+        }
+    }
 
     public static List<string> tacticNames;
 
