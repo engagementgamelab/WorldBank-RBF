@@ -28,8 +28,6 @@ public class TacticsCanvas : MonoBehaviour {
 	public Image tooltipClockImg;
 	public Image tooltipDoneImg;
 
-	public static int[] tacticCardIntervals = new int[3] {3, 4, 4};
-
 	static TimerUtils.Cooldown tacticCardCooldown;
 	static TimerUtils.Cooldown investigateCooldown;
 
@@ -41,6 +39,8 @@ public class TacticsCanvas : MonoBehaviour {
 	static List<string> tacticsAvailable;
 	static List<string> allTactics;
 	
+	static int[] tacticCardIntervals = new int[3] {3, 4, 4};
+	
 	CanvasGroup canvasGroup;
 
 	bool openTacticCard;
@@ -50,6 +50,8 @@ public class TacticsCanvas : MonoBehaviour {
 
 	int cooldownTotal = 0;
 	int cooldownElapsed = 0;
+
+	// int[] tacticCardIntervals = new int[3] {3, 4, 4};
     
     /// <summary>
     /// Get/set
@@ -99,6 +101,8 @@ public class TacticsCanvas : MonoBehaviour {
 	}
 
 	static void Initialize() {
+		
+		tacticCardIntervals = DataManager.PhaseTwoConfig.tactic_card_intervals;
 
 		if(tacticCardCooldown == null)
 			tacticCardCooldown = new TimerUtils.Cooldown();
