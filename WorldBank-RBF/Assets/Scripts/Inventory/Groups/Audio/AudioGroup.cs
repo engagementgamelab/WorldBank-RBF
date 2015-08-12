@@ -5,23 +5,17 @@ using System.Collections.Generic;
 
 public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 
-	protected List<AudioItem> AudioItems {
-		get { return Items.ConvertAll (x => (AudioItem)x); }
-	}
-
 	protected struct PlaySettings {
 		
 		public bool allowSimultaneous;
-		public bool loop;
-
-		public PlaySettings (bool allowSimultaneous, bool loop) {
+		
+		public PlaySettings (bool allowSimultaneous) {
 			this.allowSimultaneous = allowSimultaneous;
-			this.loop = loop;
 		}
 	}
 
 	protected virtual PlaySettings Settings {
-		get { return new PlaySettings (false, true); }
+		get { return new PlaySettings (false); }
 	}
 
 	List<AudioItem> playing = new List<AudioItem> ();
@@ -42,8 +36,13 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 		if (!Settings.allowSimultaneous) {
 			StopAll ();
 		}
-		item.Play (Settings.loop);
+		item.Play ();
 		playing.Add (item);
+	}
+
+	public void Stop (AudioItem item) {
+		item.Stop ();
+		playing.Remove (item);
 	}
 
 	void StopAll () {

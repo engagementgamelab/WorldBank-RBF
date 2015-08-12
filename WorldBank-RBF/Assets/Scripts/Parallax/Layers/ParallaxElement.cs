@@ -65,7 +65,7 @@ public class ParallaxElement : ParallaxImage {
 			LocalScale = new Vector3 (scale, scale, 1f);
 			LocalPosition = new Vector3 (
 				XPosition - ColliderXPosition * (scale-1f), 
-				YPosition - zFocusPoint * (scale-1f),
+				YPosition - ZFocusPoint * (scale-1f),
 				0f);
 		}
 	}
@@ -81,7 +81,7 @@ public class ParallaxElement : ParallaxImage {
 		}
 	}
 
-	float zFocusPoint {
+	float ZFocusPoint {
 		get { 
 			if (ColliderHeight > 0.8f) {
 				return ColliderYPosition + ColliderHeight * 0.67f; 

@@ -1,26 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AudioManager : MonoBehaviour {
+public class AudioManager {
 
-	Inventory inventory = new Inventory ();
+	static Inventory inventory = null;
 
-	AmbienceGroup Ambiences {
-		get { return (AmbienceGroup)inventory["ambiences"]; }
+	public static Inventory Inventory {
+		get {
+			if (inventory == null) {
+				inventory = new Inventory ();
+				inventory.Add (new AmbienceGroup ());
+				inventory.Add (new SfxGroup ());
+				inventory.Add (new MusicGroup ());
+			}
+			return inventory;
+		}
 	}
 
-	void Awake () {
-		inventory.Add (new AmbienceGroup ());
-		inventory.Add (new SfxGroup ());
-		inventory.Add (new MusicGroup ());
+	public static AmbienceGroup Ambience {
+		get { return (AmbienceGroup)Inventory["ambience"]; }
 	}
 
-	void Start () {
-		PlayerData.CityGroup.onUpdateCurrentCity += OnSetCity;
-		// Ambiences.Play ("capitol");
+	public static MusicGroup Music {
+		get { return (MusicGroup)Inventory["music"]; }
 	}
 
-	void OnSetCity (string city) {
-		// Ambiences.Play (city);
+	public static SfxGroup Sfx {
+		get { return (SfxGroup)Inventory["sfx"]; }
 	}
 }

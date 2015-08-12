@@ -61,13 +61,18 @@ public class PlayerLoginRegisterUI : MB {
 
 	public void Login() {
 
-		PlayerManager.Instance.Authenticate(txtEmail.text, inputPassword.text);
+		PlayerManager.Instance.Authenticate(txtEmail.text.Replace ("\n", ""), inputPassword.text.Replace ("\n", ""));
 
 	}
 
 	public void Register() {
-
-		PlayerManager.Instance.Register(txtEmail.text, txtUsername.text, txtLocation.text, inputPassword.text, inputPasswordAgain.text);
+		
+		PlayerManager.Instance.Register(
+			txtEmail.text.Replace ("\n", ""), 
+			txtUsername.text.Replace ("\n", ""), 
+			txtLocation.text.Replace ("\n", ""), 
+			inputPassword.text.Replace ("\n", ""), 
+			inputPasswordAgain.text.Replace ("\n", ""));
 
 	}
 

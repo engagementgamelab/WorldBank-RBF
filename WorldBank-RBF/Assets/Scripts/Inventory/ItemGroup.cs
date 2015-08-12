@@ -82,6 +82,10 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	
 	public override string ID { get { return ""; } }
 
+	public List<T> MyItems {
+		get { return Items.ConvertAll (x => (T)x); }
+	}
+
 	/// <summary>
 	/// Called any time items are added.
 	/// </summary>

@@ -363,4 +363,16 @@ namespace Models {
     public class ParallaxZoomTrigger : ParallaxElement {
         public float zoomTarget { get; set; }
     }
+
+    public class AmbienceZones {
+        public string cityContext { get; set; }
+        public List<object> zones { get; set; }
+    }
+
+    public class AmbienceZone {
+        public string context { get; set; }
+        public float offset { get; set; }
+        public float width { get; set; }
+        public float fadeLength { get; set; }
+    }
 }
