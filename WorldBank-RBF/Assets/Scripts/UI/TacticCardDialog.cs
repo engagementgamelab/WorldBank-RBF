@@ -67,7 +67,24 @@ public class TacticCardDialog : ScenarioCardDialog {
 
 	public void ResetButtons() {
 
-		buttonInvestigate.gameObject.SetActive(!investigateDone || (_data.further_options != null && !investigateFurther));
+		// Hide choices
+		choicesGroup.gameObject.SetActive(false);
+
+		if(_data.further_options != null && !investigateFurther) {
+			buttonInvestigate.gameObject.SetActive(true);
+
+			choicesGroup.gameObject.SetActive(true);
+		}
+
+		else if(!investigateDone)
+			buttonInvestigate.gameObject.SetActive(true);
+
+		else {
+			buttonInvestigate.gameObject.SetActive(false);
+
+			choicesGroup.gameObject.SetActive(true);
+		}
+
 
 	}
 
@@ -96,7 +113,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 		}
 
 		if(investigateFurther) {
-			AppendButtons(btnListOptions);
+			AppendButtons(btnListOptions, choicesGroup);
 
 			buttonInvestigate.gameObject.SetActive(false);
 		}
@@ -108,6 +125,8 @@ public class TacticCardDialog : ScenarioCardDialog {
 			buttonInvestigate.gameObject.SetActive(false);
 			buttonObserve.Text = "Close";
 		}
+		
+		choicesGroup.gameObject.SetActive(true);
 		
 		// Show done icon
 		/*tooltipDoneImg.gameObject.SetActive(true);

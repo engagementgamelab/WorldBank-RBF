@@ -68,6 +68,15 @@ class GenerateBuilds {
         PerformWebBuild();
     }
 
+    [MenuItem ("Build/Build Staging")]
+    static void MakeStagingBuilds()
+    {
+        BUILD_OPTIONS = BuildOptions.None;
+
+        PerformMacOSXBuild();
+        PerformPCBuild();
+    }
+
     static string[] FindEnabledScenes() {
 
         List<string> EditorScenes = new List<string>();

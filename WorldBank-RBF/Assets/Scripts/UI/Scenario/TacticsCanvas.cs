@@ -44,6 +44,7 @@ public class TacticsCanvas : MonoBehaviour {
 	CanvasGroup canvasGroup;
 
 	bool openTacticCard;
+	bool isInvestigating;
 	bool endInvestigate;
 
 	string tacticState;
@@ -96,8 +97,15 @@ public class TacticsCanvas : MonoBehaviour {
 			endInvestigate = false;
 			EndInvestigate();
 		}
-
-		cooldownText.text = cooldownElapsed + " seconds";
+		
+		if(cooldownElapsed == 0)
+		{
+			tacticState = "results";
+			endInvestigate = false;
+			cooldownElapsed = 5;
+		}
+		else
+			cooldownText.text = cooldownElapsed + " seconds";
 	}
 
 	static void Initialize() {
@@ -170,7 +178,7 @@ public class TacticsCanvas : MonoBehaviour {
 			else
 			{
 
-			 	if(ScenarioQueue.Tactics.Length > 0 && cardIndex <= ScenarioQueue.Tactics.Length) {
+			 	if(ScenarioQueue.Tactics.Length > 0 && cardIndex < ScenarioQueue.Tactics.Length) {
 					dialog = ScenarioQueue.Tactics[cardIndex];
 					dialog.ResetButtons();
 
@@ -282,7 +290,7 @@ public class TacticsCanvas : MonoBehaviour {
 		parentPanel.gameObject.SetActive(!parentPanel.gameObject.activeSelf);
 		tacticCardsTooltip.gameObject.SetActive(ScenarioQueue.Tactics.Length > 0);
 
-		if(currentTacticCard != null) {
+		if(currentTacticCard != null && !isInvestigating) {
 			currentTacticCard.gameObject.SetActive(true);
 			currentTacticCard.ResetButtons();
 		}
@@ -297,6 +305,8 @@ public class TacticsCanvas : MonoBehaviour {
 		// tooltipAlertImg.gameObject.SetActive(false);
 		// tooltipClockImg.gameObject.SetActive(true);
 		// tooltipTxt.gameObject.SetActive(true);
+
+		isInvestigating = true;
 
 		cooldownTotal = cooldownTime[0];
 
@@ -315,6 +325,8 @@ public class TacticsCanvas : MonoBehaviour {
 	}
 
 	void EndInvestigate() {
+
+		isInvestigating = false;
 
 		tacticCardCooldown.Resume();
 
@@ -384,8 +396,9 @@ public class TacticsCanvas : MonoBehaviour {
 
     	if(e.Symbol == "tactic_results")
     	{
-    		Debug.Log(cooldownTotal + " - " + e.SecondsElapsed);
+    		// Debug.Log(cooldownTotal + " - " + e.SecondsElapsed);
 	    	cooldownElapsed = cooldownTotal - e.SecondsElapsed;
+
     	}
 
     }
