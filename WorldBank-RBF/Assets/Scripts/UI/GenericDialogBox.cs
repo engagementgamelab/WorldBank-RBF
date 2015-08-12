@@ -89,7 +89,7 @@ public class GenericDialogBox : MB {
 
 	}
 
-	public void AppendButtons<T>(List<T> btnChoices) where T: MonoBehaviour {
+	public void AppendButtons<T>(List<T> btnChoices, Transform groupOverride=null) where T: MonoBehaviour {
 		
 		AddButtons<T>(btnChoices, false, null, true);
 	}
