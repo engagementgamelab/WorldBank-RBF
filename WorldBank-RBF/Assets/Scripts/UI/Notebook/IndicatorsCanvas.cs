@@ -16,18 +16,46 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 		ObjectPool.DestroyChildren<IndicatorColumn>(dataColumns.transform);
 
+		int ind = 0;
+		float xPos = dataColumns.rect.width / 12;
+		float factor = (dataColumns.rect.height / 100);
+
 		foreach(string[] affects in appliedAffects) {
-		
-			IndicatorColumn indicators = ObjectPool.Instantiate<IndicatorColumn>();
 
-			indicators.Vaccinations = affects[0];
-			indicators.FacilityBirths = affects[1];
-			indicators.QualityOfCare = affects[2];
+			int affectType = 0;
 
-			indicators.transform.SetParent(dataColumns.transform);
+			foreach(string affect in affects) {
 
-			indicators.transform.localScale = Vector3.one;
+				float startingYPos = 0;
+				float yPos = 0;
 
+				Single.TryParse(affect, out yPos);
+
+				if(ind > 0)
+					Single.TryParse(appliedAffects[ind-1][affectType], out startingYPos);
+				else
+					Single.TryParse(appliedAffects[0][affectType], out startingYPos);
+
+				startingYPos *= factor;
+				float yPosFactored = yPos * factor;
+
+				IndicatorPlotLine plotLine = ObjectPool.Instantiate<IndicatorPlotLine>();
+				
+				plotLine.StartPoint = startingYPos;
+				plotLine.EndPoint = yPosFactored;
+				plotLine.Delta = xPos;
+				plotLine.Type = affectType;
+
+				plotLine.Parent = dataColumns.transform;
+
+				plotLine.Initialize();
+				
+				affectType++;
+
+			}
+
+			xPos += (dataColumns.rect.width / 12);
+			ind++;
 		}
 
 		ShowYear(currentYearShown);
@@ -44,8 +72,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 	public void ShowYear(int intYr=1) {
 
 		int columnIndex = 0;
-		int max = (12 * intYr);
-		int floor = max - 12;
+		int max = (36 * intYr);
+		int floor = max - 36;
 
 		foreach(Transform column in dataColumns.transform)
 		{

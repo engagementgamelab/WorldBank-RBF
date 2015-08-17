@@ -149,7 +149,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void TrackEvent(string strEventName, string strEventCategory) {
 
-        #if UNITY_EDITOR
+        #if UNITY_EDITOR || DEVELOPMENT_BUILD
             return;
         #endif
 
