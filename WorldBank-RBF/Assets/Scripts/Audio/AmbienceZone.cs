@@ -5,7 +5,9 @@ using System.Collections;
 [ExecuteInEditMode]
 #endif
 [JsonSerializable (typeof (Models.AmbienceZone))]
-public class AmbienceZone : MB {
+public class AmbienceZone : MB, IEditorPoolable {
+
+	public int Index { get; set; }
 
 	public string context;
 	public float offset = 0;
@@ -37,6 +39,13 @@ public class AmbienceZone : MB {
 	float End { get { return Start + width; } }
 	float FadeStart { get { return Start - fadeLength; } }
 	float FadeEnd { get { return End + fadeLength; } }
+
+	public void Init () {
+		context = "";
+		offset = 0;
+		width = 100;
+		fadeLength = 25;
+	}
 
 	public void SetAttenuation (float position) {
 		if (position < FadeStart || position > FadeEnd) {

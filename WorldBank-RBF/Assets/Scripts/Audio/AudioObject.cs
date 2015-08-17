@@ -2,7 +2,9 @@
 using UnityEngine.Audio;
 using System.Collections;
 
-public class AudioObject : MB {
+public class AudioObject : MB, IEditorPoolable {
+
+	public int Index { get; set; }
 
 	AudioSource source = null;
 	AudioSource Source {
@@ -25,6 +27,8 @@ public class AudioObject : MB {
 	public AudioMixerGroup musicMixer;
 	public AudioMixerGroup sfxMixer;
 
+	public void Init () {}
+
 	public void Play (AudioItem item, bool loop) {
 		SetMixer (item.Group.ID);
 		Source.clip = item.Clip;
@@ -42,6 +46,6 @@ public class AudioObject : MB {
 
 	public void Stop () {
 		Source.Stop ();
-		ObjectPool.Destroy<AudioObject> (Transform);
+		EditorObjectPool.Destroy<AudioObject> (Transform);
 	}
 }

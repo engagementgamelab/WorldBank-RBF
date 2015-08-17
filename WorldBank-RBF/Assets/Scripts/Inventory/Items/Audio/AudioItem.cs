@@ -57,7 +57,7 @@ public class AudioItem : InventoryItem {
 		AudioObject idleObject = audioObjects.Find (x => !x.IsPlaying);
 		
 		if (idleObject == null && audioObjects.Count == 0 || Settings.allowMultiple) {
-			idleObject = ObjectPool.Instantiate<AudioObject> ();
+			idleObject = EditorObjectPool.Create<AudioObject> ();
 			audioObjects.Add (idleObject);
 		}
 

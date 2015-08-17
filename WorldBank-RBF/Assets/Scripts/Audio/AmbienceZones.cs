@@ -22,7 +22,7 @@ public class AmbienceZones : MB {
 	};
 
 	public void AddZone () {
-		AmbienceZone zone = ObjectPool.Instantiate<AmbienceZone> ();
+		AmbienceZone zone = EditorObjectPool.Create<AmbienceZone> ();
 		zone.Parent = Transform;
 		zone.Transform.Reset ();
 		zone.color = Transform.childCount < colors.Count 
@@ -59,12 +59,19 @@ public class AmbienceZones : MB {
 	void SetAttenuation () {
 		
 		float cursor = MainCamera.Instance.Position.x;
-		foreach (AmbienceZone zone in zones) {
-			zone.SetAttenuation (cursor);
+
+		if (!EditorState.InEditMode) {
+			foreach (AmbienceZone zone in zones) {
+				zone.SetAttenuation (cursor);
+			}
 		}
 
 		#if UNITY_EDITOR
 		Debug.DrawLine (new Vector3 (cursor, 0, 10), new Vector3 (cursor, 10, 10), Color.red);
 		#endif
+	}
+
+	public void Reset () {
+		EditorObjectPool.Destroy<AmbienceZone> (zones);
 	}
 }

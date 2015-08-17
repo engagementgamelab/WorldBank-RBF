@@ -13,13 +13,13 @@ public class AmbienceGroup : AudioGroup<AmbienceItem> {
 
 	public AmbienceItem Play (string city, string context="") {
 		AmbienceItem item = FindAmbienceWithContext (city, context);
-		Play (item);
+		if (item != null) Play (item);
 		return item;
 	}
 
 	public AmbienceItem Stop (string city, string context="") {
 		AmbienceItem item = FindAmbienceWithContext (city, context);
-		Stop (item);
+		if (item != null) Stop (item);
 		return item;
 	}
 

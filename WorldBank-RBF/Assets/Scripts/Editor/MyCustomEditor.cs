@@ -58,4 +58,8 @@ public class MyCustomEditor<T> : Editor where T : MonoBehaviour {
 		float editValue = val.floatValue;
 		return initialValue != editValue;
 	}
+
+	protected string FindStringProperty (string name) {
+		return SerializedTarget.FindProperty (name).stringValue;
+	}
 }
