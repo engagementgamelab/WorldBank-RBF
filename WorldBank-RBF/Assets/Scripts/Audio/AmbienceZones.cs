@@ -60,11 +60,11 @@ public class AmbienceZones : MB {
 		
 		float cursor = MainCamera.Instance.Position.x;
 
-		if (!EditorState.InEditMode) {
-			foreach (AmbienceZone zone in zones) {
-				zone.SetAttenuation (cursor);
-			}
-		}
+		// if (!EditorState.InEditMode) {
+		// 	foreach (AmbienceZone zone in zones) {
+		// 		zone.SetAttenuation (cursor);
+		// 	}
+		// }
 
 		#if UNITY_EDITOR
 		Debug.DrawLine (new Vector3 (cursor, 0, 10), new Vector3 (cursor, 10, 10), Color.red);
