@@ -17,6 +17,7 @@ public class PortraitTextBox : GenericButton {
 
 	public Image portrait;
 	public bool phaseOne = false;
+	public Transform npcName;
 
 	/// <summary>
     /// Set the NPC Name on the button
@@ -25,10 +26,11 @@ public class PortraitTextBox : GenericButton {
 
 		set {
 
-			Transform npcName = GetComponent<Transform>().FindChild("NPCName");
+			if (npcName == null)
+				npcName = GetComponent<Transform>().FindChild("NPCName");
 
-			if(value.Length > 20)
-				value = value.Substring(0, 17) + "...";
+			// if(value.Length > 25)
+			// 	value = value.Substring(0, 22) + "...";
 
 			npcName.GetComponent<Text>().text = value;
 

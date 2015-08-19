@@ -17,13 +17,14 @@ using JsonFx.Json;
 
 public class ScenarioManager : MonoBehaviour {
 
+	public bool version2 = false;
 	public Text scenarioLabel;
-	public Text cardLabel;
+	// public Text cardLabel;
 	public Text scenarioCardCooldownText;
 	public Text scenarioCooldownText;
 
-	public RectTransform scenarioEndPanel;
-	public RectTransform tacticCardsParent;
+	// public RectTransform scenarioEndPanel;
+	// public RectTransform tacticCardsParent;
 
 	public Animator cameraAnimator;
 	public CoverFlow coverFlowHelper;
@@ -188,7 +189,8 @@ public class ScenarioManager : MonoBehaviour {
 			problemCardCooldown.Stop();
 
 			// Hide all scenario problem cards
-			ObjectPool.DestroyAll<ScenarioCardDialog>();
+			if (!version2)
+				ObjectPool.DestroyAll<ScenarioCardDialog>();
 
 			// Clear queue
 			ScenarioQueue.Clear();
@@ -200,7 +202,7 @@ public class ScenarioManager : MonoBehaviour {
 				NotebookManager.Instance.OpenIndicators();
 
 				// Show scenario end panel and hide cooldown
-				scenarioEndPanel.gameObject.SetActive(true);
+				// scenarioEndPanel.gameObject.SetActive(true); TODO: Show system message instead
 				scenarioCooldownText.gameObject.SetActive(false);
 
 				phaseCooldown.Stop();
@@ -278,7 +280,11 @@ public class ScenarioManager : MonoBehaviour {
 	 	ScenarioQueue.RemoveProblemCard(card);
 
 		// Create the card dialog
-	 	DialogManager.instance.CreateScenarioDialog(card);
+		if (version2) {
+			DialogManager.instance.SetCard(card);
+		} else {
+		 	DialogManager.instance.CreateScenarioDialog(card);
+		}
 
     	// Debug
     	// cardLabel.text = card.symbol;

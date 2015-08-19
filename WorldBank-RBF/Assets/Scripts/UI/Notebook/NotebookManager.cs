@@ -157,7 +157,8 @@ public class NotebookManager : MB {
 	// Tell data canvas to update indicators
 	public void UpdateIndicators(int intBirths, int intVaccinations, int intQOC) {
 
-		data.UpdateIndicators(intBirths, intVaccinations, intQOC);
+		// Not using data canvas any more (I believe??) - Jay
+		// data.UpdateIndicators(intBirths, intVaccinations, intQOC);
 		indicators.UpdateIndicators(intBirths, intVaccinations, intQOC);
 		
 	}

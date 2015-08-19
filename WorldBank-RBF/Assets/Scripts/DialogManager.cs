@@ -43,8 +43,11 @@ public class DialogManager : MonoBehaviour {
 	}
 
 	// Variable Definitions
-	public Transform uiCanvasRoot;
-	public Button btnPrefab;
+	// public Transform uiCanvasRoot;
+	// public Button btnPrefab;
+	public bool version2 = false;
+	public ScenarioChatScreen scenarioChat;
+
 	public GenericDialogBox dialogBox;
 
 	public delegate void BackButtonDelegate();
@@ -134,13 +137,21 @@ public class DialogManager : MonoBehaviour {
 		if(closeAll)
 			CloseAll();
 
-		ScenarioCardDialog scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>("Scenario");
-	    scenarioDialog.Data = scenario;
+		if (!version2) {
 
-	    scenarioDialog.transform.SetAsFirstSibling();
+			ScenarioCardDialog scenarioDialog = ObjectPool.Instantiate<ScenarioCardDialog>("Scenario");
+		    scenarioDialog.Data = scenario;
 
-	    return scenarioDialog;
+		    scenarioDialog.transform.SetAsFirstSibling();
 
+		    return scenarioDialog;
+		}
+		return null;
+	}
+
+	public void SetCard (Models.ScenarioCard scenario) {
+		CloseAll();
+		scenarioChat.Data = scenario;
 	}
 
 	/// <summary>
