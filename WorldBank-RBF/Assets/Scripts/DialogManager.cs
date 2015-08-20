@@ -154,6 +154,11 @@ public class DialogManager : MonoBehaviour {
 		scenarioChat.Data = scenario;
 	}
 
+	public void EndYear (Models.ScenarioConfig scenarioConfig, List<string> selectedOptions) {
+		CloseAll ();
+		scenarioChat.EndYear (scenarioConfig, selectedOptions, DataManager.CurrentYear);
+	}
+
 	/// <summary>
 	/// Generate a Scenario Decision dialog for the specified year end card.
 	/// </summary>

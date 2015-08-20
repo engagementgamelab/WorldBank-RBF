@@ -191,6 +191,9 @@ public class ScenarioManager : MonoBehaviour {
 			// Hide all scenario problem cards
 			if (!version2)
 				ObjectPool.DestroyAll<ScenarioCardDialog>();
+			else
+				EndYear ();
+
 
 			// Clear queue
 			ScenarioQueue.Clear();
@@ -221,7 +224,9 @@ public class ScenarioManager : MonoBehaviour {
 				}
 			}
 
-			OpenScenarioDecisionCard();
+			// "Year end" screen
+			if (!version2)
+				OpenScenarioDecisionCard();
 
 			inYearEnd = true;
 			queueProblemCard = false;
@@ -247,7 +252,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		queueProblemCard = false;
 
-		ObjectPool.DestroyAll<ScenarioDecisionDialog>("Scenario");
+		if (!version2)
+			ObjectPool.DestroyAll<ScenarioDecisionDialog>("Scenario");
 
 	}
 
@@ -316,6 +322,11 @@ public class ScenarioManager : MonoBehaviour {
 	    	
 	}
 
+	void EndYear () {
+		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
+		DialogManager.instance.EndYear (scenarioConf, selectedOptions);
+	}
+
 	void NextProblemCard(string strSymbol) {
 	
 		System.Globalization.CultureInfo cultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
@@ -347,7 +358,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		GetNextCard();
 
-		NotebookManager.Instance.ToggleTabs();
+		if (!version2)
+			NotebookManager.Instance.ToggleTabs();
 
 		phaseCooldown.Restart();
 

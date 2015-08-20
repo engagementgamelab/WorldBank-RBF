@@ -21,8 +21,9 @@ public class ScenarioChatScreen : ChatScreen {
         }
     }
 
-    public Transform messagesContainer;
     public Transform advisorsContainer;
+    public Animator advisorsPanel;
+    public GameObject advisorsButton;
     public Text debugText;
 
     List<string> currentAdvisorOptions;
@@ -38,9 +39,7 @@ public class ScenarioChatScreen : ChatScreen {
     	// Get initial character info
 		Models.Character charRef = DataManager.GetDataForCharacter(_data.initiating_npc);
 
-    	// Cleanup
-    	ObjectPool.DestroyChildren<AdvisorMessage>(messagesContainer);
-    	RemoveOptions ();
+    	Clear ();
 
 		// Generate advisors and starting options
 		currentAdvisorOptions = _data.characters.Select(x => x.Key).ToList();
@@ -53,11 +52,35 @@ public class ScenarioChatScreen : ChatScreen {
 		AddAdvisors();
 
 		// Create buttons for all options if not speaking to advisor
-		AddOptions(_data, currentCardOptions);
+		AddOptions(currentCardOptions);
 
 		AddResponseSpeech(_data.initiating_dialogue, charRef);
 
+		advisorsButton.SetActive (true);
+
 		debugText.text = _data.symbol;
+    }
+
+    public void EndYear (Models.ScenarioConfig scenarioConfig, List<string> selectedOptions, int currentYear) {
+    	
+    	Clear ();
+    	advisorsButton.SetActive (false);
+    	advisorsPanel.Play ("Closed");
+
+    	string yearEndMessage = (currentYear == 1) ? scenarioConfig.prompt_year_1 : scenarioConfig.prompt_year_2;
+    	AddSystemMessage ("~ This will be a message from the flatulating ministers B) ~\n" + yearEndMessage);
+
+    	string summary = "";
+    	foreach (string opt in selectedOptions)
+    		summary += opt + "\n";
+    	AddSystemMessage (summary);
+
+    	AddSystemMessage ("~ This will be a button B) ~\nView yr freakin indicators dumbo yuh bibby!!!");
+
+    	string currentChoicesConcat = string.Join(" ", DataManager.ScenarioDecisions().ToArray());
+		Dictionary<string, string>[] choiceData = scenarioConfig.choices.Where(choice => !currentChoicesConcat.Contains(choice["text"])).ToArray();
+
+		AddYearEndOptions (choiceData);
     }
 
     public void AddAdvisors() {
@@ -117,7 +140,7 @@ public class ScenarioChatScreen : ChatScreen {
 		AddAdvisors();
 
 		// Create buttons for all options if not speaking to advisor
-		AddOptions(_data, currentCardOptions);
+		AddOptions(currentCardOptions);
 	}
 
 	void AddResponseSpeech(string strDialogue, Models.Character npc) {
@@ -126,5 +149,41 @@ public class ScenarioChatScreen : ChatScreen {
 		response.Content = strDialogue;
 		response.NPCSymbol = npc.symbol;
 		response.transform.SetParent(messagesContainer);
+		response.transform.localScale = Vector3.one;
+		if (gameObject.activeSelf)
+			StartCoroutine (CoScrollToEnd ());
+	}
+
+	void AddSystemMessage (string content) {
+		SystemMessage message = ObjectPool.Instantiate<SystemMessage>("Scenario");
+		message.Content = content;
+		message.transform.SetParent(messagesContainer);
+		message.transform.localScale = Vector3.one;
+		if (gameObject.activeSelf)
+			StartCoroutine (CoScrollToEnd ());
+	}
+
+	IEnumerator CoScrollToEnd () {
+		
+		// WHY 2 frames unity? why??
+		yield return new WaitForFixedUpdate ();
+		yield return new WaitForFixedUpdate ();
+
+		float startValue = messagesScrollbar.value;
+		float time = 0.5f;
+		float eTime = 0f;
+
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			messagesScrollbar.value = Mathf.Lerp (startValue, 0, progress);
+			yield return null;
+		}
+	}
+
+	void Clear () {
+    	ObjectPool.DestroyChildren<AdvisorMessage>(messagesContainer);
+    	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer);
+    	RemoveOptions ();
 	}
 }
