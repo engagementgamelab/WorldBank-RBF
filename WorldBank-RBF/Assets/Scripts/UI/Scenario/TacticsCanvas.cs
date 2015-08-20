@@ -28,8 +28,8 @@ public class TacticsCanvas : MonoBehaviour {
 	public Image tooltipClockImg;
 	public Image tooltipDoneImg;
 
-	static TimerUtils.Cooldown tacticCardCooldown;
-	static TimerUtils.Cooldown investigateCooldown;
+	Timers.TimerInstance tacticCardCooldown;
+	Timers.TimerInstance investigateCooldown;
 
 	// ScenarioCardDialog currentScenarioCard;
 	TacticCardDialog currentTacticCard;
@@ -39,7 +39,7 @@ public class TacticsCanvas : MonoBehaviour {
 	static List<string> tacticsAvailable;
 	static List<string> allTactics;
 	
-	static int[] tacticCardIntervals = new int[3] {3, 4, 4};
+	static float[] tacticCardIntervals = new float[3] {3, 4, 4};
 	
 	CanvasGroup canvasGroup;
 
@@ -49,22 +49,8 @@ public class TacticsCanvas : MonoBehaviour {
 
 	string tacticState;
 
-	int cooldownTotal = 0;
-	int cooldownElapsed = 0;
-
-	// int[] tacticCardIntervals = new int[3] {3, 4, 4};
-    
-    /// <summary>
-    /// Get/set
-    /// </summary>
-    public static List<string> Available {
-        set {
-            tacticsAvailable = value;
-            allTactics = value;
-
-            Initialize();
-        }
-    }
+	float cooldownTotal = 0;
+	float cooldownElapsed = 0;
 
 	void Start () {
 
@@ -87,12 +73,7 @@ public class TacticsCanvas : MonoBehaviour {
 	void Update () {
 		
 		// If a tactic card has been enqueued, open it
-		if(openTacticCard)
-		{
-			openTacticCard = false;
-			GetNextCard();
-		}
-		else if(endInvestigate)
+		if(endInvestigate)
 		{
 			endInvestigate = false;
 			EndInvestigate();
@@ -108,14 +89,74 @@ public class TacticsCanvas : MonoBehaviour {
 			cooldownText.text = cooldownElapsed + " seconds";
 	}
 
-	static void Initialize() {
+	public void Initialize(List<string> tactics) {
 		
+        tacticsAvailable = tactics;
+        allTactics = tactics;
+
 		tacticCardIntervals = DataManager.PhaseTwoConfig.tactic_card_intervals;
 
-		if(tacticCardCooldown == null)
-			tacticCardCooldown = new TimerUtils.Cooldown();
+		tacticCardCooldown = Timers.StartTimer(this.gameObject, tacticCardIntervals);
+		tacticCardCooldown.Symbol = "tactic_open";
+		tacticCardCooldown.onEnd += GetNextCard;
 
-		tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
+	}
+
+	public void Toggle() {
+
+		canvasGroup = gameObject.GetComponent<CanvasGroup>();
+	
+		canvasGroup.interactable = !canvasGroup.interactable;
+		canvasGroup.blocksRaycasts = !canvasGroup.blocksRaycasts;
+
+		canvasGroup.alpha = (canvasGroup.alpha == 1) ? 0 : 1;
+
+		parentPanel.gameObject.SetActive(!parentPanel.gameObject.activeSelf);
+		tacticCardsTooltip.gameObject.SetActive(ScenarioQueue.Tactics.Length > 0);
+
+		if(currentTacticCard != null && !isInvestigating) {
+			currentTacticCard.gameObject.SetActive(true);
+			currentTacticCard.ResetButtons();
+		}
+
+	}
+
+	public void Investigating(float[] cooldownTime) {
+
+
+		// Show cooldown text
+		// tooltipDoneImg.gameObject.SetActive(false);
+		// tooltipAlertImg.gameObject.SetActive(false);
+		// tooltipClockImg.gameObject.SetActive(true);
+		// tooltipTxt.gameObject.SetActive(true);
+
+		isInvestigating = true;
+
+		cooldownTotal = cooldownTime[0];
+
+		investigateCooldown = Timers.StartTimer(gameObject, cooldownTime);
+		investigateCooldown.Symbol = "tactic_results";
+		investigateCooldown.onTick += OnCooldownTick;
+		investigateCooldown.onEnd += EndInvestigate;
+
+	 	tacticCardCooldown.Stop();
+
+	 	cooldownText.gameObject.SetActive(true);	
+	 	overlayPanel.gameObject.SetActive(true);
+	 	buttonsPanel.gameObject.SetActive(false);
+
+	 	currentTacticCard.Disable();
+
+	}
+
+	public void ReplaceCard(int cardIndex, GameObject buttonRef) {
+
+		OpenTacticCard(cardIndex, true);
+
+		foreach(Button child in buttonsPanel.transform.GetComponentsInChildren<Button>())
+			child.interactable = true;
+
+		buttonRef.GetComponent<Button>().interactable = false;
 
 	}
 
@@ -123,6 +164,7 @@ public class TacticsCanvas : MonoBehaviour {
 	
 		int tacticIndex = new System.Random().Next(0, tacticsAvailable.Count);
 
+		tacticState = "open";
 		OpenTacticCard(tacticIndex);
 
 	}
@@ -153,7 +195,9 @@ public class TacticsCanvas : MonoBehaviour {
 					
 					Debug.LogWarning("Unable to locate a tactic card for '" + tacticName + "'. Timer restarting.", this);
 					
-					tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
+					tacticCardCooldown = Timers.StartTimer(gameObject, tacticCardIntervals);
+					tacticCardCooldown.Symbol = "tactic_open";
+					tacticCardCooldown.onEnd += GetNextCard;
 
 					return;
 
@@ -204,8 +248,13 @@ public class TacticsCanvas : MonoBehaviour {
 		
 		if(tacticsAvailable.Count == 0)
 			tacticCardCooldown.Stop();
-		else
-			tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
+		else {
+
+			tacticCardCooldown = Timers.StartTimer(gameObject, tacticCardIntervals);
+			tacticCardCooldown.Symbol = "tactic_open";
+			tacticCardCooldown.onEnd += GetNextCard;
+		
+		}
 		
 		tacticCardsTooltip.gameObject.SetActive(true);
 
@@ -271,83 +320,21 @@ public class TacticsCanvas : MonoBehaviour {
 		return true;
 	}
 
-	public static void Stop() {
-	
-		// Pause tactic card cooldown
-		tacticCardCooldown.Stop();
-
-	}
-
-	public void Toggle() {
-
-		canvasGroup = gameObject.GetComponent<CanvasGroup>();
-	
-		canvasGroup.interactable = !canvasGroup.interactable;
-		canvasGroup.blocksRaycasts = !canvasGroup.blocksRaycasts;
-
-		canvasGroup.alpha = (canvasGroup.alpha == 1) ? 0 : 1;
-
-		parentPanel.gameObject.SetActive(!parentPanel.gameObject.activeSelf);
-		tacticCardsTooltip.gameObject.SetActive(ScenarioQueue.Tactics.Length > 0);
-
-		if(currentTacticCard != null && !isInvestigating) {
-			currentTacticCard.gameObject.SetActive(true);
-			currentTacticCard.ResetButtons();
-		}
-
-	}
-
-	public void Investigating(int[] cooldownTime) {
-
-
-		// Show cooldown text
-		// tooltipDoneImg.gameObject.SetActive(false);
-		// tooltipAlertImg.gameObject.SetActive(false);
-		// tooltipClockImg.gameObject.SetActive(true);
-		// tooltipTxt.gameObject.SetActive(true);
-
-		isInvestigating = true;
-
-		cooldownTotal = cooldownTime[0];
-
-    	if(investigateCooldown == null)
-			investigateCooldown = new TimerUtils.Cooldown();
-		
-	 	investigateCooldown.Init(cooldownTime, new TacticsEvent(TacticsEvent.TACTIC_RESULTS), "tactic_results");
-	 	tacticCardCooldown.Pause();
-
-	 	cooldownText.gameObject.SetActive(true);	
-	 	overlayPanel.gameObject.SetActive(true);
-	 	buttonsPanel.gameObject.SetActive(false);
-
-	 	currentTacticCard.Disable();
-
-	}
-
 	void EndInvestigate() {
 
+		tacticState = "options";
 		isInvestigating = false;
 
 		tacticCardCooldown.Resume();
 
 	 	cooldownText.gameObject.SetActive(false);	
 	 	overlayPanel.gameObject.SetActive(false);
+		currentTacticCard.Enable();
+
 	 	buttonsPanel.gameObject.SetActive(true);
 		
 		// Show tactic card
 		currentTacticCard.GetResultOptions();
-		currentTacticCard.Enable();
-
-	}
-
-	public void ReplaceCard(int cardIndex, GameObject buttonRef) {
-
-		OpenTacticCard(cardIndex, true);
-
-		foreach(Button child in buttonsPanel.transform.GetComponentsInChildren<Button>())
-			child.interactable = true;
-
-		buttonRef.GetComponent<Button>().interactable = false;
 
 	}
 
@@ -360,14 +347,7 @@ public class TacticsCanvas : MonoBehaviour {
 
     	switch(e.eventType) {
 
-    		case "tactic_open":
-    			tacticState = "open";
-				QueueTacticCard();
-				break;
-
 	   		case "tactic_results":
-    			tacticState = "options";
-    			endInvestigate = true;
     			break;
 
 	   		case "tactic_closed":
@@ -394,12 +374,10 @@ public class TacticsCanvas : MonoBehaviour {
     /// </summary>
     void OnCooldownTick(GameEvents.TimerTick e) {
 
-    	if(e.Symbol == "tactic_results")
-    	{
-    		// Debug.Log(cooldownTotal + " - " + e.SecondsElapsed);
-	    	cooldownElapsed = cooldownTotal - e.SecondsElapsed;
+    	int secondsRounded = (int)System.Math.Round(e.SecondsElapsed, 0);
 
-    	}
+    	if(e.Symbol == "tactic_results")
+	    	cooldownElapsed = cooldownTotal - secondsRounded;
 
     }
 }

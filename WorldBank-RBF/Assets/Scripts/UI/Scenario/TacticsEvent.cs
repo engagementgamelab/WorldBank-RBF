@@ -17,6 +17,6 @@ public class TacticsEvent : ScenarioEvent {
 	public static readonly string TACTIC_RESULTS = "tactic_results";
 	public static readonly string TACTIC_CLOSED = "tactic_closed";
 
-	public TacticsEvent (string strType, string strSymbol=null, int[] intCooldowns=null) : base(strType, strSymbol, intCooldowns) {}
+	public TacticsEvent (string strType, string strSymbol=null, float[] floatCooldowns=null) : base(strType, strSymbol, floatCooldowns) { }
 
 }

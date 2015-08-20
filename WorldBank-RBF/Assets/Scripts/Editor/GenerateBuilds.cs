@@ -47,6 +47,12 @@ class GenerateBuilds {
         GenericBuild("PC", BuildTarget.StandaloneWindows);
     }
 
+    [MenuItem("File/AutoBuilder/Android")]
+    static void PerformAndroidBuild ()
+    {
+        GenericBuild("Android", BuildTarget.Android);
+    }
+
     [MenuItem ("Build/Build WebGL")]
     static void PerformWebGLBuild ()
     {

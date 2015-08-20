@@ -18,8 +18,8 @@ public class SupervisorChatScreen : ChatScreen {
 	int cardIndex = 0;
 	Models.TacticCard investigatingTactic;
 
-	int cooldownTotal = 0;
-	int cooldownElapsed = 0;
+	float cooldownTotal = 0;
+	float cooldownElapsed = 0;
 
 	enum SupervisorState {
 		PresentingProblem,

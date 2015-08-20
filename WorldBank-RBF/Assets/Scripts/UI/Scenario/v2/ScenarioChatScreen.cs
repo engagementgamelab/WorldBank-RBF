@@ -61,7 +61,6 @@ public class ScenarioChatScreen : ChatScreen {
 		// advisorsButton.SetActive (true);
 		Events.instance.AddListener<ScenarioEvent> (OnScenarioEvent);
 
-		debugText.text = _data.symbol;
     }
 
     public void EndYear (Models.ScenarioConfig scenarioConfig, List<string> selectedOptions, int currentYear) {

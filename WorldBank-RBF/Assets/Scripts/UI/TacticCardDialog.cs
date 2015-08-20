@@ -144,7 +144,7 @@ public class TacticCardDialog : ScenarioCardDialog {
 
     	investigateFurther = investigateDone;
 
-    	int[] thisCooldown = investigateFurther ? _data.investigate_further_cooldown : _data.investigate_cooldown;
+    	float[] thisCooldown = investigateFurther ? _data.investigate_further_cooldown : _data.investigate_cooldown;
 
 		Events.instance.Raise(new TacticsEvent( "investigate" + (investigateFurther ? "_further" : ""), null, thisCooldown));
 

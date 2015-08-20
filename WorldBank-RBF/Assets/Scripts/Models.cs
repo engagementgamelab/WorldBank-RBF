@@ -166,8 +166,8 @@ namespace Models {
 
     public class PhaseTwoConfig {
 
-        public int[] tactic_card_intervals { get; set; }
-        public int month_length_seconds { get; set; }
+        public float[] tactic_card_intervals { get; set; }
+        public float month_length_seconds { get; set; }
         
     }
 
@@ -221,8 +221,8 @@ namespace Models {
         public string investigate_dialogue { get; set; }
         public string investigate_further_dialogue { get; set; }
 
-        public int[] investigate_cooldown { get; set; }
-        public int[] investigate_further_cooldown { get; set; }
+        public float[] investigate_cooldown { get; set; }
+        public float[] investigate_further_cooldown { get; set; }
         
         public string[] new_options { get; set; }
         public string[] new_options_affects { get; set; }

@@ -12,7 +12,7 @@ public class ScenarioEvent : GameEvent {
 
 	public readonly string eventType;
 	public readonly string eventSymbol;
-	public readonly int[] cooldown;
+	public readonly float[] cooldown;
 
 	public static readonly string NEXT = "next";
 	public static readonly string NEXT_YEAR = "next_year";
@@ -21,10 +21,10 @@ public class ScenarioEvent : GameEvent {
 	public static readonly string MONTH_END = "month_end";
 	public static readonly string DECISION_SELECTED = "decision_selected";
 
-	public ScenarioEvent (string strType, string strSymbol=null, int[] intCooldowns=null) {
+	public ScenarioEvent (string strType, string strSymbol=null, float[] floatCooldowns=null) {
 		this.eventType = strType;
 		this.eventSymbol = strSymbol;
-		this.cooldown = intCooldowns;
+		this.cooldown = floatCooldowns;
 	}
 
 }
