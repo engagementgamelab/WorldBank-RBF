@@ -574,7 +574,7 @@ public class ScenarioManager : MonoBehaviour {
 			if(phaseCooldownElapsed == 0) 
 				phaseCooldownElapsed = monthLengthSeconds;
 
-			Debug.Log("############ phaseCooldownElapsed: " + phaseCooldownElapsed);
+			// Debug.Log("############ phaseCooldownElapsed: " + phaseCooldownElapsed);
     	}
 
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,27 @@ public class ChatScreen : GenericDialogBox {
 
 	public List<ScenarioOptionButton> btnListOptions;
 	public List<GameObject> spacers;
+
+	public virtual void AddOptions(List<string> btnContent, List<UnityAction> btnAction) {
+
+		if (btnContent.Count != btnAction.Count)
+			throw new System.Exception ("Button content count must match the button action count");
+
+		RemoveOptions ();
+
+		for (int i = 0; i < btnContent.Count; i ++) {
+			ScenarioOptionButton btnChoice = btnListOptions[i];
+			btnChoice.gameObject.SetActive (true);
+			btnChoice.Text = btnContent[i];
+			btnChoice.Button.onClick.RemoveAllListeners();
+			btnChoice.Button.onClick.AddListener (btnAction[i]);
+		}
+
+		if (btnContent.Count > 2)
+			spacers[0].SetActive (false);
+		if (btnContent.Count > 3)
+			spacers[1].SetActive (false);
+	}
 
 	public virtual void AddOptions(List<string> currentCardOptions) {
 
@@ -68,7 +90,7 @@ public class ChatScreen : GenericDialogBox {
 	}
 
 	// Scenario option was selected
-	void OptionSelected(string strOptionSymbol) {
+	protected virtual void OptionSelected(string strOptionSymbol) {
 
 		// Broadcast to open next card
 		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, strOptionSymbol));

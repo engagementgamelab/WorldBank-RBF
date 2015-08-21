@@ -1,4 +1,4 @@
-﻿/* 
+/* 
 World Bank RBF
 Created by Engagement Lab, 2015
 ==============
@@ -140,7 +140,7 @@ public class TacticsCanvas : MonoBehaviour {
 
 			if(!replace) {
 				
-				Models.TacticCard card = null;
+				Models.TacticCard card = null; 
 				string tacticName = null;
 
 				try {

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ public class SupervisorChatScreen : ChatScreen {
 
 	TacticCardDialog currentTacticCard;
 
-	static TimerUtils.Cooldown tacticCardCooldown;
-	static TimerUtils.Cooldown investigateCooldown;
+	// static TimerUtils.Cooldown tacticCardCooldown;
+	// static TimerUtils.Cooldown investigateCooldown;
 
 	List<string> tacticsAvailable;
 	List<string> queuedTactics;
@@ -23,9 +24,19 @@ public class SupervisorChatScreen : ChatScreen {
 
 	string tacticState;
 	int cardIndex = 0;
+	Models.TacticCard investigatingTactic;
 
 	int cooldownTotal = 0;
 	int cooldownElapsed = 0;
+
+	enum SupervisorState {
+		PresentingProblem,
+		Investigating,
+		PresentingOptions,
+		WaitingForProblem
+	}
+
+	SupervisorState state = SupervisorState.WaitingForProblem;
 
 	/// <summary>
     /// Get/set
@@ -40,12 +51,18 @@ public class SupervisorChatScreen : ChatScreen {
         }
     }
 
+    Models.Character supervisor;
+    Models.Character Supervisor {
+    	get {
+    		if (supervisor == null) {
+	    		supervisor = DataManager.GetDataForCharacter ("rahb_capitol_city");
+    		}
+    		return supervisor;
+    	}
+    }
+
 	void Awake () {
 		RemoveOptions ();
- 	}
-
- 	void Start () {
-
  		Events.instance.AddListener<TacticsEvent>(OnTacticsEvent);
 
 		// Listen for problem card cooldown tick
@@ -53,18 +70,20 @@ public class SupervisorChatScreen : ChatScreen {
  	}
 
  	void Initialize() {
-		
-		tacticCardIntervals = DataManager.PhaseTwoConfig.tactic_card_intervals;
+ 		// TODO: Replace w/ new timer
+		InvokeRepeating ("AddCard", 0, tacticCardIntervals[0]);
+		/*tacticCardIntervals = DataManager.PhaseTwoConfig.tactic_card_intervals;
 
 		if(tacticCardCooldown == null)
 			tacticCardCooldown = new TimerUtils.Cooldown();
 
-		tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
+		tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");*/
 
 	}
 
- 	void OpenTacticCard (string tacticName) {
+ 	void OpenTacticCard () {
 
+ 		string tacticName = queuedTactics[cardIndex];
 		Models.TacticCard card = null;
 
 		try {
@@ -74,74 +93,85 @@ public class SupervisorChatScreen : ChatScreen {
 		}
 		catch(System.Exception e) {
 			
-			Debug.LogWarning("Unable to locate a tactic card for '" + tacticName + "'. Timer restarting.", this);
-			
-			tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
+			Debug.LogWarning("Unable to locate a tactic card for '" + tacticName + "'. Removing from available tactics.", this);
+			queuedTactics.Remove (tacticName);
+			SkipCard ();
+			// tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
 
 			return;
 
 		}
 
-		Models.Character supervisor = DataManager.GetDataForCharacter ("rahb_capitol_city");
-		AddResponseSpeech (card.symbol, supervisor);
+		AddResponseSpeech (card.initiating_dialogue);
+		AddOptions (
+			new List<string> () { "Investigate", "View other problems" }, 
+			new List<UnityAction> () { () => Investigate (tacticName, card), SkipCard }
+		);
 	}
 
 	void AddCard () {
-		int index = new System.Random().Next(0, tacticsAvailable.Count);//Random.Range (0, tacticsAvailable.Count-1);
-		Debug.Log (index);
-		string tactic = tacticsAvailable[index];
+		
+		// Early-out if all tactics have been added
+		if (tacticsAvailable.Count == 0) return;
+			
+		// Add a random card from the available tactics
+		string tactic = tacticsAvailable[Random.Range (0, tacticsAvailable.Count-1)];
 		tacticsAvailable.Remove (tactic);
 		queuedTactics.Add (tactic);
-		OpenTacticCard (tactic);
+
+		ShowTactics ();
 	}
 
- 	void RemoveCard(string strButtonName) {
+	void ShowTactics () {
 
-		int cardIndex = 0;
-
-		/*foreach(TacticChoiceButton child in buttonsPanel.transform.GetComponentsInChildren<TacticChoiceButton>()) {
-			if(child.Text == strButtonName)
-				break;
-
-			cardIndex++;
+		// If supervisor is ready for new problems, open a new card
+		if (state == SupervisorState.WaitingForProblem && queuedTactics.Count > 0) {
+			cardIndex = 0;
+			OpenTacticCard ();
+			state = SupervisorState.PresentingProblem;
 		}
-
-		ObjectPool.Destroy<TacticChoiceButton>(buttonsPanel.transform.GetChild(cardIndex).transform);
-
-		if(ScenarioQueue.Tactics.Length == 0) {
-			Toggle();
-			return;
-		}
-
-		OpenTacticCard(0, true);
-		HideCardButton(0);*/
 	}
 
-	public void Investigating(int[] cooldownTime) {
-
-
-		// Show cooldown text
-		// tooltipDoneImg.gameObject.SetActive(false);
-		// tooltipAlertImg.gameObject.SetActive(false);
-		// tooltipClockImg.gameObject.SetActive(true);
-		// tooltipTxt.gameObject.SetActive(true);
-
-		isInvestigating = true;
-
-		cooldownTotal = cooldownTime[0];
-
-    	if(investigateCooldown == null)
-			investigateCooldown = new TimerUtils.Cooldown();
+	void Investigate (string tacticName, Models.TacticCard card) {
 		
-	 	investigateCooldown.Init(cooldownTime, new TacticsEvent(TacticsEvent.TACTIC_RESULTS), "tactic_results");
-	 	tacticCardCooldown.Pause();
+		RemoveOptions ();
 
-	 	/*cooldownText.gameObject.SetActive(true);	
-	 	overlayPanel.gameObject.SetActive(true);
-	 	buttonsPanel.gameObject.SetActive(false);*/
+		// Remove this tactic from the queue & set it as the tactic currently under investigation
+		queuedTactics.Remove (tacticName);
+		investigatingTactic = card;
+		state = SupervisorState.Investigating;
 
-	 	// currentTacticCard.Disable();
+		AddSystemMessage ("Rahb's doing a WILD investigation and will return in 5 seconds! :D");
 
+		Invoke ("EndInvestigation", 5f);
+	}
+
+	void SkipCard () {
+
+		// Open next card in queue, looping to beginning if at the end of the queue
+		cardIndex ++;
+		if (cardIndex > queuedTactics.Count-1)
+			cardIndex = 0;
+		if (queuedTactics.Count > 0)
+			OpenTacticCard ();
+	}
+
+	void EndInvestigation () {
+		
+		state = SupervisorState.PresentingOptions;
+		string[] options = investigatingTactic.new_options;
+
+		AddResponseSpeech (investigatingTactic.investigate_dialogue);
+		AddOptions (options.ToList ());
+	}
+
+	protected override void OptionSelected (string option) {
+		AddResponseSpeech (investigatingTactic.feedback_dialogue[option]);
+		state = SupervisorState.WaitingForProblem;
+		AddOptions (
+			new List<string> () { "OK" },
+			new List<UnityAction> () { ShowTactics }
+		);
 	}
 
  	/// <summary>
@@ -153,12 +183,12 @@ public class SupervisorChatScreen : ChatScreen {
 
     	switch(e.eventType) {
 
-    		case "tactic_open":
+    		/*case "tactic_open":
     			tacticState = "open";
 				AddCard ();
-				break;
+				break;*/
 
-	   		case "tactic_results":
+	   		/*case "tactic_results":
     			tacticState = "options";
     			endInvestigate = true;
     			break;
@@ -174,7 +204,7 @@ public class SupervisorChatScreen : ChatScreen {
     		case "investigate_further":
     			Investigating(e.cooldown);
     			break;
-
+*/
     	}
 
     }
@@ -190,6 +220,9 @@ public class SupervisorChatScreen : ChatScreen {
 	    	cooldownElapsed = cooldownTotal - e.SecondsElapsed;
 
     	}
+    }
 
+    void AddResponseSpeech (string message) {
+    	AddResponseSpeech (message, Supervisor);
     }
 }
