@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using JsonFx.Json;
 
@@ -74,6 +75,8 @@ public class ScenarioManager : MonoBehaviour {
 	// ScenarioCardDialog currentScenarioCard;
 	TacticCardDialog currentTacticCard;
 
+	NumberFormatInfo floatFormatter;
+
 	// Use this for initialization
 	void Start () {
 
@@ -95,6 +98,10 @@ public class ScenarioManager : MonoBehaviour {
 
 		phaseLength = monthLengthSeconds * 12f;
 		phaseCooldownElapsed = phaseLength;
+
+		// Culture for formatting floats to seconds
+		floatFormatter = new CultureInfo("en-US", false).NumberFormat;
+		floatFormatter.NumberDecimalDigits = 0;
 
 	}
 

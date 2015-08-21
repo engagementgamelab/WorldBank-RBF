@@ -13,6 +13,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 using JsonFx.Json;
 
 public class TacticsCanvas : MonoBehaviour {
@@ -52,7 +53,13 @@ public class TacticsCanvas : MonoBehaviour {
 	float cooldownTotal = 0;
 	float cooldownElapsed = 0;
 
+	NumberFormatInfo floatFormatter;
+
 	void Start () {
+
+		// Culture for formatting floats to seconds
+		floatFormatter = new CultureInfo("en-US", false).NumberFormat;
+		floatFormatter.NumberDecimalDigits = 0;
 
 		Events.instance.AddListener<TacticsEvent>(OnTacticsEvent);
 
@@ -85,8 +92,10 @@ public class TacticsCanvas : MonoBehaviour {
 			endInvestigate = false;
 			cooldownElapsed = 5;
 		}
-		else
-			cooldownText.text = cooldownElapsed + " seconds";
+		else {
+			string strElapsed = cooldownElapsed.ToString("N", floatFormatter);
+			cooldownText.text = strElapsed + " seconds";
+		}
 	}
 
 	public void Initialize(List<string> tactics) {

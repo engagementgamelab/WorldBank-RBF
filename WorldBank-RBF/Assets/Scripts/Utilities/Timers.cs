@@ -36,20 +36,6 @@ public class Timers : MonoBehaviour {
 	}
 	#endregion
 
-/*	public static void RestartTimer(GameObject target) {
-		Timer obj = target.GetComponent<Timer>();
-		if (obj != null) {
-			obj.Restart();
-		}
-	}
-
-	public static void StopTimer(GameObject target) {
-		Timer obj = target.GetComponent<Timer>();
-		if (obj != null) {
-			obj.Stop();
-		}
-	}*/
-
     public class TimerInstance {
     	public string Symbol { 
     		get {
@@ -153,6 +139,9 @@ public class Timers : MonoBehaviour {
 			
 			if (timerInst.IsRunning()) {
 				timerInst.Seconds += Time.deltaTime;
+
+				if(timerInst.Symbol == "phase_cooldown")
+					Debug.Log(timerInst.Seconds - Time.deltaTime);
 
 				if(timerInst.onTick != null)
 					timerInst.onTick(new GameEvents.TimerTick(timerInst.Seconds, timerInst.Symbol));
