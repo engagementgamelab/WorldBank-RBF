@@ -143,44 +143,6 @@ public class ScenarioChatScreen : ChatScreen {
 		AddOptions(currentCardOptions);
 	}
 
-	void AddResponseSpeech(string strDialogue, Models.Character npc) {
-		AdvisorMessage response = ObjectPool.Instantiate<AdvisorMessage>("Scenario");
-		response.NPCName = npc.display_name;
-		response.Content = strDialogue;
-		response.NPCSymbol = npc.symbol;
-		response.transform.SetParent(messagesContainer);
-		response.transform.localScale = Vector3.one;
-		if (gameObject.activeSelf)
-			StartCoroutine (CoScrollToEnd ());
-	}
-
-	void AddSystemMessage (string content) {
-		SystemMessage message = ObjectPool.Instantiate<SystemMessage>("Scenario");
-		message.Content = content;
-		message.transform.SetParent(messagesContainer);
-		message.transform.localScale = Vector3.one;
-		if (gameObject.activeSelf)
-			StartCoroutine (CoScrollToEnd ());
-	}
-
-	IEnumerator CoScrollToEnd () {
-		
-		// WHY 2 frames unity? why??
-		yield return new WaitForFixedUpdate ();
-		yield return new WaitForFixedUpdate ();
-
-		float startValue = messagesScrollbar.value;
-		float time = 0.5f;
-		float eTime = 0f;
-
-		while (eTime < time) {
-			eTime += Time.deltaTime;
-			float progress = Mathf.SmoothStep (0, 1, eTime / time);
-			messagesScrollbar.value = Mathf.Lerp (startValue, 0, progress);
-			yield return null;
-		}
-	}
-
 	void Clear () {
     	ObjectPool.DestroyChildren<AdvisorMessage>(messagesContainer);
     	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer);

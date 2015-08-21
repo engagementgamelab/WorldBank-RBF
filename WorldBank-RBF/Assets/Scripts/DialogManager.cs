@@ -47,6 +47,7 @@ public class DialogManager : MonoBehaviour {
 	// public Button btnPrefab;
 	public bool version2 = false;
 	public ScenarioChatScreen scenarioChat;
+	public SupervisorChatScreen supervisorChat;
 
 	public GenericDialogBox dialogBox;
 
@@ -175,6 +176,10 @@ public class DialogManager : MonoBehaviour {
 
 	    return yearEndDialog;
 
+	}
+
+	public void SetAvailableTactics (List<string> availableTactics) {
+		supervisorChat.Available = availableTactics;
 	}
 
 	/// <summary>

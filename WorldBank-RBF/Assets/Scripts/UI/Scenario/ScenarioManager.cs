@@ -341,8 +341,13 @@ public class ScenarioManager : MonoBehaviour {
 		currentQueueIndex++;
 
 		// Initialize tactics cards after first problem card done
-		if(currentYear == 1 && currentCardIndex == 0)
-		   	TacticsCanvas.Available = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+		if(currentYear == 1 && currentCardIndex == 0) {
+			if (version2) {
+				DialogManager.instance.SetAvailableTactics (((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>());
+			} else {
+			   	TacticsCanvas.Available = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+			}
+		}
 
 	}
 

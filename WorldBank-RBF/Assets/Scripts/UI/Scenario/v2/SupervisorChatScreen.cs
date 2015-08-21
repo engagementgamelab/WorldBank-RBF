@@ -12,14 +12,33 @@ public class SupervisorChatScreen : ChatScreen {
 	static TimerUtils.Cooldown tacticCardCooldown;
 	static TimerUtils.Cooldown investigateCooldown;
 
+	List<string> tacticsAvailable;
+	List<string> queuedTactics;
+	int[] tacticCardIntervals = new int[3] {3, 4, 4};
+
+	// TODO: don't use these
 	bool openTacticCard;
 	bool isInvestigating;
 	bool endInvestigate;
 
 	string tacticState;
+	int cardIndex = 0;
 
 	int cooldownTotal = 0;
 	int cooldownElapsed = 0;
+
+	/// <summary>
+    /// Get/set
+    /// </summary>
+    public List<string> Available {
+        set {
+            tacticsAvailable = value;
+            queuedTactics = new List<string> ();
+            Initialize();
+            AddCard ();
+            AddCard ();
+        }
+    }
 
 	void Awake () {
 		RemoveOptions ();
@@ -33,11 +52,47 @@ public class SupervisorChatScreen : ChatScreen {
 		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
  	}
 
- 	bool QueueTacticCard() {
+ 	void Initialize() {
+		
+		tacticCardIntervals = DataManager.PhaseTwoConfig.tactic_card_intervals;
 
-		openTacticCard = true;
+		if(tacticCardCooldown == null)
+			tacticCardCooldown = new TimerUtils.Cooldown();
 
-		return true;
+		tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
+
+	}
+
+ 	void OpenTacticCard (string tacticName) {
+
+		Models.TacticCard card = null;
+
+		try {
+
+			card = DataManager.GetTacticCardByName(tacticName);
+	
+		}
+		catch(System.Exception e) {
+			
+			Debug.LogWarning("Unable to locate a tactic card for '" + tacticName + "'. Timer restarting.", this);
+			
+			tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
+
+			return;
+
+		}
+
+		Models.Character supervisor = DataManager.GetDataForCharacter ("rahb_capitol_city");
+		AddResponseSpeech (card.symbol, supervisor);
+	}
+
+	void AddCard () {
+		int index = new System.Random().Next(0, tacticsAvailable.Count);//Random.Range (0, tacticsAvailable.Count-1);
+		Debug.Log (index);
+		string tactic = tacticsAvailable[index];
+		tacticsAvailable.Remove (tactic);
+		queuedTactics.Add (tactic);
+		OpenTacticCard (tactic);
 	}
 
  	void RemoveCard(string strButtonName) {
@@ -93,14 +148,14 @@ public class SupervisorChatScreen : ChatScreen {
     // Callback for TacticsEvent, filtering for type of event
     /// </summary>
     void OnTacticsEvent(TacticsEvent e) {
-    	
+
     	Debug.Log("OnTacticsEvent: " + e.eventType);
 
     	switch(e.eventType) {
 
     		case "tactic_open":
     			tacticState = "open";
-				QueueTacticCard();
+				AddCard ();
 				break;
 
 	   		case "tactic_results":
