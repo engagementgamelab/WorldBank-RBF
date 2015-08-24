@@ -10,17 +10,9 @@ public class SupervisorChatScreen : ChatScreen {
 
 	TacticCardDialog currentTacticCard;
 
-	// static TimerUtils.Cooldown tacticCardCooldown;
-	// static TimerUtils.Cooldown investigateCooldown;
-
 	List<string> tacticsAvailable;
 	List<string> queuedTactics;
 	int[] tacticCardIntervals = new int[3] {3, 4, 4};
-
-	// TODO: don't use these
-	bool openTacticCard;
-	bool isInvestigating;
-	bool endInvestigate;
 
 	string tacticState;
 	int cardIndex = 0;
@@ -96,8 +88,6 @@ public class SupervisorChatScreen : ChatScreen {
 			Debug.LogWarning("Unable to locate a tactic card for '" + tacticName + "'. Removing from available tactics.", this);
 			queuedTactics.Remove (tacticName);
 			SkipCard ();
-			// tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");
-
 			return;
 
 		}
@@ -141,7 +131,7 @@ public class SupervisorChatScreen : ChatScreen {
 		investigatingTactic = card;
 		state = SupervisorState.Investigating;
 
-		AddSystemMessage ("Rahb's doing a WILD investigation and will return in 5 seconds! :D");
+		AddSystemMessage ("Rahb's doing a WILD investigation and will return like in 5 seconds! :D");
 
 		Invoke ("EndInvestigation", 5f);
 	}
@@ -160,9 +150,11 @@ public class SupervisorChatScreen : ChatScreen {
 		
 		state = SupervisorState.PresentingOptions;
 		string[] options = investigatingTactic.new_options;
+		List<string> content = options.ToList ()
+			.ConvertAll (x => DataManager.GetUnlockableBySymbol (x).title);
 
 		AddResponseSpeech (investigatingTactic.investigate_dialogue);
-		AddOptions (options.ToList ());
+		AddOptions (content, options.ToList ());
 	}
 
 	protected override void OptionSelected (string option) {

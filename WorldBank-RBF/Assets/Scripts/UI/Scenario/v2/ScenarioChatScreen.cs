@@ -22,7 +22,6 @@ public class ScenarioChatScreen : ChatScreen {
     }
 
     public Transform advisorsContainer;
-    public Animator advisorsPanel;
     public GameObject advisorsButton;
     public Text debugText;
 
@@ -56,7 +55,8 @@ public class ScenarioChatScreen : ChatScreen {
 
 		AddResponseSpeech(_data.initiating_dialogue, charRef);
 
-		advisorsButton.SetActive (true);
+		// advisorsButton.SetActive (true);
+		Events.instance.AddListener<ScenarioEvent> (OnScenarioEvent);
 
 		debugText.text = _data.symbol;
     }
@@ -64,8 +64,11 @@ public class ScenarioChatScreen : ChatScreen {
     public void EndYear (Models.ScenarioConfig scenarioConfig, List<string> selectedOptions, int currentYear) {
     	
     	Clear ();
-    	advisorsButton.SetActive (false);
-    	advisorsPanel.Play ("Closed");
+    	// advisorsButton.SetActive (false);
+    	if (panelOpen) {
+	    	advisorsPanel.Play ("Closed");
+    		panelOpen = false;
+    	}
 
     	string yearEndMessage = (currentYear == 1) ? scenarioConfig.prompt_year_1 : scenarioConfig.prompt_year_2;
     	AddSystemMessage ("~ This will be a message from the flatulating ministers B) ~\n" + yearEndMessage);
@@ -147,5 +150,12 @@ public class ScenarioChatScreen : ChatScreen {
     	ObjectPool.DestroyChildren<AdvisorMessage>(messagesContainer);
     	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer);
     	RemoveOptions ();
+	}
+
+	void OnScenarioEvent (ScenarioEvent e) {
+		if (e.eventType == "next_year" && !panelOpen) {
+			advisorsPanel.Play ("Opened");
+			panelOpen = true;
+		}
 	}
 }

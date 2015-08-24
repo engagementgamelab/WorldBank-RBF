@@ -8,29 +8,69 @@ public class ChatScreen : GenericDialogBox {
 
 	public Transform messagesContainer;
 	public Scrollbar messagesScrollbar;
+	public LayoutElement rightPanel;
+	public Animator advisorsPanel;
+    public bool rightPanelActive = true;
 
 	public List<ScenarioOptionButton> btnListOptions;
 	public List<GameObject> spacers;
 
+	protected bool panelOpen = false;
+
+	protected virtual void OnEnable () {
+		rightPanel.gameObject.SetActive (rightPanelActive);
+		if (rightPanelActive && !panelOpen) {
+			advisorsPanel.Play ("Opened");
+			panelOpen = true;
+		}
+	}
+
+	// TODO: This seems to break if there are more than two buttons
+	// Also -- this should be made more generic instead of having 3 versions of the same method
 	public virtual void AddOptions(List<string> btnContent, List<UnityAction> btnAction) {
 
 		if (btnContent.Count != btnAction.Count)
 			throw new System.Exception ("Button content count must match the button action count");
 
 		RemoveOptions ();
+		int btnIndex = 0;
 
-		for (int i = 0; i < btnContent.Count; i ++) {
-			ScenarioOptionButton btnChoice = btnListOptions[i];
+		foreach (string content in btnContent) {
+			
+			ScenarioOptionButton btnChoice = btnListOptions[btnIndex];
 			btnChoice.gameObject.SetActive (true);
-			btnChoice.Text = btnContent[i];
+			UnityAction action = btnAction[btnIndex];
+			btnIndex ++;
+
+			btnChoice.Text = content;
 			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (btnAction[i]);
+			btnChoice.Button.onClick.AddListener (action);
 		}
 
-		if (btnContent.Count > 2)
-			spacers[0].SetActive (false);
-		if (btnContent.Count > 3)
-			spacers[1].SetActive (false);
+		SetSpacerActiveState (btnContent.Count);
+	}
+
+	public virtual void AddOptions(List<string> btnContent, List<string> optionIds) {
+
+		if (btnContent.Count != optionIds.Count)
+			throw new System.Exception ("Button content count must match the button action count");
+
+		RemoveOptions ();
+		int btnIndex = 0;
+
+		foreach (string content in btnContent) {
+
+			ScenarioOptionButton btnChoice = btnListOptions[btnIndex];
+			btnChoice.gameObject.SetActive (true);
+			string op = optionIds[btnIndex];
+			btnIndex ++;
+
+			btnChoice.Text = content;
+			btnChoice.Button.onClick.RemoveAllListeners();
+			btnChoice.Button.onClick.AddListener (() => OptionSelected (op));
+		}
+
+		SetSpacerActiveState (btnContent.Count);
 	}
 
 	public virtual void AddOptions(List<string> currentCardOptions) {
@@ -49,10 +89,7 @@ public class ChatScreen : GenericDialogBox {
 			btnChoice.Button.onClick.AddListener (() => OptionSelected(option));
 		}
 
-		if (currentCardOptions.Count > 2)
-			spacers[0].SetActive (false);
-		if (currentCardOptions.Count > 3)
-			spacers[1].SetActive (false);
+		SetSpacerActiveState (currentCardOptions.Count);
 	}
 
 	public void AddYearEndOptions (Dictionary<string, string>[] options) {
@@ -83,10 +120,7 @@ public class ChatScreen : GenericDialogBox {
 		btnNextYear.Button.onClick.RemoveAllListeners ();
 		btnNextYear.Button.onClick.AddListener(() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT_YEAR)));
 
-		if (options.Length+1 > 2)
-			spacers[0].SetActive (false);
-		if (options.Length+1 > 3)
-			spacers[1].SetActive (false);
+		SetSpacerActiveState (options.Length+1);
 	}
 
 	// Scenario option was selected
@@ -110,9 +144,6 @@ public class ChatScreen : GenericDialogBox {
 		foreach (ScenarioOptionButton btn in btnListOptions) {
 			btn.gameObject.SetActive (false);
 		}
-		foreach (GameObject spacer in spacers) {
-			spacer.SetActive (true);
-		}
 	}
 
 	protected void AddResponseSpeech(string strDialogue, Models.Character npc) {
@@ -133,6 +164,11 @@ public class ChatScreen : GenericDialogBox {
 		message.transform.localScale = Vector3.one;
 		if (gameObject.activeSelf)
 			StartCoroutine (CoScrollToEnd ());
+	}
+
+	void SetSpacerActiveState (int buttonCount) {
+		spacers[0].SetActive (buttonCount <= 2);
+		spacers[1].SetActive (buttonCount <= 3);
 	}
 
 	IEnumerator CoScrollToEnd () {
