@@ -116,6 +116,17 @@ public class GenericDialogBox : MB {
 		}
 	}
 
+	public void AddButton<T> (T btnChoice, Transform group) where T : MonoBehaviour {
+		btnChoice.transform.SetParent (group);
+		btnChoice.transform.localScale = Vector3.one;
+		btnChoice.transform.localPosition = Vector3.zero;
+		btnChoice.transform.localEulerAngles = Vector3.zero;
+	}
+
+	public void RemoveButton<T> (T button) where T : MonoBehaviour {
+		ObjectPool.Destroy<T> (button.transform);
+	}
+
 	void SetPosition (bool left) {
 		Transform.SetPositionX (
 			ScreenPositionHandler.ViewportToWorld (

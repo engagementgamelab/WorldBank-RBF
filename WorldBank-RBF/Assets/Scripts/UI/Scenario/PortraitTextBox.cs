@@ -24,6 +24,8 @@ public class PortraitTextBox : GenericButton {
     /// </summary>
 	public string NPCName {
 
+		get { return npcName.GetComponent<Text> ().text; }
+
 		set {
 
 			if (npcName == null)

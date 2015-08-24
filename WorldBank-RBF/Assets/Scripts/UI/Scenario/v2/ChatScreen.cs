@@ -172,7 +172,7 @@ public class ChatScreen : GenericDialogBox {
 	}
 
 	IEnumerator CoScrollToEnd () {
-		
+
 		// WHY 2 frames unity? why??
 		yield return new WaitForFixedUpdate ();
 		yield return new WaitForFixedUpdate ();

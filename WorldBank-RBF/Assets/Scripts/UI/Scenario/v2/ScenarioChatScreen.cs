@@ -25,6 +25,7 @@ public class ScenarioChatScreen : ChatScreen {
     public GameObject advisorsButton;
     public Text debugText;
 
+    List<string> previousAdvisorOptions;
     List<string> currentAdvisorOptions;
 	List<string> currentCardOptions;
 
@@ -38,17 +39,19 @@ public class ScenarioChatScreen : ChatScreen {
     	// Get initial character info
 		Models.Character charRef = DataManager.GetDataForCharacter(_data.initiating_npc);
 
-    	Clear ();
+    	// Clear ();
 
-		// Generate advisors and starting options
+		// Generate advisors
+		previousAdvisorOptions = (previousAdvisorOptions == null)
+			? new List<string> ()
+			: currentAdvisorOptions.ToList ();
 		currentAdvisorOptions = _data.characters.Select(x => x.Key).ToList();
+		AddAdvisors();
+		
+		// Generate starting options
 		currentCardOptions = new List<string>(_data.starting_options);
-
 		allCardOptions = currentCardOptions.Concat(new List<string>(_data.final_options)).ToList();
 		allCardAffects = new List<string>(_data.starting_options_affects).Concat(new List<string>(_data.final_options_affects)).ToList();
-
-		// Create buttons for all advisors
-		AddAdvisors();
 
 		// Create buttons for all options if not speaking to advisor
 		AddOptions(currentCardOptions);
@@ -63,7 +66,7 @@ public class ScenarioChatScreen : ChatScreen {
 
     public void EndYear (Models.ScenarioConfig scenarioConfig, List<string> selectedOptions, int currentYear) {
     	
-    	Clear ();
+    	// Clear ();
     	// advisorsButton.SetActive (false);
     	if (panelOpen) {
 	    	advisorsPanel.Play ("Closed");
@@ -88,18 +91,34 @@ public class ScenarioChatScreen : ChatScreen {
 
     public void AddAdvisors() {
 
-		ObjectPool.DestroyChildren<AdvisorButton>(advisorsContainer);
+    	List<string> removeAdvisors = previousAdvisorOptions
+    		.Except (currentAdvisorOptions).ToList ();
 
-		// Create buttons for all advisors
-		foreach(string characterSymbol in currentAdvisorOptions) {
+    	List<string> newAdvisors = currentAdvisorOptions
+    		.Except (previousAdvisorOptions).ToList ();
 
-			// Show an advisor option only if they have dialogue (not for feedback only)
-			if(!_data.characters[characterSymbol].hasDialogue)
+    	foreach (string characterSymbol in removeAdvisors) {
+    		
+    		Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
+    		
+    		AdvisorButton btnChoice = btnListAdvisors.FirstOrDefault (x => x.NPCName == charRef.display_name);
+
+    		btnListAdvisors.Remove (btnChoice);
+    		btnChoice.Hide ();
+    	}
+
+    	foreach (string characterSymbol in newAdvisors) {
+    		
+    		// Show an advisor option only if they have dialogue (not for feedback only)
+			if(!_data.characters[characterSymbol].hasDialogue) {
+				currentAdvisorOptions.Remove (characterSymbol);
 				continue;
+			}
 
 			string npcDialogue = _data.characters[characterSymbol].dialogue;
 
 			AdvisorButton btnChoice = ObjectPool.Instantiate<AdvisorButton>("Scenario");
+			btnChoice.Show ();
 
 			Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
 			
@@ -111,14 +130,14 @@ public class ScenarioChatScreen : ChatScreen {
 
 			btnChoice.gameObject.SetActive(true);
 			btnListAdvisors.Add(btnChoice);
-			
-		}
-		
-		AddButtons<AdvisorButton>(btnListAdvisors, false, advisorsContainer);
 
+			AddButton<AdvisorButton> (btnChoice, advisorsContainer);
+    	}
 	}
 
 	void AdvisorSelected(string strAdvisorSymbol) {
+
+		previousAdvisorOptions = currentAdvisorOptions.ToList ();
 
 		Models.Advisor advisor = _data.characters[strAdvisorSymbol];
 		if(advisor.narrowsNpcs)
