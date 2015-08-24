@@ -10,9 +10,12 @@ public class SupervisorChatScreen : ChatScreen {
 
 	TacticCardDialog currentTacticCard;
 
+	static Timers.TimerInstance tacticCardCooldown;
+	static Timers.TimerInstance investigateCooldown;
+
 	List<string> tacticsAvailable;
 	List<string> queuedTactics;
-	int[] tacticCardIntervals = new int[3] {3, 4, 4};
+	float[] tacticCardIntervals = new float[3] {3, 4, 4};
 
 	string tacticState;
 	int cardIndex = 0;
