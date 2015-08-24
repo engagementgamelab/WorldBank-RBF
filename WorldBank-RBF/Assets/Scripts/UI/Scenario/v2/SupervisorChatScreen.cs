@@ -18,11 +18,13 @@ public class SupervisorChatScreen : ChatScreen {
 	float[] tacticCardIntervals = new float[3] {3, 4, 4};
 
 	string tacticState;
-	int cardIndex = 0;
 	Models.TacticCard investigatingTactic;
 
+	int cardIndex = 0;
 	float cooldownTotal = 0;
 	float cooldownElapsed = 0;
+
+	bool investigateFurther;
 
 	enum SupervisorState {
 		PresentingProblem,
@@ -65,14 +67,12 @@ public class SupervisorChatScreen : ChatScreen {
  	}
 
  	void Initialize() {
- 		// TODO: Replace w/ new timer
-		InvokeRepeating ("AddCard", 0, tacticCardIntervals[0]);
-		/*tacticCardIntervals = DataManager.PhaseTwoConfig.tactic_card_intervals;
 
-		if(tacticCardCooldown == null)
-			tacticCardCooldown = new TimerUtils.Cooldown();
+ 		tacticCardIntervals = DataManager.PhaseTwoConfig.tactic_card_intervals;
 
-		tacticCardCooldown.Init(tacticCardIntervals, new TacticsEvent(TacticsEvent.TACTIC_OPEN), "tactic_open");*/
+		tacticCardCooldown = Timers.StartTimer(this.gameObject, tacticCardIntervals);
+		tacticCardCooldown.Symbol = "tactic_open";
+		tacticCardCooldown.onEnd += AddCard;
 
 	}
 
@@ -80,6 +80,7 @@ public class SupervisorChatScreen : ChatScreen {
 
  		string tacticName = queuedTactics[cardIndex];
 		Models.TacticCard card = null;
+		investigateFurther = false;
 
 		try {
 
@@ -95,10 +96,16 @@ public class SupervisorChatScreen : ChatScreen {
 
 		}
 
+		ChatAction investigate = new ChatAction();
+		ChatAction skip = new ChatAction();
+
+		investigate.action = (() => Investigate (card));
+		skip.action = SkipCard;
+
 		AddResponseSpeech (card.initiating_dialogue);
 		AddOptions (
 			new List<string> () { "Investigate", "View other problems" }, 
-			new List<UnityAction> () { () => Investigate (tacticName, card), SkipCard }
+			new List<ChatAction> () { investigate, skip }
 		);
 	}
 
@@ -125,18 +132,24 @@ public class SupervisorChatScreen : ChatScreen {
 		}
 	}
 
-	void Investigate (string tacticName, Models.TacticCard card) {
+	void Investigate (Models.TacticCard card) {
 		
+		float[] cooldownTime = investigateFurther ? card.investigate_further_cooldown : card.investigate_cooldown;
+
 		RemoveOptions ();
 
 		// Remove this tactic from the queue & set it as the tactic currently under investigation
-		queuedTactics.Remove (tacticName);
+		queuedTactics.Remove (card.tactic_name);
 		investigatingTactic = card;
 		state = SupervisorState.Investigating;
 
 		AddSystemMessage ("Rahb's doing a WILD investigation and will return like in 5 seconds! :D");
 
-		Invoke ("EndInvestigation", 5f);
+		investigateCooldown = Timers.StartTimer(gameObject, cooldownTime);
+		investigateCooldown.Symbol = "tactic_results";
+		investigateCooldown.onTick += OnCooldownTick;
+		investigateCooldown.onEnd += EndInvestigation;
+
 	}
 
 	void SkipCard () {
@@ -152,21 +165,49 @@ public class SupervisorChatScreen : ChatScreen {
 	void EndInvestigation () {
 		
 		state = SupervisorState.PresentingOptions;
-		string[] options = investigatingTactic.new_options;
-		List<string> content = options.ToList ()
+		string[] options = investigateFurther ? investigatingTactic.further_options : investigatingTactic.new_options;
+		
+		List<string> content = options.ToList () 
 			.ConvertAll (x => DataManager.GetUnlockableBySymbol (x).title);
 
-		AddResponseSpeech (investigatingTactic.investigate_dialogue);
-		AddOptions (content, options.ToList ());
+		// if(investigatingTactic.further_options != null && !investigateFurther) {
+		// 	content.Add("Investigate Further");
+		// 	options.Add(() => Investigate (tacticName, card));
+		// }
+
+		ChatAction investigate = new ChatAction();
+		ChatAction skip = new ChatAction();
+
+		investigate.action = (() => Investigate (investigatingTactic));
+		skip.action = SkipCard;
+
+		AddResponseSpeech (investigateFurther ? investigatingTactic.investigate_further_dialogue : investigatingTactic.investigate_dialogue);
+		AddOptions (
+			new List<string> () { "Investigate", "View other problems" }, 
+			new List<ChatAction> () { investigate, skip }
+		);
+
+		// If we can't investigate more, remove button and show close
+		/*if(investigatingTactic.further_options == null) {
+			buttonInvestigate.gameObject.SetActive(false);
+			buttonObserve.Text = "Close";
+		}*/
+
+		investigateFurther = true;
 	}
 
 	protected override void OptionSelected (string option) {
+
+		ChatAction showTactics = new ChatAction();
+		showTactics.action = ShowTactics;
+
 		AddResponseSpeech (investigatingTactic.feedback_dialogue[option]);
 		state = SupervisorState.WaitingForProblem;
 		AddOptions (
 			new List<string> () { "OK" },
-			new List<UnityAction> () { ShowTactics }
+			new List<ChatAction> () { showTactics }
 		);
+
 	}
 
  	/// <summary>

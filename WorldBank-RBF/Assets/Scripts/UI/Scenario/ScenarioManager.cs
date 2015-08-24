@@ -124,13 +124,12 @@ public class ScenarioManager : MonoBehaviour {
     	// scenarioCardCooldownText.text = "Waiting for next Problem: " + cardCooldownElapsed + "s";
 
     	// Update scenario cooldown label
-    	Debug.Log(phaseCooldownElapsed);
     	if(!inYearEnd) {
-    		float maxMinutes = phaseLength / 60f;
-    		float currentMinute = phaseCooldownElapsed / 60f;
-    		string phaseCooldownString = phaseCooldownElapsed.ToString();
+    		System.TimeSpan timeSpan = System.TimeSpan.FromSeconds(phaseCooldownElapsed);
+    		string currentMinute = timeSpan.Minutes.ToString();
+    		string currentSecond = timeSpan.Seconds.ToString();
 
-    		scenarioCooldownText.text = currentMinute.ToString("N") + ":" + (phaseCooldownElapsed % 60).ToString("N");
+    		scenarioCooldownText.text = currentMinute + ":" + currentSecond;
     	}
 
 	}
@@ -490,8 +489,6 @@ public class ScenarioManager : MonoBehaviour {
 
     	bool atYearEnd = currentMonth == 12;
 		
-		phaseCooldownElapsed = phaseLength;
-
     	if(atYearEnd) {
 			Debug.Log("======== END OF YEAR " + currentYear + " ========");
 			phaseCooldown.Stop();
@@ -499,11 +496,8 @@ public class ScenarioManager : MonoBehaviour {
 			openYearEnd = true;
 			GetNextCard();
     	}
-		else {
+		else
 			Debug.Log("======== END OF MONTH " + currentMonth + " ========");
-			phaseCooldown.Restart();
-		}
-
 		
 		// Debug.Log("--> Indicators: " + currentAffectValues[0] + ", " + currentAffectValues[1] + ", " + currentAffectValues[2]);
 		// Debug.Log("===================================================");

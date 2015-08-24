@@ -24,12 +24,18 @@ public class ChatScreen : GenericDialogBox {
 			panelOpen = true;
 		}
 	}
+	 
+	public class ChatAction
+	{
+	    public string option;
+	    public UnityAction action;
+	}
 
 	// TODO: This seems to break if there are more than two buttons
 	// Also -- this should be made more generic instead of having 3 versions of the same method
-	public virtual void AddOptions(List<string> btnContent, List<UnityAction> btnAction) {
+	public virtual void AddOptions(List<string> btnContent, List<ChatAction> btnAction=null)  {
 
-		if (btnContent.Count != btnAction.Count)
+		if (btnAction != null && (btnContent.Count != btnAction.Count))
 			throw new System.Exception ("Button content count must match the button action count");
 
 		RemoveOptions ();
@@ -39,17 +45,29 @@ public class ChatScreen : GenericDialogBox {
 			
 			ScenarioOptionButton btnChoice = btnListOptions[btnIndex];
 			btnChoice.gameObject.SetActive (true);
-			UnityAction action = btnAction[btnIndex];
-			btnIndex ++;
+
+			btnChoice.Button.onClick.RemoveAllListeners();
+
+			if(btnAction == null) {
+				btnChoice.Text = DataManager.GetUnlockableBySymbol(content).title;
+				btnChoice.Button.onClick.AddListener (() => OptionSelected(content));
+
+				continue;
+			}
+
+			if(btnAction[btnIndex].action != null)
+				btnChoice.Button.onClick.AddListener (btnAction[btnIndex].action);
+			else if(btnAction[btnIndex].option != null)
+				btnChoice.Button.onClick.AddListener (() => OptionSelected (btnAction[btnIndex].option));
 
 			btnChoice.Text = content;
-			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (action);
+			btnIndex ++;
+
 		}
 
 		SetSpacerActiveState (btnContent.Count);
 	}
-
+/*
 	public virtual void AddOptions(List<string> btnContent, List<string> optionIds) {
 
 		if (btnContent.Count != optionIds.Count)
@@ -90,7 +108,7 @@ public class ChatScreen : GenericDialogBox {
 		}
 
 		SetSpacerActiveState (currentCardOptions.Count);
-	}
+	}*/
 
 	public void AddYearEndOptions (Dictionary<string, string>[] options) {
 

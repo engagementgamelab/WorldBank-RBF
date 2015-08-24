@@ -140,9 +140,6 @@ public class Timers : MonoBehaviour {
 			if (timerInst.IsRunning()) {
 				timerInst.Seconds += Time.deltaTime;
 
-				if(timerInst.Symbol == "phase_cooldown")
-					Debug.Log(timerInst.Seconds - Time.deltaTime);
-
 				if(timerInst.onTick != null)
 					timerInst.onTick(new GameEvents.TimerTick(timerInst.Seconds, timerInst.Symbol));
 

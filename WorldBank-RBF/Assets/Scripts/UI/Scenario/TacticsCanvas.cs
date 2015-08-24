@@ -96,6 +96,7 @@ public class TacticsCanvas : MonoBehaviour {
 			string strElapsed = cooldownElapsed.ToString("N", floatFormatter);
 			cooldownText.text = strElapsed + " seconds";
 		}
+
 	}
 
 	public void Initialize(List<string> tactics) {
