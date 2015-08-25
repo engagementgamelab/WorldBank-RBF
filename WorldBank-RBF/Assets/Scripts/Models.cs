@@ -370,6 +370,8 @@ namespace Models {
     }
 
     public class AmbienceZone {
+        public bool child { get; set; }
+        public int Index { get; set; }
         public string context { get; set; }
         public float offset { get; set; }
         public float width { get; set; }

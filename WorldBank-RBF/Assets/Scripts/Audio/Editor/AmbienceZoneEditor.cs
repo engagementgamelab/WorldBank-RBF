@@ -17,15 +17,15 @@ public class AmbienceZoneEditor : MyCustomEditor<AmbienceZone> {
 			} else {
 				EditorGUILayout.HelpBox ("There are no ambiences with a context called '" + context + "'", MessageType.Warning);
 			}
+			DrawDestroyButton ();
 			return;
 		}
 
 		DrawFloatProperty ("width");
 		DrawFloatProperty ("offset");
 		DrawFloatProperty ("fadeLength");
-		if (GUILayout.Button ("Destroy this zone")) {
-			ObjectPool.Destroy<AmbienceZone> (Target.Transform);
-		}
+
+		DrawDestroyButton ();
 	}
 
 	bool ValidateContext (string context) {
@@ -35,5 +35,11 @@ public class AmbienceZoneEditor : MyCustomEditor<AmbienceZone> {
 			return contexts.Contains (context);
 		}
 		return false;
+	}
+
+	void DrawDestroyButton () {
+		if (GUILayout.Button ("Destroy this zone")) {
+			EditorObjectPool.Destroy<AmbienceZone> (Target.Transform);
+		}
 	}
 }

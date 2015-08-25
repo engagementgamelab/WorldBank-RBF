@@ -10,7 +10,7 @@ public class AmbienceZonesEditor : MyCustomEditor<AmbienceZones> {
 	}
 
 	protected override void Draw () {
-		
+
 		DrawStringProperty ("cityContext");
 
 		string city = FindStringProperty ("cityContext");
@@ -20,6 +20,7 @@ public class AmbienceZonesEditor : MyCustomEditor<AmbienceZones> {
 			} else {
 				EditorGUILayout.HelpBox ("There are no ambiences for a city called '" + city + "'", MessageType.Warning);
 			}
+			DrawLoadButton ();
 			return;
 		}
 
@@ -30,8 +31,33 @@ public class AmbienceZonesEditor : MyCustomEditor<AmbienceZones> {
 		GUILayout.BeginHorizontal ();
 		if (GUILayout.Button ("Save")) {
 			ModelSerializer.Save (Target, PATH + FindStringProperty ("cityContext") + ".json");
+			EditorUtility.DisplayDialog ("Save successful", "The ambience zones for the city '" + city + "' was successfully saved.", "OK");
 		}
 
+		DrawLoadButton ();
+		
+		GUILayout.EndHorizontal ();
+
+		if (GUILayout.Button ("Reset")) {
+			ResetTarget ();
+		}
+	}
+
+	void ResetTarget () {
+		Target.cityContext = "";
+		RemoveZones ();
+		SerializedTarget.Update ();
+	}
+
+	void RemoveZones () {
+		Target.Reset ();
+	}
+
+	bool ValidateContext (string cityContext) {
+		return AudioManager.Ambience.Contexts.ContainsKey (cityContext);
+	}
+
+	void DrawLoadButton () {
 		if (GUILayout.Button ("Load")) {
 			string loadPath = EditorUtility.OpenFilePanel ("Load ambience zones", PATH, "json");
 			
@@ -43,20 +69,9 @@ public class AmbienceZonesEditor : MyCustomEditor<AmbienceZones> {
 					.Replace (".json", "");
 
 				ModelSerializer.Load (Target, path);
+				Target.OnLoad ();
+				SerializedTarget.Update ();
 			}
 		}
-		GUILayout.EndHorizontal ();
-
-		if (GUILayout.Button ("Reset")) {
-			RemoveZones ();
-		}
-	}
-
-	void RemoveZones () {
-		Target.Reset ();
-	}
-
-	bool ValidateContext (string cityContext) {
-		return AudioManager.Ambience.Contexts.ContainsKey (cityContext);
 	}
 }

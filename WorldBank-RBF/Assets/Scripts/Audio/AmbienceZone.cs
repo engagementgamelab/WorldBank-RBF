@@ -33,7 +33,7 @@ public class AmbienceZone : MB, IEditorPoolable {
 	}
 
 	string CityContext {
-		get { return Parent.GetScript<AmbienceZones> ().cityContext; }
+		get { return (Parent == null) ? "" : Parent.GetScript<AmbienceZones> ().cityContext; }
 	}
 
 	float Start { get { return Position.x + offset; } }
