@@ -67,48 +67,6 @@ public class ChatScreen : GenericDialogBox {
 
 		SetSpacerActiveState (btnContent.Count);
 	}
-/*
-	public virtual void AddOptions(List<string> btnContent, List<string> optionIds) {
-
-		if (btnContent.Count != optionIds.Count)
-			throw new System.Exception ("Button content count must match the button action count");
-
-		RemoveOptions ();
-		int btnIndex = 0;
-
-		foreach (string content in btnContent) {
-
-			ScenarioOptionButton btnChoice = btnListOptions[btnIndex];
-			btnChoice.gameObject.SetActive (true);
-			string op = optionIds[btnIndex];
-			btnIndex ++;
-
-			btnChoice.Text = content;
-			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => OptionSelected (op));
-		}
-
-		SetSpacerActiveState (btnContent.Count);
-	}
-
-	public virtual void AddOptions(List<string> currentCardOptions) {
-
-		RemoveOptions ();
-		int btnIndex = 0;
-
-		foreach(string option in currentCardOptions) {
-
-			ScenarioOptionButton btnChoice = btnListOptions[btnIndex];
-			btnChoice.gameObject.SetActive (true);
-			btnIndex ++;
-
-			btnChoice.Text = DataManager.GetUnlockableBySymbol(option).title;
-			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => OptionSelected(option));
-		}
-
-		SetSpacerActiveState (currentCardOptions.Count);
-	}*/
 
 	public void AddYearEndOptions (Dictionary<string, string>[] options) {
 
