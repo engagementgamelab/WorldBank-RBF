@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AmbienceGroup : AudioGroup<AmbienceItem> {
 
@@ -7,6 +8,32 @@ public class AmbienceGroup : AudioGroup<AmbienceItem> {
 
 	protected override PlaySettings Settings {
 		get { return new PlaySettings (true); }
+	}
+
+	Dictionary<string, List<string>> contexts;
+	public Dictionary<string, List<string>> Contexts {
+		get {
+			#if !UNITY_EDITOR
+			if (contexts == null) {
+			#endif
+				
+				contexts = new Dictionary<string, List<string>> ();
+				
+				foreach (AmbienceItem item in MyItems) {
+					
+					string city = item.City;
+					string context = item.Context;
+
+					if (!contexts.ContainsKey (city))
+						contexts.Add (city, new List<string> ());
+
+					contexts[city].Add (context);
+				}
+			#if !UNITY_EDITOR	
+			}
+			#endif
+			return contexts;
+		}
 	}
 
 	public AmbienceGroup () : base ("Ambience") {}

@@ -14,6 +14,7 @@ public class AmbienceZone : MB, IEditorPoolable {
 	public float width = 100;
 	public float fadeLength = 25;
 	public Color color = Color.white;
+	[SerializeField, HideInInspector] string cityContext;
 	
 	AmbienceItem ambience;
 
@@ -62,6 +63,7 @@ public class AmbienceZone : MB, IEditorPoolable {
 	#if UNITY_EDITOR
 	void Update () {
 
+		cityContext = CityContext;
 		width = Mathf.Max (0, width);
 		fadeLength = Mathf.Max (0, fadeLength);
 

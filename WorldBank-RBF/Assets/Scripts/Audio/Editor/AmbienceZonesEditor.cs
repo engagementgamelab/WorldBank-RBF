@@ -6,14 +6,23 @@ using System.Collections;
 public class AmbienceZonesEditor : MyCustomEditor<AmbienceZones> {
 
 	string PATH {
-		// get { return Application.dataPath + "/Scripts/Utilities/JsonSerializable/Data/"; }
 		get { return Application.dataPath + "/Resources/Config/PhaseOne/AmbienceZones/"; }
 	}
 
 	protected override void Draw () {
 		
 		DrawStringProperty ("cityContext");
-		
+
+		string city = FindStringProperty ("cityContext");
+		if (!ValidateContext (city)) {
+			if (city == "") {
+				EditorGUILayout.HelpBox ("Please enter a valid city name.", MessageType.Info);
+			} else {
+				EditorGUILayout.HelpBox ("There are no ambiences for a city called '" + city + "'", MessageType.Warning);
+			}
+			return;
+		}
+
 		if (GUILayout.Button ("Add new zone")) {
 			Target.AddZone ();
 		}
@@ -45,5 +54,9 @@ public class AmbienceZonesEditor : MyCustomEditor<AmbienceZones> {
 
 	void RemoveZones () {
 		Target.Reset ();
+	}
+
+	bool ValidateContext (string cityContext) {
+		return AudioManager.Ambience.Contexts.ContainsKey (cityContext);
 	}
 }
