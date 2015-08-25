@@ -43,8 +43,7 @@ public class ChatScreen : GenericDialogBox {
 
 	}
 
-	// TODO: This seems to break if there are more than two buttons
-	// Also -- this should be made more generic instead of having 3 versions of the same method
+	// TODO: This seems to break if there are more than two buttons???
 	public virtual void AddOptions(List<string> btnContent, List<ChatAction> btnAction, bool clearAll)  {
 
 		if (btnAction != null && (btnContent.Count != btnAction.Count))
@@ -56,7 +55,7 @@ public class ChatScreen : GenericDialogBox {
 		int btnIndex = 0;
 
 		foreach (string content in btnContent) {
-			
+
 			ScenarioOptionButton btnChoice = _btnListOptions[btnIndex];
 			btnChoice.gameObject.SetActive (true);
 
@@ -149,13 +148,22 @@ public class ChatScreen : GenericDialogBox {
 			StartCoroutine (CoScrollToEnd ());
 	}
 
-	protected void AddSystemMessage (string content) {
+	protected SystemMessage AddSystemMessage (string content) {
 		SystemMessage message = ObjectPool.Instantiate<SystemMessage>("Scenario");
 		message.Content = content;
 		message.transform.SetParent(messagesContainer);
 		message.transform.localScale = Vector3.one;
+		
 		if (gameObject.activeSelf)
 			StartCoroutine (CoScrollToEnd ());
+
+		return message;
+	}
+
+	protected void RemoveSystemMessage(SystemMessage message) {
+
+		message.gameObject.SetActive(false);
+
 	}
 
 	void SetSpacerActiveState (int buttonCount) {

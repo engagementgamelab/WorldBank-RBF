@@ -146,6 +146,7 @@ public class Timers : MonoBehaviour {
 				if (timerInst.Seconds >= timerInst.Duration) {
 					// Debug.Log("TIMER " + timerInst.Symbol + " END");
 					timerInst.onEnd();
+					timerInst.Stop();
 				}
 			}
 

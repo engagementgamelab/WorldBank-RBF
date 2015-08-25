@@ -26,6 +26,8 @@ public class SupervisorChatScreen : ChatScreen {
 
 	bool investigateFurther;
 
+	SystemMessage investigateMsg;
+
 	enum SupervisorState {
 		PresentingProblem,
 		Investigating,
@@ -59,7 +61,8 @@ public class SupervisorChatScreen : ChatScreen {
     }
 
 	void Awake () {
-		RemoveOptions ();
+		//	RemoveOptions ();
+
  		Events.instance.AddListener<TacticsEvent>(OnTacticsEvent);
 
 		// Listen for problem card cooldown tick
@@ -143,12 +146,15 @@ public class SupervisorChatScreen : ChatScreen {
 		investigatingTactic = card;
 		state = SupervisorState.Investigating;
 
-		AddSystemMessage ("Rahb's doing a WILD investigation and will return like in 5 seconds! :D");
+		investigateMsg = AddSystemMessage ("Investigating");
 
 		investigateCooldown = Timers.StartTimer(gameObject, cooldownTime);
 		investigateCooldown.Symbol = "tactic_results";
 		investigateCooldown.onTick += OnCooldownTick;
 		investigateCooldown.onEnd += EndInvestigation;
+
+		// Set cooldown total
+		cooldownTotal = investigateCooldown.Duration;
 
 	}
 
@@ -165,15 +171,11 @@ public class SupervisorChatScreen : ChatScreen {
 	void EndInvestigation () {
 		
 		state = SupervisorState.PresentingOptions;
-		string[] options = investigateFurther ? investigatingTactic.further_options : investigatingTactic.new_options;
-		
-		List<string> content = options.ToList () 
-			.ConvertAll (x => DataManager.GetUnlockableBySymbol (x).title);
 
-		// if(investigatingTactic.further_options != null && !investigateFurther) {
-		// 	content.Add("Investigate Further");
-		// 	options.Add(() => Investigate (tacticName, card));
-		// }
+		List<ChatAction> investigateActions = new List<ChatAction>();
+
+		string[] optionSymbols = investigateFurther ? investigatingTactic.further_options : investigatingTactic.new_options;
+		List<string> optionTitles = optionSymbols.ToList().ConvertAll (x => DataManager.GetUnlockableBySymbol (x).title);
 
 		ChatAction investigate = new ChatAction();
 		ChatAction skip = new ChatAction();
@@ -182,10 +184,25 @@ public class SupervisorChatScreen : ChatScreen {
 		skip.action = SkipCard;
 
 		AddResponseSpeech (investigateFurther ? investigatingTactic.investigate_further_dialogue : investigatingTactic.investigate_dialogue);
-		AddOptions (
-			new List<string> () { "Investigate", "View other problems" }, 
-			new List<ChatAction> () { investigate, skip }
-		);
+
+		foreach(string option in optionSymbols) {
+			string key = option;
+			ChatAction resultAction = new ChatAction();
+
+			UnityAction feedback = (() => AddResponseSpeech (investigatingTactic.feedback_dialogue[key], true));
+			resultAction.action = feedback;
+			investigateActions.Add(resultAction);
+		}
+		
+		if(investigatingTactic.further_options != null && !investigateFurther) {
+			optionTitles.Insert(0, "Investigate Further");
+			optionTitles.Add("View other problems");
+
+			investigateActions.Insert(0, investigate);
+			investigateActions.Add(skip);
+		}
+
+		AddOptions (optionTitles, investigateActions);
 
 		// If we can't investigate more, remove button and show close
 		/*if(investigatingTactic.further_options == null) {
@@ -255,10 +272,21 @@ public class SupervisorChatScreen : ChatScreen {
     		// Debug.Log(cooldownTotal + " - " + e.SecondsElapsed);
 	    	cooldownElapsed = cooldownTotal - e.SecondsElapsed;
 
+    		System.TimeSpan timeSpan = System.TimeSpan.FromSeconds(cooldownElapsed);
+    		string currentSecond = timeSpan.Seconds.ToString();
+
+	    	investigateMsg.Content = "Investigating: " + currentSecond + "s";
+
+	    	if(timeSpan.Seconds == 0)
+	    		RemoveSystemMessage(investigateMsg);
+
     	}
     }
 
-    void AddResponseSpeech (string message) {
+    void AddResponseSpeech (string message, bool endOfCard=false) {
     	AddResponseSpeech (message, Supervisor);
+
+    	if(endOfCard)
+	    	SkipCard();
     }
 }

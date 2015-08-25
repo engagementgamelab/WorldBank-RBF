@@ -167,7 +167,7 @@ namespace Models {
     public class PhaseTwoConfig {
 
         public float[] tactic_card_intervals { get; set; }
-        public float month_length_seconds { get; set; }
+        public float phase_length_seconds { get; set; }
         
     }
 
