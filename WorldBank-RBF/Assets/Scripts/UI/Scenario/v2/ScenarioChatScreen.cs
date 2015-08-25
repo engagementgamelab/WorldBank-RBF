@@ -54,7 +54,7 @@ public class ScenarioChatScreen : ChatScreen {
 		allCardAffects = new List<string>(_data.starting_options_affects).Concat(new List<string>(_data.final_options_affects)).ToList();
 
 		// Create buttons for all options if not speaking to advisor
-		AddOptions(currentCardOptions);
+		AddOptions(currentCardOptions, null, true);
 
 		AddResponseSpeech(_data.initiating_dialogue, charRef);
 
