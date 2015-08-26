@@ -14,6 +14,14 @@ public class IndicatorsCanvas : NotebookCanvas {
 	// Display indicators when made visible
 	void OnEnable() {
 
+		RenderIndicators();
+
+		ShowYear(currentYearShown);
+
+    }
+
+    void RenderIndicators() {
+
 		ObjectPool.DestroyChildren<IndicatorColumn>(dataColumns.transform);
 
 		int ind = 0;
@@ -58,14 +66,18 @@ public class IndicatorsCanvas : NotebookCanvas {
 			ind++;
 		}
 
-		ShowYear(currentYearShown);
-
     }
 
 	// Update indicators
 	public override void UpdateIndicators(int intBirths, int intVaccinations, int intQOC) {
 
+		intBirths = Mathf.Clamp(intBirths, 0, 100);
+		intVaccinations = Mathf.Clamp(intVaccinations, 0, 100);
+		intQOC = Mathf.Clamp(intQOC, 0, 100);
+
 		appliedAffects.Add(new string[] { intBirths.ToString(), intVaccinations.ToString(), intQOC.ToString() });
+
+		RenderIndicators();
 
 	}
 

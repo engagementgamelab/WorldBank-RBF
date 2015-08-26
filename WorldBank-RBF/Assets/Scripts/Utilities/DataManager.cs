@@ -392,16 +392,17 @@ public class DataManager {
     }
 
     /// <summary>
-    /// Get the phase two tactic card specified by the tactic's name.
+    /// Get the phase two tactic card specified by the tactic's name, if there's one for the current year.
     /// </summary>
     /// <param name="cardName">Index of the scenario card</param>
     /// <returns>The TacticCard for the symbol matching the input</returns>
     public static TacticCard GetTacticCardByName(string cardName) {
 
-        TacticCard tacticRef = gameData.phase_two.tactics.FirstOrDefault(card => card.tactic_name == cardName);
+        TacticCard tacticRef = gameData.phase_two.tactics.FirstOrDefault(card => card.tactic_name == cardName && 
+                                                                                 card.year == gameData.phase_two.Year);
 
         if(tacticRef == null)
-            throw new Exception("Unable to find TacticCard with tactic name '" + cardName + "'! Damn.");
+            throw new Exception("Unable to find TacticCard with tactic name '" + cardName + "' for the current year! Damn.");
                 
         return tacticRef;
     }

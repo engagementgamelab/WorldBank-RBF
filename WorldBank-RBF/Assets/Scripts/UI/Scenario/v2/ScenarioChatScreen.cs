@@ -34,17 +34,20 @@ public class ScenarioChatScreen : ChatScreen {
 
 	List<AdvisorButton> btnListAdvisors = new List<AdvisorButton>();
 
+	// Player may not use more than 3 advisors per card
+	int advisorsUseLimit = 3;
+	int advisorsUsed = 0;
+
     void Initialize () {
 
     	// Get initial character info
 		Models.Character charRef = DataManager.GetDataForCharacter(_data.initiating_npc);
 
-    	// Clear ();
-
 		// Generate advisors
 		previousAdvisorOptions = (previousAdvisorOptions == null)
 			? new List<string> ()
 			: currentAdvisorOptions.ToList ();
+		
 		currentAdvisorOptions = _data.characters.Select(x => x.Key).ToList();
 		AddAdvisors();
 		
@@ -56,10 +59,15 @@ public class ScenarioChatScreen : ChatScreen {
 		// Create buttons for all options if not speaking to advisor
 		AddOptions(currentCardOptions, null, true);
 
-		AddResponseSpeech(_data.initiating_dialogue, charRef);
+		AddResponseSpeech(_data.initiating_dialogue, charRef, true);
 
 		// advisorsButton.SetActive (true);
 		Events.instance.AddListener<ScenarioEvent> (OnScenarioEvent);
+
+		// Reset of advisors used and make advisors container interactable
+		advisorsUsed = 0;
+		advisorsContainer.GetComponent<CanvasGroup>().interactable = true;
+		advisorsContainer.GetComponent<CanvasGroup>().alpha = 1;
 
     }
 
@@ -73,14 +81,14 @@ public class ScenarioChatScreen : ChatScreen {
     	}
 
     	string yearEndMessage = (currentYear == 1) ? scenarioConfig.prompt_year_1 : scenarioConfig.prompt_year_2;
-    	AddSystemMessage ("~ This will be a message from the flatulating ministers B) ~\n" + yearEndMessage);
+    	AddSystemMessage (yearEndMessage);
 
     	string summary = "";
     	foreach (string opt in selectedOptions)
     		summary += opt + "\n";
     	AddSystemMessage (summary);
 
-    	AddSystemMessage ("~ This will be a button B) ~\nView yr freakin indicators dumbo yuh bibby!!!");
+    	AddSystemMessage ("~ This will be a button");
 
     	string currentChoicesConcat = string.Join(" ", DataManager.ScenarioDecisions().ToArray());
 		Dictionary<string, string>[] choiceData = scenarioConfig.choices.Where(choice => !currentChoicesConcat.Contains(choice["text"])).ToArray();
@@ -162,6 +170,15 @@ public class ScenarioChatScreen : ChatScreen {
 
 		// Create buttons for all options if not speaking to advisor
 		AddOptions(currentCardOptions);
+
+		advisorsUsed++;
+
+		// Disable advisor container if player used their limit for this card
+		if(advisorsUsed == advisorsUseLimit) {
+			advisorsContainer.GetComponent<CanvasGroup>().interactable = false;
+			advisorsContainer.GetComponent<CanvasGroup>().alpha = .4f;
+		}
+
 	}
 
 	void Clear () {

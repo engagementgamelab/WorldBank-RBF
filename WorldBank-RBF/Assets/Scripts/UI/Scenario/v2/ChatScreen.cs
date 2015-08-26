@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class ChatScreen : GenericDialogBox {
 
 	public Transform messagesContainer;
+	public Transform disabledPanel;
 	public Scrollbar messagesScrollbar;
 	public LayoutElement rightPanel;
 	public Animator advisorsPanel;
@@ -17,12 +18,14 @@ public class ChatScreen : GenericDialogBox {
 
 	protected bool panelOpen = false;
 
-	protected virtual void OnEnable () {
+	public virtual void OnEnable () {
 		rightPanel.gameObject.SetActive (rightPanelActive);
 		if (rightPanelActive && !panelOpen) {
 			advisorsPanel.Play ("Opened");
 			panelOpen = true;
 		}
+
+		disabledPanel.gameObject.SetActive(false);
 	}
 	 
 	public class ChatAction
@@ -137,15 +140,20 @@ public class ChatScreen : GenericDialogBox {
 		}
 	}
 
-	protected void AddResponseSpeech(string strDialogue, Models.Character npc) {
+	protected void AddResponseSpeech(string strDialogue, Models.Character npc, bool initial=false) {
+		
 		AdvisorMessage response = ObjectPool.Instantiate<AdvisorMessage>("Scenario");
+		response.Initial = initial;
 		response.NPCName = npc.display_name;
 		response.Content = strDialogue;
 		response.NPCSymbol = npc.symbol;
+
 		response.transform.SetParent(messagesContainer);
 		response.transform.localScale = Vector3.one;
+		
 		if (gameObject.activeSelf)
 			StartCoroutine (CoScrollToEnd ());
+	
 	}
 
 	protected SystemMessage AddSystemMessage (string content) {
