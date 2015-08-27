@@ -8,8 +8,10 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	public RectTransform dataColumns;
 
+	public static List<int[]> AppliedAffects = new List<int[]>();
+	List<string[]> displayedAffects = new List<string[]>();
+	
 	int currentYearShown = 1;
-	List<string[]> appliedAffects = new List<string[]>();
 
 	// Display indicators when made visible
 	void OnEnable() {
@@ -28,7 +30,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 		float xPos = dataColumns.rect.width / 12;
 		float factor = (dataColumns.rect.height / 100);
 
-		foreach(string[] affects in appliedAffects) {
+		foreach(string[] affects in displayedAffects) {
 
 			int affectType = 0;
 
@@ -40,9 +42,9 @@ public class IndicatorsCanvas : NotebookCanvas {
 				Single.TryParse(affect, out yPos);
 
 				if(ind > 0)
-					Single.TryParse(appliedAffects[ind-1][affectType], out startingYPos);
+					Single.TryParse(displayedAffects[ind-1][affectType], out startingYPos);
 				else
-					Single.TryParse(appliedAffects[0][affectType], out startingYPos);
+					Single.TryParse(displayedAffects[0][affectType], out startingYPos);
 
 				startingYPos *= factor;
 				float yPosFactored = yPos * factor;
@@ -75,7 +77,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 		intVaccinations = Mathf.Clamp(intVaccinations, 0, 100);
 		intQOC = Mathf.Clamp(intQOC, 0, 100);
 
-		appliedAffects.Add(new string[] { intBirths.ToString(), intVaccinations.ToString(), intQOC.ToString() });
+		AppliedAffects.Add(new [] { intBirths, intVaccinations, intQOC });
+		displayedAffects.Add(new [] { intBirths.ToString(), intVaccinations.ToString(), intQOC.ToString() });
 
 		RenderIndicators();
 
@@ -96,4 +99,5 @@ public class IndicatorsCanvas : NotebookCanvas {
 		currentYearShown = intYr;
 
 	}
+
 }

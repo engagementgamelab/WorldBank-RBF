@@ -11,6 +11,7 @@ public class ChatScreen : GenericDialogBox {
 	public Scrollbar messagesScrollbar;
 	public LayoutElement rightPanel;
 	public Animator advisorsPanel;
+	
     public bool rightPanelActive = true;
 
 	public List<ScenarioOptionButton> _btnListOptions;
@@ -166,6 +167,31 @@ public class ChatScreen : GenericDialogBox {
 			StartCoroutine (CoScrollToEnd ());
 
 		return message;
+	}
+
+	protected void AddSystemButtons (List<string> btnContent, List<ChatAction> btnAction) {
+
+		if (btnContent.Count != btnAction.Count)
+			throw new System.Exception ("Systembutton content count must match the button action count");
+
+		int btnIndex = 0;
+
+		foreach (string content in btnContent) {
+			
+			SystemButton button = ObjectPool.Instantiate<SystemButton>("Scenario");
+			button.Content = content;
+			button.transform.SetParent(messagesContainer);
+			button.transform.localScale = Vector3.one;
+
+			button.Button.onClick.RemoveAllListeners();
+			button.Button.onClick.AddListener (btnAction[btnIndex].action);
+			
+			btnIndex++;
+		}
+		
+		if (gameObject.activeSelf)
+			StartCoroutine (CoScrollToEnd ());
+
 	}
 
 	protected void RemoveSystemMessage(SystemMessage message) {

@@ -21,6 +21,8 @@ public class ScenarioManager : MonoBehaviour {
 	public ScenarioChatScreen scenarioChat;
 	public SupervisorChatScreen supervisorChat;
 
+	public IndicatorsCanvas indicatorsCanvas;
+
 	public Button scenarioChatTab;
 	public Button supervisorChatTab;
 
@@ -249,7 +251,7 @@ public class ScenarioManager : MonoBehaviour {
 		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(cardIndex, scenarioTwistIndex);
 
 		// Start card cooldown
-		if(enableCooldown) {
+		/*if(enableCooldown) {
 			if(problemCardCooldown == null) {
 				problemCardCooldown = Timers.StartTimer(gameObject, new [] { (problemCardDurationOverride == 0) ? problemCardDuration : problemCardDurationOverride });
 				problemCardCooldown.Symbol = "problem_card";
@@ -258,7 +260,7 @@ public class ScenarioManager : MonoBehaviour {
 			}
 			else
 				problemCardCooldown.Restart();
-		}
+		}*/
 
 		if(queue) {
 			
@@ -277,22 +279,6 @@ public class ScenarioManager : MonoBehaviour {
 	}
 
     /// <summary>
-    /// Displays a scenario card, given the current card index.
-    /// </summary>
-	void OpenScenarioDecisionCard() {
-
-		// Generate scenario year card for the current scenario year
-		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
-
-		// Create the card dialog
-		ScenarioDecisionDialog yearEndPanel = DialogManager.instance.CreateScenarioDecisionDialog(scenarioConf);
-		yearEndPanel.PreviousChoices = selectedOptions;
-
-		NotebookManager.Instance.ToggleTabs();
-	    	
-	}
-
-    /// <summary>
     /// End the current year.
     /// </summary>
 	void EndYear () {
@@ -302,9 +288,6 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Queue always starts at 0
 		currentQueueIndex = 0;
-
-		// Stop card cooldown
-		problemCardCooldown.Stop();
 		
 		scenarioChat.gameObject.SetActive(true);
 		supervisorChat.gameObject.SetActive(false);
@@ -328,13 +311,10 @@ public class ScenarioManager : MonoBehaviour {
 	}
 
 	void NextProblemCard(string strSymbol) {
-	
-		System.Globalization.CultureInfo cultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
-		System.Globalization.TextInfo textInfo = cultureInfo.TextInfo;
 
 		Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(strSymbol);
 
-		selectedOptions.Add(textInfo.ToTitleCase(strSymbol.Replace("_", " ")));
+		selectedOptions.Add(DataManager.GetUnlockableBySymbol(strSymbol).title);
 		usedAffects.Add(dictAffect.Values.ToArray());
 
 		// Initialize tactics cards after first problem card done
@@ -406,7 +386,13 @@ public class ScenarioManager : MonoBehaviour {
 		// monthLengthSeconds = DataManager.PhaseTwoConfig.month_length_seconds;
 		
 		phaseLength = DataManager.PhaseTwoConfig.phase_length_seconds;
-		monthLengthSeconds = (monthLengthSecondsOverride == 0) ? (phaseLength / 36) : monthLengthSecondsOverride;
+			monthLengthSeconds = (phaseLength / 36);
+
+		// Allow override in Unity
+		#if UNITY_EDITOR
+			monthLengthSeconds = (monthLengthSecondsOverride == 0) ? (phaseLength / 36) : monthLengthSecondsOverride;
+		#endif
+
 		phaseCooldownElapsed = phaseLength;
 
 		if(enableCooldown) {
@@ -525,9 +511,6 @@ public class ScenarioManager : MonoBehaviour {
 			cardCooldownElapsed = problemCardDuration;
 			monthCooldown.Restart();
 		}
-		
-		// Debug.Log("--> Indicators: " + currentAffectValues[0] + ", " + currentAffectValues[1] + ", " + currentAffectValues[2]);
-		// Debug.Log("===================================================");
 
     }
 
@@ -539,12 +522,7 @@ public class ScenarioManager : MonoBehaviour {
     	Debug.Log("OnScenarioEvent: " + e.eventType);
 
     	switch(e.eventType) {
-
-	   		case "investigate":
-	   			CalculateIndicators();
-	   			MonthEnd();
-    			break;
-
+   			
     		case "next":
 
     			NextProblemCard(e.eventSymbol);
@@ -561,6 +539,10 @@ public class ScenarioManager : MonoBehaviour {
 	   			SetScenarioPath(e.eventSymbol);
     			break;
 
+			case "open_indicators":
+	   			indicatorsCanvas.gameObject.SetActive(true);
+	   			break;
+
     	}
 
     }
@@ -570,10 +552,10 @@ public class ScenarioManager : MonoBehaviour {
     /// </summary>
     void OnCooldownTick(GameEvents.TimerTick e) {
 
-    	if(e.Symbol == "problem_card")
-			cardCooldownElapsed = problemCardDuration - e.SecondsElapsed;
+    	/*if(e.Symbol == "problem_card")
+			cardCooldownElapsed = problemCardDuration - e.SecondsElapsed;*/
     	
-    	else if(e.Symbol == "phase_cooldown") {
+    	if(e.Symbol == "phase_cooldown") {
 			phaseCooldownElapsed = phaseLength - e.SecondsElapsed;
 
 			// Debug.Log("############ phaseCooldownElapsed: " + phaseCooldownElapsed);

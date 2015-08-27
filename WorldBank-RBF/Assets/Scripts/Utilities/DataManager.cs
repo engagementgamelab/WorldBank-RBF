@@ -441,7 +441,7 @@ public class DataManager {
     /// </summary>
     /// <param name="strSymbol">Symbol of the affect</param>
     /// <returns>The Dictionary for the affect<returns>
-    public static Dictionary<string, int> GetIndicatorBySymbol(string strSymbol)    {
+    public static Dictionary<string, int> GetIndicatorBySymbol(string strSymbol) {
         
         try { 
 
@@ -454,6 +454,18 @@ public class DataManager {
      
 
         }
+
+    }
+
+    /// <summary>
+    /// Find if the current indicators are above or below the starting indicator values.
+    /// </summary>
+    /// <param name="initialAffects">The initial affect values</param>
+    /// <param name="currentAffects">The current affect values</param>
+    /// <returns>Are the current indicators higher than the initial ones (bool)</returns>
+    public static bool IsIndicatorDeltaGood(int[] initialAffects, int[] currentAffects) {
+
+        return (initialAffects.Sum() - currentAffects.Sum()) > 0;
 
     }
 }

@@ -160,24 +160,6 @@ public class DialogManager : MonoBehaviour {
 		scenarioChat.EndYear (scenarioConfig, selectedOptions, DataManager.CurrentYear);
 	}
 
-	/// <summary>
-	/// Generate a Scenario Decision dialog for the specified year end card.
-	/// </summary>
-	/// <param name="scenarioConfig">The instance of the current scenario's config.</param>
-	public ScenarioDecisionDialog CreateScenarioDecisionDialog(Models.ScenarioConfig scenarioConfig) {
-
-	    ScenarioDecisionDialog yearEndDialog = ObjectPool.Instantiate<ScenarioDecisionDialog>("Scenario");
-
-	    yearEndDialog.Year = DataManager.CurrentYear;
-	    yearEndDialog.Data = scenarioConfig;
-	    
-	    yearEndDialog.transform.SetAsFirstSibling();
-	    yearEndDialog.Open();
-
-	    return yearEndDialog;
-
-	}
-
 	public void SetAvailableTactics (List<string> availableTactics) {
 		supervisorChat.Available = availableTactics;
 	}

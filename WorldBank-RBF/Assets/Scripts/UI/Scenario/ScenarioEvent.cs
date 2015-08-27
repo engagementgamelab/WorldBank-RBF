@@ -16,10 +16,10 @@ public class ScenarioEvent : GameEvent {
 
 	public static readonly string NEXT = "next";
 	public static readonly string NEXT_YEAR = "next_year";
-	public static readonly string PROBLEM_OPEN = "problem_open";
 	public static readonly string PROBLEM_QUEUE = "problem_queue";
 	public static readonly string MONTH_END = "month_end";
 	public static readonly string DECISION_SELECTED = "decision_selected";
+	public static readonly string OPEN_INDICATORS = "open_indicators";
 
 	public ScenarioEvent (string strType, string strSymbol=null, float[] floatCooldowns=null) {
 		this.eventType = strType;

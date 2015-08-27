@@ -236,8 +236,8 @@ namespace Models {
 
     public class ScenarioConfig {
 
-        public string prompt_year_1 { get; set; }
-        public string prompt_year_2 { get; set; }
+        public string[] prompt_year_1 { get; set; }
+        public string[] prompt_year_2 { get; set; }
         public Dictionary<string, string>[] choices { get; set; }
 
     }
