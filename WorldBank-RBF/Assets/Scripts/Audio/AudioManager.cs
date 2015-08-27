@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class AudioManager {
+﻿
+public static class AudioManager {
 
 	static Inventory inventory = null;
 

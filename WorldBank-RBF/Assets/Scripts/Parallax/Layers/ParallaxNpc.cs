@@ -22,6 +22,7 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 	}
 
 	[ExposeInWindow] public string symbol;
+	[ExposeInWindow] public string voice = "fem1";
 
 	[SerializeField] public ParallaxImage parallaxImage2 = null;
 	ParallaxImage ParallaxImage2 {

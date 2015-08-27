@@ -29,13 +29,14 @@ public class NPCFocusBehavior : MonoBehaviour {
 
 	float focus = 0f;
 	float targetFocus = 0f;
-	float speed = 1.25f;
+	const float speed = 1.25f;
 	ParallaxNpc npc = null;
 
 	FocusLevel focusLevel = FocusLevel.Default;
 	public FocusLevel FocusLevel {
 		get { return focusLevel; }
 		set { 
+			PlayVoice ();
 			focusLevel = value;
 			if (onSetFocus != null) onSetFocus (value);
 			targetFocus = (float)focusLevel / 100f;
@@ -71,7 +72,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 
 	float startCamPosition = 0f;
 	float endCamPosition = 0f;
-	float npcDialogSeparation = 0.45f; // % of screen
+	const float npcDialogSeparation = 0.45f; // % of screen
 	bool focusing = false;
 
 	public void DefaultFocus () {
@@ -102,6 +103,18 @@ public class NPCFocusBehavior : MonoBehaviour {
 			throw new System.Exception ("An NPC has not been selected");
 		Focus ();
 		FocusLevel = FocusLevel.Dialog;
+	}
+
+	void PlayVoice () {
+		string quality;
+		if (FocusLevel == FocusLevel.Default) {
+			quality = "greeting";
+		} else if (FocusLevel == FocusLevel.Preview) {
+			quality = "response";
+		} else {
+			quality = "farewell";
+		}
+		AudioManager.Sfx.Play (npc.voice + quality, "NPCs");
 	}
 
 	void Focus () {

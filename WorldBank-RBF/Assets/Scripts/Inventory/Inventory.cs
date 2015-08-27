@@ -1,14 +1,11 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 /// <summary>
 /// The Inventory contains ItemGroups.
 /// </summary>
 public class Inventory {
 
-	Dictionary<string, ItemGroup> groups = new Dictionary<string, ItemGroup> ();
+	readonly Dictionary<string, ItemGroup> groups = new Dictionary<string, ItemGroup> ();
 
 	/// <summary>
 	/// Get the ItemGroups.
@@ -25,7 +22,7 @@ public class Inventory {
 			try {
 				return Groups[id];
 			}	 
-			catch(System.Exception e) {
+			catch {
 				throw new System.Exception("Unable to find ItemGroup with the ID '" + id + "'");
 			} 
 		}

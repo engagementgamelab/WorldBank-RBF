@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
+﻿
 /// <summary>
 /// An item that can be stored in an Inventory.
 /// </summary>
@@ -29,8 +27,8 @@ public abstract class InventoryItem {
 	/// <param name="inventory">The Inventory that contains this InventoryItem.</param>
 	/// <param name="group">The ItemGroup that contains this InventoryItem.</param>
 	public void Initialize (Inventory inventory, ItemGroup group) {
-		this.Inventory = inventory;
-		this.Group = group;
+		Inventory = inventory;
+		Group = group;
 		OnInit ();
 	}
 

@@ -34,6 +34,7 @@ public class AudioObject : MB, IEditorPoolable {
 		Source.clip = item.Clip;
 		Source.loop = loop;
 		Source.Play ();
+		if (!loop) StartCoroutine (StopOnEndPlay ());
 	}
 
 	public void SetMixer (string type) {
@@ -47,5 +48,11 @@ public class AudioObject : MB, IEditorPoolable {
 	public void Stop () {
 		Source.Stop ();
 		EditorObjectPool.Destroy<AudioObject> (Transform);
+	}
+
+	IEnumerator StopOnEndPlay () {
+		while (Source.isPlaying)
+			yield return null;
+		Stop ();
 	}
 }

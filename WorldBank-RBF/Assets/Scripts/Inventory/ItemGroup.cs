@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public delegate void OnUpdate ();
@@ -128,7 +127,7 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	/// <param name="item">The InventoryItem to add.</param>
 	public override void Add (InventoryItem item=null) {
 		if (item == null) item = new T ();
-		Add (new List<InventoryItem> () { item });
+		Add (new List<InventoryItem> { item });
 	}
 
 	/// <summary>
@@ -142,7 +141,7 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 			InventoryItem newItem = newItems[0];
 			if (newItem != null) {
 				newItem.Initialize (Inventory, this);
-				addedItems.Add ((T)newItem);
+				addedItems.Add (newItem);
 			}
 			newItems.RemoveAt (0);
 		}

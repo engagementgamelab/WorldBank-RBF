@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 
 public class CanvasToggle : MonoBehaviour {
@@ -28,6 +27,9 @@ public class CanvasToggle : MonoBehaviour {
 	public NotebookCanvas thisCanvas;
 	public List<CanvasToggle> otherToggles;
 	public bool openAtStart = false;
+	public string sfxGroup;
+	public string openSfx;
+	public string closeSfx;
 
 	static NotebookCanvas activeCanvas = null;
 
@@ -47,7 +49,9 @@ public class CanvasToggle : MonoBehaviour {
 		foreach (CanvasToggle toggle in otherToggles) {
 			toggle.SetCanvasActive (false);
 		}
-		SetCanvasActive (!thisCanvas.gameObject.activeSelf);
+		bool open = !thisCanvas.gameObject.activeSelf;
+		PlaySfx (open);
+		SetCanvasActive (open);
 	}
 
 	public void SetCanvasActive (bool active) {
@@ -63,5 +67,9 @@ public class CanvasToggle : MonoBehaviour {
 
 	void OnSetFocus (FocusLevel focusLevel) {
 		SetButtonActive (focusLevel == FocusLevel.Default);
+	}
+
+	void PlaySfx (bool open) {
+		AudioManager.Sfx.Play (open ? openSfx : closeSfx, sfxGroup);
 	}
 }

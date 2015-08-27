@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 public class AudioItem : InventoryItem {
 	
@@ -17,15 +17,38 @@ public class AudioItem : InventoryItem {
 
 	public override string Name { get { return Clip.name; } }
 
+	// example:
+	// fem1farewell2
+	// placetactic1
+
+	// description and number: 	.*?(\d+)
+	// just the number: 		(\d+)
+	// just the description: 	^.*?(?=[\d+])
+	// all descriptions: 		([a-zA-Z]+)
+
+	// "qualities" are groups specified in the filename and take the format
+	// [nameofgroup][#], with "nameofgroup" being a description of the quality
+	// and # being and index (just used to make the filename unique).
+	List<string> qualities;
+	public List<string> Qualities {
+		get {
+			if (qualities == null) {
+				qualities = new List<string> ();
+				Regex regex = new Regex (@"([a-zA-Z]+)");
+				MatchCollection matches = regex.Matches (Name);
+				foreach (Match m in matches) {
+					if (m.Success) qualities.Add (m.Value);
+				}
+			}
+			return qualities;
+		}
+	}
+
 	protected virtual PlaySettings Settings {
 		get { return new PlaySettings (false, true); }
 	}
 
-	protected AudioClip clip;
-	public virtual AudioClip Clip {
-		get { return clip; }
-		set { clip = value; }
-	}
+	public virtual AudioClip Clip { get; set; }
 
 	float attenuation = 1f;
 	public float Attenuation {
@@ -38,7 +61,7 @@ public class AudioItem : InventoryItem {
 		}
 	}
 
-	List<AudioObject> audioObjects = new List<AudioObject> ();
+	readonly List<AudioObject> audioObjects = new List<AudioObject> ();
 
 	public void Play () {
 		AudioObject idleObject = GetIdleAudioObject ();

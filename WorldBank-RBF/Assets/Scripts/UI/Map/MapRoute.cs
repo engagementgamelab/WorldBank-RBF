@@ -103,8 +103,8 @@ public class MapRoute : MB {
 	IEnumerator CoBlink () {
 		
 		float time = 5f;
-		float eTime = 0f;
 		float speed = 1.5f;
+		float eTime = 0f;
 	
 		while (eTime < time) {
 			eTime += Time.deltaTime * speed;

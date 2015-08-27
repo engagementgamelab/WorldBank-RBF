@@ -1,6 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 
 [JsonSerializable (typeof (Models.AmbienceZones))]
@@ -11,13 +10,18 @@ public class AmbienceZones : MB {
 	[HideInInspector]
 	public List<AmbienceZone> zones = new List<AmbienceZone> ();
 
-	List<Color> colors = new List<Color> () {
+	List<Color> colors = new List<Color> {
 		Color.white,
 		Color.yellow,
 		Color.red,
 		Color.cyan,
 		Color.green
 	};
+
+	void Start () {
+		PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
+		SfxGroup s = AudioManager.Sfx;
+	}
 
 	public void AddZone () {
 		AmbienceZone zone = EditorObjectPool.Create<AmbienceZone> ();
@@ -29,13 +33,19 @@ public class AmbienceZones : MB {
 		UpdateZones ();
 	}
 
-	public void OnLoad () {
+	public void Load (string path) {
+		Reset ();
+		ModelSerializer.Load (this, path);
 		AmbienceZone[] zoneArr = GameObject.FindObjectsOfType (typeof (AmbienceZone)) as AmbienceZone[];
 		zones = zoneArr.ToList ();
 		foreach (AmbienceZone zone in zones) {
 			zone.Parent = Transform;
 		}
 		UpdateZones ();
+	}
+
+	void LoadFromSymbol (string citySymbol) {
+		Load ("Config/PhaseOne/AmbienceZones/" + citySymbol);
 	}
 
 	void UpdateZones () {
@@ -62,16 +72,19 @@ public class AmbienceZones : MB {
 
 	void SetAttenuation () {
 		
-		float cursor = MainCamera.Instance.Position.x;
-
 		if (!EditorState.InEditMode) {
 			foreach (AmbienceZone zone in zones) {
-				zone.SetAttenuation (cursor);
+				zone.SetAttenuation (MainCamera.Instance.Position.x);
 			}
 		}
 	}
 
 	public void Reset () {
+		cityContext = "";
+		RemoveZones ();
+	}
+
+	public void RemoveZones () {
 		EditorObjectPool.Destroy<AmbienceZone> (zones);
 		zones.Clear ();
 	}
@@ -80,5 +93,9 @@ public class AmbienceZones : MB {
 		float cursor = MainCamera.Instance.Position.x;
 		Gizmos.color = Color.red;
 		Gizmos.DrawLine (new Vector3 (cursor, 0, 10), new Vector3 (cursor, 10, 10));
+	}
+
+	void OnUpdateCurrentCity (string city) {
+		LoadFromSymbol (city);
 	}
 }

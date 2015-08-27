@@ -44,13 +44,12 @@ public class AmbienceZonesEditor : MyCustomEditor<AmbienceZones> {
 	}
 
 	void ResetTarget () {
-		Target.cityContext = "";
-		RemoveZones ();
+		Target.Reset ();
 		SerializedTarget.Update ();
 	}
 
 	void RemoveZones () {
-		Target.Reset ();
+		Target.RemoveZones ();
 	}
 
 	bool ValidateContext (string cityContext) {
@@ -63,13 +62,11 @@ public class AmbienceZonesEditor : MyCustomEditor<AmbienceZones> {
 			
 			if (loadPath != "") {
 				
-				RemoveZones ();
 				string path = loadPath
 					.Replace (Application.dataPath + "/Resources/", "")
 					.Replace (".json", "");
 
-				ModelSerializer.Load (Target, path);
-				Target.OnLoad ();
+				Target.Load (path);
 				SerializedTarget.Update ();
 			}
 		}

@@ -356,6 +356,7 @@ namespace Models {
 
     public class ParallaxNpc : ParallaxElement {
         public string symbol { get; set; }
+        public string voice { get; set; }
         public bool facingLeft { get; set; }
         public string Texture2Path { get; set; }
     }

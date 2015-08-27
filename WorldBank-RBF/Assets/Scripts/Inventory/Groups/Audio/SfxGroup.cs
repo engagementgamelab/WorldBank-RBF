@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class SfxGroup : AudioGroup<AudioItem> {
+﻿
+public class SfxGroup : AudioGroup<SfxItem> {
 
 	public override string ID { get { return "sfx"; } }
 
@@ -10,4 +8,5 @@ public class SfxGroup : AudioGroup<AudioItem> {
 	}
 
 	public SfxGroup () : base ("SFX") {}
+	
 }

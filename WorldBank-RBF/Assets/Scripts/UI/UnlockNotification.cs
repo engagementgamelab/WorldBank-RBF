@@ -9,7 +9,6 @@ public class UnlockNotification : MB {
 	public Text header;
 	public Text body;
 
-	string headerText;
 	string HeaderText {
 		get { return header.text; }
 		set { header.text = value; }
@@ -21,22 +20,49 @@ public class UnlockNotification : MB {
 		set { header.color = value; }
 	}
 
-	string bodyText;
 	string BodyText {
 		get { return body.text; }
 		set { body.text = value; }
 	}
 
-	Dictionary<string, string> headers = new Dictionary<string, string> () {
-		{ "dialogue", "New dialogue unlocked!" },
-		{ "route", "New route unlocked!" },
-		{ "tactic", "New tactic unlocked!" }
-	};
+	struct Settings {
+		
+		public readonly string Header;
+		public readonly Color Color;
+		public readonly string[] Sfx;
 
-	Dictionary<string, Color> headerColors = new Dictionary<string, Color> () {
-		{ "dialogue", Color.cyan },
-		{ "route", Color.yellow },
-		{ "tactic", Color.white }
+		public Settings (string header, Color color, string[] sfx) {
+			Header = header;
+			Color = color;
+			Sfx = sfx;
+		}
+	}
+
+	Dictionary<string, Settings> settings = new Dictionary<string, Settings> {
+		{ 
+			"dialogue", 
+			new Settings (
+				"New dialogue unlocked!", 
+				Color.cyan, 
+				new [] { "newtravel", "map" }
+			)
+		},
+		{ 
+			"route", 
+			new Settings (
+				"New route unlocked!", 
+				Color.yellow, 
+				new [] { "newtravel", "map" }
+			)
+		},
+		{ 
+			"tactic", 
+			new Settings (
+				"New tactic unlocked!", 
+				Color.white, 
+				new [] { "newtravel", "map" }
+			)
+		}
 	};
 
 	float startPosition;
@@ -77,8 +103,10 @@ public class UnlockNotification : MB {
 	}
 
 	void SlideIn (string type, string context) {
-		HeaderText = headers[type];
-		HeaderColor = headerColors[type];
+		Settings s = settings[type];
+		HeaderText = s.Header;//headers[type];
+		HeaderColor = s.Color;//headerColors[type];
+		AudioManager.Sfx.Play (s.Sfx[0], s.Sfx[1]);
 		BodyText = context;
 		StartCoroutine (CoSlide (startPosition, endPosition));
 		Invoke ("SlideOut", 3.5f);
