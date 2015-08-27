@@ -93,6 +93,7 @@ public class Timers : MonoBehaviour {
 
 		public void Restart() {
 			Seconds = 0f;
+			Resume();
 		}
 
 		public float GetCurrentTime() {
@@ -145,6 +146,7 @@ public class Timers : MonoBehaviour {
 
 				if (timerInst.Seconds >= timerInst.Duration) {
 					// Debug.Log("TIMER " + timerInst.Symbol + " END");
+					timerInst.Stop();
 					timerInst.onEnd();
 				}
 			}

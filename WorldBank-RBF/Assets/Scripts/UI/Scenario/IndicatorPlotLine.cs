@@ -50,14 +50,14 @@ public class IndicatorPlotLine : Image {
 
 	void Update () {
 
-		if(animateStart >= animateDelay) {
-			while(rectTransform.sizeDelta.x < targetWidth)
-				rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x + .0005f, 7);
+		// if(animateStart >= animateDelay) {
 
-			Debug.Log(rectTransform.sizeDelta.x + .0005f);
-		}
-		else
-			animateStart += Time.deltaTime;
+		// 	while(rectTransform.sizeDelta.x < targetWidth)
+		// 		rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x + .0005f, 7);
+
+		// }
+		// else
+		// 	animateStart += Time.deltaTime;
 
 	}
 
@@ -69,9 +69,9 @@ public class IndicatorPlotLine : Image {
 
 		transform.SetParent(transParent);
 
-		targetWidth = differenceVector.magnitude;
+		// targetWidth = differenceVector.magnitude;
 
-		rectTransform.sizeDelta = new Vector2(0, 7);
+		rectTransform.sizeDelta = new Vector2(differenceVector.magnitude, 7);
 		rectTransform.localRotation = Quaternion.Euler(0, 0, angle);
 		rectTransform.localScale = Vector3.one;
 

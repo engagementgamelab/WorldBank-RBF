@@ -16,8 +16,11 @@ using System.Collections.Generic;
 public class PortraitTextBox : GenericButton {
 
 	public Image portrait;
+	
 	public bool phaseOne = false;
+	
 	public Transform npcName;
+	public Transform initialNpcName;
 
 	/// <summary>
     /// Set the NPC Name on the button
@@ -35,6 +38,9 @@ public class PortraitTextBox : GenericButton {
 			// 	value = value.Substring(0, 22) + "...";
 
 			npcName.GetComponent<Text>().text = value;
+
+			if(initialNpcName != null)
+				initialNpcName.GetComponent<Text>().text = value;
 
 		}
 

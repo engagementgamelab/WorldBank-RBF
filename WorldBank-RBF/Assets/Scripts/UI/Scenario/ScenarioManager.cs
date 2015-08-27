@@ -18,24 +18,26 @@ using JsonFx.Json;
 
 public class ScenarioManager : MonoBehaviour {
 
-	public Text scenarioLabel;
-	// public Text cardLabel;
+	public ScenarioChatScreen scenarioChat;
+	public SupervisorChatScreen supervisorChat;
+
+	public IndicatorsCanvas indicatorsCanvas;
+
+	public Button scenarioChatTab;
+	public Button supervisorChatTab;
+
 	public Text scenarioCardCooldownText;
 	public Text scenarioCooldownText;
 
-	// public RectTransform scenarioEndPanel;
-	// public RectTransform tacticCardsParent;
-
-	public Animator cameraAnimator;
-	public TacticsCanvas tacticsCanvas;
-
-	public int[] baseAffectValues;
 	public float problemCardDurationOverride = 0;
+	public float monthLengthSecondsOverride = 0;
+
 
 	public bool enableCooldown;
 
-	Timers.TimerInstance problemCardCooldown;
 	Timers.TimerInstance phaseCooldown;
+	Timers.TimerInstance problemCardCooldown;
+	Timers.TimerInstance monthCooldown;
 	
 	ScenarioYearEndDialog yearEndPanel;
 
@@ -52,7 +54,6 @@ public class ScenarioManager : MonoBehaviour {
 	bool queueProblemCard;
 	bool openProblemCard;
 	bool openYearEnd;
-
 	bool inYearEnd;
 	bool indicatorUpdate;
 
@@ -68,12 +69,8 @@ public class ScenarioManager : MonoBehaviour {
 	float cardCooldownElapsed;
 	float phaseCooldownElapsed;
 
-	// seconds (each month is 25 seconds and there are 3 years)
-	float monthLengthSeconds = 25;
+	float monthLengthSeconds;
 	float phaseLength;
-
-	// ScenarioCardDialog currentScenarioCard;
-	TacticCardDialog currentTacticCard;
 
 	NumberFormatInfo floatFormatter;
 
@@ -88,16 +85,10 @@ public class ScenarioManager : MonoBehaviour {
 		        NetworkManager.Instance.GetURL("/plan/all/", PlansRetrieved);
 		#endif
 
-		// Set current affect values to base values
-		currentAffectValues = baseAffectValues;
-
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
 
 		// Listen for problem card cooldown tick
 		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
-
-		phaseLength = monthLengthSeconds * 12f;
-		phaseCooldownElapsed = phaseLength;
 
 		// Culture for formatting floats to seconds
 		floatFormatter = new CultureInfo("en-US", false).NumberFormat;
@@ -114,14 +105,13 @@ public class ScenarioManager : MonoBehaviour {
 		}
 		
 		// If a problem card has been enqueued or we're waiting for one to open, determine next card
-		else if(queueProblemCard || openProblemCard)
+		else if(queueProblemCard)
 		{
-			openProblemCard = false;
 			GetNextCard();
 		}
 
 		// Update card cooldown label
-    	// scenarioCardCooldownText.text = "Waiting for next Problem: " + cardCooldownElapsed + "s";
+    	scenarioCardCooldownText.text = cardCooldownElapsed + "s";
 
     	// Update scenario cooldown label
     	if(!inYearEnd) {
@@ -140,7 +130,7 @@ public class ScenarioManager : MonoBehaviour {
 			return;
         
         problemCardCooldown.Stop();
-        phaseCooldown.Stop();
+        monthCooldown.Stop();
 
     }
 
@@ -185,40 +175,21 @@ public class ScenarioManager : MonoBehaviour {
 		int cardIndex = queueProblemCard ? currentQueueIndex : currentCardIndex;
 		int nextCardIndex = currentCardIndex + 1;
 		int yearLength = DataManager.ScenarioLength(scenarioTwistIndex);
+
+		// Open supervisor panel if no more cards, and disable scenario tab
+		if(cardIndex == yearLength)
+		{
+			scenarioChat.disabledPanel.gameObject.SetActive(true);
+			supervisorChat.gameObject.SetActive(true);
+
+			scenarioChatTab.interactable = true;
+			supervisorChatTab.interactable = false;
+		}
+		else
+			scenarioChatTab.gameObject.SetActive(true);
  
-		// Should we display a year break (happens at 4th and 8th card or if forced by timer)?
-		if((openYearEnd || (yearLength == nextCardIndex)) && !queueProblemCard) {
-			
-			// Next year will start at card 0
-			currentCardIndex = -1;
-
-			// Queue always starts at 0
-			currentQueueIndex = 0;
-
-			// Stop card cooldown
-			problemCardCooldown.Stop();
-
-			// Hide all scenario problem cards
-			EndYear();
-
-			// Clear queue
-			ScenarioQueue.Clear();
-
-			// Show end of scenario
-			if(currentYear == 3) {
-
-				// Show indicators
-				NotebookManager.Instance.OpenIndicators();
-
-				// Show scenario end panel and hide cooldown
-				// scenarioEndPanel.gameObject.SetActive(true); TODO: Show system message instead
-				scenarioCooldownText.gameObject.SetActive(false);
-
-				phaseCooldown.Stop();
-
-				return;
-
-			}
+		// Should we display a year break (happens if forced by timer)?
+		if(openYearEnd && !queueProblemCard) {
 
 			// If current month is fewer than 12 (player managed to finish all problems before year end), calculate affects for all missing months
 			// TODO: WILL THIS CHANGE?
@@ -230,12 +201,24 @@ public class ScenarioManager : MonoBehaviour {
 				}
 			}
 
-			// "Year end" screen
-			inYearEnd = true;
-			queueProblemCard = false;
+			// Hide all scenario problem cards
+			EndYear();
 
-			// Update timer text
-    		scenarioCooldownText.text = "Break - Year " + currentYear;
+			// Show end of scenario
+			if(currentYear == 3) {
+
+				// Show indicators
+				NotebookManager.Instance.OpenIndicators();
+
+				// Show scenario end panel and hide cooldown
+				// scenarioEndPanel.gameObject.SetActive(true); TODO: Show system message instead
+				scenarioCooldownText.gameObject.SetActive(false);
+
+				monthCooldown.Stop();
+
+				return;
+
+			}
 
 			return;
 			
@@ -268,16 +251,16 @@ public class ScenarioManager : MonoBehaviour {
 		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(cardIndex, scenarioTwistIndex);
 
 		// Start card cooldown
-		if(enableCooldown) {
+		/*if(enableCooldown) {
 			if(problemCardCooldown == null) {
-				problemCardCooldown = Timers.StartTimer(gameObject, new float[] { (problemCardDurationOverride == 0) ? problemCardDuration : problemCardDurationOverride });
+				problemCardCooldown = Timers.StartTimer(gameObject, new [] { (problemCardDurationOverride == 0) ? problemCardDuration : problemCardDurationOverride });
 				problemCardCooldown.Symbol = "problem_card";
 				problemCardCooldown.onTick += OnCooldownTick;
 				problemCardCooldown.onEnd += GetNextCard;
 			}
 			else
 				problemCardCooldown.Restart();
-		}
+		}*/
 
 		if(queue) {
 			
@@ -293,57 +276,63 @@ public class ScenarioManager : MonoBehaviour {
 		// Create the card dialog
 		DialogManager.instance.SetCard(card);
 
-    	// Debug
-    	// cardLabel.text = card.symbol;
-    	// cardLabel.gameObject.SetActive(true);
-
-    	// TODO: Temp UI stuff
-    	if(currentTacticCard != null)
-    	{
-	    	currentTacticCard.transform.SetAsFirstSibling();
-			currentTacticCard.gameObject.SetActive(false);
-			currentTacticCard.gameObject.SetActive(true);		    	
-    	}
-
 	}
 
     /// <summary>
-    /// Displays a scenario card, given the current card index.
+    /// End the current year.
     /// </summary>
-	void OpenScenarioDecisionCard() {
-
-		// Generate scenario year card for the current scenario year
-		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
-
-		// Create the card dialog
-		ScenarioDecisionDialog yearEndPanel = DialogManager.instance.CreateScenarioDecisionDialog(scenarioConf);
-		yearEndPanel.PreviousChoices = selectedOptions;
-
-		NotebookManager.Instance.ToggleTabs();
-	    	
-	}
-
 	void EndYear () {
+		
+		// Next year will start at card 0
+		currentCardIndex = -1;
+
+		// Queue always starts at 0
+		currentQueueIndex = 0;
+		
+		scenarioChat.gameObject.SetActive(true);
+		supervisorChat.gameObject.SetActive(false);
+
+		scenarioChatTab.gameObject.SetActive(true);
+		scenarioChatTab.interactable = false;
+		supervisorChatTab.interactable = false;
+		supervisorChatTab.GetComponent<CanvasGroup>().alpha = .5f;
+
+		// "Year end" screen
+		openYearEnd = false;
+		inYearEnd = true;
+		queueProblemCard = false;
+
+		// Update timer text
+		scenarioCooldownText.text = "Break - Year " + currentYear;
+
 		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
 		DialogManager.instance.EndYear (scenarioConf, selectedOptions);
+
 	}
 
 	void NextProblemCard(string strSymbol) {
-	
-		System.Globalization.CultureInfo cultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
-		System.Globalization.TextInfo textInfo = cultureInfo.TextInfo;
 
 		Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(strSymbol);
 
-		selectedOptions.Add(textInfo.ToTitleCase(strSymbol.Replace("_", " ")));
+		selectedOptions.Add(DataManager.GetUnlockableBySymbol(strSymbol).title);
 		usedAffects.Add(dictAffect.Values.ToArray());
 
-		openProblemCard = true;
-		currentQueueIndex++;
-
 		// Initialize tactics cards after first problem card done
-		if(currentYear == 1 && currentCardIndex == 0)
-			DialogManager.instance.SetAvailableTactics (((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>());
+		if(currentYear == 1 && currentCardIndex == 0) {
+			List<string> availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+			
+			// Also add tactics that show only if they are not part of player's selected plan
+			foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
+			{
+				if(!availableTactics.Contains(tactic))
+					availableTactics.Add(tactic);
+			}
+
+			DialogManager.instance.SetAvailableTactics (availableTactics);
+		}
+		
+		GetNextCard();
+		currentQueueIndex++;
 
 	}
 
@@ -361,7 +350,10 @@ public class ScenarioManager : MonoBehaviour {
 
 		NotebookManager.Instance.ToggleTabs();
 
-		phaseCooldown.Restart();
+		monthCooldown.Restart();
+
+		supervisorChatTab.interactable = true;
+		supervisorChatTab.GetComponent<CanvasGroup>().alpha = 1;
 
 	}
 
@@ -391,14 +383,28 @@ public class ScenarioManager : MonoBehaviour {
     void UserScenarioResponse(Dictionary<string, object> response) {
 
     	// Get config values
-    	monthLengthSeconds = DataManager.PhaseTwoConfig.month_length_seconds;
+		// monthLengthSeconds = DataManager.PhaseTwoConfig.month_length_seconds;
+		
+		phaseLength = DataManager.PhaseTwoConfig.phase_length_seconds;
+			monthLengthSeconds = (phaseLength / 36);
+
+		// Allow override in Unity
+		#if UNITY_EDITOR
+			monthLengthSeconds = (monthLengthSecondsOverride == 0) ? (phaseLength / 36) : monthLengthSecondsOverride;
+		#endif
+
+		phaseCooldownElapsed = phaseLength;
 
 		if(enableCooldown) {
 
-			phaseCooldown = Timers.StartTimer(gameObject, new float[] { monthLengthSeconds });
+			monthCooldown = Timers.StartTimer(gameObject, new float[] { monthLengthSeconds });
+			monthCooldown.Symbol = "month_cooldown";
+			monthCooldown.onEnd += MonthEnd;
+
+			phaseCooldown = Timers.StartTimer(gameObject, new float[] { phaseLength });
 			phaseCooldown.Symbol = "phase_cooldown";
 			phaseCooldown.onTick += OnCooldownTick;
-			phaseCooldown.onEnd += MonthEnd;
+			// monthCooldown.onEnd += MonthEnd;
 
 		}
 
@@ -410,8 +416,11 @@ public class ScenarioManager : MonoBehaviour {
     	// Save tactics that are a part of this plan
     	tacticsAvailable = response["tactics"];
 
-    	// Calc the base affect values for the plan
+    	// Set initial values and calc the base affect values for the plan
+    	currentAffectValues = response["default_affects"] as int[];
     	currentAffectBias = response["affects_bias"] as int[];
+
+    	// Add defaults to used affects and calc indicators
     	usedAffects.Add(response["default_affects"] as int[]);
     	CalculateIndicators();
 
@@ -491,16 +500,17 @@ public class ScenarioManager : MonoBehaviour {
 		
     	if(atYearEnd) {
 			Debug.Log("======== END OF YEAR " + currentYear + " ========");
-			phaseCooldown.Stop();
+			monthCooldown.Stop();
 
 			openYearEnd = true;
 			GetNextCard();
     	}
-		else
+		else {
 			Debug.Log("======== END OF MONTH " + currentMonth + " ========");
-		
-		// Debug.Log("--> Indicators: " + currentAffectValues[0] + ", " + currentAffectValues[1] + ", " + currentAffectValues[2]);
-		// Debug.Log("===================================================");
+
+			cardCooldownElapsed = problemCardDuration;
+			monthCooldown.Restart();
+		}
 
     }
 
@@ -512,12 +522,7 @@ public class ScenarioManager : MonoBehaviour {
     	Debug.Log("OnScenarioEvent: " + e.eventType);
 
     	switch(e.eventType) {
-
-	   		case "investigate":
-	   			CalculateIndicators();
-	   			MonthEnd();
-    			break;
-
+   			
     		case "next":
 
     			NextProblemCard(e.eventSymbol);
@@ -534,6 +539,10 @@ public class ScenarioManager : MonoBehaviour {
 	   			SetScenarioPath(e.eventSymbol);
     			break;
 
+			case "open_indicators":
+	   			indicatorsCanvas.gameObject.SetActive(true);
+	   			break;
+
     	}
 
     }
@@ -543,10 +552,10 @@ public class ScenarioManager : MonoBehaviour {
     /// </summary>
     void OnCooldownTick(GameEvents.TimerTick e) {
 
-    	if(e.Symbol == "problem_card")
-			cardCooldownElapsed = problemCardDuration - e.SecondsElapsed;
+    	/*if(e.Symbol == "problem_card")
+			cardCooldownElapsed = problemCardDuration - e.SecondsElapsed;*/
     	
-    	else if(e.Symbol == "phase_cooldown") {
+    	if(e.Symbol == "phase_cooldown") {
 			phaseCooldownElapsed = phaseLength - e.SecondsElapsed;
 
 			// Debug.Log("############ phaseCooldownElapsed: " + phaseCooldownElapsed);

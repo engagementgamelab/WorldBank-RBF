@@ -7,22 +7,26 @@ using System.Collections.Generic;
 public class ChatScreen : GenericDialogBox {
 
 	public Transform messagesContainer;
+	public Transform disabledPanel;
 	public Scrollbar messagesScrollbar;
 	public LayoutElement rightPanel;
 	public Animator advisorsPanel;
+	
     public bool rightPanelActive = true;
 
-	public List<ScenarioOptionButton> btnListOptions;
+	public List<ScenarioOptionButton> _btnListOptions;
 	public List<GameObject> spacers;
 
 	protected bool panelOpen = false;
 
-	protected virtual void OnEnable () {
+	public virtual void OnEnable () {
 		rightPanel.gameObject.SetActive (rightPanelActive);
 		if (rightPanelActive && !panelOpen) {
 			advisorsPanel.Play ("Opened");
 			panelOpen = true;
 		}
+
+		disabledPanel.gameObject.SetActive(false);
 	}
 	 
 	public class ChatAction
@@ -31,19 +35,32 @@ public class ChatScreen : GenericDialogBox {
 	    public UnityAction action;
 	}
 
-	// TODO: This seems to break if there are more than two buttons
-	// Also -- this should be made more generic instead of having 3 versions of the same method
-	public virtual void AddOptions(List<string> btnContent, List<ChatAction> btnAction=null)  {
+	public void AddOptions(List<string> btnContent)  {
+
+		AddOptions(btnContent, null, false);
+
+	}
+
+	public void AddOptions(List<string> btnContent, List<ChatAction> btnAction)  {
+
+		AddOptions(btnContent, btnAction, false);
+
+	}
+
+	// TODO: This seems to break if there are more than two buttons???
+	public virtual void AddOptions(List<string> btnContent, List<ChatAction> btnAction, bool clearAll)  {
 
 		if (btnAction != null && (btnContent.Count != btnAction.Count))
 			throw new System.Exception ("Button content count must match the button action count");
 
-		RemoveOptions ();
+		if(clearAll)
+			RemoveOptions ();
+
 		int btnIndex = 0;
 
 		foreach (string content in btnContent) {
-			
-			ScenarioOptionButton btnChoice = btnListOptions[btnIndex];
+
+			ScenarioOptionButton btnChoice = _btnListOptions[btnIndex];
 			btnChoice.gameObject.SetActive (true);
 
 			btnChoice.Button.onClick.RemoveAllListeners();
@@ -51,6 +68,8 @@ public class ChatScreen : GenericDialogBox {
 			if(btnAction == null) {
 				btnChoice.Text = DataManager.GetUnlockableBySymbol(content).title;
 				btnChoice.Button.onClick.AddListener (() => OptionSelected(content));
+				
+				btnIndex ++;
 
 				continue;
 			}
@@ -81,7 +100,7 @@ public class ChatScreen : GenericDialogBox {
 			string optionTxt = option["text"];
 			string optionVal = option["load"];
 
-			ScenarioOptionButton btnChoice = btnListOptions[btnIndex];
+			ScenarioOptionButton btnChoice = _btnListOptions[btnIndex];
 			btnChoice.gameObject.SetActive (true);
 			btnIndex ++;
 
@@ -90,7 +109,7 @@ public class ChatScreen : GenericDialogBox {
 			btnChoice.Button.onClick.AddListener (() => YearEndOptionSelected (optionTxt, optionVal));
 		}
 
-		ScenarioOptionButton btnNextYear = btnListOptions[btnIndex];
+		ScenarioOptionButton btnNextYear = _btnListOptions[btnIndex];
 		btnNextYear.gameObject.SetActive (true);
 		btnNextYear.Text = "Go to next year";
 		btnNextYear.Button.onClick.RemoveAllListeners ();
@@ -117,29 +136,68 @@ public class ChatScreen : GenericDialogBox {
 	}
 
 	protected void RemoveOptions () {
-		foreach (ScenarioOptionButton btn in btnListOptions) {
+		foreach (ScenarioOptionButton btn in _btnListOptions) {
 			btn.gameObject.SetActive (false);
 		}
 	}
 
-	protected void AddResponseSpeech(string strDialogue, Models.Character npc) {
+	protected void AddResponseSpeech(string strDialogue, Models.Character npc, bool initial=false) {
+		
 		AdvisorMessage response = ObjectPool.Instantiate<AdvisorMessage>("Scenario");
+		response.Initial = initial;
 		response.NPCName = npc.display_name;
 		response.Content = strDialogue;
 		response.NPCSymbol = npc.symbol;
+
 		response.transform.SetParent(messagesContainer);
 		response.transform.localScale = Vector3.one;
+		
 		if (gameObject.activeSelf)
 			StartCoroutine (CoScrollToEnd ());
+	
 	}
 
-	protected void AddSystemMessage (string content) {
+	protected SystemMessage AddSystemMessage (string content) {
 		SystemMessage message = ObjectPool.Instantiate<SystemMessage>("Scenario");
 		message.Content = content;
 		message.transform.SetParent(messagesContainer);
 		message.transform.localScale = Vector3.one;
+		
 		if (gameObject.activeSelf)
 			StartCoroutine (CoScrollToEnd ());
+
+		return message;
+	}
+
+	protected void AddSystemButtons (List<string> btnContent, List<ChatAction> btnAction) {
+
+		if (btnContent.Count != btnAction.Count)
+			throw new System.Exception ("Systembutton content count must match the button action count");
+
+		int btnIndex = 0;
+
+		foreach (string content in btnContent) {
+			
+			SystemButton button = ObjectPool.Instantiate<SystemButton>("Scenario");
+			button.Content = content;
+			button.transform.SetParent(messagesContainer);
+			button.transform.localScale = Vector3.one;
+
+			button.Button.onClick.RemoveAllListeners();
+			button.Button.onClick.AddListener (btnAction[btnIndex].action);
+			
+			btnIndex++;
+		}
+		
+		if (gameObject.activeSelf)
+			StartCoroutine (CoScrollToEnd ());
+
+	}
+
+	protected void RemoveSystemMessage(SystemMessage message) {
+
+		message.gameObject.SetActive(false);
+
 	}
 
 	void SetSpacerActiveState (int buttonCount) {

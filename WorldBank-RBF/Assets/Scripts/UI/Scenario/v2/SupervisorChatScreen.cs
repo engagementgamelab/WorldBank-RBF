@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using JsonFx.Json;
 
 public class SupervisorChatScreen : ChatScreen {
 
@@ -15,7 +12,6 @@ public class SupervisorChatScreen : ChatScreen {
 
 	List<string> tacticsAvailable;
 	List<string> queuedTactics;
-	float[] tacticCardIntervals = new float[3] {3, 4, 4};
 
 	string tacticState;
 	Models.TacticCard investigatingTactic;
@@ -25,6 +21,8 @@ public class SupervisorChatScreen : ChatScreen {
 	float cooldownElapsed = 0;
 
 	bool investigateFurther;
+
+	SystemMessage investigateMsg;
 
 	enum SupervisorState {
 		PresentingProblem,
@@ -41,10 +39,9 @@ public class SupervisorChatScreen : ChatScreen {
     public List<string> Available {
         set {
             tacticsAvailable = value;
-            queuedTactics = new List<string> ();
-            Initialize();
-            AddCard ();
-            AddCard ();
+            queuedTactics = value;
+
+            ShowTactics();
         }
     }
 
@@ -59,22 +56,20 @@ public class SupervisorChatScreen : ChatScreen {
     }
 
 	void Awake () {
-		RemoveOptions ();
- 		Events.instance.AddListener<TacticsEvent>(OnTacticsEvent);
 
 		// Listen for problem card cooldown tick
 		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
+
  	}
 
- 	void Initialize() {
+ 	public override void OnEnable() {
 
- 		tacticCardIntervals = DataManager.PhaseTwoConfig.tactic_card_intervals;
+ 		base.OnEnable();
 
-		tacticCardCooldown = Timers.StartTimer(this.gameObject, tacticCardIntervals);
-		tacticCardCooldown.Symbol = "tactic_open";
-		tacticCardCooldown.onEnd += AddCard;
+		// Disable screen if out of tactics for this year
+		disabledPanel.gameObject.SetActive(queuedTactics.Count == 0);
 
-	}
+ 	}
 
  	void OpenTacticCard () {
 
@@ -102,10 +97,11 @@ public class SupervisorChatScreen : ChatScreen {
 		investigate.action = (() => Investigate (card));
 		skip.action = SkipCard;
 
-		AddResponseSpeech (card.initiating_dialogue);
+		AddResponseSpeech (card.initiating_dialogue, false, true);
 		AddOptions (
 			new List<string> () { "Investigate", "View other problems" }, 
-			new List<ChatAction> () { investigate, skip }
+			new List<ChatAction> () { investigate, skip },
+			true
 		);
 	}
 
@@ -116,8 +112,8 @@ public class SupervisorChatScreen : ChatScreen {
 			
 		// Add a random card from the available tactics
 		string tactic = tacticsAvailable[Random.Range (0, tacticsAvailable.Count-1)];
-		tacticsAvailable.Remove (tactic);
-		queuedTactics.Add (tactic);
+		// tacticsAvailable.Remove (tactic);
+		// queuedTactics.Add (tactic);
 
 		ShowTactics ();
 	}
@@ -143,12 +139,15 @@ public class SupervisorChatScreen : ChatScreen {
 		investigatingTactic = card;
 		state = SupervisorState.Investigating;
 
-		AddSystemMessage ("Rahb's doing a WILD investigation and will return like in 5 seconds! :D");
+		investigateMsg = AddSystemMessage ("Investigating");
 
 		investigateCooldown = Timers.StartTimer(gameObject, cooldownTime);
 		investigateCooldown.Symbol = "tactic_results";
 		investigateCooldown.onTick += OnCooldownTick;
 		investigateCooldown.onEnd += EndInvestigation;
+
+		// Set cooldown total
+		cooldownTotal = investigateCooldown.Duration;
 
 	}
 
@@ -158,22 +157,22 @@ public class SupervisorChatScreen : ChatScreen {
 		cardIndex ++;
 		if (cardIndex > queuedTactics.Count-1)
 			cardIndex = 0;
+
 		if (queuedTactics.Count > 0)
 			OpenTacticCard ();
+		// Out of tactics for this year
+		else
+			disabledPanel.gameObject.SetActive(true);
 	}
 
 	void EndInvestigation () {
 		
 		state = SupervisorState.PresentingOptions;
-		string[] options = investigateFurther ? investigatingTactic.further_options : investigatingTactic.new_options;
-		
-		List<string> content = options.ToList () 
-			.ConvertAll (x => DataManager.GetUnlockableBySymbol (x).title);
 
-		// if(investigatingTactic.further_options != null && !investigateFurther) {
-		// 	content.Add("Investigate Further");
-		// 	options.Add(() => Investigate (tacticName, card));
-		// }
+		List<ChatAction> investigateActions = new List<ChatAction>();
+
+		string[] optionSymbols = investigateFurther ? investigatingTactic.further_options : investigatingTactic.new_options;
+		List<string> optionTitles = optionSymbols.ToList().ConvertAll (x => DataManager.GetUnlockableBySymbol (x).title);
 
 		ChatAction investigate = new ChatAction();
 		ChatAction skip = new ChatAction();
@@ -182,10 +181,25 @@ public class SupervisorChatScreen : ChatScreen {
 		skip.action = SkipCard;
 
 		AddResponseSpeech (investigateFurther ? investigatingTactic.investigate_further_dialogue : investigatingTactic.investigate_dialogue);
-		AddOptions (
-			new List<string> () { "Investigate", "View other problems" }, 
-			new List<ChatAction> () { investigate, skip }
-		);
+
+		foreach(string option in optionSymbols) {
+			string key = option;
+			ChatAction resultAction = new ChatAction();
+
+			UnityAction feedback = (() => AddResponseSpeech (investigatingTactic.feedback_dialogue[key], true));
+			resultAction.action = feedback;
+			investigateActions.Add(resultAction);
+		}
+		
+		if(investigatingTactic.further_options != null && !investigateFurther) {
+			optionTitles.Insert(0, "Investigate Further");
+			optionTitles.Add("View other problems");
+
+			investigateActions.Insert(0, investigate);
+			investigateActions.Add(skip);
+		}
+
+		AddOptions (optionTitles, investigateActions, true);
 
 		// If we can't investigate more, remove button and show close
 		/*if(investigatingTactic.further_options == null) {
@@ -210,41 +224,6 @@ public class SupervisorChatScreen : ChatScreen {
 
 	}
 
- 	/// <summary>
-    // Callback for TacticsEvent, filtering for type of event
-    /// </summary>
-    void OnTacticsEvent(TacticsEvent e) {
-
-    	Debug.Log("OnTacticsEvent: " + e.eventType);
-
-    	switch(e.eventType) {
-
-    		/*case "tactic_open":
-    			tacticState = "open";
-				AddCard ();
-				break;*/
-
-	   		/*case "tactic_results":
-    			tacticState = "options";
-    			endInvestigate = true;
-    			break;
-
-	   		case "tactic_closed":
-	   			RemoveCard(e.eventSymbol);
-    			break;
-
-    		case "investigate":
-    			Investigating(e.cooldown);
-    			break;
-
-    		case "investigate_further":
-    			Investigating(e.cooldown);
-    			break;
-*/
-    	}
-
-    }
-
 	/// <summary>
     // Callback for TimerTick, filtering for type of event
     /// </summary>
@@ -255,10 +234,21 @@ public class SupervisorChatScreen : ChatScreen {
     		// Debug.Log(cooldownTotal + " - " + e.SecondsElapsed);
 	    	cooldownElapsed = cooldownTotal - e.SecondsElapsed;
 
+    		System.TimeSpan timeSpan = System.TimeSpan.FromSeconds(cooldownElapsed);
+    		string currentSecond = timeSpan.Seconds.ToString();
+
+	    	investigateMsg.Content = "Investigating: " + currentSecond + "s";
+
+	    	if(timeSpan.Seconds == 0)
+	    		RemoveSystemMessage(investigateMsg);
+
     	}
     }
 
-    void AddResponseSpeech (string message) {
-    	AddResponseSpeech (message, Supervisor);
+    void AddResponseSpeech (string message, bool endOfCard=false, bool initial=false) {
+    	AddResponseSpeech (message, Supervisor, initial);
+
+    	if(endOfCard)
+	    	SkipCard();
     }
 }

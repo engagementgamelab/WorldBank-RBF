@@ -392,16 +392,17 @@ public class DataManager {
     }
 
     /// <summary>
-    /// Get the phase two tactic card specified by the tactic's name.
+    /// Get the phase two tactic card specified by the tactic's name, if there's one for the current year.
     /// </summary>
     /// <param name="cardName">Index of the scenario card</param>
     /// <returns>The TacticCard for the symbol matching the input</returns>
     public static TacticCard GetTacticCardByName(string cardName) {
 
-        TacticCard tacticRef = gameData.phase_two.tactics.FirstOrDefault(card => card.tactic_name == cardName);
+        TacticCard tacticRef = gameData.phase_two.tactics.FirstOrDefault(card => card.tactic_name == cardName && 
+                                                                                 card.year == gameData.phase_two.Year);
 
         if(tacticRef == null)
-            throw new Exception("Unable to find TacticCard with tactic name '" + cardName + "'! Damn.");
+            throw new Exception("Unable to find TacticCard with tactic name '" + cardName + "' for the current year! Damn.");
                 
         return tacticRef;
     }
@@ -440,7 +441,7 @@ public class DataManager {
     /// </summary>
     /// <param name="strSymbol">Symbol of the affect</param>
     /// <returns>The Dictionary for the affect<returns>
-    public static Dictionary<string, int> GetIndicatorBySymbol(string strSymbol)    {
+    public static Dictionary<string, int> GetIndicatorBySymbol(string strSymbol) {
         
         try { 
 
@@ -453,6 +454,18 @@ public class DataManager {
      
 
         }
+
+    }
+
+    /// <summary>
+    /// Find if the current indicators are above or below the starting indicator values.
+    /// </summary>
+    /// <param name="initialAffects">The initial affect values</param>
+    /// <param name="currentAffects">The current affect values</param>
+    /// <returns>Are the current indicators higher than the initial ones (bool)</returns>
+    public static bool IsIndicatorDeltaGood(int[] initialAffects, int[] currentAffects) {
+
+        return (initialAffects.Sum() - currentAffects.Sum()) > 0;
 
     }
 }
