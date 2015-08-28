@@ -1,6 +1,10 @@
 ﻿
 public static class AudioManager {
 
+	public static class Settings {
+		public static readonly bool Mute = true;
+	}
+
 	static Inventory inventory = null;
 
 	public static Inventory Inventory {

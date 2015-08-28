@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
+﻿
 public class MusicItem : AudioItem {
 
 	public override string Name { get { return Clip.name; } }

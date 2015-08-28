@@ -42,6 +42,7 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 	}
 
 	protected void LoadFromPath (string path) {
+		// TODO: Gotta make this faster
 		AudioClip[] clips = Array.ConvertAll (Resources.LoadAll (path), x => (AudioClip)x);
 		foreach (AudioClip clip in clips) {
 			Add (new T { Clip = clip });
@@ -134,7 +135,7 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 	/// </summary>
 	/// <param name="item">The AudioItem to play.</param>
 	public void Play (AudioItem item) {
-		if (item == null) return;
+		if (AudioManager.Settings.Mute || item == null) return;
 		if (!Settings.allowSimultaneous)
 			StopAll ();
 		item.Play ();
@@ -155,6 +156,7 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 	/// </summary>
 	/// <param name="item">The AudioItem to stop.</param>
 	public void Stop (AudioItem item) {
+		if (AudioManager.Settings.Mute || item == null) return;
 		item.Stop ();
 		playing.Remove (item);
 	}
