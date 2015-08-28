@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using System.Linq;
@@ -208,6 +209,9 @@ public class SupervisorChatScreen : ChatScreen {
 		}*/
 
 		investigateFurther = true;
+
+		if(tabAnimator.GetComponent<Button>().interactable)
+			tabAnimator.Play("ScenarioTabAlert");
 	}
 
 	protected override void OptionSelected (string option) {

@@ -10,6 +10,7 @@ Created by Engagement Lab, 2015
 */
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -94,6 +95,9 @@ public class ScenarioManager : MonoBehaviour {
 		floatFormatter = new CultureInfo("en-US", false).NumberFormat;
 		floatFormatter.NumberDecimalDigits = 0;
 
+		// Turn off supervisor tab for start
+		supervisorChatTab.GetComponent<CanvasGroup>().alpha = .5f;
+
 	}
 
 	void Update () {
@@ -115,11 +119,9 @@ public class ScenarioManager : MonoBehaviour {
 
     	// Update scenario cooldown label
     	if(!inYearEnd) {
-    		System.TimeSpan timeSpan = System.TimeSpan.FromSeconds(phaseCooldownElapsed);
-    		string currentMinute = timeSpan.Minutes.ToString();
-    		string currentSecond = timeSpan.Seconds.ToString();
+    		System.TimeSpan timeSpan = TimeSpan.FromSeconds(phaseCooldownElapsed);
 
-    		scenarioCooldownText.text = currentMinute + ":" + currentSecond;
+    		scenarioCooldownText.text = String.Format("{0}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
     	}
 
 	}
@@ -329,6 +331,9 @@ public class ScenarioManager : MonoBehaviour {
 			}
 
 			DialogManager.instance.SetAvailableTactics (availableTactics);
+
+			// Enable supervisor tab
+			supervisorChatTab.GetComponent<CanvasGroup>().alpha = 1;
 		}
 		
 		GetNextCard();
@@ -386,7 +391,7 @@ public class ScenarioManager : MonoBehaviour {
 		// monthLengthSeconds = DataManager.PhaseTwoConfig.month_length_seconds;
 		
 		phaseLength = DataManager.PhaseTwoConfig.phase_length_seconds;
-			monthLengthSeconds = (phaseLength / 36);
+		monthLengthSeconds = (phaseLength / 36);
 
 		// Allow override in Unity
 		#if UNITY_EDITOR
@@ -397,11 +402,11 @@ public class ScenarioManager : MonoBehaviour {
 
 		if(enableCooldown) {
 
-			monthCooldown = Timers.StartTimer(gameObject, new float[] { monthLengthSeconds });
+			monthCooldown = Timers.StartTimer(gameObject, new [] { monthLengthSeconds });
 			monthCooldown.Symbol = "month_cooldown";
 			monthCooldown.onEnd += MonthEnd;
 
-			phaseCooldown = Timers.StartTimer(gameObject, new float[] { phaseLength });
+			phaseCooldown = Timers.StartTimer(gameObject, new [] { phaseLength });
 			phaseCooldown.Symbol = "phase_cooldown";
 			phaseCooldown.onTick += OnCooldownTick;
 			// monthCooldown.onEnd += MonthEnd;

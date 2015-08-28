@@ -11,7 +11,8 @@ public class ChatScreen : GenericDialogBox {
 	public Scrollbar messagesScrollbar;
 	public LayoutElement rightPanel;
 	public Animator advisorsPanel;
-	
+	public Animator tabAnimator;
+
     public bool rightPanelActive = true;
 
 	public List<ScenarioOptionButton> _btnListOptions;
@@ -55,6 +56,11 @@ public class ChatScreen : GenericDialogBox {
 
 		if(clearAll)
 			RemoveOptions ();
+
+		// Reset animation state
+		foreach (ScenarioOptionButton btn in _btnListOptions) {
+			btn.GetComponent<Button>().animator.CrossFade("Normal", 0f);
+		}
 
 		int btnIndex = 0;
 
