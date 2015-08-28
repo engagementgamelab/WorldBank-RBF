@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 
 public class CityButton : MB {
@@ -90,17 +89,18 @@ public class CityButton : MB {
 		PlayerData.InteractionGroup.onUpdate += UpdateInteractableState;
 	}
 
-	void OnUpdateCurrentCity (string symbol) {
-		if (symbol == "capitol") visitedCapitol = true;
+	void OnUpdateCurrentCity (string citySymbol) {
+		if (citySymbol == "capitol") visitedCapitol = true;
 		UpdateInteractableState ();
 	}
 
-	bool IsOnCurrentCityRoute (string symbol) {
-		activeRoute = Routes.Find (x => x.Unlocked && x.Terminals.ContainsCity (symbol));
+	bool IsOnCurrentCityRoute (string citySymbol) {
+		activeRoute = Routes.Find (x => x.Unlocked && x.Terminals.ContainsCity (citySymbol));
 		return activeRoute != null;
 	}
 
 	public void HandleClick () {
+		AudioManager.Sfx.Play ("buttonpressneutral", "ui");
 		InfoBox.Open (this);
 	}
 

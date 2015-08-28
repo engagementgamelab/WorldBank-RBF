@@ -78,6 +78,8 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 	#region IBeginDragHandler, IDragHandler, IEndDragHandler implementation
 	public void OnBeginDrag (PointerEventData eventData)
 	{
+		AudioManager.Sfx.Play ("picktactic", "plan");
+		
 		itemBeingDragged = gameObject;
 		startPosition = transform.position;
 		startParent = transform.parent;
@@ -98,6 +100,7 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 
 	public void OnEndDrag (PointerEventData eventData)
 	{
+		AudioManager.Sfx.Play ("placetactic", "plan");
 
 		itemBeingDragged = null;
 

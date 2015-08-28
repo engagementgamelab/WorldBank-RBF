@@ -217,7 +217,7 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="currNpc">The NPC to get dialogue from</param>
 	/// <param name="left">If true, the dialogue box will appear on the left side of the screen</param>
 	/// <param name="initial">If true, will check for choices the player can select to further the dialogue</param>
-	public void OpenNpcDialog (Models.NPC currNpc, bool left, bool initial=true) {
+	public void OpenNpcDialog (Models.NPC currNpc, string voice, bool left, bool initial=true) {
 
 		CharacterItem character = PlayerData.CharacterGroup[currNpc.symbol];
 		string dialog = (initial) 
@@ -252,13 +252,14 @@ public class DialogManager : MonoBehaviour {
 					continue;
 
 				btnChoices.Add (CreateButton (displayName, () => {
+					AudioManager.Sfx.Play (voice + "response");
 					PlayerData.InteractionGroup.Remove ();
 					character.SelectChoice (
 						ck, 
 						(model.unlocks_context != null) ? model.unlocks_context[0] : "",
 						character.Symbol
 					);
-					OpenNpcDialog (currNpc, left, false);
+					OpenNpcDialog (currNpc, voice, left, false);
 				}));
 			}
 			dialogBox.AddButtons (btnChoices);

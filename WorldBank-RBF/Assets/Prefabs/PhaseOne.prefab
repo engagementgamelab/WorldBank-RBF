@@ -12,6 +12,7 @@ GameObject:
   - 114: {fileID: 11419814}
   - 114: {fileID: 11460938}
   - 114: {fileID: 11473816}
+  - 114: {fileID: 11439878}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -132,6 +133,7 @@ GameObject:
   - 114: {fileID: 11408576}
   - 114: {fileID: 11486500}
   - 114: {fileID: 11445534}
+  - 114: {fileID: 11436662}
   m_Layer: 5
   m_Name: SubmitButton
   m_TagString: Untagged
@@ -2686,6 +2688,7 @@ GameObject:
   - 114: {fileID: 11464736}
   - 114: {fileID: 11409616}
   - 114: {fileID: 11466578}
+  - 114: {fileID: 11464870}
   m_Layer: 5
   m_Name: CancelButton
   m_TagString: Untagged
@@ -2896,6 +2899,7 @@ GameObject:
   - 114: {fileID: 11437840}
   - 114: {fileID: 11449770}
   - 114: {fileID: 11401356}
+  - 114: {fileID: 11450340}
   m_Layer: 5
   m_Name: ContinueBtn
   m_TagString: Untagged
@@ -3161,7 +3165,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128472}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 422470}
@@ -4948,8 +4952,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd340bf6b2364c8f8cc25d6ce54c2ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCanvasRoot: {fileID: 0}
-  btnPrefab: {fileID: 0}
+  version2: 0
+  scenarioChat: {fileID: 0}
+  supervisorChat: {fileID: 0}
   dialogBox: {fileID: 0}
 --- !u!114 &11426856
 MonoBehaviour:
@@ -5686,6 +5691,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Dec
+--- !u!114 &11436662
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipName: buttonpresspositive
+  group: ui
+  type: 1
 --- !u!114 &11436798
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5913,6 +5932,9 @@ MonoBehaviour:
   otherToggles:
   - {fileID: 11460142}
   openAtStart: 0
+  sfxGroup: plan
+  openSfx: planoptionclose
+  closeSfx: planoptionopen
 --- !u!114 &11438626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5981,6 +6003,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialZoomLevel: 0
+--- !u!114 &11439878
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipName: buttonpresspositive
+  group: ui
+  type: 1
 --- !u!114 &11441506
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6671,6 +6707,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   symbol: crup
+--- !u!114 &11450340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipName: buttonpresspositive
+  group: ui
+  type: 1
 --- !u!114 &11451534
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7263,6 +7313,9 @@ MonoBehaviour:
   otherToggles:
   - {fileID: 11438580}
   openAtStart: 1
+  sfxGroup: map
+  openSfx: openmap
+  closeSfx: closemap
 --- !u!114 &11460938
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7591,6 +7644,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11464870
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 186004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipName: buttonpressnegative
+  group: ui
+  type: 1
 --- !u!114 &11465864
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
 
 public class CityInfoBox : MB {
 
@@ -112,11 +110,13 @@ public class CityInfoBox : MB {
 		button1.Label = label1;
 		button1.Button.onClick.RemoveAllListeners ();
 		button1.Button.onClick.AddListener (onButton1);
+		button1.Button.onClick.AddListener (() => AudioManager.Sfx.Play ("buttonpressnegative", "ui"));
 		if (label2 != "") {
 			button2.gameObject.SetActive (true);
 			button2.Label = label2;
 			button2.Button.onClick.RemoveAllListeners ();
 			button2.Button.onClick.AddListener (onButton2);
+			button2.Button.onClick.AddListener (() => AudioManager.Sfx.Play ("buttonpresspositive", "ui"));
 		} else {
 			button2.gameObject.SetActive (false);
 		}

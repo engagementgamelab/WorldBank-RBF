@@ -20,7 +20,6 @@ public class AmbienceZones : MB {
 
 	void Start () {
 		PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
-		SfxGroup s = AudioManager.Sfx;
 	}
 
 	public void AddZone () {

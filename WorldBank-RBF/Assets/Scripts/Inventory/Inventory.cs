@@ -15,6 +15,13 @@ public class Inventory {
 	}
 
 	/// <summary>
+	/// Get the number of groups.
+	/// </summary>
+	public int GroupCount {
+		get { return groups.Count; }
+	}
+
+	/// <summary>
 	/// Get an ItemGroup using bracket notation.
 	/// </summary>
 	public ItemGroup this[string id] {

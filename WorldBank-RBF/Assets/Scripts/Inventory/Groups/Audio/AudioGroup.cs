@@ -33,7 +33,6 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 		}
 	}
 
-	readonly Inventory subgroups = new Inventory ();
 	readonly List<AudioItem> playing = new List<AudioItem> ();
 
 	public AudioGroup (string subpath) {
@@ -55,7 +54,7 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 		foreach (string d in dirs) {
 			string id = Regex.Match (d, @"[^\/]*.$").ToString ();
 			AudioSubgroup<T> a = new AudioSubgroup<T> (id.ToLower (), Subpath + "/" + id);
-			subgroups.Add (a);
+			Subgroups.Add (a);
 		}
 	}
 
@@ -79,7 +78,7 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 			: FindGroup (groupId).GetItem (name);
 		
 		if (item == null)
-			throw new Exception ("Couldn't find an AudioItem with the name '" + name + "' in the group '" + groupId + "'");
+			Debug.LogWarning ("Couldn't find an AudioItem with the name '" + name + "' in the group '" + groupId + "'");
 
 		return item;
 	}
@@ -106,18 +105,20 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 			if (qualities.All (x => item.Qualities.Contains (x)))
 				itemsWithQualities.Add (item);
 		}
-		return itemsWithQualities[UnityEngine.Random.Range (0, itemsWithQualities.Count-1)];
+		return (itemsWithQualities.Count > 0)
+			? itemsWithQualities[UnityEngine.Random.Range (0, itemsWithQualities.Count-1)]
+			: null;
 	}
 
 	AudioSubgroup<T> FindGroup (string groupId) {
 		groupId = groupId.ToLower ();
 		ItemGroup g;
-		if (subgroups.Groups.TryGetValue (groupId, out g)) {
+		if (Subgroups.Groups.TryGetValue (groupId, out g)) {
 			return (AudioSubgroup<T>)g;
 		} else {
 
 			// Recursive lookup
-			foreach (var group in subgroups.Groups) {
+			foreach (var group in Subgroups.Groups) {
 				AudioSubgroup<T> subgroup = ((AudioSubgroup<T>)group.Value)
 					.FindGroup (groupId);
 				if (subgroup != null) {
@@ -133,6 +134,7 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 	/// </summary>
 	/// <param name="item">The AudioItem to play.</param>
 	public void Play (AudioItem item) {
+		if (item == null) return;
 		if (!Settings.allowSimultaneous)
 			StopAll ();
 		item.Play ();

@@ -150,7 +150,7 @@ public class NPCFocusBehavior : MonoBehaviour {
 		} else if (FocusLevel == FocusLevel.Preview) {
 			DialogManager.instance.OpenNpcDescription (NpcManager.GetNpc (npc.symbol), npc.FacingLeft);
 		} else if (FocusLevel == FocusLevel.Dialog) {
-			DialogManager.instance.OpenNpcDialog (NpcManager.GetNpc (npc.symbol), npc.FacingLeft);
+			DialogManager.instance.OpenNpcDialog (NpcManager.GetNpc (npc.symbol), npc.voice, npc.FacingLeft);
 		}
 	}
 

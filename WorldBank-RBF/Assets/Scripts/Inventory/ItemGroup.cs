@@ -17,6 +17,7 @@ public abstract class ItemGroup {
 	public abstract string ID { get; }
 
 	protected List<InventoryItem> items = new List<InventoryItem> ();
+	public readonly Inventory Subgroups = new Inventory ();
 
 	/// <summary>
 	/// Get the InventoryItems.
@@ -24,6 +25,13 @@ public abstract class ItemGroup {
 	public List<InventoryItem> Items {
 		get { return items; }
 	}
+
+	// TODO
+	/*
+	/// <summary>
+	/// If this ItemGroup is a subgroup, get the root group (returns itself if not a subgroup)
+	/// </summary>
+	public abstract ItemGroup Root { get; }*/
 
 	protected Inventory inventory;
 
@@ -169,9 +177,10 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	public override InventoryItem Remove (InventoryItem item=null) {
 		
 		if (Empty) return null;
-		InventoryItem removedItem = (item == null)
-			? removedItem = items[0]
-			: removedItem = item;
+		/*InventoryItem removedItem = (item == null)
+			? items[0]
+			: item;*/
+		InventoryItem removedItem = items[0] ?? item;
 		if (item == null) {
 			items.RemoveAt (0);
 		} else {

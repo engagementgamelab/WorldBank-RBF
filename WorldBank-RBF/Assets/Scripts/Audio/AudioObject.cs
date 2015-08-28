@@ -9,7 +9,7 @@ public class AudioObject : MB, IEditorPoolable {
 	AudioSource source = null;
 	AudioSource Source {
 		get {
-			if (source == null) {
+			if (source == null && this != null) {
 				source = GetComponent<AudioSource> ();
 			}
 			return source;
@@ -41,13 +41,17 @@ public class AudioObject : MB, IEditorPoolable {
 		switch (type) {
 			case "ambience": Source.outputAudioMixerGroup = ambienceMixer; break;
 			case "music": Source.outputAudioMixerGroup = musicMixer; break;
-			case "sfx": Source.outputAudioMixerGroup = sfxMixer; break;
+			// TODO: should check for item's group root. as it is right now, no other audio groups can have subgroups (or else they'll end up in the sfx mixer)
+			// case "sfx": 
+			default: Source.outputAudioMixerGroup = sfxMixer; break;
 		}
 	}
 
 	public void Stop () {
-		Source.Stop ();
-		EditorObjectPool.Destroy<AudioObject> (Transform);
+		if (Source != null) {
+			Source.Stop ();
+			EditorObjectPool.Destroy<AudioObject> (Transform);
+		}
 	}
 
 	IEnumerator StopOnEndPlay () {

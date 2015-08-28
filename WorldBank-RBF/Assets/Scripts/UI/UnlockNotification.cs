@@ -60,7 +60,7 @@ public class UnlockNotification : MB {
 			new Settings (
 				"New tactic unlocked!", 
 				Color.white, 
-				new [] { "newtravel", "map" }
+				new [] { "newtactic", "plan" }
 			)
 		}
 	};

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 public class AmbienceGroup : AudioGroup<AmbienceItem> {
 
@@ -38,13 +36,13 @@ public class AmbienceGroup : AudioGroup<AmbienceItem> {
 
 	public AmbienceGroup () : base ("Ambience") {}
 
-	public AmbienceItem Play (string city, string context="") {
+	public AmbienceItem PlayAmbience (string city, string context="") {
 		AmbienceItem item = FindAmbienceWithContext (city, context);
 		if (item != null) Play (item);
 		return item;
 	}
 
-	public AmbienceItem Stop (string city, string context="") {
+	public AmbienceItem StopAmbience (string city, string context="") {
 		AmbienceItem item = FindAmbienceWithContext (city, context);
 		if (item != null) Stop (item);
 		return item;

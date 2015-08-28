@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 #if UNITY_EDITOR
 [ExecuteInEditMode]
@@ -24,9 +23,10 @@ public class AmbienceZone : MB, IEditorPoolable {
 		set {
 			attenuation = value;
 			if (attenuation > 0f) {
-				ambience = AudioManager.Ambience.Play (CityContext, context);
+				ambience = AudioManager.Ambience.PlayAmbience (CityContext, context);
 			} else {
-				ambience = AudioManager.Ambience.Stop (CityContext, context);
+				AudioManager.Ambience.StopAmbience (CityContext, context);
+				ambience = null;
 			}
 			if (ambience != null) ambience.Attenuation = attenuation;
 		}
@@ -58,6 +58,10 @@ public class AmbienceZone : MB, IEditorPoolable {
 		} else {
 			Attenuation = 1f;
 		}
+	}
+
+	void OnDisable () {
+		ambience.Stop ();
 	}
 
 	#if UNITY_EDITOR
