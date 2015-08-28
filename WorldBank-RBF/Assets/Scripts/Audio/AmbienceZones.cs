@@ -72,11 +72,15 @@ public class AmbienceZones : MB {
 
 	void SetAttenuation () {
 		
+		#if UNITY_EDITOR
 		if (!EditorState.InEditMode) {
+		#endif
 			foreach (AmbienceZone zone in zones) {
 				zone.SetAttenuation (MainCamera.Instance.Position.x);
 			}
+		#if UNITY_EDITOR
 		}
+		#endif
 	}
 
 	public void Reset () {
