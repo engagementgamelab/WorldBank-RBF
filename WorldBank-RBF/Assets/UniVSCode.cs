@@ -1,6 +1,6 @@
 ﻿// Created By Robin Reiter in 2015
 // @robin7331 on Twitter
-
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System.Diagnostics;
@@ -320,3 +320,4 @@ public class UniVSCode : MonoBehaviour
         return EditorPrefs.GetBool("UseVSCode");
     }
 }
+#endif
