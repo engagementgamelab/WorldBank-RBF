@@ -2,7 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class IndicatorPlotLine : Image {
+public class IndicatorPlotLine : MonoBehaviour {
+
+	public float positionOffset;
 
 	public float StartPoint { 
 		set { startingYPos = value; }
@@ -16,7 +18,7 @@ public class IndicatorPlotLine : Image {
 		set { 
 				xDelta = value;
 
-				animateDelay = (xDelta/70);
+				animateDelay = (xDelta/positionOffset);
 		}
 	}
 
@@ -25,9 +27,9 @@ public class IndicatorPlotLine : Image {
 			type = value; 
 
 			if(type == 1)
-				currentColor = Color.green;
+				currentColor = new Color(1, .82f, .17f);
 			else if(type == 2)
-				currentColor = Color.red;
+				currentColor = new Color(.2f, .76f, 1);
 		}
 	}
 
@@ -36,17 +38,18 @@ public class IndicatorPlotLine : Image {
 	}
 
 	Transform transParent;
-	float startingYPos = 0;
-	float endingYPos = 0;
-	float xDelta = 0;
-	float targetWidth = 0;
-
-	float animateDelay = 0;
-	float animateStart = 0;
 	
-	int type = 0;
+	float startingYPos;
+	float endingYPos;
+	float xDelta;
+	// float targetWidth;
 
-	Color currentColor = Color.blue;
+	float animateDelay;
+	float animateStart;
+	
+	int type;
+
+	Color currentColor = new Color(0.78f, 1, 0);
 
 	void Update () {
 
@@ -64,21 +67,28 @@ public class IndicatorPlotLine : Image {
 	// Use this for initialization
 	public void Initialize() {
 
-		Vector3 differenceVector = new Vector2(xDelta, endingYPos) - new Vector2(xDelta-70, startingYPos);
+		RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
+
+		Vector3 differenceVector = new Vector2(xDelta, endingYPos) - new Vector2(xDelta-positionOffset, startingYPos);
 		float angle = Mathf.Atan2(differenceVector.y, differenceVector.x) * Mathf.Rad2Deg;
 
 		transform.SetParent(transParent);
 
-		// targetWidth = differenceVector.magnitude;
-
-		rectTransform.sizeDelta = new Vector2(differenceVector.magnitude, 7);
+		rectTransform.sizeDelta = new Vector2(differenceVector.magnitude, rectTransform.rect.height);
 		rectTransform.localRotation = Quaternion.Euler(0, 0, angle);
 		rectTransform.localScale = Vector3.one;
 
-		rectTransform.localPosition = new Vector2(xDelta-70, startingYPos);
-		rectTransform.anchoredPosition = new Vector2(xDelta-70, startingYPos);
+		rectTransform.localPosition = new Vector2(xDelta-positionOffset, startingYPos);
+		rectTransform.anchoredPosition = new Vector2(xDelta-positionOffset, startingYPos);
 
-		color = currentColor;
+		gameObject.GetComponent<Image>().color = currentColor;
+
+		foreach(Image img in gameObject.GetComponentsInChildren<Image>(true)) {
+			Debug.Log(currentColor);
+		
+			img.color = currentColor;
+		}
+
 		animateStart = 0;
 
 	}

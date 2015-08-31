@@ -254,5 +254,9 @@ public class SupervisorChatScreen : ChatScreen {
 
     	if(endOfCard)
 	    	SkipCard();
+		
+		// SFX
+	    if(gameObject.activeSelf)
+			AudioManager.Sfx.Play ("assistantresponse", "Phase2");
     }
 }
