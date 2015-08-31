@@ -24,6 +24,10 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 		get { return "Audio/" + subpath; }
 	}
 
+	string ResourcesPath {
+		get { return Application.dataPath + "/Resources/"; }
+	}
+
 	protected string subpath;
 	public string Subpath {
 		get { return subpath; }
@@ -42,15 +46,35 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 	}
 
 	protected void LoadFromPath (string path) {
-		// TODO: Gotta make this faster
-		AudioClip[] clips = Array.ConvertAll (Resources.LoadAll (path), x => (AudioClip)x);
-		foreach (AudioClip clip in clips) {
-			Add (new T { Clip = clip });
+		
+		List<string> paths;
+
+		// Writes the paths to a txt file if in the editor, otherwise reads from the txt file
+		#if UNITY_EDITOR
+		paths = AudioResourcesPaths.WriteFileNames (Application.dataPath + "/Resources/" + path);
+		#else
+		paths = AudioResourcesPaths.GetFilesAtDirectory (GroupPath).ToList ();
+		#endif
+
+		foreach (string filePath in paths) {
+			Add (new T { FilePath = filePath.Replace (".mp3", "") });
 		}
 	}
 
 	protected void LoadFromSubdirectories () {
-		string[] dirs = Directory.GetDirectories (Application.dataPath + "/Resources/" + GroupPath);	
+		string[] dirs;
+		
+		// Writes the path to a txt file if in the editor, otherwise reads from the txt file		
+		#if UNITY_EDITOR
+		dirs = Directory.GetDirectories (ResourcesPath + GroupPath);	
+		AudioResourcesPaths.WriteDirectories (dirs);
+		#else
+		dirs = AudioResourcesPaths.Directories;
+		dirs = dirs.ToList ().Where (
+			x => x.Contains (GroupPath) 
+			&& x.Split ('/').Length-1 == GroupPath.Split ('/').Length).ToArray ();
+		#endif
+
 		if (dirs.Length == 0) return;
 		foreach (string d in dirs) {
 			string id = Regex.Match (d, @"[^\/]*.$").ToString ();

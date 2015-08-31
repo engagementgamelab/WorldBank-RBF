@@ -15,7 +15,16 @@ public class AudioItem : InventoryItem {
 		}
 	}
 
-	public override string Name { get { return Clip.name; } }
+	string name = "";
+	public override string Name { 
+		get { 
+			if (name == "") {
+				string[] n = FilePath.Split ('/');
+				name = n[n.Length-1];
+			}
+			return name;
+		}
+	}
 
 	// example:
 	// fem1farewell2
@@ -48,7 +57,19 @@ public class AudioItem : InventoryItem {
 		get { return new PlaySettings (false, true); }
 	}
 
-	public virtual AudioClip Clip { get; set; }
+	public virtual string FilePath { get; set; }
+
+	AudioClip clip;
+	public AudioClip Clip { 
+		get {
+			if (clip == null) {
+				Debug.Log (FilePath);
+				clip = (AudioClip)Resources.Load (FilePath);
+				Debug.Log (clip);
+			}
+			return clip;
+		}
+	}
 
 	float attenuation = 1f;
 	public float Attenuation {

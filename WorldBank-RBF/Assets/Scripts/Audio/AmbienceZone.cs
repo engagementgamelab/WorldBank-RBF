@@ -61,7 +61,8 @@ public class AmbienceZone : MB, IEditorPoolable {
 	}
 
 	void OnDisable () {
-		ambience.Stop ();
+		if (ambience != null)
+			ambience.Stop ();
 	}
 
 	#if UNITY_EDITOR

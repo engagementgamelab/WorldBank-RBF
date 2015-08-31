@@ -29,8 +29,8 @@ public class Inventory {
 			try {
 				return Groups[id];
 			}	 
-			catch {
-				throw new System.Exception("Unable to find ItemGroup with the ID '" + id + "'");
+			catch (System.Exception e) {
+				throw new System.Exception("Unable to find ItemGroup with the ID '" + id + "'\n" + e);
 			} 
 		}
 	}

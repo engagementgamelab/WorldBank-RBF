@@ -4,11 +4,17 @@ public class SfxItem : AudioItem {
 
 	string name = "";
 	public override string Name { 
-		get {
-			if (name == "") {
-				name = Regex.Match (Clip.name, @"[^_]*.$").ToString ();
-			}
-			return name;
+		get { return name; }
+	}
+
+	string filePath;
+	public override string FilePath {
+		get { return filePath; }
+		set {
+			filePath = value;
+			string[] n = filePath.Split ('/');
+			name = n[n.Length-1];
+			name = Regex.Match (name, @"[^_]*.$").ToString ();
 		}
 	}
 

@@ -2,7 +2,7 @@
 public static class AudioManager {
 
 	public static class Settings {
-		public static readonly bool Mute = true;
+		public static readonly bool Mute = false;
 	}
 
 	static Inventory inventory = null;
