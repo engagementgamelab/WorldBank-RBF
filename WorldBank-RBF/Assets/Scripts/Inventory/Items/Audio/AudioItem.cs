@@ -63,9 +63,7 @@ public class AudioItem : InventoryItem {
 	public AudioClip Clip { 
 		get {
 			if (clip == null) {
-				Debug.Log (FilePath);
 				clip = (AudioClip)Resources.Load (FilePath);
-				Debug.Log (clip);
 			}
 			return clip;
 		}
