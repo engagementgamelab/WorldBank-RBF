@@ -23,6 +23,7 @@ public class ScenarioManager : MonoBehaviour {
 	public SupervisorChatScreen supervisorChat;
 
 	public IndicatorsCanvas indicatorsCanvas;
+	public Animator scenarioInfoAnimator;
 
 	public Button scenarioChatTab;
 	public Button supervisorChatTab;
@@ -56,7 +57,6 @@ public class ScenarioManager : MonoBehaviour {
 	bool openProblemCard;
 	bool openYearEnd;
 	bool inYearEnd;
-	bool indicatorUpdate;
 
 	int scenarioTwistIndex;
 	int currentCardIndex;
@@ -102,17 +102,9 @@ public class ScenarioManager : MonoBehaviour {
 
 	void Update () {
 
-		// Update indicators with current affects
-		if(indicatorUpdate) {
-			indicatorUpdate = false;
-			NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2]);
-		}
-		
 		// If a problem card has been enqueued or we're waiting for one to open, determine next card
-		else if(queueProblemCard)
-		{
+		if(queueProblemCard)
 			GetNextCard();
-		}
 
 		// Update card cooldown label
     	scenarioCardCooldownText.text = cardCooldownElapsed + "s";
@@ -198,7 +190,7 @@ public class ScenarioManager : MonoBehaviour {
 			if(currentMonth < 12) {
 				int mo = 0;
 				while(mo < 12-currentMonth) {
-					CalculateIndicators(true);
+					CalculateIndicators();
 					mo++;
 				}
 			}
@@ -252,18 +244,6 @@ public class ScenarioManager : MonoBehaviour {
 		// Generate scenario card for the current card index, as well as if the scenario is in a twist
 		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(cardIndex, scenarioTwistIndex);
 
-		// Start card cooldown
-		/*if(enableCooldown) {
-			if(problemCardCooldown == null) {
-				problemCardCooldown = Timers.StartTimer(gameObject, new [] { (problemCardDurationOverride == 0) ? problemCardDuration : problemCardDurationOverride });
-				problemCardCooldown.Symbol = "problem_card";
-				problemCardCooldown.onTick += OnCooldownTick;
-				problemCardCooldown.onEnd += GetNextCard;
-			}
-			else
-				problemCardCooldown.Restart();
-		}*/
-
 		if(queue) {
 			
 			ScenarioQueue.AddProblemCard(card);
@@ -277,6 +257,10 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Create the card dialog
 		DialogManager.instance.SetCard(card);
+
+		// SFX
+		if(currentCardIndex > 0)
+			AudioManager.Sfx.Play ("newproblem", "Phase2");
 
 	}
 
@@ -433,6 +417,9 @@ public class ScenarioManager : MonoBehaviour {
 
 		PlayerManager.Instance.TrackEvent("Scenario Assigned", "Phase Two");
 
+		// SFX
+		AudioManager.Sfx.Play ("login", "Phase2");
+
     }
 
     void AssignScenario(string scenarioSymbol) {
@@ -464,7 +451,7 @@ public class ScenarioManager : MonoBehaviour {
     /// <summary>
     // Calculates indicators, given the currently used affects, and then the affect bias for the current plan
     /// </summary>
-    void CalculateIndicators(bool updateNow=false) {
+    void CalculateIndicators() {
 
 		foreach(int[] dictAffect in usedAffects) {
 
@@ -482,10 +469,9 @@ public class ScenarioManager : MonoBehaviour {
 
 		usedAffects.Clear();
 
-		if(updateNow)
-			NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2]);
-		else
-			indicatorUpdate = true;
+		NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2]);
+
+		scenarioInfoAnimator.Play("IndicatorsUpdate", -1, 0);
 
     }
 

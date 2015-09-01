@@ -191,8 +191,12 @@ public class ScenarioChatScreen : ChatScreen {
 				currentCardOptions.Add(option);
 		}
 
-		if(advisor.dialogue != null)
+		if(advisor.dialogue != null) {
 			AddResponseSpeech(advisor.dialogue, DataManager.GetDataForCharacter(strAdvisorSymbol));
+
+			// SFX
+			AudioManager.Sfx.Play ("recievemessage", "Phase2");
+		}
 
 		currentAdvisorOptions.Remove(strAdvisorSymbol);
 
@@ -210,6 +214,8 @@ public class ScenarioChatScreen : ChatScreen {
 			advisorsContainer.GetComponent<CanvasGroup>().alpha = .4f;
 		}
 
+		// SFX
+		AudioManager.Sfx.Play ("addtodiscussion", "Phase2");
 	}
 
 	void Clear () {

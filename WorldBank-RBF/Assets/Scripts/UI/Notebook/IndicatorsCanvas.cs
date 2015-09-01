@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class IndicatorsCanvas : NotebookCanvas {
 
 	public RectTransform dataColumns;
+	public RectTransform scenarioInfo;
 
 	public static List<int[]> AppliedAffects = new List<int[]>();
 	List<string[]> displayedAffects = new List<string[]>();
@@ -19,6 +20,12 @@ public class IndicatorsCanvas : NotebookCanvas {
 		RenderIndicators();
 
 		ShowYear(currentYearShown);
+
+    }
+
+    void OnDisable() {
+
+		scenarioInfo.gameObject.SetActive(true);
 
     }
 
@@ -81,6 +88,9 @@ public class IndicatorsCanvas : NotebookCanvas {
 		displayedAffects.Add(new [] { intBirths.ToString(), intVaccinations.ToString(), intQOC.ToString() });
 
 		RenderIndicators();
+
+		// SFX
+		AudioManager.Sfx.Play ("graphupdated", "Phase2");
 
 	}
 

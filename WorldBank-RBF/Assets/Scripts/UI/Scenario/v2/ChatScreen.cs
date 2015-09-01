@@ -85,6 +85,9 @@ public class ChatScreen : GenericDialogBox {
 			else if(btnAction[btnIndex].option != null)
 				btnChoice.Button.onClick.AddListener (() => OptionSelected (btnAction[btnIndex].option));
 
+			// SFX
+			btnChoice.Button.onClick.AddListener (() => AudioManager.Sfx.Play ("sendmessage", "Phase2"));
+
 			btnChoice.Text = content;
 			btnIndex ++;
 
