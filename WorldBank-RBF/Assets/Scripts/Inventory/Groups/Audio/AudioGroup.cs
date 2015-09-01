@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
+using System.IO;
+#endif
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
