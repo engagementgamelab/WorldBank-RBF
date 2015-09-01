@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using System.IO;
+#endif
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -26,6 +28,12 @@ public static class AudioResourcesPaths {
 	static readonly Regex regex = new Regex (@"(Audio).*");
 	static readonly string DirectoriesFileName = "audiopaths.txt";
 
+	public static string[] GetFilesAtDirectory (string path) {
+		TextAsset t = (TextAsset)Resources.Load (path + "/paths", typeof (TextAsset));
+		return t == null ? new string[0] : Regex.Split (t.text, "\n");
+	}
+
+	#if UNITY_EDITOR
 	public static void WriteDirectories (string[] lines) {
 		foreach (string line in lines) {
 			WriteLineToFile (DirectoriesFilePath, line);
@@ -39,11 +47,6 @@ public static class AudioResourcesPaths {
 			resourcePaths.Add (WriteLineToFile (root + "/paths.txt", file));
 		}
 		return resourcePaths;
-	}
-
-	public static string[] GetFilesAtDirectory (string path) {
-		TextAsset t = (TextAsset)Resources.Load (path + "/paths", typeof (TextAsset));
-		return t == null ? new string[0] : Regex.Split (t.text, "\n");
 	}
 
 	static string WriteLineToFile (string path, string line) {
@@ -61,4 +64,5 @@ public static class AudioResourcesPaths {
 		}
 		return line == null ? "" : line.Replace ("\n", "");
 	}
+	#endif
 }
