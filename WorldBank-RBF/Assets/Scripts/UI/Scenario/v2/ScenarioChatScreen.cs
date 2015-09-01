@@ -23,7 +23,6 @@ public class ScenarioChatScreen : ChatScreen {
     }
 
     public Transform advisorsContainer;
-    public GameObject advisorsButton;
     public Text debugText;
 
     List<string> previousAdvisorOptions;
@@ -70,7 +69,6 @@ public class ScenarioChatScreen : ChatScreen {
 
 		AddResponseSpeech(_data.initiating_dialogue, charRef, true);
 
-		// advisorsButton.SetActive (true);
 		Events.instance.AddListener<ScenarioEvent> (OnScenarioEvent);
 
 		// Reset of advisors used and make advisors container interactable

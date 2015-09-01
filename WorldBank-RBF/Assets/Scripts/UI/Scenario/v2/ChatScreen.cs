@@ -16,7 +16,6 @@ public class ChatScreen : GenericDialogBox {
     public bool rightPanelActive = true;
 
 	public List<ScenarioOptionButton> _btnListOptions;
-	public List<GameObject> spacers;
 
 	protected bool panelOpen = false;
 
@@ -93,7 +92,6 @@ public class ChatScreen : GenericDialogBox {
 
 		}
 
-		SetSpacerActiveState (btnContent.Count);
 	}
 
 	public void AddYearEndOptions (Dictionary<string, string>[] options) {
@@ -124,7 +122,6 @@ public class ChatScreen : GenericDialogBox {
 		btnNextYear.Button.onClick.RemoveAllListeners ();
 		btnNextYear.Button.onClick.AddListener(() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT_YEAR)));
 
-		SetSpacerActiveState (options.Length+1);
 	}
 
 	// Scenario option was selected
@@ -207,11 +204,6 @@ public class ChatScreen : GenericDialogBox {
 
 		message.gameObject.SetActive(false);
 
-	}
-
-	void SetSpacerActiveState (int buttonCount) {
-		spacers[0].SetActive (buttonCount <= 2);
-		spacers[1].SetActive (buttonCount <= 3);
 	}
 
 	IEnumerator CoScrollToEnd () {
