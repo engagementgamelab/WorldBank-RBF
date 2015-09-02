@@ -8,6 +8,9 @@ public class ScrollbarEnabler2 : MonoBehaviour {
 	public GameObject scrollbar;
 	public RectTransform container;
 
+	// Override to keep scrollbar vertical
+	public bool isVertical;
+
 	RectTransform myTransform = null;
 	RectTransform MyTransform {
 		get {
@@ -53,7 +56,8 @@ public class ScrollbarEnabler2 : MonoBehaviour {
 
 	void Awake () {
 		toggleHorizontal = ScrollRect.horizontal == true;
-		toggleVertical = ScrollRect.vertical == true;
+		toggleVertical = (ScrollRect.vertical == true) || isVertical;
+
 		SetScrollEnabled ();
 	}
 

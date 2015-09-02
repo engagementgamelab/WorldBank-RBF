@@ -27,6 +27,7 @@ public class ChatScreen : GenericDialogBox {
 		}
 
 		disabledPanel.gameObject.SetActive(false);
+
 	}
 	 
 	public class ChatAction
@@ -160,7 +161,6 @@ public class ChatScreen : GenericDialogBox {
 		
 		if (gameObject.activeSelf)
 			StartCoroutine (CoScrollToEnd ());
-	
 	}
 
 	protected SystemMessage AddSystemMessage (string content) {
