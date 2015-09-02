@@ -83,11 +83,8 @@ public class IndicatorPlotLine : MonoBehaviour {
 
 		gameObject.GetComponent<Image>().color = currentColor;
 
-		foreach(Image img in gameObject.GetComponentsInChildren<Image>(true)) {
-			Debug.Log(currentColor);
-		
+		foreach(Image img in gameObject.GetComponentsInChildren<Image>(true))		
 			img.color = currentColor;
-		}
 
 		animateStart = 0;
 
