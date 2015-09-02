@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
@@ -72,7 +71,7 @@ public class CitiesManager : MB {
 		if (PlayerData.CityGroup.CurrentCity != city.Symbol)
 			PlayerData.DayGroup.Remove (route.Cost);
 		PlayerData.CityGroup.CurrentCity = city.Symbol;
-		MoveIndicator (route, onArrive);
+		MoveIndicator (onArrive);
 	}
 
 	/// <summary>
@@ -82,6 +81,7 @@ public class CitiesManager : MB {
 	/// <param name="route">The route to move along.</param>
 	public void VisitCity (CityItem city, RouteItem route) {
 		city.Visited = true;
+		if (city.Symbol == "capitol") city.StayedExtraDay = true;
 		PlayerData.InteractionGroup.SetInteractions (city.Symbol);
 		TravelToCity (city, route, OnVisit);
 	}
@@ -91,13 +91,13 @@ public class CitiesManager : MB {
 	/// </summary>
 	/// <param name="city">The city to stay an extra day in.</param>
 	public void StayExtraDay (CityItem city) {
+		city.StayedExtraDay = true;
 		PlayerData.DayGroup.Remove ();
 		PlayerData.InteractionGroup.SetExtraInteractions (city.Symbol);
 		OnVisit ();
 	}
 
-	void MoveIndicator (RouteItem route, System.Action onArrive) {
-		// currentCityIndicator.Move (route.Positions, onArrive);
+	void MoveIndicator (System.Action onArrive) {
 		currentCityIndicator.Move (Cities[PlayerData.CityGroup.CurrentCity].Position, onArrive);
 	}
 

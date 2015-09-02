@@ -48,6 +48,7 @@ public class DialogManager : MonoBehaviour {
 	public bool version2 = false;
 	public ScenarioChatScreen scenarioChat;
 	public SupervisorChatScreen supervisorChat;
+	public NpcDialogBox npcDialogBox;
 
 	public GenericDialogBox dialogBox;
 
@@ -76,6 +77,7 @@ public class DialogManager : MonoBehaviour {
 			dialogBox.Close();
 			dialogBox = null;
 		}
+		npcDialogBox.Close ();
 	}
 
 	/// <summary>
@@ -191,24 +193,20 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="currNpc">The NPC to get the description from</param>
 	/// <param name="left">If true, the dialog box will appear on the left side of the screen</param>
 	public void OpenNpcDescription (Models.NPC currNpc, bool left) {
-
+		
 		CharacterItem character = PlayerData.CharacterGroup[currNpc.symbol];
 		string description = character.GetDescription ();
 
-		CreateGenericDialog (description, true, left);
-		dialogBox.Header = character.DisplayName;
-		ObjectPool.DestroyAll<GenericButton> ();
-		CreateBackButton (CloseAndUnfocus);
-
+		Dictionary<string, UnityAction> btnChoices = new Dictionary<string, UnityAction> ();
 		if (!character.NoChoices) {
-			GenericButton btn = CreateButton ("Learn More", () => {
+			btnChoices.Add ("Learn More", () => {
 				CloseAll ();
 				NPCFocusBehavior.Instance.DialogFocus ();
 			});
-			dialogBox.AddButtons (new List<GenericButton> () { btn });
 		}
+		btnChoices.Add ("Back", CloseAndUnfocus);
 
-		// StartCoroutine (CoFadeText ());
+		npcDialogBox.Open (character.DisplayName, description, btnChoices, left);
 	}
 
 	//// <summary>
@@ -233,11 +231,9 @@ public class DialogManager : MonoBehaviour {
 		// Convert all choices to lowercase for cross referencing with the character's choices
 		choices = choices.ToDictionary (x => x.Key.ToLower (), x => x.Value);
 
-		CreateGenericDialog (dialog, true, left);
-		dialogBox.Header = character.DisplayName;
+		Dictionary<string, UnityAction> btnChoices = new Dictionary<string, UnityAction> ();
 
 		if (!character.NoChoices) {
-			List<GenericButton> btnChoices = new List<GenericButton> ();
 			foreach (var choice in character.Choices) {
 				
 				Models.Dialogue model = choice.Value;
@@ -251,7 +247,7 @@ public class DialogManager : MonoBehaviour {
 				if (!(character.Returning && initial) && !choices.ContainsKey (ck.ToLower ()))
 					continue;
 
-				btnChoices.Add (CreateButton (displayName, () => {
+				btnChoices.Add (displayName, () => {
 					AudioManager.Sfx.Play (voice + "response");
 					PlayerData.InteractionGroup.Remove ();
 					character.SelectChoice (
@@ -260,15 +256,12 @@ public class DialogManager : MonoBehaviour {
 						character.Symbol
 					);
 					OpenNpcDialog (currNpc, voice, left, false);
-				}));
+				});
 			}
-			dialogBox.AddButtons (btnChoices);
-		} else {
-			ObjectPool.DestroyAll<GenericButton> ();
 		}
 
-		CreateBackButton (CloseAndUnfocus);
-		// StartCoroutine (CoFadeText ());
+		btnChoices.Add ("Back", CloseAndUnfocus);
+		npcDialogBox.Open (character.DisplayName, dialog, btnChoices, left);
 	}
 
 	GenericButton CreateButton (string text, UnityAction onClick) {
@@ -315,11 +308,11 @@ public class DialogManager : MonoBehaviour {
 		foreach (var choice in choices) {
 			string strKeyword = choice.Key;
 			bool unlocked = choice.Value;
-			if (unlocked) {
+			/*if (unlocked) {
 				dialog = dialog.Replace ("[[" + strKeyword + "]]", "<color=orange>" + strKeyword + "</color>");
-			} else {
+			} else {*/
 				dialog = dialog.Replace ("[[" + strKeyword + "]]", strKeyword);
-			}
+			//}
 		}
 
 		return dialog;

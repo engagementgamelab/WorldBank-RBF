@@ -68,7 +68,7 @@ public class CityButton : MB {
 	}
 
 	bool CanStayExtraDay {
-		get { return IsCurrentCity && !PlayerData.DayGroup.Empty; }
+		get { return !CityItem.StayedExtraDay && IsCurrentCity && !PlayerData.DayGroup.Empty; }
 	}
 
 	bool CanAffordCost {

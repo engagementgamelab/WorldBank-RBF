@@ -18,7 +18,8 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 	
 	[ExposeInWindow] public bool facingLeft = false;
 	public bool FacingLeft {
-		get { return facingLeft; }
+		// get { return facingLeft; }
+		get { return true; }
 	}
 
 	[ExposeInWindow] public string symbol;
