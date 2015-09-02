@@ -77,7 +77,8 @@ public class DialogManager : MonoBehaviour {
 			dialogBox.Close();
 			dialogBox = null;
 		}
-		npcDialogBox.Close ();
+		if (npcDialogBox != null)
+			npcDialogBox.Close ();
 	}
 
 	/// <summary>

@@ -23,12 +23,13 @@ public class AmbienceZone : MB, IEditorPoolable {
 		set {
 			attenuation = value;
 			if (attenuation > 0f) {
-				ambience = AudioManager.Ambience.PlayAmbience (CityContext, context);
+				if (ambience == null)
+					ambience = AudioManager.Ambience.PlayAmbience (CityContext, context);
+				ambience.Attenuation = attenuation;
 			} else {
 				AudioManager.Ambience.StopAmbience (CityContext, context);
 				ambience = null;
 			}
-			if (ambience != null) ambience.Attenuation = attenuation;
 		}
 	}
 

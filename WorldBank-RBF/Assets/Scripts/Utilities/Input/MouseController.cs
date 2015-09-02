@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -44,7 +45,7 @@ public class MouseController : MonoBehaviour {
 	void LateUpdate () {
 		// if(!enableLayers)
 		// 	return;
-
+		if (EventSystem.current.IsPointerOverGameObject ()) return;
 		if (Input.GetMouseButton (LEFT)) {
 			clickManager.HandleMouseDown (LEFT);
 			dragManager.HandleMouseDown (LEFT);

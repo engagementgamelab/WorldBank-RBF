@@ -16,7 +16,12 @@ public class AudioObject : MB, IEditorPoolable {
 		}
 	}
 
-	public bool IsPlaying { get { return Source.isPlaying; } }
+	public bool IsPlaying { 
+		get { 
+			if (Source == null) return false;
+			return Source.isPlaying;
+		}
+	}
 
 	public float Attenuation { 
 		get { return Source.volume; } 
@@ -55,7 +60,7 @@ public class AudioObject : MB, IEditorPoolable {
 	}
 
 	IEnumerator StopOnEndPlay () {
-		while (Source.isPlaying)
+		while (gameObject.activeSelf && Source.isPlaying)
 			yield return null;
 		Stop ();
 	}

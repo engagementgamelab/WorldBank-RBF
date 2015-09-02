@@ -89,14 +89,14 @@ public class ObjectPool : MonoBehaviour {
 		string prefabName = GetPrefabName<T> ();
 		string poolName = GetPoolName<T> ();
 		GameObject go = new GameObject (poolName);
-		DontDestroyOnLoad (go);
+		// DontDestroyOnLoad (go); // 9/2/15 - this was causing problems - jay
 		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (prefabName, additionalPath).transform);
 	}
 
 	static void CreatePool (string typeName) {
 		string poolName = typeName + "Pool";
 		GameObject go = new GameObject (poolName);
-		DontDestroyOnLoad (go);
+		// DontDestroyOnLoad (go); // 9/2/15 - this was causing problems - jay
 		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (typeName).transform);	
 	}
 
@@ -134,7 +134,11 @@ public class ObjectPool : MonoBehaviour {
 		if (inactiveInstances.Count > 0) {
 			t = inactiveInstances.Pop ();
 		} else {
-			t = Instantiate (prefab) as Transform;
+			try {
+				t = Instantiate (prefab) as Transform;
+			} catch {
+				throw new System.Exception ("Could not find a prefab called '" + prefab + ".' This could be because the prefab is not in a Resources folder or there is more than one ObjectPool of this type in the scene.");
+			}
 		}
 		
 		if(t == null) {

@@ -43,9 +43,8 @@ public class NpcDialogBox : MB {
 		SetButtons (choices);
 		SetActive (true);
 		foreach (FadeText ft in fadeTexts) {
-			if (ft.Parent.gameObject.activeSelf) {
+			if (ft.Parent.gameObject.activeSelf) 
 				ft.FadeIn (0.33f);
-			}
 		}
 	}
 

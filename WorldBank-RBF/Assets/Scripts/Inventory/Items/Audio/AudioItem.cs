@@ -86,6 +86,7 @@ public class AudioItem : InventoryItem {
 		AudioObject idleObject = GetIdleAudioObject ();
 		if (idleObject != null)
 			idleObject.Play (this, Settings.loop);
+
 	}
 
 	public void Stop () {
@@ -96,7 +97,7 @@ public class AudioItem : InventoryItem {
 
 	AudioObject GetIdleAudioObject () {
 
-		AudioObject idleObject = audioObjects.Find (x => !x.IsPlaying);
+		AudioObject idleObject = audioObjects.Find (x => x != null && !x.IsPlaying);
 		
 		if (idleObject == null && audioObjects.Count == 0 || Settings.allowMultiple) {
 			idleObject = EditorObjectPool.Create<AudioObject> ();

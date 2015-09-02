@@ -8,6 +8,8 @@ public class UnlockNotification : MB {
 	public RectTransform panel;
 	public Text header;
 	public Text body;
+	public CanvasToggle plan;
+	public CanvasToggle map;
 
 	string HeaderText {
 		get { return header.text; }
@@ -68,6 +70,7 @@ public class UnlockNotification : MB {
 	float startPosition;
 	float endPosition;
 	bool sliding = false;
+	string currentNotification;
 
 	void Start () {
 
@@ -103,16 +106,17 @@ public class UnlockNotification : MB {
 	}
 
 	void SlideIn (string type, string context) {
+		currentNotification = type;
 		Settings s = settings[type];
-		HeaderText = s.Header;//headers[type];
-		HeaderColor = s.Color;//headerColors[type];
+		HeaderText = s.Header;
+		HeaderColor = s.Color;
 		AudioManager.Sfx.Play (s.Sfx[0], s.Sfx[1]);
 		BodyText = context;
 		StartCoroutine (CoSlide (startPosition, endPosition));
-		Invoke ("SlideOut", 3.5f);
+		Invoke ("SlideOut", 5f);
 	}
 
-	void SlideOut () {
+	public void SlideOut () {
 		if (panel.localPosition.x <= endPosition)
 			StartCoroutine (CoSlide (endPosition, startPosition));
 	}
@@ -137,6 +141,10 @@ public class UnlockNotification : MB {
 	}
 
 	public void OnClick () {
-		SlideOut ();
+		switch (currentNotification) {
+			case "dialogue": SlideOut (); break;
+			case "route": map.OnClick (); break;
+			case "tactic": plan.OnClick (); break;
+		}
 	}
 }
