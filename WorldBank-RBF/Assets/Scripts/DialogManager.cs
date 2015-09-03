@@ -172,13 +172,6 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	public TacticCardDialog CreateTacticDialog(Models.TacticCard tactic) {
 
-	    // ;
-	    //
-
-	    // tacticDialog.RemoveButtons<GenericButton>(tacticDialog.HorizontalGroup);
-
-		// tacticDialog.Init();
-
 		List<GenericButton> btnList = new List<GenericButton>();
 
 		TacticCardDialog tacticDialog = ObjectPool.Instantiate<TacticCardDialog>("Scenario");
@@ -263,6 +256,18 @@ public class DialogManager : MonoBehaviour {
 
 		btnChoices.Add ("Back", CloseAndUnfocus);
 		npcDialogBox.Open (character.DisplayName, dialog, btnChoices, left);
+	}
+
+	/// <summary>
+	/// Generate a tooltip screen
+	/// </summary>
+	public void CreateTutorialScreen(string strTooltipKey) {
+
+		TutorialScreen tutScreen = ObjectPool.Instantiate<TutorialScreen>();
+		tutScreen.Load(strTooltipKey);
+
+		tutScreen.transform.SetParent(GameObject.Find("Overlay").transform);
+
 	}
 
 	GenericButton CreateButton (string text, UnityAction onClick) {

@@ -468,4 +468,24 @@ public class DataManager {
         return (initialAffects.Sum() - currentAffects.Sum()) > 0;
 
     }
+    /// <summary>
+    /// Get all tooltip keys.
+    /// </summary>
+    /// <returns>The tooltip keys currently defined.</returns>
+    public static string[] GetTooltipKeys() {
+
+        return gameData.tutorial.Keys.ToArray();
+
+    }
+
+    /// <summary>
+    /// Get a tooltip given its key.
+    /// </summary>
+    /// <param name="tooltipKey">The key of the tooltip.</param>
+    /// <returns>The tooltip for this key</returns>
+    public static Tooltip GetTooltipByKey(string tooltipKey) {
+
+        return gameData.tutorial[tooltipKey];
+
+    }
 }
