@@ -357,7 +357,7 @@ namespace Models {
 
     public class ParallaxNpc : ParallaxElement {
         public string symbol { get; set; }
-        // public string voice { get; set; } // TODO: uncomment this so that npc voices can be specified - - the game breaks if the field is missing in the model, though
+        public string voice { get; set; } // TODO: uncomment this so that npc voices can be specified - - the game breaks if the field is missing in the model, though
         public bool facingLeft { get; set; }
         public string Texture2Path { get; set; }
     }
