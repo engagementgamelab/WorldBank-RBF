@@ -98,6 +98,8 @@ public class ScenarioManager : MonoBehaviour {
 		// Turn off supervisor tab for start
 		supervisorChatTab.GetComponent<CanvasGroup>().alpha = .5f;
 
+		DialogManager.instance.CreateTutorialScreen("tooltip_2");
+
 	}
 
 	void Update () {

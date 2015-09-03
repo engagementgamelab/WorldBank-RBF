@@ -56,6 +56,7 @@ namespace Models {
         public Unlockable[] unlockables { get; set; }
         public Dictionary<string, NPC[]> phase_one { get; set; }
         public PhaseTwo phase_two { get; set; }
+        public Dictionary<string, Tooltip> tutorial { get; set; }
 
     }
 
@@ -378,5 +379,15 @@ namespace Models {
         public float offset { get; set; }
         public float width { get; set; }
         public float fadeLength { get; set; }
+    }
+
+    // Tooltip structure
+    public class Tooltip {
+
+        public float[] spotlight_position;
+        public float[] spotlight_size;
+        public string overlay_location;
+        public string text;
+    
     }
 }
