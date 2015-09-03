@@ -9,8 +9,8 @@
 #  Created by Johnny Richardson on 3/30/15.
 # ==============
 
-EXTERNAL_ASSET_DIR=$2"/Content/Art"
-UNITY_ASSET_DIR=$2"/WorldBank-RBF/Assets/Textures"
+EXTERNAL_ASSET_DIR=$2"Content/Art"
+UNITY_ASSET_DIR=$2"WorldBank-RBF/Assets/Textures"
 
 # Clear prior log
 > automate.log;
