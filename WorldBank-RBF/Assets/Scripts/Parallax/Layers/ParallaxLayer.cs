@@ -57,7 +57,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		target.z = (Index+1) * layerSeparation + LocalSeparation;
 		Transform.SetPosition (target);
 		Transform.localScale = new Vector3 (Scale, Scale, 1);
-		Transform.SetPositionX (-LocalScale.x / 2);
+		Transform.SetPositionX (-LocalScale.x / 4.16f);
 	}
 
 	/*public void ClearImages () {
