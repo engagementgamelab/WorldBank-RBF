@@ -384,10 +384,10 @@ namespace Models {
     // Tooltip structure
     public class Tooltip {
 
-        public float[] spotlight_position;
-        public float[] spotlight_size;
-        public string overlay_location;
-        public string text;
+        public float[] spotlight_position { get; set; }
+        public float[] spotlight_size { get; set; }
+        public string overlay_location { get; set; }
+        public string text { get; set; }
     
     }
 }

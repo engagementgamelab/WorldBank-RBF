@@ -12,6 +12,7 @@ Created by Engagement Lab, 2015
 #if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Linq;
 using System.IO;
 
@@ -65,31 +66,58 @@ public class TutorialGUI : Editor
 
 		}
 
-		if(tooltipLabels != null)
-			tooltipIndex = EditorGUILayout.Popup(_tutorialScreen.layoutIndex, tooltipLabels);
-	    
+		if(tooltipLabels != null && tooltipLabels.Length > 0) {
+			tooltipIndex = EditorGUILayout.Popup(tooltipIndex, tooltipLabels);
 
-	    if (GUILayout.Button ("Load selected tooltip")) {
-	    	Debug.Log(tooltipLabels[tooltipIndex]);
-			_tutorialScreen.TooltipKey = tooltipLabels[tooltipIndex];   
+			// Update selected tooltip
+		    if (tooltipLabels[tooltipIndex] != _tutorialScreen.TooltipKey)
+				_tutorialScreen.TooltipKey = tooltipLabels[tooltipIndex]; 
+
+	        GUILayout.Label ("Text:");
+
+		   	_tutorialScreen.overlayText = EditorGUILayout.TextField(_tutorialScreen.overlayText, GUILayout.Height(90));
+
+	        GUILayout.Label ("Overlay Location:");
+
+		    _tutorialScreen.layoutIndex = EditorGUILayout.Popup(_tutorialScreen.layoutIndex, layoutLabels);
+		    
+	        GUILayout.Label ("Spotlight Position:");
+
+	        EditorGUILayout.BeginHorizontal ("X");
+	        EditorGUILayout.PrefixLabel("X");
+		    spotlightXPos = EditorGUILayout.Slider(spotlightXPos, -2, .6f);
+		    EditorGUILayout.EndHorizontal();
+
+	        EditorGUILayout.BeginHorizontal ("Y");
+	        EditorGUILayout.PrefixLabel("Y");
+		    spotlightYPos = EditorGUILayout.Slider(spotlightYPos, -2, .6f);
+		    EditorGUILayout.EndHorizontal();
+
+		    // Update the selected choice in the underlying object
+		    _tutorialScreen.Layout = layoutLabels[_tutorialScreen.layoutIndex];
+
+		    _tutorialScreen.SpotlightRect = new Rect(spotlightXPos, spotlightYPos, spotlightWidth, spotlightHeight);
+
+		    string yamlPreview = String.Format("{0}:\n" + 
+												    "  spotlight_position: [{1}, {2}]\n" + 
+												    "  spotlight_size: [{3}, {4}]\n" + 
+											    	"  overlay_location: \"{5}\"\n" + 
+										    	    "  text: \"{6}\"", 
+										    	    _tutorialScreen.TooltipKey, 
+										    	    spotlightXPos,
+										    	    spotlightYPos,
+										    	    spotlightWidth,
+										    	    spotlightHeight,
+										    	    _tutorialScreen.overlayLocation,
+										    	    _tutorialScreen.overlayText);
+									
+			GUI.color = Color.cyan;
+	        GUILayout.Label ("YAML Preview:", EditorStyles.boldLabel);
+		    EditorGUILayout.LabelField(yamlPreview, GUILayout.Height(90));
+							    	   
+		    if (GUILayout.Button ("Copy YAML"))
+				EditorGUIUtility.systemCopyBuffer = yamlPreview;
 		}
-
-        GUILayout.Label ("Overlay Location:");
-
-	    _tutorialScreen.layoutIndex = EditorGUILayout.Popup(_tutorialScreen.layoutIndex, layoutLabels);
-	    
-        GUILayout.Label ("Spotlight Position:");
-
-        EditorGUILayout.PrefixLabel("X");
-	    spotlightXPos = EditorGUILayout.Slider(spotlightXPos, -2, .6f);
-
-        EditorGUILayout.PrefixLabel("Y");
-	    spotlightYPos = EditorGUILayout.Slider(spotlightYPos, -2, .6f);
-	    
-	    // Update the selected choice in the underlying object
-	    _tutorialScreen.Layout = layoutLabels[_tutorialScreen.layoutIndex];
-
-	    _tutorialScreen.SpotlightRect = new Rect(spotlightXPos, spotlightYPos, spotlightWidth, spotlightHeight);
 	    
 	    // Save the changes back to the object
 	    EditorUtility.SetDirty(target);

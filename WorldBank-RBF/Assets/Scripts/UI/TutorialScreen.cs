@@ -43,6 +43,9 @@ public class TutorialScreen : MonoBehaviour {
 
 	[HideInInspector]
 	public string TooltipKey {
+		get {
+			return tooltipKey;
+		}
 		set { 
 			tooltipKey = value;
 			Load(value);
@@ -71,6 +74,9 @@ public class TutorialScreen : MonoBehaviour {
 	[HideInInspector]
 	public Rect spotlightRect;
 
+	[HideInInspector]
+	public string overlayLocation;
+
 	public string overlayText;
 	public RectTransform overlayPanel;
 	public RawImage spotlightImage;
@@ -94,6 +100,7 @@ public class TutorialScreen : MonoBehaviour {
 		OverlayPosition(tooltip.overlay_location);
 
 		overlayPanel.GetComponentInChildren<Text>().text = tooltip.text;
+		overlayText = tooltip.text;
 
 	}
 
@@ -104,6 +111,18 @@ public class TutorialScreen : MonoBehaviour {
 		overlayPanel.anchorMax = position.Max;
 		overlayPanel.anchorMin = position.Min;
 		overlayPanel.pivot = position.Pivot;
+
+		overlayLocation = strPositionLabel;
+
+		int i = 0;
+		foreach (string label in Positions.Keys)
+		{
+			if(label == strPositionLabel) {
+		    	layoutIndex = i;
+		    	break;
+		    }
+		    i++;
+		}
 
 	}
 
