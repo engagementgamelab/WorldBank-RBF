@@ -21,7 +21,7 @@ then
 fi
 
 # Set target path for local tar file
-target_tar="$EXTERNAL_BUILDS_DIR/$OUTPUT_NAME""_$DATE.tgz";
+target_tar="$EXTERNAL_BUILDS_DIR/$1""_Nightly_$DATE.tgz";
 
 # Run nightly build only if latest build generated "nightly" tar file
 if [ -f $target_tar ]
