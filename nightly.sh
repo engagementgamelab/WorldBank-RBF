@@ -15,6 +15,11 @@ EXTERNAL_BUILDS_DIR="/Library/BuildArtifacts";
 CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
 DATE=$(date +"%F");
 
+if [ "$MANUAL_BUILD" != "" ]
+then
+	OUTPUT_NAME=$1"_"$MANUAL_BUILD;
+fi
+
 # Set target path for local tar file
 target_tar="$EXTERNAL_BUILDS_DIR/$OUTPUT_NAME""_$DATE.tgz";
 
@@ -58,8 +63,12 @@ then
 	url="$(drive url -i $new_file_id)";
 
 	# Tell slack about the new file
-	echo "$1 Nightly build for $(date +"%D") posted ($url)" | ~/go/bin/slackcat -n "EL Dev Server" -i ":lab:"
-
+	if [ -z "$MANUAL_BUILD" ]
+	then
+		echo "New daily build for $1 posted ($url)" | ~/go/bin/slackcat -n "EL Dev Server" -i ":lab:"
+	else
+		echo "$1 Nightly build for $(date +"%D") posted ($url)" | ~/go/bin/slackcat -n "EL Dev Server" -i ":lab:"
+	fi
 else
 
 	# Tell slack that build will not occur
