@@ -5,6 +5,11 @@ using System.Collections;
 
 public class Tactic : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 
+	public PortraitTextBox portrait;
+	public Text titleText;
+	public Text descriptionText;
+	public Text contextText;
+
 	Transform planPanel;
 	Transform PlanPanel {
 		get {

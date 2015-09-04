@@ -105,6 +105,10 @@ public class CityButton : MB {
 	}
 
 	void UpdateInteractableState () {
+		/*if (IsCurrentCity) {
+			Button.interactable = true;
+			return;
+		}*/
 		if (!visitedCapitol && symbol != "capitol") {
 			Button.interactable = false;
 			return;

@@ -47,8 +47,10 @@ public class CityInfoBox : MB {
 
 			// Special case: Players can not spend an extra day in Capitol City
 			if (city.StayedExtraDay || city.Symbol == "capitol") {
-				if (currentCity)
+				if (currentCity) {
+					NotebookManagerPhaseOne.Instance.CloseCanvases ();
 					return;
+				}
 				Body = "You've already visited this city but you can pass through it.";
 				SetButtons ("Cancel", Close, "Visit", () => TravelTo (city, button.ActiveRoute));
 			} else {
