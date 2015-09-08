@@ -34,7 +34,6 @@ public class ScenarioManager : MonoBehaviour {
 	public float problemCardDurationOverride = 0;
 	public float monthLengthSecondsOverride = 0;
 
-
 	public bool enableCooldown;
 
 	Timers.TimerInstance phaseCooldown;
@@ -98,22 +97,24 @@ public class ScenarioManager : MonoBehaviour {
 		// Turn off supervisor tab for start
 		supervisorChatTab.GetComponent<CanvasGroup>().alpha = .5f;
 
-		DialogManager.instance.CreateTutorialScreen("tooltip_2");
+		// DialogManager.instance.CreateTutorialScreen("tooltip_2");
 
 	}
 
 	void Update () {
 
 		// If a problem card has been enqueued or we're waiting for one to open, determine next card
-		if(queueProblemCard)
-			GetNextCard();
+		if(queueProblemCard) {
+			if(cardCooldownElapsed.Equals(0f))
+				GetNextCard();
+		}
 
 		// Update card cooldown label
     	scenarioCardCooldownText.text = cardCooldownElapsed + "s";
 
     	// Update scenario cooldown label
     	if(!inYearEnd) {
-    		System.TimeSpan timeSpan = TimeSpan.FromSeconds(phaseCooldownElapsed);
+    		System.TimeSpan timeSpan = TimeSpan.FromSeconds(cardCooldownElapsed);
 
     		scenarioCooldownText.text = String.Format("{0}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
     	}
@@ -168,7 +169,7 @@ public class ScenarioManager : MonoBehaviour {
 			return;
 	
 		// currentQueueIndex starts at 1, so decrement it
-		int cardIndex = queueProblemCard ? currentQueueIndex : currentCardIndex;
+		int cardIndex = currentCardIndex;
 		int nextCardIndex = currentCardIndex + 1;
 		int yearLength = DataManager.ScenarioLength(scenarioTwistIndex);
 
@@ -226,9 +227,9 @@ public class ScenarioManager : MonoBehaviour {
 			// Hide year end panel
 			// yearEndPanel.gameObject.SetActive(false);
 
-			cardIndex = queueProblemCard ? ++currentQueueIndex : ++currentCardIndex;	
+			cardIndex = ++currentCardIndex;	
 
-			OpenScenarioCard(cardIndex, queueProblemCard);
+			OpenScenarioCard(cardIndex);
 
 		}
 
@@ -242,6 +243,9 @@ public class ScenarioManager : MonoBehaviour {
 	void OpenScenarioCard(int cardIndex, bool queue=false) {
 
 		Debug.Log("open scenario card with index " + cardIndex);
+
+		// Clear all prior chat
+		scenarioChat.RemoveResponses();
 
 		// Generate scenario card for the current card index, as well as if the scenario is in a twist
 		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(cardIndex, scenarioTwistIndex);
@@ -258,8 +262,24 @@ public class ScenarioManager : MonoBehaviour {
 	 	ScenarioQueue.RemoveProblemCard(card);
 
 		// Create the card dialog
-		DialogManager.instance.SetCard(card);
+		DialogManager.instance.SetCard(card);// Start card cooldown
+		
+		if(enableCooldown) {
+			if(problemCardCooldown == null) {
+				if(!problemCardDurationOverride.Equals(0f))
+					problemCardDuration = problemCardDurationOverride;
 
+				problemCardCooldown = Timers.StartTimer(gameObject, new [] { problemCardDuration });
+				problemCardCooldown.Symbol = "problem_card";
+				problemCardCooldown.onTick += OnCooldownTick;
+				problemCardCooldown.onEnd += GetNextCard;
+			}
+			else
+				problemCardCooldown.Restart();
+		}
+
+		// Hide "no messages"
+		scenarioChat.noMessagesPanel.gameObject.SetActive(false);
 		// SFX
 		if(currentCardIndex > 0)
 			AudioManager.Sfx.Play ("newproblem", "Phase2");
@@ -518,21 +538,30 @@ public class ScenarioManager : MonoBehaviour {
    			
     		case "next":
 
-    			NextProblemCard(e.eventSymbol);
+    			// Clear all prior chat
+    			scenarioChat.RemoveResponses();
+
+    			if(problemCardDuration > 0) {
+    				scenarioChat.noMessagesPanel.gameObject.SetActive(true);
+    				queueProblemCard = true;
+    			}
+    			else
+	    			NextProblemCard(e.eventSymbol);
 
     			break;
 
     		case "next_year":
-
     			NextYear();
 
     			break;
 
 	   		case "decision_selected":
+
 	   			SetScenarioPath(e.eventSymbol);
     			break;
 
 			case "open_indicators":
+
 	   			indicatorsCanvas.gameObject.SetActive(true);
 	   			break;
 
@@ -545,14 +574,11 @@ public class ScenarioManager : MonoBehaviour {
     /// </summary>
     void OnCooldownTick(GameEvents.TimerTick e) {
 
-    	/*if(e.Symbol == "problem_card")
-			cardCooldownElapsed = problemCardDuration - e.SecondsElapsed;*/
+    	if(e.Symbol == "problem_card")
+			cardCooldownElapsed = problemCardDuration - e.SecondsElapsed;
     	
-    	if(e.Symbol == "phase_cooldown") {
+    	else if(e.Symbol == "phase_cooldown")
 			phaseCooldownElapsed = phaseLength - e.SecondsElapsed;
-
-			// Debug.Log("############ phaseCooldownElapsed: " + phaseCooldownElapsed);
-    	}
 
 
     }

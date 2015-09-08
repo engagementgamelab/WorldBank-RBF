@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
@@ -6,13 +6,23 @@ using System.Collections.Generic;
 
 public class IndicatorsCanvas : NotebookCanvas {
 
+	public Animator scenarioAnimator;
+
 	public RectTransform dataColumns;
 	public RectTransform scenarioInfo;
 
 	public static List<int[]> AppliedAffects = new List<int[]>();
 	List<string[]> displayedAffects = new List<string[]>();
+
+	Animator animator;
 	
 	int currentYearShown = 1;
+
+	void Start() {
+
+		animator = gameObject.GetComponent<Animator>();
+
+	}
 
 	// Display indicators when made visible
 	void OnEnable() {
@@ -90,7 +100,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 		RenderIndicators();
 
 		// SFX
-		AudioManager.Sfx.Play ("graphupdated", "Phase2");
+		// AudioManager.Sfx.Play ("graphupdated", "Phase2");
 
 	}
 
@@ -107,6 +117,13 @@ public class IndicatorsCanvas : NotebookCanvas {
 		}
 
 		currentYearShown = intYr;
+
+	}
+
+	public override void Open() {
+
+		animator.Play("IndicatorsOpen");
+		scenarioAnimator.Play("ScenarioClose");
 
 	}
 

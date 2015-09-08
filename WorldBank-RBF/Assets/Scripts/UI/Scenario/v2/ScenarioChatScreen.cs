@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
 using System.Linq;
@@ -23,6 +24,8 @@ public class ScenarioChatScreen : ChatScreen {
     }
 
     public Transform advisorsContainer;
+	public Transform noMessagesPanel;
+    public Text contactsTitleText;
     public Text debugText;
 
     List<string> previousAdvisorOptions;
@@ -54,9 +57,10 @@ public class ScenarioChatScreen : ChatScreen {
 		// Generate advisors
 		previousAdvisorOptions = (previousAdvisorOptions == null)
 			? new List<string> ()
-			: currentAdvisorOptions.ToList ();
+				: currentAdvisorOptions.ToList ();
 		
 		currentAdvisorOptions = _data.characters.Select(x => x.Key).ToList();
+		
 		AddAdvisors();
 		
 		// Generate starting options
@@ -75,6 +79,8 @@ public class ScenarioChatScreen : ChatScreen {
 		advisorsUsed = 0;
 		advisorsContainer.GetComponent<CanvasGroup>().interactable = true;
 		advisorsContainer.GetComponent<CanvasGroup>().alpha = 1;
+
+		contactsTitleText.text = "Contacts (" + advisorsUsed + "/3)";
 
     }
 
@@ -131,7 +137,7 @@ public class ScenarioChatScreen : ChatScreen {
     		.Except (currentAdvisorOptions).ToList ();
 
     	List<string> newAdvisors = currentAdvisorOptions
-    		.Except (previousAdvisorOptions).ToList ();
+			.Except (previousAdvisorOptions).ToList ();
 
     	foreach (string characterSymbol in removeAdvisors) {
     		
@@ -206,6 +212,8 @@ public class ScenarioChatScreen : ChatScreen {
 
 		advisorsUsed++;
 
+		contactsTitleText.text = "Contacts (" + advisorsUsed + "/3)";
+
 		// Disable advisor container if player used their limit for this card
 		if(advisorsUsed == advisorsUseLimit) {
 			advisorsContainer.GetComponent<CanvasGroup>().interactable = false;
@@ -223,9 +231,40 @@ public class ScenarioChatScreen : ChatScreen {
 	}
 
 	void OnScenarioEvent (ScenarioEvent e) {
-		if (e.eventType == "next_year" && !panelOpen) {
+
+		if(e.eventType == "feedback") {
+
+			KeyValuePair<string, Models.Advisor> npc = _data.characters.Where(d => d.Value.hasFeedback && d.Value.feedback.ContainsKey(e.eventSymbol)).
+								 ToDictionary(d => d.Key, d => d.Value).FirstOrDefault();
+
+			if(!npc.Equals(null)) {
+
+				ChatAction nextCardAction = new ChatAction();
+
+				UnityAction nextCard = (() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, e.eventSymbol)));
+				nextCardAction.action = nextCard;
+
+				RemoveOptions();
+				AddOptions (
+					new List<string> { "Next Problem" },
+					new List<ChatAction> { nextCardAction }
+				);
+
+				AddResponseSpeech(npc.Value.feedback[e.eventSymbol].ToString(), 
+								  DataManager.GetDataForCharacter(npc.Key));
+			}
+			else {
+				// Broadcast to open next card
+				Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, e.eventSymbol));
+			}
+
+		}
+		else if (e.eventType == "next_year" && !panelOpen) {
+
 			advisorsPanel.Play ("Opened");
 			panelOpen = true;
+		
 		}
+
 	}
 }
