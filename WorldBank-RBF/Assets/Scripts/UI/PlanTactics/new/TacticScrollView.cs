@@ -1,9 +1,34 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class TacticScrollView : MB, IBeginDragHandler, IDragHandler {
 
 	bool verticalScroll = false;
+
+	ScrollRect scroll = null;
+	ScrollRect Scroll {
+		get {
+			if (scroll == null) {
+				scroll = GetComponent<ScrollRect> ();
+			}
+			return scroll;
+		}
+	}
+
+	void Awake () {
+		Events.instance.AddListener<BeginDragTacticEvent> (OnBeginDragTacticEvent);
+		Events.instance.AddListener<EndDragTacticEvent> (OnEndDragTacticEvent);
+	}
+
+
+	void OnBeginDragTacticEvent (BeginDragTacticEvent e) {
+		Scroll.vertical = false;
+	}
+
+	void OnEndDragTacticEvent (EndDragTacticEvent e) {
+		Scroll.vertical = true;
+	}
 
 	#region IBeginDragHandler
 	public void OnBeginDrag (PointerEventData eventData) {
