@@ -4,20 +4,62 @@ using UnityEngine.UI;
 
 // http://answers.unity3d.com/questions/865191/unity-new-ui-drag-and-drop.html
 
-public class TacticSlot : MB, IDropHandler, IBeginDragHandler, IDragHandler {
+public class TacticSlot : DragLocation, IDropHandler, IBeginDragHandler, IDragHandler {
 
 	public Text text;
 	public TacticsContainer container;
 
+	Tactic currentTactic;
 	TacticItem tacticItem;
+
+	bool HasTactic {
+		get { return currentTactic != null; }
+	}
+
+	public void ClearSlot () {
+		currentTactic = null;
+	}
+
+	public void FillSlot (Tactic tactic) {
+		if (tactic.Item == null)
+			return;
+		if (HasTactic) {
+			TradeSlot (tactic);
+		} else {
+			FillEmptySlot (tactic);
+		}
+		currentTactic = tactic;
+	}
+
+	void TradeSlot (Tactic tactic) {
+		Tactic newTactic = CreateTactic ();
+		newTactic.Init (tacticItem);
+		newTactic.ForceFromSlot (tactic);
+		FillEmptySlot (tactic);
+	}
+
+	void FillEmptySlot (Tactic tactic) {
+		tacticItem = tactic.Item;
+	 	text.text = tacticItem.Title;
+	}
+
+	Tactic CreateTactic () {
+		Tactic t = ObjectPool.Instantiate<Tactic> ();
+		Vector3 createPosition = Position;
+		t.Position = createPosition;
+		t.Init (tacticItem);
+		t.DragData.FromLocation = this;
+		t.DragData.ToLocation = this;
+		return t;
+	}
 
 	#region IBeginDragHandler, IDropHandler implementation
 	public void OnBeginDrag (PointerEventData eventData) {
-		Tactic t = ObjectPool.Instantiate<Tactic> ();
-		Vector3 createPosition = Position;
-		createPosition.y += t.Height * 0.5f;
-		t.Position = createPosition;
-		t.StartDragging ();
+		if (currentTactic == null)
+			return;
+		Tactic t = CreateTactic ();
+		t.StartDragging (this);
+		currentTactic = null;
 		tacticItem = null;
 		text.text = "";
 	}
@@ -27,13 +69,11 @@ public class TacticSlot : MB, IDropHandler, IBeginDragHandler, IDragHandler {
 
 	#region IDropHandler implementation
 	public void OnDrop (PointerEventData eventData) {
-		if (Tactic.selected == null)
+		Tactic selectedTactic = Tactic.selected;
+		if (selectedTactic == null)
 			return;
-		Tactic tactic = Tactic.selected;
-		tacticItem = tactic.Item;
-		if (tacticItem != null)
-		 	text.text = tacticItem.Title;
-	 	Events.instance.Raise (new DropTacticEvent (tactic));
+		FillSlot (selectedTactic);
+	 	selectedTactic.SetDropLocation (this);
 	}
 	#endregion
 }

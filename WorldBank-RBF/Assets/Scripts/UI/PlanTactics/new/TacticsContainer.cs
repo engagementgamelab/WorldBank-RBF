@@ -1,35 +1,26 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
 
-public class TacticsContainer : MB {
-
-	readonly List<Tactic> tactics = new List<Tactic> ();
+public class TacticsContainer : DragLocation {
 
 	void Start () {
 		PlayerData.TacticGroup.onUnlock += OnUnlock;
-		Events.instance.AddListener<DropTacticEvent> (OnDropTacticEvent);
 	}
 
-	public void AddTactic (Tactic tactic, TacticItem item) {
-		tactic.Init (item, this);
+	public void AddTactic (Tactic tactic, TacticItem item, int atIndex=-1) {
+		tactic.Init (item);
 		tactic.Parent = Transform;
+		if (atIndex != -1)
+			tactic.Transform.SetSiblingIndex (atIndex);
 		UpdateIndices ();
 		tactic.Transform.Reset ();
-		tactics.Add (tactic);
 	}
 
 	void OnUnlock<T> (T item) where T : TacticItem {
 		Tactic t = ObjectPool.Instantiate<Tactic> ();
 		AddTactic (t, item);
-		/*t.Init (item, this);
-		t.Parent = Transform;
-		UpdateIndices ();
-		t.Transform.Reset ();
-		tactics.Add (t);*/
 	}
 
-	void UpdateIndices () {
+	public void UpdateIndices () {
 		int index = 0;
 		foreach (Transform child in Transform) {
 			Tactic tactic = child.GetScript<Tactic> ();
@@ -38,9 +29,5 @@ public class TacticsContainer : MB {
 				index ++;
 			}
 		}	
-	}
-
-	void OnDropTacticEvent (DropTacticEvent e) {
-		UpdateIndices ();
 	}
 }
