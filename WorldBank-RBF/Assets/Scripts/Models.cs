@@ -274,6 +274,7 @@ namespace Models {
         
         public bool narrowsNpcs { get { return narrows != null && narrows.Length > 0; } }
         public bool hasDialogue { get { return dialogue != null; } }
+        public bool hasFeedback { get { return feedback != null; } }
 
     }
 

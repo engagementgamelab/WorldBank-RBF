@@ -5,14 +5,19 @@ using System.Collections.Generic;
 
 public class NotebookManager : MB {
 
+	/// <summary>
+	/// Called any time indicators are updated.
+	/// </summary>
+	public OnUpdate onUpdate;
+	
+	public delegate void OnUpdate ();	
+
 	public NotebookCanvas map;
 	public NotebookCanvas priorities;
 	public NotebookCanvas data;
 	public NotebookCanvas indicators;
 
-	public GameObject tabGroup;
-
-	Dictionary<string, NotebookCanvas> canvases;
+	public GameObject tabGroup;Dictionary<string, NotebookCanvas> canvases;
 	Dictionary<string, NotebookCanvas> Canvases {
 		get {
 			if (canvases == null) {
@@ -160,19 +165,33 @@ public class NotebookManager : MB {
 		// Not using data canvas any more (I believe??) - Jay
 		// data.UpdateIndicators(intBirths, intVaccinations, intQOC);
 		indicators.UpdateIndicators(intBirths, intVaccinations, intQOC);
+
+		SendUpdateMessage();
 		
 	}
 
+	protected void SendUpdateMessage () {
+		if (onUpdate != null) onUpdate ();
+	}
+
 	void OpenCanvas (string id) {
+		
 		foreach (var canvas in Canvases) {
+		
+			if(canvas.Equals(null) || canvas.Value == null)
+				continue;
+
 			bool open = canvas.Key == id;
 			canvas.Value.gameObject.SetActive (open);
+
 			if (open) {
 				canvas.Value.Open ();
 			} else {
 				canvas.Value.Close ();
 			}
+
 		}
+
 		activeCanvas = id;
 	}
 

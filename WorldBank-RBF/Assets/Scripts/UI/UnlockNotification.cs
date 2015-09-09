@@ -64,6 +64,14 @@ public class UnlockNotification : MB {
 				Color.white, 
 				new [] { "newtactic", "plan" }
 			)
+		},
+		{ 
+			"indicators", 
+			new Settings (
+				"Indicators updated!", 
+				Color.cyan, 
+				new [] { "graphupdated", "phase2" }
+			)
 		}
 	};
 
@@ -81,6 +89,8 @@ public class UnlockNotification : MB {
 		PlayerData.DialogueGroup.onUnlock += OnAddDialogue;
 		PlayerData.RouteGroup.onUnlock += OnAddRoute;
 		PlayerData.TacticGroup.onUnlock += OnAddTactic;
+
+		NotebookManager.Instance.onUpdate += OnIndicatorsUpdated;
 	}
 
 	void OnAddDialogue (DialogueItem dialogue) {
@@ -93,6 +103,10 @@ public class UnlockNotification : MB {
 
 	void OnAddTactic (TacticItem tactic) {
 		OnAdd ("tactic", tactic.Context);
+	}
+
+	void OnIndicatorsUpdated () {
+		OnAdd ("indicators", "Click here to open.");
 	}
 
 	void OnAdd (string type, string context) {
@@ -145,6 +159,7 @@ public class UnlockNotification : MB {
 			case "dialogue": SlideOut (); break;
 			case "route": map.OnClick (); break;
 			case "tactic": plan.OnClick (); break;
+			case "indicators": NotebookManager.Instance.indicators.Open(); break;
 		}
 	}
 }

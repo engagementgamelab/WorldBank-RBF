@@ -125,11 +125,18 @@ public class ChatScreen : GenericDialogBox {
 
 	}
 
+	public void RemoveResponses () {
+		
+		foreach (AdvisorMessage msg in messagesContainer.GetComponentsInChildren<AdvisorMessage>()) 
+			msg.gameObject.SetActive (false);
+
+	}
+
 	// Scenario option was selected
 	protected virtual void OptionSelected(string strOptionSymbol) {
 
-		// Broadcast to open next card
-		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, strOptionSymbol));
+		// Broadcast to get card feedback
+		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.FEEDBACK, strOptionSymbol));
 	}
 
 	void YearEndOptionSelected (string optionTxt, string optionVal) {
@@ -164,6 +171,7 @@ public class ChatScreen : GenericDialogBox {
 	}
 
 	protected SystemMessage AddSystemMessage (string content) {
+
 		SystemMessage message = ObjectPool.Instantiate<SystemMessage>("Scenario");
 		message.Content = content;
 		message.transform.SetParent(messagesContainer);
@@ -173,6 +181,7 @@ public class ChatScreen : GenericDialogBox {
 			StartCoroutine (CoScrollToEnd ());
 
 		return message;
+
 	}
 
 	protected void AddSystemButtons (List<string> btnContent, List<ChatAction> btnAction) {

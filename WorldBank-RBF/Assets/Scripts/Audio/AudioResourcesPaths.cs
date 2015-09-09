@@ -33,7 +33,7 @@ public static class AudioResourcesPaths {
 		return t == null ? new string[0] : Regex.Split (t.text, "\n");
 	}
 
-	#if UNITY_EDITOR
+	#if UNITY_EDITOR && !UNITY_WEBPLAYER
 	public static void WriteDirectories (string[] lines) {
 		foreach (string line in lines) {
 			WriteLineToFile (DirectoriesFilePath, line);

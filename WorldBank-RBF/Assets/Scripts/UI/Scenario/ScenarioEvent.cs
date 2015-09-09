@@ -14,6 +14,7 @@ public class ScenarioEvent : GameEvent {
 	public readonly string eventSymbol;
 	public readonly float[] cooldown;
 
+	public static readonly string FEEDBACK = "feedback";
 	public static readonly string NEXT = "next";
 	public static readonly string NEXT_YEAR = "next_year";
 	public static readonly string PROBLEM_QUEUE = "problem_queue";
