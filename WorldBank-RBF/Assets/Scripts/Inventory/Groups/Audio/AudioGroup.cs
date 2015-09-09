@@ -51,7 +51,7 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 		List<string> paths;
 
 		// Writes the paths to a txt file if in the editor, otherwise reads from the txt file
-		#if UNITY_EDITOR
+		#if UNITY_EDITOR && !UNITY_WEBPLAYER
 		paths = AudioResourcesPaths.WriteFileNames (Application.dataPath + "/Resources/" + path);
 		#else
 		paths = AudioResourcesPaths.GetFilesAtDirectory (GroupPath).ToList ();
@@ -66,7 +66,7 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 		string[] dirs;
 		
 		// Writes the path to a txt file if in the editor, otherwise reads from the txt file		
-		#if UNITY_EDITOR
+		#if UNITY_EDITOR && !UNITY_WEBPLAYER
 		dirs = Directory.GetDirectories (ResourcesPath + GroupPath);	
 		AudioResourcesPaths.WriteDirectories (dirs);
 		#else
