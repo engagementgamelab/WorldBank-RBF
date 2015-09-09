@@ -245,7 +245,7 @@ public class ScenarioManager : MonoBehaviour {
 		Debug.Log("open scenario card with index " + cardIndex);
 
 		// Clear all prior chat
-		scenarioChat.RemoveResponses();
+		scenarioChat.Clear();
 
 		// Generate scenario card for the current card index, as well as if the scenario is in a twist
 		Models.ScenarioCard card = DataManager.GetScenarioCardByIndex(cardIndex, scenarioTwistIndex);
@@ -262,8 +262,9 @@ public class ScenarioManager : MonoBehaviour {
 	 	ScenarioQueue.RemoveProblemCard(card);
 
 		// Create the card dialog
-		DialogManager.instance.SetCard(card);// Start card cooldown
-		
+		DialogManager.instance.SetCard(card);
+
+		// Start card cooldown
 		if(enableCooldown) {
 			if(problemCardCooldown == null) {
 				if(!problemCardDurationOverride.Equals(0f))
@@ -324,23 +325,6 @@ public class ScenarioManager : MonoBehaviour {
 
 		selectedOptions.Add(DataManager.GetUnlockableBySymbol(strSymbol).title);
 		usedAffects.Add(dictAffect.Values.ToArray());
-
-		// Initialize tactics cards after first problem card done
-		if(currentYear == 1 && currentCardIndex == 0) {
-			List<string> availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
-			
-			// Also add tactics that show only if they are not part of player's selected plan
-			foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
-			{
-				if(!availableTactics.Contains(tactic))
-					availableTactics.Add(tactic);
-			}
-
-			DialogManager.instance.SetAvailableTactics (availableTactics);
-
-			// Enable supervisor tab
-			supervisorChatTab.GetComponent<CanvasGroup>().alpha = 1;
-		}
 		
 		GetNextCard();
 		currentQueueIndex++;
@@ -433,7 +417,9 @@ public class ScenarioManager : MonoBehaviour {
 
     	// Add defaults to used affects and calc indicators
     	usedAffects.Add(response["default_affects"] as int[]);
-    	CalculateIndicators();
+   
+    	// This is the only time we won't show notification
+    	CalculateIndicators(false);
 
     	OpenScenarioCard(0);
 
@@ -441,6 +427,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		// SFX
 		AudioManager.Sfx.Play ("login", "Phase2");
+
+		DialogManager.instance.CreateTutorialScreen("phase_2_start");
 
     }
 
@@ -473,7 +461,8 @@ public class ScenarioManager : MonoBehaviour {
     /// <summary>
     // Calculates indicators, given the currently used affects, and then the affect bias for the current plan
     /// </summary>
-    void CalculateIndicators() {
+    /// <param name="notify">Show notification.</param>
+    void CalculateIndicators(bool notify=true) {
 
 		foreach(int[] dictAffect in usedAffects) {
 
@@ -491,7 +480,7 @@ public class ScenarioManager : MonoBehaviour {
 
 		usedAffects.Clear();
 
-		NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2]);
+		NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2], notify);
 
 		scenarioInfoAnimator.Play("IndicatorsUpdate", -1, 0);
 
@@ -539,7 +528,24 @@ public class ScenarioManager : MonoBehaviour {
     		case "next":
 
     			// Clear all prior chat
-    			scenarioChat.RemoveResponses();
+    			// scenarioChat.Clear();
+
+				// Initialize tactics cards after first problem card done
+				if(currentYear == 1 && currentCardIndex == 0) {
+					List<string> availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+					
+					// Also add tactics that show only if they are not part of player's selected plan
+					foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
+					{
+						if(!availableTactics.Contains(tactic))
+							availableTactics.Add(tactic);
+					}
+
+					DialogManager.instance.SetAvailableTactics (availableTactics);
+
+					// Enable supervisor tab
+					supervisorChatTab.GetComponent<CanvasGroup>().alpha = 1;
+				}
 
     			if(problemCardDuration > 0) {
     				scenarioChat.noMessagesPanel.gameObject.SetActive(true);

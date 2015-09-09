@@ -27,6 +27,9 @@ public class TutorialGUI : Editor
 	Models.Tooltip[] tooltips;
 
 	[HideInInspector]
+	public bool spotlightEnabled;
+
+	[HideInInspector]
 	public float spotlightXPos = 0;
 
 	[HideInInspector]
@@ -80,36 +83,57 @@ public class TutorialGUI : Editor
 	        GUILayout.Label ("Overlay Location:");
 
 		    _tutorialScreen.layoutIndex = EditorGUILayout.Popup(_tutorialScreen.layoutIndex, layoutLabels);
+
+		    _tutorialScreen.spotlightEnabled = EditorGUILayout.Toggle("Spotlight On", _tutorialScreen.spotlightEnabled);
+
+		    if(_tutorialScreen.spotlightEnabled) {
 		    
-	        GUILayout.Label ("Spotlight Position:");
+		        GUILayout.Label ("Spotlight Position:");
 
-	        EditorGUILayout.BeginHorizontal ("X");
-	        EditorGUILayout.PrefixLabel("X");
-		    spotlightXPos = EditorGUILayout.Slider(spotlightXPos, -2, .6f);
-		    EditorGUILayout.EndHorizontal();
+		        EditorGUILayout.BeginHorizontal ("X");
+		        EditorGUILayout.PrefixLabel("X");
+			    spotlightXPos = EditorGUILayout.Slider(spotlightXPos, .7f, -2.72f);
+			    EditorGUILayout.EndHorizontal();
 
-	        EditorGUILayout.BeginHorizontal ("Y");
-	        EditorGUILayout.PrefixLabel("Y");
-		    spotlightYPos = EditorGUILayout.Slider(spotlightYPos, -2, .6f);
-		    EditorGUILayout.EndHorizontal();
+		        EditorGUILayout.BeginHorizontal ("Y");
+		        EditorGUILayout.PrefixLabel("Y");
+			    spotlightYPos = EditorGUILayout.Slider(spotlightYPos, .7f, -2.72f);
+			    EditorGUILayout.EndHorizontal();
+
+		        GUILayout.Label ("Spotlight Size:");
+
+			    spotlightWidth = EditorGUILayout.Slider("Width", spotlightWidth, 1, 3);
+
+			    spotlightHeight = EditorGUILayout.Slider("Height", spotlightHeight, 1, 3);
+
+			    _tutorialScreen.SpotlightRect = new Rect(spotlightXPos, spotlightYPos, spotlightWidth, spotlightHeight);
+			
+			}
+			else
+			    _tutorialScreen.SpotlightRect = new Rect(1, spotlightYPos, spotlightWidth, spotlightHeight);
 
 		    // Update the selected choice in the underlying object
 		    _tutorialScreen.Layout = layoutLabels[_tutorialScreen.layoutIndex];
 
-		    _tutorialScreen.SpotlightRect = new Rect(spotlightXPos, spotlightYPos, spotlightWidth, spotlightHeight);
-
 		    string yamlPreview = String.Format("{0}:\n" + 
-												    "  spotlight_position: [{1}, {2}]\n" + 
-												    "  spotlight_size: [{3}, {4}]\n" + 
-											    	"  overlay_location: \"{5}\"\n" + 
-										    	    "  text: \"{6}\"", 
+											    	"  overlay_location: \"{1}\"\n" + 
+										    	    "  text: \"{2}\"", 
 										    	    _tutorialScreen.TooltipKey, 
-										    	    spotlightXPos,
-										    	    spotlightYPos,
-										    	    spotlightWidth,
-										    	    spotlightHeight,
 										    	    _tutorialScreen.overlayLocation,
 										    	    _tutorialScreen.overlayText);
+
+
+		    if(_tutorialScreen.spotlightEnabled) {
+
+		    	yamlPreview += String.Format(
+					    	   "\n  spotlight_position: [{0}, {1}]\n" + 
+							   "  spotlight_size: [{2}, {3}]",
+					    	    spotlightXPos,
+					    	    spotlightYPos,
+					    	    spotlightWidth,
+					    	    spotlightHeight);
+
+		    }
 									
 			GUI.color = Color.cyan;
 	        GUILayout.Label ("YAML Preview:", EditorStyles.boldLabel);

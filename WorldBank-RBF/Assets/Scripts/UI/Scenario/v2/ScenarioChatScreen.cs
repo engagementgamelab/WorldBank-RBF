@@ -177,6 +177,16 @@ public class ScenarioChatScreen : ChatScreen {
     	}
 	}
 
+	public void Clear () {
+    	ObjectPool.DestroyChildren<AdvisorMessage>(messagesContainer);
+    	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer);
+    	RemoveOptions ();
+
+    	// Disable advisors
+		advisorsContainer.GetComponent<CanvasGroup>().interactable = false;
+		advisorsContainer.GetComponent<CanvasGroup>().alpha = .4f;
+	}
+
 	void AdvisorSelected(string strAdvisorSymbol) {
 
 		previousAdvisorOptions = currentAdvisorOptions.ToList ();
@@ -222,12 +232,6 @@ public class ScenarioChatScreen : ChatScreen {
 
 		// SFX
 		AudioManager.Sfx.Play ("addtodiscussion", "Phase2");
-	}
-
-	void Clear () {
-    	ObjectPool.DestroyChildren<AdvisorMessage>(messagesContainer);
-    	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer);
-    	RemoveOptions ();
 	}
 
 	void OnScenarioEvent (ScenarioEvent e) {

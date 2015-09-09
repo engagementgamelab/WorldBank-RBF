@@ -389,6 +389,7 @@ namespace Models {
         public float[] spotlight_size { get; set; }
         public string overlay_location { get; set; }
         public string text { get; set; }
+        public bool confirm { get; set; }
     
     }
 }
