@@ -43,8 +43,6 @@ public class DialogManager : MonoBehaviour {
 	}
 
 	// Variable Definitions
-	// public Transform uiCanvasRoot;
-	// public Button btnPrefab;
 	public bool version2 = false;
 	public ScenarioChatScreen scenarioChat;
 	public SupervisorChatScreen supervisorChat;
