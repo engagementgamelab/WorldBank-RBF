@@ -9,6 +9,7 @@ public class TutorialRaycaster : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		// If mouse is in rect (mask), allow click behind GUI
 		bool mouseInRect = RectTransformUtility.RectangleContainsScreenPoint(gameObject.GetComponent<RectTransform>(), Input.mousePosition, null);
 
 		transform.parent.gameObject.GetComponent<CanvasGroup>().blocksRaycasts = !mouseInRect;

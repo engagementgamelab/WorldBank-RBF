@@ -387,6 +387,8 @@ namespace Models {
 
         public float[] spotlight_position { get; set; }
         public float[] spotlight_size { get; set; }
+        public float[] mask_position { get; set; }
+        public float[] mask_size { get; set; }
         public string overlay_location { get; set; }
         public string text { get; set; }
         public bool confirm { get; set; }

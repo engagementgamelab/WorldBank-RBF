@@ -11,7 +11,15 @@ public class IndicatorsCanvas : NotebookCanvas {
 	public RectTransform dataColumns;
 	public RectTransform scenarioInfo;
 
+	public RectTransform[] dataBarBgs;
+	public RectTransform[] dataBarFills;
+
+	public Text[] dataBarCurrentText;
+	public Text[] dataBarGoalText;
+
 	public static List<int[]> AppliedAffects = new List<int[]>();
+	public static int[] GoalAffects;
+
 	List<string[]> displayedAffects = new List<string[]>();
 
 	Animator animator;
@@ -27,9 +35,9 @@ public class IndicatorsCanvas : NotebookCanvas {
 	// Display indicators when made visible
 	void OnEnable() {
 
-		RenderIndicators();
+//		RenderIndicators();
 
-		ShowYear(currentYearShown);
+//		ShowYear(currentYearShown);
 
     }
 
@@ -44,8 +52,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 		ObjectPool.DestroyChildren<IndicatorColumn>(dataColumns.transform);
 
 		int ind = 0;
-		float xPos = dataColumns.rect.width / 12;
-		float factor = (dataColumns.rect.height / 100);
+		// float xPos = dataColumns.rect.width / 12;
+		// float factor = (dataColumns.rect.height / 100);
 
 		foreach(string[] affects in displayedAffects) {
 
@@ -53,7 +61,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 			foreach(string affect in affects) {
 
-				float startingYPos = 0;
+				/*float startingYPos = 0;
 				float yPos = 0;
 
 				Single.TryParse(affect, out yPos);
@@ -77,13 +85,23 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 				plotLine.Initialize();
 				
-				affectType++;
+				affectType++;*/
+		
+				float graphWidth = 0;
+				Single.TryParse(displayedAffects[ind][affectType], out graphWidth);
+
+				graphWidth = (graphWidth / (float)GoalAffects[0]) * dataBarBgs[ind].rect.width;
+
+				dataBarFills[ind].sizeDelta = new Vector2(graphWidth, dataBarFills[ind].rect.height);
+				dataBarCurrentText[ind].text = displayedAffects[ind][affectType];
+				dataBarGoalText[ind].text = GoalAffects[ind].ToString();
 
 			}
 
-			xPos += (dataColumns.rect.width / 12);
 			ind++;
+
 		}
+
 
     }
 

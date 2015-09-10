@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using System;
 using System.Collections.Generic;
 
 public class TutorialScreen : MonoBehaviour {
@@ -68,6 +68,15 @@ public class TutorialScreen : MonoBehaviour {
 			SpotlightPosition();
 		}
 	}
+
+	[HideInInspector]
+	public Rect MaskRect {
+		set { 
+			maskRect = value;
+			MaskPosition();
+		}
+	}
+
 	[HideInInspector]
 	public bool spotlightEnabled;
 	
@@ -75,40 +84,37 @@ public class TutorialScreen : MonoBehaviour {
 	public int layoutIndex;
 
 	[HideInInspector]
-	public Rect spotlightRect = new Rect(1, 0, 1, 1);
-
-	[HideInInspector]
 	public string overlayLocation;
 
 	public string overlayText;
 
 	public RectTransform overlayPanel;
+	public RectTransform maskButtonRect;
 	public RawImage spotlightImage;
 
 	Button confirmButton;
 	CanvasGroup group;
 
+	public Rect maskRect = new Rect(1, 0, 1, 1);
+	public Rect spotlightRect = new Rect(1, 0, 1, 1);
+
 	string tooltipKey;
 	string currentLayout;
 
-	// Use this for initialization
-	void Start () {
-	
+	void Start() {
+
+		Image maskImg = maskButtonRect.gameObject.GetComponent<Image>();
+
+		Color imgColor = maskImg.color;
+        imgColor.a = 0;
+        maskImg.color = imgColor;
+
 	}
 
-	void Update() {
-	}
-	
-	void OnGUI() {
-
-		Debug.Log( GUIUtility.ScreenToGUIPoint(Event.current.mousePosition).normalized );
-    
-    }
-
-	public void Load(string strKey) {
+	public void Load(string strKey, string strNextKey=null) {
 
 		group = gameObject.GetComponent<CanvasGroup>();
-		confirmButton = gameObject.GetComponentInChildren<Button>();
+		confirmButton = transform.Find("Overlay/Button").GetComponent<Button>();
 
 		Models.Tooltip tooltip = DataManager.GetTooltipByKey(strKey);
 		OverlayPosition(tooltip.overlay_location);
@@ -119,18 +125,27 @@ public class TutorialScreen : MonoBehaviour {
 		if(tooltip.spotlight_position == null) {
 			spotlightEnabled = false;
 			group.blocksRaycasts = true;
+
+			DisableSpotlight();
+			SpotlightPosition();
+			MaskPosition();
 		}
 		else {
 			spotlightEnabled = true;
 			group.blocksRaycasts = false;
 
 			SpotlightRect = new Rect(tooltip.spotlight_position[0], tooltip.spotlight_position[1], tooltip.spotlight_size[0], tooltip.spotlight_size[1]);
+			MaskRect = new Rect(tooltip.mask_position[0], tooltip.mask_position[1], tooltip.mask_size[0], tooltip.mask_size[1]);
 		}
-
-		Debug.Log(GUIUtility.ScreenToGUIPoint(new Vector3(tooltip.spotlight_position[0], tooltip.spotlight_position[1], 0)).normalized);
 
 		confirmButton.gameObject.SetActive(tooltip.confirm);
 
+		confirmButton.onClick.RemoveAllListeners ();
+		confirmButton.onClick.AddListener(() => ObjectPool.Destroy<TutorialScreen>(transform));
+
+		if(!String.IsNullOrEmpty(strNextKey))
+			confirmButton.onClick.AddListener(() => DialogManager.instance.CreateTutorialScreen(strNextKey));
+		
 	}
 
 	void OverlayPosition(string strPositionLabel) {
@@ -155,9 +170,22 @@ public class TutorialScreen : MonoBehaviour {
 
 	}
 
-	void SpotlightPosition() {
+	public void DisableSpotlight() {
+
+		spotlightRect = new Rect(1, 0, 1, 1);
+		maskRect = new Rect(0, 0, 0, 0);
+	}
+
+	public void SpotlightPosition() {
 
 		spotlightImage.uvRect = spotlightRect;
 
+	}
+
+	public void MaskPosition() {
+
+		maskButtonRect.sizeDelta = new Vector2(maskRect.width, maskRect.height);	
+		maskButtonRect.anchoredPosition = new Vector2(maskRect.x, maskRect.y);
+		
 	}
 }
