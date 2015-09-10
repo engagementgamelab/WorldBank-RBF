@@ -105,15 +105,15 @@ public class CityButton : MB {
 	}
 
 	void UpdateInteractableState () {
-		/*if (IsCurrentCity) {
+		bool onRoute = IsOnCurrentCityRoute (PlayerData.CityGroup.CurrentCity);
+		if (IsCurrentCity) {
 			Button.interactable = true;
 			return;
-		}*/
+		}
 		if (!visitedCapitol && symbol != "capitol") {
 			Button.interactable = false;
 			return;
 		}
-		bool onRoute = IsOnCurrentCityRoute (PlayerData.CityGroup.CurrentCity);
 		if (!PlayerData.InteractionGroup.Empty) {
 			Button.interactable = false;
 		} else {

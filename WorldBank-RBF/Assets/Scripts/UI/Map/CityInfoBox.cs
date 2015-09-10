@@ -54,6 +54,10 @@ public class CityInfoBox : MB {
 				Body = "You've already visited this city but you can pass through it.";
 				SetButtons ("Cancel", Close, "Visit", () => TravelTo (city, button.ActiveRoute));
 			} else {
+				if (currentCity && PlayerData.InteractionGroup.Count > 0) {
+					NotebookManagerPhaseOne.Instance.CloseCanvases ();
+					return;
+				}
 				Body = "You've already visited this city but you can pass through it or spend an extra day talking to the rest of the people";
 				if (currentCity) {
 					SetButtons ("Cancel", Close, "Extra Day", () => StayExtraDay (city));

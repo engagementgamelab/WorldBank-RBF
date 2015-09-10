@@ -9,10 +9,13 @@ public class CanvasToggle : MonoBehaviour {
 		get {
 			if (image == null) {
 				image = GetComponent<Image> ();
+				defaultImage = image.sprite;
 			}
 			return image;
 		}
 	}
+
+	Sprite defaultImage;
 
 	Button button = null;
 	Button Button {
@@ -24,6 +27,7 @@ public class CanvasToggle : MonoBehaviour {
 		}
 	}
 
+	public Sprite returnImage;
 	public NotebookCanvas thisCanvas;
 	public List<CanvasToggle> otherToggles;
 	public bool openAtStart = false;
@@ -59,6 +63,7 @@ public class CanvasToggle : MonoBehaviour {
 		thisCanvas.gameObject.SetActive (active);
 		NotebookManagerPhaseOne.Instance.IsOpen = active;
 		activeCanvas = active ? thisCanvas : null;
+		Image.sprite = active ? returnImage : defaultImage;
 	}
 
 	void SetButtonActive (bool active) {

@@ -43,8 +43,18 @@ public class CitiesManager : MB {
 	public CityInfoBox cityInfoBox;
 	public CurrentCityIndicator currentCityIndicator;
 
+	bool startInCapitol = true;
+
 	void Start () {
 		InitCities ();
+	}
+
+	public void SetCity (CityItem city) {
+		city.Visited = true;
+		if (city.Symbol == "capitol") city.StayedExtraDay = true;
+		PlayerData.InteractionGroup.SetInteractions (city.Symbol);
+		PlayerData.CityGroup.CurrentCity = city.Symbol;
+		OnVisit ();
 	}
 
 	/// <summary>
@@ -59,6 +69,8 @@ public class CitiesManager : MB {
 			button.CityItem = cityItems.Find (x => x.Symbol == symbol);
 			button.Routes = routeItems.FindAll (x => x.Terminals.ContainsCity (symbol));
 		}
+		if (startInCapitol)
+			SetCity (cityItems.Find (x => x.Symbol == "capitol"));
 	}
 
 	/// <summary>
