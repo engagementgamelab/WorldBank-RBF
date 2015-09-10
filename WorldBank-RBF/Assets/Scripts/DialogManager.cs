@@ -259,13 +259,20 @@ public class DialogManager : MonoBehaviour {
 	/// <summary>
 	/// Generate a tooltip screen
 	/// </summary>
-	public void CreateTutorialScreen(string strTooltipKey) {
+	public void CreateTutorialScreen(string strTooltipKey, string strNextKey=null) {
 
 		TutorialScreen tutScreen = ObjectPool.Instantiate<TutorialScreen>();
-		tutScreen.Load(strTooltipKey);
+		tutScreen.Load(strTooltipKey, strNextKey);
 
 		tutScreen.transform.SetParent(GameObject.Find("Overlay").transform);
 
+	}
+
+	/// <summary>
+	/// Remove all tooltip screens
+	/// </summary>
+	public void RemoveTutorialScreen() {
+		ObjectPool.DestroyAll<TutorialScreen>();
 	}
 
 	GenericButton CreateButton (string text, UnityAction onClick) {

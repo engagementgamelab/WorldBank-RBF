@@ -23,7 +23,8 @@ public class ScenarioManager : MonoBehaviour {
 	public SupervisorChatScreen supervisorChat;
 
 	public IndicatorsCanvas indicatorsCanvas;
-	public Animator scenarioInfoAnimator;
+	public Animator scenarioAnimator;
+	public Animator indicatorsAnimator;
 
 	public Button scenarioChatTab;
 	public Button supervisorChatTab;
@@ -43,7 +44,7 @@ public class ScenarioManager : MonoBehaviour {
 	ScenarioYearEndDialog yearEndPanel;
 
 	int[] currentAffectValues;
-	int[] currentAffectBias;
+	int[] currentAffectGoals;
 
 	string[] monthsLabels = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct",	"Nov", "Dec" };
 
@@ -174,7 +175,7 @@ public class ScenarioManager : MonoBehaviour {
 		int yearLength = DataManager.ScenarioLength(scenarioTwistIndex);
 
 		// Open supervisor panel if no more cards, and disable scenario tab
-		if(cardIndex == yearLength)
+		/*if(cardIndex == yearLength)
 		{
 			scenarioChat.disabledPanel.gameObject.SetActive(true);
 			supervisorChat.gameObject.SetActive(true);
@@ -183,21 +184,10 @@ public class ScenarioManager : MonoBehaviour {
 			supervisorChatTab.interactable = false;
 		}
 		else
-			scenarioChatTab.gameObject.SetActive(true);
+			scenarioChatTab.gameObject.SetActive(true);*/
  
 		// Should we display a year break (happens if forced by timer)?
-		if(openYearEnd && !queueProblemCard) {
-
-			// If current month is fewer than 12 (player managed to finish all problems before year end), calculate affects for all missing months
-			// TODO: WILL THIS CHANGE?
-			if(currentMonth < 12) {
-				int mo = 0;
-				while(mo < 12-currentMonth) {
-					CalculateIndicators();
-					mo++;
-				}
-			}
-
+		if(nextCardIndex == yearLength) {
 			// Hide all scenario problem cards
 			EndYear();
 
@@ -205,11 +195,7 @@ public class ScenarioManager : MonoBehaviour {
 			if(currentYear == 3) {
 
 				// Show indicators
-				NotebookManager.Instance.OpenIndicators();
-
-				// Show scenario end panel and hide cooldown
-				// scenarioEndPanel.gameObject.SetActive(true); TODO: Show system message instead
-				scenarioCooldownText.gameObject.SetActive(false);
+				// NotebookManager.Instance.OpenIndicators();
 
 				monthCooldown.Stop();
 
@@ -298,24 +284,25 @@ public class ScenarioManager : MonoBehaviour {
 		// Queue always starts at 0
 		currentQueueIndex = 0;
 		
-		scenarioChat.gameObject.SetActive(true);
-		supervisorChat.gameObject.SetActive(false);
+		// scenarioChat.gameObject.SetActive(true);
+		// supervisorChat.gameObject.SetActive(false);
 
-		scenarioChatTab.gameObject.SetActive(true);
-		scenarioChatTab.interactable = false;
-		supervisorChatTab.interactable = false;
-		supervisorChatTab.GetComponent<CanvasGroup>().alpha = .5f;
+		// scenarioChatTab.gameObject.SetActive(true);
+		// scenarioChatTab.interactable = false;
+		// supervisorChatTab.interactable = false;
+		// supervisorChatTab.GetComponent<CanvasGroup>().alpha = .5f;
 
 		// "Year end" screen
-		openYearEnd = false;
 		inYearEnd = true;
-		queueProblemCard = false;
 
 		// Update timer text
 		scenarioCooldownText.text = "Break - Year " + currentYear;
 
 		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
-		DialogManager.instance.EndYear (scenarioConf, selectedOptions);
+		// DialogManager.instance.EndYear (scenarioConf, selectedOptions);
+
+		indicatorsAnimator.Play("IndicatorsOpen");
+		scenarioAnimator.Play("ScenarioClose");
 
 	}
 
@@ -328,6 +315,8 @@ public class ScenarioManager : MonoBehaviour {
 		
 		GetNextCard();
 		currentQueueIndex++;
+
+		CalculateIndicators(false);
 
 	}
 
@@ -392,10 +381,6 @@ public class ScenarioManager : MonoBehaviour {
 
 		if(enableCooldown) {
 
-			monthCooldown = Timers.StartTimer(gameObject, new [] { monthLengthSeconds });
-			monthCooldown.Symbol = "month_cooldown";
-			monthCooldown.onEnd += MonthEnd;
-
 			phaseCooldown = Timers.StartTimer(gameObject, new [] { phaseLength });
 			phaseCooldown.Symbol = "phase_cooldown";
 			phaseCooldown.onTick += OnCooldownTick;
@@ -411,15 +396,12 @@ public class ScenarioManager : MonoBehaviour {
     	// Save tactics that are a part of this plan
     	tacticsAvailable = response["tactics"];
 
-    	// Set initial values and calc the base affect values for the plan
+    	// Set initial/goal values and calc the base affect values for the plan
     	currentAffectValues = response["default_affects"] as int[];
-    	currentAffectBias = response["affects_bias"] as int[];
+    	IndicatorsCanvas.GoalAffects = response["affects_goal"] as int[];
 
     	// Add defaults to used affects and calc indicators
     	usedAffects.Add(response["default_affects"] as int[]);
-   
-    	// This is the only time we won't show notification
-    	CalculateIndicators(false);
 
     	OpenScenarioCard(0);
 
@@ -427,8 +409,11 @@ public class ScenarioManager : MonoBehaviour {
 
 		// SFX
 		AudioManager.Sfx.Play ("login", "Phase2");
+   
+    	// This is the only time we won't show notification
+    	CalculateIndicators(false);
 
-		DialogManager.instance.CreateTutorialScreen("phase_2_start");
+		// DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_indicators");
 
     }
 
@@ -472,9 +457,9 @@ public class ScenarioManager : MonoBehaviour {
 
 		}
 
-		currentAffectValues[0] += currentAffectBias[0];
-		currentAffectValues[1] += currentAffectBias[1];
-		currentAffectValues[2] += currentAffectBias[2];
+		// currentAffectValues[0] += currentAffectBias[0];
+		// currentAffectValues[1] += currentAffectBias[1];
+		// currentAffectValues[2] += currentAffectBias[2];
 
 		Debug.Log("--> Indicators: " + currentAffectValues[0] + ", " + currentAffectValues[1] + ", " + currentAffectValues[2]);
 
@@ -482,7 +467,7 @@ public class ScenarioManager : MonoBehaviour {
 
 		NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2], notify);
 
-		scenarioInfoAnimator.Play("IndicatorsUpdate", -1, 0);
+		// scenarioInfoAnimator.Play("IndicatorsUpdate", -1, 0);
 
     }
 
@@ -493,8 +478,6 @@ public class ScenarioManager : MonoBehaviour {
 
     	if(inYearEnd)
     		return;
-
-		CalculateIndicators();	
 
 		currentMonth++;
 

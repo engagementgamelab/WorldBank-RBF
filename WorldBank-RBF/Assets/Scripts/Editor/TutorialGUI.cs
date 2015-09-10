@@ -29,18 +29,6 @@ public class TutorialGUI : Editor
 	[HideInInspector]
 	public bool spotlightEnabled;
 
-	[HideInInspector]
-	public float spotlightXPos = 0;
-
-	[HideInInspector]
-	public float spotlightYPos = 0;
-
-	[HideInInspector]
-	public float spotlightWidth = 3;
-
-	[HideInInspector]
-	public float spotlightHeight = 3;
-
 	// Display game layoutLabels dropdown and pass choice to SceneManager
     public override void OnInspectorGUI()
     {
@@ -65,7 +53,6 @@ public class TutorialGUI : Editor
 
 			// Get tooltips
 			tooltipLabels = DataManager.GetTooltipKeys();
-			// tooltips = 
 
 		}
 
@@ -89,29 +76,29 @@ public class TutorialGUI : Editor
 		    if(_tutorialScreen.spotlightEnabled) {
 		    
 		        GUILayout.Label ("Spotlight Position:");
-
-		        EditorGUILayout.BeginHorizontal ("X");
-		        EditorGUILayout.PrefixLabel("X");
-			    spotlightXPos = EditorGUILayout.Slider(spotlightXPos, .7f, -2.72f);
-			    EditorGUILayout.EndHorizontal();
-
-		        EditorGUILayout.BeginHorizontal ("Y");
-		        EditorGUILayout.PrefixLabel("Y");
-			    spotlightYPos = EditorGUILayout.Slider(spotlightYPos, .7f, -2.72f);
-			    EditorGUILayout.EndHorizontal();
+			    _tutorialScreen.spotlightRect.x = EditorGUILayout.Slider("X", _tutorialScreen.spotlightRect.x, .7f, -2.72f);
+			    _tutorialScreen.spotlightRect.y = EditorGUILayout.Slider("Y", _tutorialScreen.spotlightRect.y, .7f, -2.72f);
 
 		        GUILayout.Label ("Spotlight Size:");
+			    _tutorialScreen.spotlightRect.width = EditorGUILayout.Slider("Width", _tutorialScreen.spotlightRect.width, 1, 5);
+			    _tutorialScreen.spotlightRect.height = EditorGUILayout.Slider("Height", _tutorialScreen.spotlightRect.height, 1, 5);
 
-			    spotlightWidth = EditorGUILayout.Slider("Width", spotlightWidth, 1, 3);
+		        GUILayout.Label ("Mask Position:");
+			    _tutorialScreen.maskRect.x = EditorGUILayout.Slider("X", _tutorialScreen.maskRect.x, 0, 800);
+			    _tutorialScreen.maskRect.y = EditorGUILayout.Slider("Y", _tutorialScreen.maskRect.y, 0, -600);
 
-			    spotlightHeight = EditorGUILayout.Slider("Height", spotlightHeight, 1, 3);
+		        GUILayout.Label ("Mask Size:");
 
-			    _tutorialScreen.SpotlightRect = new Rect(spotlightXPos, spotlightYPos, spotlightWidth, spotlightHeight);
+			    _tutorialScreen.maskRect.width = EditorGUILayout.Slider("Width", _tutorialScreen.maskRect.width, 1, 500);
+			    _tutorialScreen.maskRect.height = EditorGUILayout.Slider("Height", _tutorialScreen.maskRect.height, 1, 500);
+
+				_tutorialScreen.SpotlightPosition();
+			    _tutorialScreen.MaskPosition();
 			
 			}
 			else
-			    _tutorialScreen.SpotlightRect = new Rect(1, spotlightYPos, spotlightWidth, spotlightHeight);
-
+				_tutorialScreen.DisableSpotlight();
+		    
 		    // Update the selected choice in the underlying object
 		    _tutorialScreen.Layout = layoutLabels[_tutorialScreen.layoutIndex];
 
@@ -127,17 +114,19 @@ public class TutorialGUI : Editor
 
 		    	yamlPreview += String.Format(
 					    	   "\n  spotlight_position: [{0}, {1}]\n" + 
-							   "  spotlight_size: [{2}, {3}]",
-					    	    spotlightXPos,
-					    	    spotlightYPos,
-					    	    spotlightWidth,
-					    	    spotlightHeight);
+							   "  spotlight_size: [{2}, {3}]\n" + 
+							   "  mask_position: [{4}, {5}]\n" + 
+							   "  mask_size: [{6}, {7}]", 
+					    	    _tutorialScreen.spotlightRect.x, _tutorialScreen.spotlightRect.y,
+					    	    _tutorialScreen.spotlightRect.width, _tutorialScreen.spotlightRect.height,
+					    	    _tutorialScreen.maskRect.x, _tutorialScreen.maskRect.y,
+					    	    _tutorialScreen.maskRect.width , _tutorialScreen.maskRect.height);
 
 		    }
 									
 			GUI.color = Color.cyan;
 	        GUILayout.Label ("YAML Preview:", EditorStyles.boldLabel);
-		    EditorGUILayout.LabelField(yamlPreview, GUILayout.Height(90));
+		    EditorGUILayout.LabelField(yamlPreview, GUILayout.Height(100));
 							    	   
 		    if (GUILayout.Button ("Copy YAML"))
 				EditorGUIUtility.systemCopyBuffer = yamlPreview;
