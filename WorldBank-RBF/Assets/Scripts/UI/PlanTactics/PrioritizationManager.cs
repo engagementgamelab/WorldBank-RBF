@@ -13,8 +13,12 @@ public class PrioritizationManager : NotebookCanvas {
 	public Text scoreText;
 	public Text feedbackText;
 
+	void Awake () {
+		PlayerData.TacticPriorityGroup.onUpdate += OnUpdatePriorities;
+	}
+
 	public override void Open () {
-		continueButton.SetActive (NotebookManager.Instance.MakingPlan);		
+		continueButton.SetActive (NotebookManager.Instance.MakingPlan);
 	}
 
 	public void NamePlan() {
@@ -47,6 +51,10 @@ public class PrioritizationManager : NotebookCanvas {
 
 		Application.LoadLevel("PhaseTwo");
 
+	}
+
+	void OnUpdatePriorities () {
+		continueButton.SetActive (PlayerData.TacticPriorityGroup.Count == 6);
 	}
 
 	// Get response from submitting a plan

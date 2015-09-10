@@ -177,9 +177,6 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	public override InventoryItem Remove (InventoryItem item=null) {
 		
 		if (Empty) return null;
-		/*InventoryItem removedItem = (item == null)
-			? items[0]
-			: item;*/
 		InventoryItem removedItem = items[0] ?? item;
 		if (item == null) {
 			items.RemoveAt (0);

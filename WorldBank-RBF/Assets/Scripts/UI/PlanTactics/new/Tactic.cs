@@ -90,6 +90,7 @@ public class Tactic : MB {
 	}
 
 	void OnEnable () {
+		RectTransform.sizeDelta = new Vector2 (380f, 180f);
 		if (LocalScale.x < 1 || LocalScale.y < 1)
 			StartCoroutine (CoScale (LocalScale, Vector3.one));
 	}
@@ -151,6 +152,7 @@ public class Tactic : MB {
 	}
 
 	public void ForceFromSlot (Tactic replacementTactic) {
+		PlayerData.TacticPriorityGroup.Remove (Item);
 		TacticDragData replacementData = replacementTactic.DragData;
 		if (replacementData.FromContainer != null) {
 			MoveToContainerBottom ();

@@ -2,10 +2,9 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// http://answers.unity3d.com/questions/865191/unity-new-ui-drag-and-drop.html
-
 public class TacticSlot : DragLocation, IDropHandler, IBeginDragHandler, IDragHandler {
 
+	public int index;
 	public Text text;
 	public TacticsContainer container;
 
@@ -29,6 +28,8 @@ public class TacticSlot : DragLocation, IDropHandler, IBeginDragHandler, IDragHa
 			FillEmptySlot (tactic);
 		}
 		currentTactic = tactic;
+		tacticItem.Priority = index;
+		PlayerData.TacticPriorityGroup.Add (tacticItem);
 	}
 
 	void TradeSlot (Tactic tactic) {
@@ -60,6 +61,8 @@ public class TacticSlot : DragLocation, IDropHandler, IBeginDragHandler, IDragHa
 		Tactic t = CreateTactic ();
 		t.StartDragging (this);
 		currentTactic = null;
+		tacticItem.Priority = -1;
+		PlayerData.TacticPriorityGroup.Remove (tacticItem);
 		tacticItem = null;
 		text.text = "";
 	}

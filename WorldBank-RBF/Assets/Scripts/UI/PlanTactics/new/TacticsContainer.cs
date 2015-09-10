@@ -2,8 +2,17 @@
 
 public class TacticsContainer : DragLocation {
 
-	void Start () {
+	void OnEnable () {
+		Clear ();
 		PlayerData.TacticGroup.onUnlock += OnUnlock;
+		foreach (TacticItem item in PlayerData.TacticGroup.Items) {
+			if (item.Unlocked && item.Priority == -1)
+				OnUnlock<TacticItem> (item);
+		}
+	}
+
+	void OnDisable () {
+		PlayerData.TacticGroup.onUnlock -= OnUnlock;
 	}
 
 	public void AddTactic (Tactic tactic, TacticItem item, int atIndex=-1) {
@@ -29,5 +38,9 @@ public class TacticsContainer : DragLocation {
 				index ++;
 			}
 		}	
+	}
+
+	void Clear () {
+		ObjectPool.DestroyAll<Tactic> ();
 	}
 }

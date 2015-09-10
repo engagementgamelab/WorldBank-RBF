@@ -45,7 +45,8 @@ public class CanvasToggle : MonoBehaviour {
 	}
 
 	public void OnClick () {
-		if (activeCanvas == thisCanvas && !NotebookManagerPhaseOne.Instance.CanCloseNotebook) return;
+		if (activeCanvas == thisCanvas && !NotebookManagerPhaseOne.Instance.CanCloseNotebook) 
+			return;
 		foreach (CanvasToggle toggle in otherToggles) {
 			toggle.SetCanvasActive (false);
 		}
