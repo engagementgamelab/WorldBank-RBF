@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !UNITY_WEBPLAYER
 using UnityEditor;
 using System.IO;
 #endif
@@ -8,7 +7,7 @@ using System.IO;
 /// <summary>
 /// Handles material creation, saving, and loading.
 /// </summary>
-public class MaterialsManager {
+public static class MaterialsManager {
 
 	public static Material GetMaterialAtPath (string path, AnimatedQuadTexture quadTex) {
 
@@ -21,7 +20,7 @@ public class MaterialsManager {
 				.Replace ("/Textures", "Materials")
 				.Replace (".png", "");
 
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR && !UNITY_WEBPLAYER
 			if (File.Exists (materialPath + ".png")) {
 				return Resources.Load (materialPath) as Material;
 			} else {
@@ -33,7 +32,9 @@ public class MaterialsManager {
 			#else
 			return Resources.Load (materialPath) as Material;
 			#endif
-		} else if (path != "") {
+		} 
+
+		if (path != "") {
 			path = "file://" + path;
             Coroutine.LoadTexture (path, quadTex);
             return Blank;
@@ -68,7 +69,7 @@ public class MaterialsManager {
 		return m;
 	}
 
-	#if UNITY_EDITOR
+	#if UNITY_EDITOR && !UNITY_WEBPLAYER
 	public static string GetTexturePath (Texture2D texture) {
 		return AssetDatabase.GetAssetPath (texture);
 	}
@@ -114,6 +115,7 @@ public class MaterialsManager {
 
 	public static bool TextureIsBlank (Texture2D tex) {
 		
+		if (tex == null) return true;
 		if (!tex.format.HasAlpha ()) return false;
 		
 		try {

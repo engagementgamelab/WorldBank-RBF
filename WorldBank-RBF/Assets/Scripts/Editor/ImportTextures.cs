@@ -43,7 +43,8 @@ public class TexturePostProcessor : AssetPostprocessor {
 			EditorUtility.SetDirty(asset);
 		} else {
 			texture.anisoLevel = 0;
-			texture.filterMode = FilterMode.Bilinear;          
+			texture.filterMode = FilterMode.Bilinear;
+			texture.wrapMode = TextureWrapMode.Clamp;
 		}
 	}
 }

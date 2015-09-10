@@ -66,7 +66,6 @@ public class PrioritizationManager : NotebookCanvas {
 	 	// Show feedback in data panel (allows player to continue)
 		feedbackPanel.gameObject.SetActive(true);
 		
-		// NotebookManager.Instance.OpenData();
 
 		PlayerManager.Instance.TrackEvent("Plan Saved", "Phase One");
 
