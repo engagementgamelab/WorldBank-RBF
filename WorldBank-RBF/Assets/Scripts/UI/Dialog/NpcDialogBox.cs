@@ -28,8 +28,9 @@ public class NpcDialogBox : MB {
 	public Text header;
 	public Text body;
 	public Transform contentContainer;
-	public List<Button> buttons;
+	public List<NpcActionButton> buttons;
 	public List<FadeText> fadeTexts;
+	public Color backColor = Color.white;
 
 	void Awake () {
 		Close ();
@@ -40,8 +41,8 @@ public class NpcDialogBox : MB {
 		body.text = bodyContent;
 		contentContainer.SetSiblingIndex (left ? 0 : 1);
 		Background.SetLocalEulerAnglesZ (left ? 0 : 180);
-		SetButtons (choices);
 		SetActive (true);
+		SetButtons (choices);
 		foreach (FadeText ft in fadeTexts) {
 			if (ft.Parent.gameObject.activeSelf) 
 				ft.FadeIn (0.33f);
@@ -72,15 +73,20 @@ public class NpcDialogBox : MB {
 	}
 
 	void ClearButtons () {
-		foreach (Button b in buttons) {
-			b.onClick.RemoveAllListeners ();
+		foreach (NpcActionButton b in buttons) {
+			b.Button.onClick.RemoveAllListeners ();
 			b.gameObject.SetActive (false);
 		}
 	}
 
-	void AddButton (Button button, string content, UnityAction action) {
+	void AddButton (NpcActionButton button, string content, UnityAction action) {
+		bool backButton = content == "Back";
 		button.gameObject.SetActive (true);
-		button.transform.GetChild (0).GetComponent<Text> ().text = content;
-		button.onClick.AddListener (action);
+		// button.transform.GetChild (0).GetComponent<Text> ().text = content;
+		button.Text.Text.text = content;
+		button.Icon.gameObject.SetActive (!backButton && content != "Learn More");
+		button.Color = backButton ? backColor : button.DefaultColor;
+		button.Button.onClick.AddListener (action);
+		button.FadeIn (0.33f);
 	}
 }

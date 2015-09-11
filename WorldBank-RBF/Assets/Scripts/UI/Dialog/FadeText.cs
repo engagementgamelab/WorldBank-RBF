@@ -5,7 +5,7 @@ using System.Collections;
 public class FadeText : MB {
 
 	Text text = null;
-	Text Text {
+	public Text Text {
 		get {
 			if (text == null) {
 				text = GetComponent<Text> ();
