@@ -32,16 +32,30 @@ public class TacticScrollView : MB, IBeginDragHandler, IDragHandler, IDropHandle
 		Scroll.vertical = true;
 	}
 
+	bool IsVerticalDrag (Vector2 delta, float range=0.25f) {
+		Vector2 deltaNormalized = delta.normalized;
+		return deltaNormalized.x > -range && deltaNormalized.x < range;
+	}
+
 	#region IBeginDragHandler
 	public void OnBeginDrag (PointerEventData eventData) {
-		bool isVertical = Mathf.Abs (eventData.delta.x) < Mathf.Abs (eventData.delta.y);
+		bool isVertical = IsVerticalDrag (eventData.delta);
 		if (verticalScroll != isVertical) {
 			verticalScroll = isVertical;
 			Events.instance.Raise (new ScrollDirectionEvent (verticalScroll));
 		}
 	}
 
-	public void OnDrag (PointerEventData eventData) {}
+	public void OnDrag (PointerEventData eventData) {
+		
+		if (verticalScroll) {
+			bool isVertical = IsVerticalDrag (eventData.delta, 0.4f);
+			if (!isVertical) {
+				verticalScroll = isVertical;
+				Events.instance.Raise (new ScrollDirectionEvent (verticalScroll));
+			}		
+		}
+	}
 	#endregion
 
 	#region IDropHandler implementation

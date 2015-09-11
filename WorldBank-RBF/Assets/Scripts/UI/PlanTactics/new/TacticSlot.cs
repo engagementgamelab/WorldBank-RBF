@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TacticSlot : DragLocation, IDropHandler, IBeginDragHandler, IDragHandler {
+public class TacticSlot : DragLocation, IDropHandler, IPointerDownHandler {
 
 	public int index;
 	public Text text;
@@ -54,8 +54,7 @@ public class TacticSlot : DragLocation, IDropHandler, IBeginDragHandler, IDragHa
 		return t;
 	}
 
-	#region IBeginDragHandler, IDropHandler implementation
-	public void OnBeginDrag (PointerEventData eventData) {
+	public void OnPointerDown (PointerEventData eventData) {
 		if (currentTactic == null)
 			return;
 		Tactic t = CreateTactic ();
@@ -66,9 +65,6 @@ public class TacticSlot : DragLocation, IDropHandler, IBeginDragHandler, IDragHa
 		tacticItem = null;
 		text.text = "";
 	}
-
-	public void OnDrag (PointerEventData eventData) {}
-	#endregion
 
 	#region IDropHandler implementation
 	public void OnDrop (PointerEventData eventData) {

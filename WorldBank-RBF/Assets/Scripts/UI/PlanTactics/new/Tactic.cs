@@ -126,7 +126,10 @@ public class Tactic : MB {
 		if (selected != null || animating || !MouseOver () || verticalDrag) return;
 
 		if (Input.GetMouseButtonDown (0)) {
-			wasClicked = true;
+			if (!wasClicked) {
+				dragPosition = transform.position - Input.mousePosition;
+				wasClicked = true;
+			}
 		}
 
 		if (Input.GetMouseButton (0)) {
@@ -139,7 +142,7 @@ public class Tactic : MB {
 
 			// Start dragging
 			if (!dragging && wasClicked) {
-				StartDragging (Container);			
+				StartDragging (Container, false);
 				CreatePlaceholder ();
 				Events.instance.Raise (new BeginDragTacticEvent ());
 			}
@@ -155,7 +158,7 @@ public class Tactic : MB {
 		PlayerData.TacticPriorityGroup.Remove (Item);
 		TacticDragData replacementData = replacementTactic.DragData;
 		if (replacementData.FromContainer != null) {
-			MoveToContainerBottom ();
+			MoveToContainerBottom (true);
 		} else {
 			MoveToSlot (replacementData.FromSlot);
 		}
@@ -202,15 +205,18 @@ public class Tactic : MB {
 		Container.UpdateIndices ();
 	}
 
-	public void StartDragging (DragLocation fromLocation) {
+	public void StartDragging (DragLocation fromLocation, bool setDragPosition=true) {
+		Fade (0.75f);
 		DragData.FromLocation = fromLocation;
 		selected = this;
 		transform.SetParent (PlanPanel);
 		dragging = true;
-		dragPosition = transform.position - Input.mousePosition;
+		if (setDragPosition)
+			dragPosition = transform.position - Input.mousePosition;
 	}
 
 	void StopDragging () {
+		Fade (1f);
 		dragging = false;
 		delay = delayAmount;
 		selected = null;
@@ -278,18 +284,10 @@ public class Tactic : MB {
 		);
 	}
 
-	void MoveToContainerBottom () {
+	void MoveToContainerBottom (bool tradingWithTactic=false) {
 		Parent = PlanPanel;
 		CreatePlaceholder (false);
-		StartCoroutine (CoMove (
-			Position,
-			placeholder.GetComponent<RectTransform> ().anchoredPosition,
-			0.2f,
-			() => {
-				DestroyPlaceholder ();
-				Container.AddTactic (this, item);
-			})
-		);
+		StartCoroutine (CoMoveToContainerBottom (tradingWithTactic));
 	}
 
 	void MoveToSlot (TacticSlot slot) {
@@ -321,6 +319,50 @@ public class Tactic : MB {
 		animating = false;
 		if (onEnd != null)
 			onEnd ();
+	}
+
+	IEnumerator CoMoveToContainerBottom (bool tradingWithTactic) {
+			
+		// Gotta wait a frame so that the placeholder's position can update. Why? Only Unity knows!
+		yield return new WaitForFixedUpdate ();
+
+		Vector3 toPosition;
+		if (tradingWithTactic) {
+			toPosition = container.BottomTacticPosition;
+			if (toPosition == Vector3.zero) {
+				toPosition = container.Top;
+			}
+		} else {
+			toPosition = container.Top == Vector3.zero ? placeholder.Position : container.Top;
+		}
+
+		yield return StartCoroutine (CoMove (
+			Position,
+			toPosition,
+			0.2f,
+			() => {
+				DestroyPlaceholder ();
+				Container.AddTactic (this, item);
+			})
+		);
+		
+	}
+
+	void Fade (float to) {
+		StartCoroutine (CoFade (CanvasGroup.alpha, to));
+	}
+
+	IEnumerator CoFade (float from, float to) {
+		
+		float time = 0.05f;
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			CanvasGroup.alpha = Mathf.Lerp (from, to, progress);
+			yield return null;
+		}
 	}
 
 	bool MouseOver () {

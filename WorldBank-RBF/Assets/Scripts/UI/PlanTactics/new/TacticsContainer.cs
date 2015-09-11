@@ -1,6 +1,21 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class TacticsContainer : DragLocation {
+
+	public Vector3 BottomTacticPosition {
+		get { return tactics.Count > 0 ? tactics[tactics.Count-1].Position : Vector3.zero; }
+	}
+
+	public Vector3 Top {
+		get { 
+			return tactics.Count > 0 || Transform.childCount == 0 
+				? Vector3.zero
+				: Transform.GetChild (0).position;
+		}
+	}
+
+	readonly List<Tactic> tactics = new List<Tactic> ();
 
 	void OnEnable () {
 		Clear ();
@@ -30,10 +45,12 @@ public class TacticsContainer : DragLocation {
 	}
 
 	public void UpdateIndices () {
+		tactics.Clear ();
 		int index = 0;
 		foreach (Transform child in Transform) {
 			Tactic tactic = child.GetScript<Tactic> ();
 			if (tactic != null) {
+				tactics.Add (tactic);
 				tactic.Index = index;
 				index ++;
 			}
