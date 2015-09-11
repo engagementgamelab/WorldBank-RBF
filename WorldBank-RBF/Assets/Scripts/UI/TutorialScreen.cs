@@ -172,8 +172,8 @@ public class TutorialScreen : MonoBehaviour {
 
 	public void DisableSpotlight() {
 
-		spotlightRect = new Rect(1, 0, 1, 1);
-		maskRect = new Rect(0, 0, 0, 0);
+		SpotlightRect = new Rect(1, 0, 1, 1);
+		MaskRect = new Rect(0, 0, 0, 0);
 	}
 
 	public void SpotlightPosition() {
