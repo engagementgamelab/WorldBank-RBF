@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class MainCamera : MB {
 
@@ -56,7 +55,7 @@ public class MainCamera : MB {
 		get {
 			if (camera == null) {
 				camera = GetComponent<Camera> ();
-			}
+			}                                
 			return camera;
 		}
 	}

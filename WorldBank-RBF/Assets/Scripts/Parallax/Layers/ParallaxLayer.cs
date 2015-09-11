@@ -53,11 +53,32 @@ public class ParallaxLayer : MB, IEditorPoolable {
 	}
 
 	void UpdateTransform () {
+		
 		Vector3 target = ScreenPositionHandler.ViewportToWorld (new Vector3 (0, 0.5f, 0));
 		target.z = (Index+1) * layerSeparation + LocalSeparation;
 		Transform.SetPosition (target);
 		Transform.localScale = new Vector3 (Scale, Scale, 1);
-		Transform.SetPositionX (-LocalScale.x / 4.16f);
+
+		float aspectRatio = MainCamera.Instance.Aspect;
+		float offset = 0;
+
+		if (Mathf.Approximately (aspectRatio, 2f)) {
+			offset = -LocalScale.x / 2f;
+		} else if (aspectRatio > 1.77f) {
+			offset = -LocalScale.x / 2.575f;
+		} else if (aspectRatio > 1.59f) {
+			offset = -LocalScale.x / 3.33f;
+		} else if (aspectRatio > 1.49f) {
+			offset = -LocalScale.x / 4f;
+		} else if (aspectRatio > 1.32f) {
+			offset = -LocalScale.x / 6f;
+		} else if (aspectRatio > 1.24f) {
+			offset = -LocalScale.x / 8f;
+		} else {
+			offset = 0;
+		}
+
+		Transform.SetPositionX (offset);
 	}
 
 	/*public void ClearImages () {
