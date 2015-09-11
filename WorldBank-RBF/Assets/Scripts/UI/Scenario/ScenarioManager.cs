@@ -24,7 +24,6 @@ public class ScenarioManager : MonoBehaviour {
 
 	public IndicatorsCanvas indicatorsCanvas;
 	public Animator scenarioAnimator;
-	public Animator indicatorsAnimator;
 
 	public Button scenarioChatTab;
 	public Button supervisorChatTab;
@@ -48,7 +47,6 @@ public class ScenarioManager : MonoBehaviour {
 
 	string[] monthsLabels = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct",	"Nov", "Dec" };
 
-	List<string> selectedOptions = new List<string>();
 	List<int[]> usedAffects = new List<int[]>();
 
 	object tacticsAvailable;
@@ -267,9 +265,12 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Hide "no messages"
 		scenarioChat.noMessagesPanel.gameObject.SetActive(false);
+		
 		// SFX
 		if(currentCardIndex > 0)
 			AudioManager.Sfx.Play ("newproblem", "Phase2");
+
+		CalculateIndicators(false);
 
 	}
 
@@ -299,24 +300,16 @@ public class ScenarioManager : MonoBehaviour {
 		scenarioCooldownText.text = "Break - Year " + currentYear;
 
 		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
-		// DialogManager.instance.EndYear (scenarioConf, selectedOptions);
+		indicatorsCanvas.EndYear(scenarioConf, currentYear);
 
-		indicatorsAnimator.Play("IndicatorsOpen");
-		scenarioAnimator.Play("ScenarioClose");
+		indicatorsCanvas.Open();
 
 	}
 
 	void NextProblemCard(string strSymbol) {
-
-		Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(strSymbol);
-
-		selectedOptions.Add(DataManager.GetUnlockableBySymbol(strSymbol).title);
-		usedAffects.Add(dictAffect.Values.ToArray());
 		
 		GetNextCard();
 		currentQueueIndex++;
-
-		CalculateIndicators(false);
 
 	}
 
@@ -334,10 +327,11 @@ public class ScenarioManager : MonoBehaviour {
 
 		NotebookManager.Instance.ToggleTabs();
 
-		monthCooldown.Restart();
-
 		supervisorChatTab.interactable = true;
 		supervisorChatTab.GetComponent<CanvasGroup>().alpha = 1;
+
+		// Close indicators
+		indicatorsCanvas.Close();
 
 	}
 
@@ -384,7 +378,6 @@ public class ScenarioManager : MonoBehaviour {
 			phaseCooldown = Timers.StartTimer(gameObject, new [] { phaseLength });
 			phaseCooldown.Symbol = "phase_cooldown";
 			phaseCooldown.onTick += OnCooldownTick;
-			// monthCooldown.onEnd += MonthEnd;
 
 		}
 

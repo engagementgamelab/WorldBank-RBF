@@ -156,11 +156,6 @@ public class DialogManager : MonoBehaviour {
 		scenarioChat.Data = scenario;
 	}
 
-	public void EndYear (Models.ScenarioConfig scenarioConfig, List<string> selectedOptions) {
-		CloseAll ();
-		scenarioChat.EndYear (scenarioConfig, selectedOptions, DataManager.CurrentYear);
-	}
-
 	public void SetAvailableTactics (List<string> availableTactics) {
 		supervisorChat.Available = availableTactics;
 	}

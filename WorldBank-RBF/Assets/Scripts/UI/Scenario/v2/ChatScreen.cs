@@ -95,36 +95,6 @@ public class ChatScreen : GenericDialogBox {
 
 	}
 
-	public void AddYearEndOptions (Dictionary<string, string>[] options) {
-
-		if (options.Length > 3)
-			throw new System.Exception ("Only 3 year-end options can be displayed on the screen at a time.");
-
-		RemoveOptions ();
-		int btnIndex = 0;
-
-		foreach (Dictionary<string, string> option in options) {
-			
-			string optionTxt = option["text"];
-			string optionVal = option["load"];
-
-			ScenarioOptionButton btnChoice = _btnListOptions[btnIndex];
-			btnChoice.gameObject.SetActive (true);
-			btnIndex ++;
-
-			btnChoice.Text = optionTxt;
-			btnChoice.Button.onClick.RemoveAllListeners ();
-			btnChoice.Button.onClick.AddListener (() => YearEndOptionSelected (optionTxt, optionVal));
-		}
-
-		ScenarioOptionButton btnNextYear = _btnListOptions[btnIndex];
-		btnNextYear.gameObject.SetActive (true);
-		btnNextYear.Text = "Go to next year";
-		btnNextYear.Button.onClick.RemoveAllListeners ();
-		btnNextYear.Button.onClick.AddListener(() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT_YEAR)));
-
-	}
-
 	public void RemoveResponses () {
 		
 		foreach (AdvisorMessage msg in messagesContainer.GetComponentsInChildren<AdvisorMessage>()) 
@@ -137,16 +107,7 @@ public class ChatScreen : GenericDialogBox {
 
 		// Broadcast to get card feedback
 		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.FEEDBACK, strOptionSymbol));
-	}
-
-	void YearEndOptionSelected (string optionTxt, string optionVal) {
-
-		// Update selected decisions
-		DataManager.ScenarioDecisions(optionTxt);
-
-		// Broadcast to affect current scenario path with the config value
-		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.DECISION_SELECTED, optionVal));
-		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT_YEAR));
+		
 	}
 
 	protected void RemoveOptions () {

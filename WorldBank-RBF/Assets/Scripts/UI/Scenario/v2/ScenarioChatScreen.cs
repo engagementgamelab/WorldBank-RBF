@@ -84,53 +84,6 @@ public class ScenarioChatScreen : ChatScreen {
 
     }
 
-    public void EndYear (Models.ScenarioConfig scenarioConfig, List<string> selectedOptions, int currentYear) {
-
-    	bool indicatorsNegative = !DataManager.IsIndicatorDeltaGood(
-														    		IndicatorsCanvas.AppliedAffects[0], 
-														    		IndicatorsCanvas.AppliedAffects[IndicatorsCanvas.AppliedAffects.Count-1]
-														    	  );
-
-    	string strActionsSummary = "<i>Your actions for this year:</i>\n";
-    	string[] yearEndPrompts = (currentYear == 1) ? scenarioConfig.prompt_year_1 : scenarioConfig.prompt_year_2;
-    	string yearEndMessage;
-
-    	// If player has not made any changes, choose first prompt
-    	if(selectedOptions.Count == 0)
-    		yearEndMessage = yearEndPrompts[0];
-
-    	// If player has made changes, choose prompt based on if indicators are positive
-    	else
-    		yearEndMessage = yearEndPrompts[Convert.ToInt32(indicatorsNegative)+1];
-
-    	// Open indicators action for system button
-		ChatAction openIndicators = new ChatAction();
-		openIndicators.action = (() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.OPEN_INDICATORS)));
-    	
-    	if (panelOpen) {
-	    	advisorsPanel.Play ("Closed");
-    		panelOpen = false;
-    	}
-
-    	AddSystemMessage (yearEndMessage);
-
-    	if(selectedOptions.Count > 0) {
-	    	foreach (string opt in selectedOptions)
-	    		strActionsSummary += opt + "\n";
-	    }
-	    else
-		    strActionsSummary = "<i><b>You did not take any actions this year!</b></i>";
-    	
-    	AddSystemMessage (strActionsSummary);
-
-    	AddSystemButtons (new List<string>() {"View your indicators"}, new List<ChatAction>() { openIndicators });
-
-    	string currentChoicesConcat = string.Join(" ", DataManager.ScenarioDecisions().ToArray());
-		Dictionary<string, string>[] choiceData = scenarioConfig.choices.Where(choice => !currentChoicesConcat.Contains(choice["text"])).ToArray();
-
-		AddYearEndOptions (choiceData);
-    }
-
     public void AddAdvisors() {
 
     	List<string> removeAdvisors = previousAdvisorOptions
@@ -234,6 +187,21 @@ public class ScenarioChatScreen : ChatScreen {
 		AudioManager.Sfx.Play ("addtodiscussion", "Phase2");
 	}
 
+	void AddIndicatorsMessage(Dictionary<string, int> dictAffect) {
+
+		List<string> message = new List<string>();
+
+		if(dictAffect["indicator_1"] != 0)
+			message.Add("Vac: " + dictAffect["indicator_1"]);
+		if(dictAffect["indicator_2"] != 0)
+			message.Add("Facilities: " + dictAffect["indicator_2"]);
+		if(dictAffect["indicator_3"] != 0)
+			message.Add("QoC: " + dictAffect["indicator_3"]);
+
+		AddSystemMessage(string.Join(", ", message.ToArray()));
+
+	}
+
 	void OnScenarioEvent (ScenarioEvent e) {
 
 		if(e.eventType == "feedback") {
@@ -250,12 +218,18 @@ public class ScenarioChatScreen : ChatScreen {
 
 				RemoveOptions();
 				AddOptions (
-					new List<string> { "Next Problem" },
+					new List<string> { "Clear Messages" },
 					new List<ChatAction> { nextCardAction }
 				);
 
 				AddResponseSpeech(npc.Value.feedback[e.eventSymbol].ToString(), 
 								  DataManager.GetDataForCharacter(npc.Key));
+
+				Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(e.eventSymbol);
+
+				AddIndicatorsMessage(dictAffect);
+
+				IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(e.eventSymbol).title, dictAffect.Values.ToArray());
 			}
 			else {
 				// Broadcast to open next card
