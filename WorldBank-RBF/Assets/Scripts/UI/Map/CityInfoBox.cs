@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class CityInfoBox : MB {
 
 	public GameObject panel;
+	public GameObject background;
 	public Text header;
 	public Text body;
 	public CityInfoBoxButton button1;
@@ -36,7 +37,7 @@ public class CityInfoBox : MB {
 		if (PlayerData.DayGroup.Empty) {
 			Header = "Out of days";
 			Body = "You're all out of travel days!";
-			panel.SetActive (true);
+			SetActive (true);
 			return;
 		}
 
@@ -71,7 +72,7 @@ public class CityInfoBox : MB {
 		}
 
 		Header = city.Model.display_name;
-		panel.SetActive (true);
+		SetActive (true);
 	}
 
 	/// <summary>
@@ -81,7 +82,7 @@ public class CityInfoBox : MB {
 		Header = "Blocked";
 		Body = "You return to the train station and learn that bad weather has triggered a landslide to the east. The train tracks between Mile and Zima have been destroyed.\nA young man tugs on your shirt and grins. He says he drives a produce truck and can get you to Kibari, the heart of the highlands. \"From there,\" he says, \"you can get anywhere!\"";
 		SetButtons ("Ok", UnlockRoute);
-		panel.SetActive (true);
+		SetActive (true);
 	}
 
 	void UnlockRoute () {
@@ -91,7 +92,7 @@ public class CityInfoBox : MB {
 	}
 
 	void Close () {
-		panel.SetActive (false);
+		SetActive (false);
 	}
 
 	void TravelTo (CityItem city, RouteItem route) {
@@ -128,5 +129,10 @@ public class CityInfoBox : MB {
 		} else {
 			button2.gameObject.SetActive (false);
 		}
+	}
+
+	void SetActive (bool active) {
+		panel.SetActive (active);
+		background.SetActive (active);
 	}
 }

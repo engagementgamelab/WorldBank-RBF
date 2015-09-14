@@ -83,7 +83,7 @@ public class CitiesManager : MB {
 		if (PlayerData.CityGroup.CurrentCity != city.Symbol)
 			PlayerData.DayGroup.Remove (route.Cost);
 		PlayerData.CityGroup.CurrentCity = city.Symbol;
-		MoveIndicator (onArrive);
+		MoveIndicator (onArrive, route);
 	}
 
 	/// <summary>
@@ -109,8 +109,11 @@ public class CitiesManager : MB {
 		OnVisit ();
 	}
 
-	void MoveIndicator (System.Action onArrive) {
-		currentCityIndicator.Move (Cities[PlayerData.CityGroup.CurrentCity].Position, onArrive);
+	void MoveIndicator (System.Action onArrive, RouteItem route) {
+		currentCityIndicator.Move (
+			RoutesManager.Instance.GetRoute (route.Terminals).Transform, 
+			route,
+			onArrive);
 	}
 
 	void OnVisit () {

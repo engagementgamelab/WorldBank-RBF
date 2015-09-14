@@ -16,19 +16,21 @@ public struct Terminals {
 		return city1 == city || city2 == city;
 	}
 
+	public bool Reverse (string firstCity) {
+		return city1 == firstCity;
+	}
+
 	public static bool operator ==(Terminals a, Terminals b) {
 		if (a.Equals (b)) {
 			return true;
-		} else {
-			return a.city1 == b.city2 && a.city2 == b.city1;			
 		}
+		return a.city1 == b.city2 && a.city2 == b.city1;			
 	}
 
 	public static bool operator !=(Terminals a, Terminals b) {
 		if (a.Equals (b)) {
 			return false;
-		} else {
-			return a.city1 != b.city2 || a.city2 != b.city1;
 		}
+		return a.city1 != b.city2 || a.city2 != b.city1;
 	}
 }

@@ -14,6 +14,8 @@ public class RouteRecorder : MonoBehaviour {
 	public string city2 = "";
 	public List<Vector3> routePositions = new List<Vector3> ();
 
+	public MapRoute route;
+
 	void Start () {
 		#if UNITY_EDITOR && !UNITY_WEBPLAYER
 		if (System.IO.File.Exists (RecordingPath))
@@ -31,9 +33,11 @@ public class RouteRecorder : MonoBehaviour {
 				return;
 			}
 			
+			string c1 = route.city1;
+			string c2 = route.city2;
 			string output =
 				"routeLines.Add (" +
-				"new Terminals (\"" + city1 + "\", \"" + city2 + "\"), " +
+				"new Terminals (\"" + c1 + "\", \"" + c2 + "\"), " +
 				"new List<Vector3> () {\n\t";
 
 			for (int i = 0; i < routePositions.Count; i ++) {
@@ -53,7 +57,8 @@ public class RouteRecorder : MonoBehaviour {
 			recording = true;
 		}
 		if (recording && Input.GetMouseButtonDown (0)) {
-			routePositions.Add (Input.mousePosition);
+			// routePositions.Add (Input.mousePosition);
+			routePositions.Add (route.Transform.InverseTransformPoint (Input.mousePosition));
 		}
 	}
 
