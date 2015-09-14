@@ -116,10 +116,13 @@ public class ChatScreen : GenericDialogBox {
 		}
 	}
 
-	protected void AddResponseSpeech(string strDialogue, Models.Character npc, bool initial=false) {
+	protected void AddResponseSpeech(string strDialogue, Models.Character npc, bool initial=false, bool feedback=false) {
 		
 		AdvisorMessage response = ObjectPool.Instantiate<AdvisorMessage>("Scenario");
+		
 		response.Initial = initial;
+		response.Feedback = feedback;
+
 		response.NPCName = npc.display_name;
 		response.Content = strDialogue;
 		response.NPCSymbol = npc.symbol;
@@ -178,9 +181,9 @@ public class ChatScreen : GenericDialogBox {
 
 	IEnumerator CoScrollToEnd () {
 
-		// WHY 2 frames unity? why??
 		yield return new WaitForFixedUpdate ();
-		yield return new WaitForFixedUpdate ();
+
+		yield return new WaitForSeconds(.5f);
 
 		float startValue = messagesScrollbar.value;
 		float time = 0.5f;
