@@ -29,7 +29,6 @@ public class ScenarioManager : MonoBehaviour {
 	public Button supervisorChatTab;
 
 	public Text scenarioCardCooldownText;
-	public Text scenarioCooldownText;
 
 	public float problemCardDurationOverride = 0;
 	public float monthLengthSecondsOverride = 0;
@@ -48,6 +47,8 @@ public class ScenarioManager : MonoBehaviour {
 	string[] monthsLabels = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct",	"Nov", "Dec" };
 
 	List<int[]> usedAffects = new List<int[]>();
+
+	Animator scenarioCardCooldownAnimator;
 
 	object tacticsAvailable;
 
@@ -95,6 +96,9 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Turn off supervisor tab for start
 		supervisorChatTab.GetComponent<CanvasGroup>().alpha = .5f;
+		supervisorChatTab.GetComponent<Button>().enabled = false;
+
+		scenarioCardCooldownAnimator = scenarioCardCooldownText.gameObject.GetComponent<Animator>();
 
 		// DialogManager.instance.CreateTutorialScreen("tooltip_2");
 
@@ -107,15 +111,11 @@ public class ScenarioManager : MonoBehaviour {
 			if(cardCooldownElapsed.Equals(0f))
 				GetNextCard();
 		}
-
-		// Update card cooldown label
-    	scenarioCardCooldownText.text = cardCooldownElapsed + "s";
-
-    	// Update scenario cooldown label
+    	// Update card cooldown label
     	if(!inYearEnd) {
     		System.TimeSpan timeSpan = TimeSpan.FromSeconds(cardCooldownElapsed);
 
-    		scenarioCooldownText.text = String.Format("{0}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
+    		scenarioCardCooldownText.text = String.Format("{0}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
     	}
 
 	}
@@ -126,7 +126,6 @@ public class ScenarioManager : MonoBehaviour {
 			return;
         
         problemCardCooldown.Stop();
-        monthCooldown.Stop();
 
     }
 
@@ -172,18 +171,6 @@ public class ScenarioManager : MonoBehaviour {
 		int nextCardIndex = currentCardIndex + 1;
 		int yearLength = DataManager.ScenarioLength(scenarioTwistIndex);
 
-		// Open supervisor panel if no more cards, and disable scenario tab
-		/*if(cardIndex == yearLength)
-		{
-			scenarioChat.disabledPanel.gameObject.SetActive(true);
-			supervisorChat.gameObject.SetActive(true);
-
-			scenarioChatTab.interactable = true;
-			supervisorChatTab.interactable = false;
-		}
-		else
-			scenarioChatTab.gameObject.SetActive(true);*/
- 
 		// Should we display a year break (happens if forced by timer)?
 		if(nextCardIndex == yearLength) {
 			// Hide all scenario problem cards
@@ -284,20 +271,12 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Queue always starts at 0
 		currentQueueIndex = 0;
-		
-		// scenarioChat.gameObject.SetActive(true);
-		// supervisorChat.gameObject.SetActive(false);
-
-		// scenarioChatTab.gameObject.SetActive(true);
-		// scenarioChatTab.interactable = false;
-		// supervisorChatTab.interactable = false;
-		// supervisorChatTab.GetComponent<CanvasGroup>().alpha = .5f;
 
 		// "Year end" screen
 		inYearEnd = true;
 
 		// Update timer text
-		scenarioCooldownText.text = "Break - Year " + currentYear;
+		scenarioCardCooldownText.text = "Break - Year " + currentYear;
 
 		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
 		indicatorsCanvas.EndYear(scenarioConf, currentYear);
@@ -327,8 +306,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		NotebookManager.Instance.ToggleTabs();
 
-		supervisorChatTab.interactable = true;
 		supervisorChatTab.GetComponent<CanvasGroup>().alpha = 1;
+		supervisorChatTab.GetComponent<Button>().enabled = true;
 
 		// Close indicators
 		indicatorsCanvas.Close();
@@ -500,11 +479,18 @@ public class ScenarioManager : MonoBehaviour {
     	Debug.Log("OnScenarioEvent: " + e.eventType);
 
     	switch(e.eventType) {
+
+    		case "feedback":
+
+    			// Pause cooldown
+    			problemCardCooldown.Stop();
+    			scenarioCardCooldownAnimator.Play("TimerPause");
+    			break;
    			
     		case "next":
-
-    			// Clear all prior chat
-    			// scenarioChat.Clear();
+    			// Resume cooldown
+    			problemCardCooldown.Resume();
+    			scenarioCardCooldownAnimator.Play("TimerRunning");
 
 				// Initialize tactics cards after first problem card done
 				if(currentYear == 1 && currentCardIndex == 0) {
@@ -521,6 +507,8 @@ public class ScenarioManager : MonoBehaviour {
 
 					// Enable supervisor tab
 					supervisorChatTab.GetComponent<CanvasGroup>().alpha = 1;
+					supervisorChatTab.GetComponent<Button>().enabled = true;
+
 				}
 
     			if(problemCardDuration > 0) {

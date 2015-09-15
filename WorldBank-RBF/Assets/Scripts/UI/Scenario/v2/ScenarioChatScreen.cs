@@ -121,7 +121,7 @@ public class ScenarioChatScreen : ChatScreen {
 			btnChoice.NPCSymbol = charRef.symbol;
 
 			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => AdvisorSelected(charRef.symbol));
+			btnChoice.Button.onClick.AddListener (() => StartCoroutine("AdvisorSelected", charRef.symbol));
 
 			btnChoice.gameObject.SetActive(true);
 			btnListAdvisors.Add(btnChoice);
@@ -140,7 +140,13 @@ public class ScenarioChatScreen : ChatScreen {
 		advisorsContainer.GetComponent<CanvasGroup>().alpha = .4f;
 	}
 
-	void AdvisorSelected(string strAdvisorSymbol) {
+	IEnumerator AdvisorSelected(string strAdvisorSymbol) {
+		
+		AddSystemMessage("...");
+
+		yield return new WaitForSeconds(1);
+
+		ObjectPool.Destroy<SystemMessage>(messagesContainer.transform.GetChild(messagesContainer.transform.childCount-1));
 
 		previousAdvisorOptions = currentAdvisorOptions.ToList ();
 
@@ -202,39 +208,58 @@ public class ScenarioChatScreen : ChatScreen {
 
 	}
 
+	IEnumerator ShowFeedback(string eventSymbol)
+	{
+		yield return new WaitForSeconds(1f);
+			
+		Clear();
+
+		AddSystemMessage("Waiting for feedback...");
+
+		yield return new WaitForSeconds(3f);
+			
+		Clear();
+
+		KeyValuePair<string, Models.Advisor> npc = _data.characters.Where(d => d.Value.hasFeedback && d.Value.feedback.ContainsKey(eventSymbol)).
+							 ToDictionary(d => d.Key, d => d.Value).FirstOrDefault();
+
+		if(!npc.Equals(null)) {
+
+			ChatAction nextCardAction = new ChatAction();
+
+			UnityAction nextCard = (() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, eventSymbol)));
+			nextCardAction.action = nextCard;
+
+			RemoveOptions();
+			AddOptions (
+				new List<string> { "Confirm Feedback" },
+				new List<ChatAction> { nextCardAction }
+			);
+
+			AddResponseSpeech(npc.Value.feedback[eventSymbol].ToString(), 
+							  DataManager.GetDataForCharacter(npc.Key), false, true);
+
+			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(eventSymbol);
+
+			AddIndicatorsMessage(dictAffect);
+
+			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(eventSymbol).title, dictAffect.Values.ToArray());
+
+			// SFX
+			AudioManager.Sfx.Play ("planconfirm", "UI");
+		}
+		else {
+			// Broadcast to open next card
+			Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, eventSymbol));
+		}
+
+	}
+
 	void OnScenarioEvent (ScenarioEvent e) {
 
 		if(e.eventType == "feedback") {
 
-			KeyValuePair<string, Models.Advisor> npc = _data.characters.Where(d => d.Value.hasFeedback && d.Value.feedback.ContainsKey(e.eventSymbol)).
-								 ToDictionary(d => d.Key, d => d.Value).FirstOrDefault();
-
-			if(!npc.Equals(null)) {
-
-				ChatAction nextCardAction = new ChatAction();
-
-				UnityAction nextCard = (() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, e.eventSymbol)));
-				nextCardAction.action = nextCard;
-
-				RemoveOptions();
-				AddOptions (
-					new List<string> { "Clear Messages" },
-					new List<ChatAction> { nextCardAction }
-				);
-
-				AddResponseSpeech(npc.Value.feedback[e.eventSymbol].ToString(), 
-								  DataManager.GetDataForCharacter(npc.Key));
-
-				Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(e.eventSymbol);
-
-				AddIndicatorsMessage(dictAffect);
-
-				IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(e.eventSymbol).title, dictAffect.Values.ToArray());
-			}
-			else {
-				// Broadcast to open next card
-				Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, e.eventSymbol));
-			}
+			StartCoroutine("ShowFeedback", e.eventSymbol);
 
 		}
 		else if (e.eventType == "next_year" && !panelOpen) {
