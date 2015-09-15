@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"> 
+	<title>Parallax Layers Calculator</title>
+</head>
+<body>
+	<h1>Parallax Layers Calculator</h1>
+
+	<form id="parallax-calculator">
+		<div>Width of layer 5 (the background layer): <input id="layer5-width" size=50 onKeyPress="return numbersonly(this, event)"> pixels</div>
+		<br>
+		<div>Layer #: <input id="layer-number" size=1 maxlength=1 value=1 onKeyPress="return numbersonly(this, event)"></div>
+		<br>
+		<div>Aspect ratio: <input id="aspect-ratio" size=5 maxlength=5 value=1.333 onKeyPress="return numbersonly(this, event, true)"></div>
+		<br>
+		<button id="Submit">Submit</button>
+	</form>
+	<br>
+	<div>Width: <input id="result" readonly=true> pixels</div>
+
+	<script src="jquery.js"></script>
+	<script type="text/javascript">
+	
+	// copyright 1999 Idocs, Inc. http://www.idocs.com 
+	// Distribute this script freely but keep this notice in place 
+
+	function numbersonly(myfield, e, dec) { 
+		var key; var keychar; if (window.event) key = window.event.keyCode; else if (e) key = e.which; else return true; keychar = String.fromCharCode(key); 
+		// control keys 
+		if ((key==null) || (key==0) || (key==8) || (key==9) || (key==13) || (key==27) ) 
+			return true; // numbers 
+		else if ((("0123456789").indexOf(keychar) > -1)) 
+			return true; 
+		// decimal point jump 
+		else if (dec && (keychar == ".")) { 
+			myfield.form.elements[dec].focus(); 
+			return false; 
+		} else return false; 
+	} 
+	</script>
+
+	<script type="text/javascript">
+	$("#parallax-calculator").submit(function(e) {
+		
+		var layer5 = $("#layer5-width").val();
+		var layer = $("#layer-number").val();
+		var aspectRatio = $("#aspect-ratio").val();
+		
+		// y=5x/z-a(5/z-1)
+		var w = Math.ceil(5*layer5/layer-aspectRatio*(5/layer-1));
+
+		$("#result").val(w);
+
+		return false;
+	});
+	</script>
+</body>
+</html>
