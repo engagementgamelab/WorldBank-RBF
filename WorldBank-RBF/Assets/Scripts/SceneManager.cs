@@ -48,13 +48,8 @@ public class SceneManager : MonoBehaviour {
 		// We need our game config data before calling any remote endpoints
 		LoadGameConfig();
 
+		// Authenticate to API
 		NetworkManager.Instance.Authenticate(ClientAuthenticated);
-	
-		// Set global game data if needed
-		// TODO: This needs to not be in awake method
-		SetGameData();
-
-		DataManager.SceneContext = sceneName;
 
       
 	}
@@ -83,11 +78,11 @@ public class SceneManager : MonoBehaviour {
 
 		if(!System.Convert.ToBoolean(response["authed"]))
 			return;
-	
-		// Set global game data if needed
-		// SetGameData();
 
 		NetworkManager.Instance.Cookie = response["session_cookie"].ToString();
+		
+		// Set global game data if needed
+		SetGameData();
 
 		// Authenticate player -- user/pass is hard-coded if in editor
 		if(!PlayerManager.Instance.Authenticated)
@@ -101,6 +96,8 @@ public class SceneManager : MonoBehaviour {
 			#endif
 			
 		}
+
+		DataManager.SceneContext = sceneName;
 
     }
 	

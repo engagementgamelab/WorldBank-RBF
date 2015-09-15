@@ -144,7 +144,7 @@ public class PlayerManager : MonoBehaviour {
         saveFields.Add("user_id", _playerId);
 
         // Save user info
-        NetworkManager.Instance.PostURL("/user/save/", saveFields, response, true);
+        NetworkManager.Instance.PostURL("/user/save/", saveFields, response);
     }
 
     public void TrackEvent(string strEventName, string strEventCategory) {
@@ -162,7 +162,7 @@ public class PlayerManager : MonoBehaviour {
        //Analytics.CustomEvent(strEventName, new Dictionary<string, object>() {{ "eventCategory", strEventCategory }, { "userId", _playerId }});
 
         // Send analytic event
-        NetworkManager.Instance.PostURL("/analytics/event/", postFields, null, true);
+        NetworkManager.Instance.PostURL("/analytics/event/", postFields);
 
         Debug.Log("Track Event: '" + strEventName + "'");
 

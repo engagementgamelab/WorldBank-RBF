@@ -110,8 +110,8 @@ public class DataManager {
                     currentConfig = config.development;
                 else if(configTypeOverride == "staging")
                     currentConfig = config.staging;
-                // else if(configTypeOverride == "production")
-                //     currentConfig = config.production;
+                else if(configTypeOverride == "production")
+                    currentConfig = config.production;
             }
 
 
