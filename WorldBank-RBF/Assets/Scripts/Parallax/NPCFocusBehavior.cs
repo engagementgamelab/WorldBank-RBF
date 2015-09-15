@@ -132,6 +132,9 @@ public class NPCFocusBehavior : MonoBehaviour {
 			return;
 		}
 
+		Debug.Log (startCamPosition);
+		Debug.Log (endCamPosition);
+
 		float npcPosition = npc.GetPositionAtScale (1f);
 		float viewportOffset = 0.5f + npcDialogSeparation * 0.5f;
 		float offset = ScreenPositionHandler.ViewportToWorldRelative (
