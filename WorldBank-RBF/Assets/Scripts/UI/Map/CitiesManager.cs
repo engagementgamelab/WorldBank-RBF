@@ -83,6 +83,7 @@ public class CitiesManager : MB {
 		if (PlayerData.CityGroup.CurrentCity != city.Symbol)
 			PlayerData.DayGroup.Remove (route.Cost);
 		PlayerData.CityGroup.CurrentCity = city.Symbol;
+		Debug.Log (PlayerData.CityGroup.CurrentCity);
 		MoveIndicator (onArrive, route);
 	}
 

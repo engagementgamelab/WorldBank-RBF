@@ -187,7 +187,7 @@ public class DialogManager : MonoBehaviour {
 		Dictionary<string, UnityAction> btnChoices = new Dictionary<string, UnityAction> ();
 		if (!character.NoChoices && !PlayerData.InteractionGroup.Empty) {
 			btnChoices.Add ("Learn More", () => {
-				CloseAll ();
+				// CloseAll ();
 				NPCFocusBehavior.Instance.DialogFocus ();
 			});
 		}

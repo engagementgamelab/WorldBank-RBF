@@ -13,7 +13,7 @@ public class CurrentCityIndicator : MB {
 
 	public void Move (Transform parent, RouteItem route, System.Action onEnd=null) {
 		
-		List<Vector3> positions = route.Positions;
+		List<Vector3> positions = route.Positions.ConvertAll (x => x); // Clone the list
 		bool reverse = route.Terminals.Reverse (PlayerData.CityGroup.CurrentCity);
 		float speed = route.Speed;
 
@@ -50,7 +50,7 @@ public class CurrentCityIndicator : MB {
 		int index = 0;
 
 		while (index < positionCount) {
-			yield return StartCoroutine (CoMove (positions[index], positions[index+1], speed));
+			yield return StartCoroutine (CoMove (positions[index], positions[index+1], speed*2f));
 			index ++;
 			yield return null;
 		}

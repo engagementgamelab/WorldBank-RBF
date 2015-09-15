@@ -89,6 +89,11 @@ public class CityButton : MB {
 		PlayerData.InteractionGroup.onUpdate += UpdateInteractableState;
 	}
 
+	void OnEnable () {
+		if (CityItem != null)
+			UpdateInteractableState ();
+	}
+
 	void OnUpdateCurrentCity (string citySymbol) {
 		if (citySymbol == "capitol") visitedCapitol = true;
 		UpdateInteractableState ();

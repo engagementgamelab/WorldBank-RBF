@@ -46,10 +46,7 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 
 	[ExposeInWindow] public Texture2D texture2 = null;
 	public Texture2D _Texture2 {
-		set { 
-			ParallaxImage2._Texture = value;
-			ParallaxImage2.gameObject.SetActive (value != null);
-		}
+		set { ParallaxImage2._Texture = value; }
 	}
 
 	string texture2Path = "";

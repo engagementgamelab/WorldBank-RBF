@@ -802,6 +802,7 @@ GameObject:
   - 114: {fileID: 11401026}
   - 114: {fileID: 11403596}
   - 114: {fileID: 11479852}
+  - 225: {fileID: 22597870}
   m_Layer: 5
   m_Name: NpcDialogBox
   m_TagString: Untagged
@@ -1220,6 +1221,7 @@ GameObject:
   - 222: {fileID: 22256776}
   - 114: {fileID: 11489400}
   - 114: {fileID: 11473166}
+  - 225: {fileID: 22586654}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -4481,7 +4483,7 @@ Camera:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128472}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
@@ -5771,7 +5773,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 22477212}
   m_Direction: 2
   m_Value: 1
-  m_Size: .85490191
+  m_Size: .854901969
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10921,7 +10923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead28a1d9afe348508c442d928ba8b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inEditMode: 1
+  inEditMode: 0
 --- !u!114 &11474142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11474,6 +11476,8 @@ MonoBehaviour:
   fadeTexts:
   - {fileID: 11465746}
   - {fileID: 11485184}
+  boxGroup: {fileID: 22597870}
+  contentGroup: {fileID: 22586654}
   backColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &11479976
 MonoBehaviour:
@@ -17611,6 +17615,28 @@ CanvasGroup:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 148326}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!225 &22586654
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 132362}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!225 &22597870
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122594}
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1

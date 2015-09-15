@@ -91,6 +91,7 @@ public class UnlockNotification : MB {
 		PlayerData.TacticGroup.onUnlock += OnAddTactic;
 
 		NotebookManager.Instance.onUpdate += OnIndicatorsUpdated;
+		NPCFocusBehavior.Instance.onSetFocus += OnSetFocus;
 	}
 
 	void OnAddDialogue (DialogueItem dialogue) {
@@ -127,10 +128,11 @@ public class UnlockNotification : MB {
 		AudioManager.Sfx.Play (s.Sfx[0], s.Sfx[1]);
 		BodyText = context;
 		StartCoroutine (CoSlide (startPosition, endPosition));
-		Invoke ("SlideOut", 5f);
+		Invoke ("SlideOut", 10f);
 	}
 
-	public void SlideOut () {
+	void SlideOut () {
+		CancelInvoke ();
 		if (panel.localPosition.x <= endPosition)
 			StartCoroutine (CoSlide (endPosition, startPosition));
 	}
@@ -161,5 +163,11 @@ public class UnlockNotification : MB {
 			case "tactic": plan.OnClick (); break;
 			case "indicators": NotebookManager.Instance.indicators.Open(); break;
 		}
+		SlideOut ();
+	}
+
+	void OnSetFocus (FocusLevel focus) {
+		if (focus == FocusLevel.Preview || focus == FocusLevel.Dialog)
+			SlideOut ();
 	}
 }

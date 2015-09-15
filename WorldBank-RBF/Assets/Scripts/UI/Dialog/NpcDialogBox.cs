@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
 public class NpcDialogBox : MB {
@@ -25,32 +26,50 @@ public class NpcDialogBox : MB {
 		}
 	}
 
+	bool IsActive {
+		get { return Background.gameObject.activeSelf; }
+	}
+
 	public Text header;
 	public Text body;
 	public Transform contentContainer;
 	public List<NpcActionButton> buttons;
 	public List<FadeText> fadeTexts;
+	public CanvasGroup boxGroup;
+	public CanvasGroup contentGroup;
 	public Color backColor = Color.white;
 
-	void Awake () {
-		Close ();
+	const float fadeTime = 0.1f;
+	bool fading = false;
+
+	void Start () {
+		SetActive (false);
+		contentGroup.alpha = 0f;
 	}
 
 	public void Open (string headerContent, string bodyContent, Dictionary<string, UnityAction> choices, bool left) {
-		header.text = headerContent;
-		body.text = bodyContent;
-		contentContainer.SetSiblingIndex (left ? 0 : 1);
-		Background.SetLocalEulerAnglesZ (left ? 0 : 180);
+		
+		bool wasActive = IsActive;
 		SetActive (true);
-		SetButtons (choices);
-		foreach (FadeText ft in fadeTexts) {
-			if (ft.Parent.gameObject.activeSelf) 
-				ft.FadeIn (0.33f);
+
+		if (wasActive) {
+			FadeOutContent (() => SetContent (headerContent, bodyContent, choices, left ? 0 : 1, left ? 0 : 180));
+		} else {
+			SetContent (headerContent, bodyContent, choices, left ? 0 : 1, left ? 0 : 180);
+			FadeIn (false);
 		}
 	}
 
+	void SetContent (string headerContent, string bodyContent, Dictionary<string, UnityAction> choices, int siblingIndex, float bgRotation) {
+		SetButtons (choices);
+		header.text = headerContent;
+		body.text = bodyContent;
+		contentContainer.SetSiblingIndex (siblingIndex);
+		Background.SetLocalEulerAnglesZ (bgRotation);
+	}
+
 	public void Close () {
-		SetActive (false);
+		FadeOut ();
 	}
 
 	void SetActive (bool active) {
@@ -82,11 +101,45 @@ public class NpcDialogBox : MB {
 	void AddButton (NpcActionButton button, string content, UnityAction action) {
 		bool backButton = content == "Back";
 		button.gameObject.SetActive (true);
-		// button.transform.GetChild (0).GetComponent<Text> ().text = content;
 		button.Text.Text.text = content;
 		button.Icon.gameObject.SetActive (!backButton && content != "Learn More");
 		button.Color = backButton ? backColor : button.DefaultColor;
 		button.Button.onClick.AddListener (action);
 		button.FadeIn (0.33f);
+	}
+
+	void FadeIn (bool wasActive) {
+		if (!wasActive)
+			StartCoroutine (CoFade (boxGroup, 0f, 1f, fadeTime));
+		StartCoroutine (CoFade (contentGroup, 0f, 1f, fadeTime));
+	}
+
+	void FadeOut () {
+		StartCoroutine (CoFade (contentGroup, 1f, 0f, fadeTime));
+		StartCoroutine (CoFade (boxGroup, 1f, 0f, fadeTime, () => SetActive (false)));
+	}
+
+	void FadeOutContent (System.Action midFade) {
+		StartCoroutine (CoFade (contentGroup, 1f, 0f, fadeTime, () => {
+			midFade ();
+			FadeIn (true);
+		}));
+	}
+
+	IEnumerator CoFade (CanvasGroup group, float from, float to, float time, System.Action onEnd=null) {
+		
+		while (fading) yield return null;
+		fading = true;
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			group.alpha = Mathf.Lerp (from, to, progress);
+			yield return null;
+		}
+
+		if (onEnd != null) onEnd ();
+		fading = false;
 	}
 }

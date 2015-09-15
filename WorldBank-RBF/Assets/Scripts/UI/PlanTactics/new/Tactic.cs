@@ -99,6 +99,7 @@ public class Tactic : MB {
 		
 		this.item = item;
 		
+		portrait.NPCSymbol = item.Npc;
 		titleText.text = item.Title;
 		descriptionText.text = item.Description;
 		contextText.text = item.Context;
