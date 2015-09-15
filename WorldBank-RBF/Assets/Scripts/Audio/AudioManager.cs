@@ -1,8 +1,15 @@
-﻿
+﻿using System.Collections.Generic;
+
 public static class AudioManager {
 
 	public static class Settings {
 		public static readonly bool Mute = false;
+		public static readonly Dictionary<string, bool> Mutes = new Dictionary<string, bool>
+		{
+			{ "ambience", true },
+			{ "music", true },
+			{ "sfx", true }
+		};
 	}
 
 	static Inventory inventory = null;

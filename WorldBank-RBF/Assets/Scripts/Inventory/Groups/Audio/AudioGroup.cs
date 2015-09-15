@@ -160,9 +160,15 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 	/// </summary>
 	/// <param name="item">The AudioItem to play.</param>
 	public void Play (AudioItem item) {
-		if (AudioManager.Settings.Mute || item == null) return;
+		
+		if (AudioManager.Settings.Mute 
+			|| AudioManager.Settings.Mutes[ID] 
+			|| item == null) 
+			return;
+
 		if (!Settings.allowSimultaneous)
 			StopAll ();
+
 		item.Play ();
 		playing.Add (item);
 	}
