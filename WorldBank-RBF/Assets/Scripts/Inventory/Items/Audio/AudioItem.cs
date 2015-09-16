@@ -26,18 +26,16 @@ public class AudioItem : InventoryItem {
 		}
 	}
 
-	// example:
-	// fem1farewell2
-	// placetactic1
-
 	// description and number: 	.*?(\d+)
 	// just the number: 		(\d+)
 	// just the description: 	^.*?(?=[\d+])
 	// all descriptions: 		([a-zA-Z]+)
 
-	// "qualities" are groups specified in the filename and take the format
-	// [nameofgroup][#], with "nameofgroup" being a description of the quality
-	// and # being and index (just used to make the filename unique).
+	/// <remarks>
+	/// "qualities" are groups specified in the filename and take the format
+	/// [nameofgroup][#], with "nameofgroup" being a description of the quality
+	/// and # being and index (just used to make the filename unique).
+	/// </remarks>
 	List<string> qualities;
 	public List<string> Qualities {
 		get {
@@ -86,7 +84,6 @@ public class AudioItem : InventoryItem {
 		AudioObject idleObject = GetIdleAudioObject ();
 		if (idleObject != null)
 			idleObject.Play (this, Settings.loop);
-
 	}
 
 	public void Stop () {

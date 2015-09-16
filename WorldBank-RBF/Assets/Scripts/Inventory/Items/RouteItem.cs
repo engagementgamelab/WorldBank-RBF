@@ -25,6 +25,11 @@ public class RouteItem : ModelItem {
 	/// </summary>
 	public float Speed { get; private set; }
 
+	/// <summary>
+	/// Gets the mode of transportation along the route.
+	/// </summary>
+	public string TransportationMode { get; private set; }
+
 	List<Vector3> positions;
 	public List<Vector3> Positions {
 		get {
@@ -50,6 +55,7 @@ public class RouteItem : ModelItem {
 			Terminals = new Terminals (routeModel.city1, routeModel.city2);
 			Cost = routeModel.cost;
 			Speed = routeModel.speed;
+			TransportationMode = routeModel.transportation_mode;
 		}
 	}
 }

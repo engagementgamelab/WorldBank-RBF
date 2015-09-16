@@ -120,6 +120,7 @@ namespace Models {
         public string city2 { get; set; }
         public float speed { get; set; }
         public int cost { get; set; }
+        public string transportation_mode { get; set; }
 
     }
 

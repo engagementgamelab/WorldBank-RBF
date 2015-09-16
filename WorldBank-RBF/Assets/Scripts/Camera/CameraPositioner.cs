@@ -26,7 +26,7 @@ public class CameraPositioner : MB {
 			set { positioner.XPosition = value; }
 		}
 
-		float speed = 1.33f;
+		float speed = 1.67f;
 		public float Speed {
 			get { return speed; }
 			set { speed = value; }
@@ -40,7 +40,7 @@ public class CameraPositioner : MB {
 			}
 		}
 
-		float damping = 0.7f;
+		float damping = 0.9f;
 		public float Damping {
 			get { return damping; }
 			set { damping = Mathf.Clamp (value, 0f, 0.95f); }

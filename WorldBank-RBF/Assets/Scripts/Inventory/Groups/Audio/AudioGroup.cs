@@ -39,6 +39,9 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 	}
 
 	readonly List<AudioItem> playing = new List<AudioItem> ();
+	public List<AudioItem> Playing {
+		get { return playing; }
+	}
 
 	public AudioGroup (string subpath) {
 		this.subpath = subpath;
@@ -98,6 +101,7 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 	 * "fem" will play an AudioItem the quality "fem"
 	 *		(e.g. fem2greeting1, fem1farewell3, fem3response2)
 	 */
+
 	public AudioItem GetItem (string name, string groupId) {
 		AudioItem item = (groupId == "")
 			? GetItem (name)
@@ -205,5 +209,59 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 		foreach (AudioItem item in playing)
 			item.Stop ();
 		playing.Clear ();
+	}
+
+	/// <summary>
+	/// Fades in the AudioItem with the given name.
+	/// </summary>
+	/// <param name="name">Name of the AudioItem.</param>
+	/// <param name="time">Fade duration.</param>
+	/// <param name="onEndFade">Callback when the fade ends (optional).</param>
+	public void FadeIn (string name, float time, System.Action onEndFade=null) {
+		FadeIn (name, "", time, onEndFade);
+	}
+
+	/// <summary>
+	/// Fades in the AudioItem with the given name and group id.
+	/// </summary>
+	/// <param name="name">Name of the AudioItem.</param>
+	/// <param name="time">Fade duration.</param>
+	/// <param name="onEndFade">Callback when the fade ends (optional).</param>
+	public void FadeIn (string name, string groupId, float time, System.Action onEndFade=null) {
+		Fade (GetItem (name, groupId), 0f, 1f, time, onEndFade);
+	}
+
+	/// <summary>
+	/// Fades out the AudioItem with the given name.
+	/// </summary>
+	/// <param name="name">Name of the AudioItem.</param>
+	/// <param name="time">Fade duration.</param>
+	/// <param name="onEndFade">Callback when the fade ends (optional).</param>
+	public void FadeOut (string name, float time, System.Action onEndFade=null) {
+		FadeOut (name, "", time, onEndFade);
+	}
+
+	/// <summary>
+	/// Fades out the AudioItem with the given name and group id.
+	/// </summary>
+	/// <param name="name">Name of the AudioItem.</param>
+	/// <param name="time">Fade duration.</param>
+	/// <param name="onEndFade">Callback when the fade ends (optional).</param>
+	public void FadeOut (string name, string groupId, float time, System.Action onEndFade=null) {
+		FadeOut (GetItem (name, groupId), time, onEndFade);
+	}
+
+	/// <summary>
+	/// Fades out the given AudioItem.
+	/// </summary>
+	/// <param name="item">The AudioItem to fade out.</param>
+	/// <param name="time">Fade duration.</param>
+	/// <param name="onEndFade">Callback when the fade ends (optional).</param>
+	public void FadeOut (AudioItem item, float time, System.Action onEndFade=null) {
+		Fade (item, 1f, 0f, time, onEndFade);
+	}
+
+	void Fade (AudioItem item, float from, float to, float time, System.Action onEndFade=null) {
+		Fader.Instance.Fade (item, from, to, time, onEndFade);
 	}
 }
