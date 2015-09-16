@@ -95,15 +95,15 @@ public class UnlockNotification : MB {
 	}
 
 	void OnAddDialogue (DialogueItem dialogue) {
-		OnAdd ("dialogue", dialogue.Context);
+		OnAdd ("dialogue", dialogue.Context[dialogue.Context.Count-1]);
 	}
 
 	void OnAddRoute (RouteItem route) {
-		OnAdd ("route", route.Context);
+		OnAdd ("route", route.Context[route.Context.Count-1]);
 	}
 
 	void OnAddTactic (TacticItem tactic) {
-		OnAdd ("tactic", tactic.Context);
+		OnAdd ("tactic", tactic.Context[tactic.Context.Count-1]);
 	}
 
 	void OnIndicatorsUpdated () {

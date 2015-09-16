@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Tactic : MB {
 
 	public static Tactic selected = null;
 
-	public PortraitTextBox portrait;
+	public List<PortraitTextBox> portraits;
 	public Text titleText;
 	public Text descriptionText;
 	public Text contextText;
+	public GameObject textGroup;
+	public GameObject contextGroup;
 
 	const float delayAmount = 0.1f;
 	float delay = 0.1f;
@@ -20,6 +23,7 @@ public class Tactic : MB {
 	bool wasClicked = false;
 	bool animating = false;
 	bool locationChanged = false;
+	bool contextOpen = false;
 	
 	TacticPlaceholder placeholder;
 
@@ -99,12 +103,27 @@ public class Tactic : MB {
 		
 		this.item = item;
 		
-		portrait.NPCSymbol = item.Npc;
+		// portrait.NPCSymbol = item.Npc;
+		item.onUpdateUnlocked += OnUpdateUnlocked;
+		SetPortraits ();
 		titleText.text = item.Title;
 		descriptionText.text = item.Description;
-		contextText.text = item.Context;
+		// contextText.text = item.Context;
 		verticalDrag = false;
 		dragging = false;
+	}
+
+	void SetPortraits () {
+		
+		List<string> npcs = item.Npc;
+
+		foreach (PortraitTextBox p in portraits)
+			p.gameObject.SetActive (false);
+		
+		for (int i = 0; i < npcs.Count; i ++) {
+			portraits[i].gameObject.SetActive (true);
+			portraits[i].NPCSymbol = npcs[i];
+		}
 	}
 
 	void Update () {
@@ -378,9 +397,29 @@ public class Tactic : MB {
 			&& mousePosition.y > ypos - height * 0.5f);
 	}
 
+	public void ToggleContext () {
+		if (contextOpen) {
+			textGroup.SetActive (true);
+			contextGroup.SetActive (false);
+			contextOpen = false;
+		} else {
+			textGroup.SetActive (false);
+			contextGroup.SetActive (true);
+			contextOpen = true;
+		}
+	}
+
 	// Events
 
 	void OnScrollDirectionEvent (ScrollDirectionEvent e) {
 		verticalDrag = e.Vertical;
+	}
+
+	void OnUpdateUnlocked () {
+		SetPortraits ();
+	}
+
+	public void OnClickPortrait (int index) {
+		ToggleContext ();
 	}
 }

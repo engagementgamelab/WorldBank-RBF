@@ -69,6 +69,7 @@ public class NpcDialogBox : MB {
 	}
 
 	public void Close () {
+		DisableButtons ();
 		FadeOut ();
 	}
 
@@ -105,7 +106,16 @@ public class NpcDialogBox : MB {
 		button.Icon.gameObject.SetActive (!backButton && content != "Learn More");
 		button.Color = backButton ? backColor : button.DefaultColor;
 		button.Button.onClick.AddListener (action);
+		button.Button.onClick.AddListener (ClearButtons);
+		button.Button.interactable = true;
 		button.FadeIn (0.33f);
+	}
+
+	void DisableButtons () {
+		foreach (NpcActionButton button in buttons) {
+			if (button.gameObject.activeSelf)
+				button.Button.interactable = false;
+		}
 	}
 
 	void FadeIn (bool wasActive) {

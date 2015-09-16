@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+// Deprecated 9/16
+
 public class TacticsColumn : Column {
 
 	public ScrollRect scrollView;
@@ -51,7 +53,7 @@ public class TacticsColumn : Column {
 		
 		UITactic uiTactic = ObjectPool.Instantiate<UITactic> ();
 		uiTactic.ParentScrollRect = scrollView;
-		uiTactic.portrait.NPCSymbol = tactic.Npc;
+		//uiTactic.portrait.NPCSymbol = tactic.Npc;
 
 		uiTactic.Init (this, content, tactic);
 		uiTactics.Add (uiTactic);

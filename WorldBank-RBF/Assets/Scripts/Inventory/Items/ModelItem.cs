@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections.Generic;
 
 /// <summary>
 /// An InventoryItem that uses a game data model.
@@ -32,18 +31,25 @@ public class ModelItem : InventoryItem {
 		}
 	}
 
+	List<string> context = new List<string> ();
+
 	/// <summary>
 	/// Gets/sets the unlockable context.
 	/// </summary>
-	public string Context {
-		get { return Model.context; }
-		set { Model.context = value; }
+	public List<string> Context {
+		get { return context; }
+		set { context = value; }
 	}
+
+	List<string> npc = new List<string> ();
 
 	//// <summary>
 	/// Gets/sets the NPC that unlocked this item.
 	/// </summary>
-	public string Npc { get; set; }
+	public List<string> Npc {
+		get { return npc; }
+		set { npc = value; }
+	}
 
 	protected Models.Unlockable model;
 

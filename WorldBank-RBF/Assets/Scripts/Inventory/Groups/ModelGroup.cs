@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-
+﻿
 public delegate void OnUnlock<T> (T item) where T : ModelItem;
 
 /// <summary>
@@ -61,8 +58,8 @@ public class ModelGroup<T> : ItemGroup<T> where T : ModelItem, new () {
 	/// <param name="npc">The symbol of the NPC that unlocked this item (optional).</param>
 	public void UnlockWithContext (string symbol, string context, string npcSymbol="") {
 		T item = Find (symbol) as T;
-		item.Npc = npcSymbol;
-		item.Context = context;
+		item.Npc.Add (npcSymbol);
+		item.Context.Add (context);
 		Unlock(symbol);
 	}
 

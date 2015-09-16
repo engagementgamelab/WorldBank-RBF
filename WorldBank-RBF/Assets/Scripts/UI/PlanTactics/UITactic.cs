@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
 
+// Deprecated 9/16
+
 public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragHandler {
 	
 	public static UITactic selectedTactic = null;
@@ -44,9 +46,9 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 		this.tactic = tactic;
 
 		// Set various text elements
-		titleText.text = tactic.Title;
+		// titleText.text = tactic.Title;
 		descriptionText.text = tactic.Description;
-		contextText.text = tactic.Context;
+		// contextText.text = tactic.Context;
 		
 		Init (column, contentParent, tactic.Title);
 	}
