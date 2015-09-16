@@ -44,6 +44,7 @@ public class AdvisorMessage : PortraitTextBox {
 			currentPadding = initPadding;
 
 			if(initial) {
+				feedbackTextContainer.gameObject.SetActive(false);
 				initialTextContainer.gameObject.SetActive(true);
 				textContainer.gameObject.SetActive(false);
 				
@@ -57,6 +58,7 @@ public class AdvisorMessage : PortraitTextBox {
 				responseText = feedbackTextContainer.GetChild(1).GetComponent<Text>();				
 			}
 			else {
+				feedbackTextContainer.gameObject.SetActive(false);
 				textContainer.gameObject.SetActive(true);
 				initialTextContainer.gameObject.SetActive(false);
 

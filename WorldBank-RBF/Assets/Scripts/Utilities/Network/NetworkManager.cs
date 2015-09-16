@@ -26,6 +26,15 @@ public class NetworkManager : MonoBehaviour {
     private static Action<Dictionary<string, object>> _currentResponseHandler;
     public static string _sessionCookie;
     public static string _userCookie;
+
+    class PostCache {
+        
+        public string url;
+        public Dictionary<string, object> fields;
+        public Action<Dictionary<string, object>> responseHandler;
+
+    }
+    List<PostCache> _cachedRequests = new List<PostCache>();
         
     public static NetworkManager Instance {
         get {
@@ -48,6 +57,12 @@ public class NetworkManager : MonoBehaviour {
             _sessionCookie = value;
 
             Debug.Log("Set cookie to " + _sessionCookie);
+
+            // Client was authenticated -- call any requests that were waiting
+            foreach(PostCache req in _cachedRequests)
+                PostURL(req.url, req.fields, req.responseHandler);
+
+            _cachedRequests.Clear();
         }
 
     }
@@ -72,15 +87,7 @@ public class NetworkManager : MonoBehaviour {
         );
 
     }
-
-    private void ClientAuthenticated(Dictionary<string, object> response) { 
-
-        // _sessionCookie = response["session_cookie"].ToString();
-
-        // _currentResponseHandler(response);
-
-    }
-
+    
     /// <summary>
     /// Calls a URL endpoint and gives an optional response handler.
     /// </summary>
@@ -103,49 +110,34 @@ public class NetworkManager : MonoBehaviour {
     /// </summary>
     /// <param name="url">The URL to post to.</param>
     /// <param name="responseHandler">An Action that handles the response (optional).</param>
-    /// <param name="rawPost">The form should be sent as a byte array (default is true).</param>
-    public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> responseHandler=null, bool rawPost=true) {
+    public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> responseHandler=null) {
 
         string absoluteURL = DataManager.RemoteURL + url;
 
-        // Send form as raw byte array?
-        if(rawPost) {
+        // Send form as raw byte array
+        System.Text.StringBuilder output = new System.Text.StringBuilder();
+        
+        JsonWriter writer = new JsonWriter (output);
+        
+        if(_sessionCookie != null)
+            fields.Add("sessionID", System.Convert.ChangeType(_sessionCookie, typeof(object)));
+        
+        // If no session cookie, client has no auth, so cache this request to do later
+        else if(url != "/auth/") {
+            PostCache cacheObj = new PostCache();
+            cacheObj.url = url;
+            cacheObj.fields = fields;
+            cacheObj.responseHandler = responseHandler;
+            _cachedRequests.Add(cacheObj);
 
-            System.Text.StringBuilder output = new System.Text.StringBuilder();
-            
-            JsonWriter writer = new JsonWriter (output);
-            
-            if(_sessionCookie != null)
-                fields.Add("sessionID", System.Convert.ChangeType(_sessionCookie, typeof(object)));
-
-            writer.Write(fields);
-         
-            // Encode output as UTF8 bytes
-            StartCoroutine(WaitForForm(absoluteURL, Encoding.UTF8.GetBytes(output.ToString()), responseHandler));
-
+            return;
         }
-        else {
 
-            WWWForm form = new WWWForm();
-            
-            // Create WWWForm
-            foreach(KeyValuePair<string, object> field in fields)
-            {
-                string formFieldVal = null;
-
-                // If the field passed in is not a string (likely a model object), serialize to json string
-                try {
-                    formFieldVal = field.Value.ToString();
-                    form.AddField(field.Key, formFieldVal);
-                }
-                catch(Exception e) {
-                    throw new Exception("Unable to coerce form field " + field.Value + " to string for POST to " + url);
-                }
-            }
-
-            StartCoroutine(WaitForForm(absoluteURL, form.data, responseHandler));
-
-        }
+        writer.Write(fields);
+     
+        // Encode output as UTF8 bytes
+        StartCoroutine(WaitForForm(absoluteURL, Encoding.UTF8.GetBytes(output.ToString()), responseHandler));
+    
     }
 
     /// <summary>
@@ -216,14 +208,6 @@ public class NetworkManager : MonoBehaviour {
         
            www = new WWW(url, formData, postHeader);
         }
-        // This is a WWWForm
-        /*else if(form != null) {
-        
-            if(_sessionCookie != null)
-                postHeader.Add("sessionID", _sessionCookie);
-
-           www = new WWW(url, form, postHeader);
-        }*/
         
         // Bail out!
         else
@@ -235,7 +219,7 @@ public class NetworkManager : MonoBehaviour {
         Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
 
         // User is not logged in
-        if(www.responseHeaders["STATUS"].ToString().Contains("401"))
+        if((www.responseHeaders.Count > 0) && www.responseHeaders["STATUS"].ToString().Contains("401"))
         {
             Debug.LogWarning("User is not logged in. Call to " + url + " rejected.");
         }
