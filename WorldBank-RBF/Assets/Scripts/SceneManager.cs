@@ -50,7 +50,9 @@ public class SceneManager : MonoBehaviour {
 
 		// Authenticate to API
 		NetworkManager.Instance.Authenticate(ClientAuthenticated);
-
+		
+		// Set global game data if needed
+		SetGameData();
       
 	}
 
@@ -80,9 +82,6 @@ public class SceneManager : MonoBehaviour {
 			return;
 
 		NetworkManager.Instance.Cookie = response["session_cookie"].ToString();
-		
-		// Set global game data if needed
-		SetGameData();
 
 		// Authenticate player -- user/pass is hard-coded if in editor
 		if(!PlayerManager.Instance.Authenticated)

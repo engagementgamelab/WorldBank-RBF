@@ -16,7 +16,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 	public RectTransform[] dataBarFills;
 
 	public Text[] dataBarCurrentText;
-	public Text[] dataBarGoalText;
 
 	public static Dictionary<string, int[]> SelectedOptions = new Dictionary<string, int[]>();
 	public static List<int[]> AppliedAffects = new List<int[]>();
@@ -91,8 +90,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 			barSizesCurrent.Add(0f);
 			barSizesTarget.Add(affectVal);
 			
-			dataBarGoalText[ind].text = GoalAffects[ind].ToString();
-
 			ind++;
 
 		}

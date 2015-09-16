@@ -87,15 +87,7 @@ public class NetworkManager : MonoBehaviour {
         );
 
     }
-
-    private void ClientAuthenticated(Dictionary<string, object> response) { 
-
-        // _sessionCookie = response["session_cookie"].ToString();
-
-        // _currentResponseHandler(response);
-
-    }
-
+    
     /// <summary>
     /// Calls a URL endpoint and gives an optional response handler.
     /// </summary>
