@@ -253,7 +253,7 @@ public class ScenarioManager : MonoBehaviour {
 		if(currentCardIndex > 0)
 			AudioManager.Sfx.Play ("newproblem", "Phase2");
 
-		CalculateIndicators(false);
+		CalculateIndicators();
 
 	}
 
@@ -379,7 +379,7 @@ public class ScenarioManager : MonoBehaviour {
 		AudioManager.Sfx.Play ("login", "Phase2");
    
     	// This is the only time we won't show notification
-    	CalculateIndicators(false);
+    	CalculateIndicators();
 
 		// DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_indicators");
 
@@ -414,8 +414,7 @@ public class ScenarioManager : MonoBehaviour {
     /// <summary>
     // Calculates indicators, given the currently used affects, and then the affect bias for the current plan
     /// </summary>
-    /// <param name="notify">Show notification.</param>
-    void CalculateIndicators(bool notify=true) {
+    void CalculateIndicators() {
 
 		foreach(int[] dictAffect in usedAffects) {
 
@@ -433,7 +432,7 @@ public class ScenarioManager : MonoBehaviour {
 
 		usedAffects.Clear();
 
-		NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2], notify);
+		NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2]);
 
 		// scenarioInfoAnimator.Play("IndicatorsUpdate", -1, 0);
 
