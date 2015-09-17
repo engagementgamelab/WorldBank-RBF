@@ -54,11 +54,7 @@ public class EditorObjectDrawer<T> where T : UnityEngine.Object {
     }
 
     public void Load (string fileName="") {
-        if (typeof (T) == typeof (ParallaxLayerManager)) {
-            ParallaxLayerManager.Instance.Load (fileName);
-        } else {
-    		ModelSerializer.Load (Target, fileName);
-        }
+    	ModelSerializer.Load (Target, fileName);
 	}
 
 	public void DrawObjectProperties (GUILayoutOption[] options) {

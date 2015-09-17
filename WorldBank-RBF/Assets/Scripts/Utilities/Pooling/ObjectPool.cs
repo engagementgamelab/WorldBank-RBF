@@ -69,7 +69,7 @@ public class ObjectPool : MonoBehaviour {
 		pools[name] = this;
 	}
 
-	public static ObjectPool GetPool<T> (string additionalPath=null) where T : MonoBehaviour {
+	static ObjectPool GetPool<T> (string additionalPath=null) where T : MonoBehaviour {
 		string poolName = GetPoolName<T> ();
 		if (!pools.ContainsKey (poolName)) {
 			CreatePool<T> (additionalPath);

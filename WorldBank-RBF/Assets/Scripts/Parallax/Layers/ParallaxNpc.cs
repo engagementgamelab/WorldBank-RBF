@@ -51,9 +51,12 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 
 	string texture2Path = "";
 	public string Texture2Path {
-		get { return ParallaxImage2.TexturePath; }
+		get { 
+			// return ParallaxImage2.TexturePath; }
+			return texture2Path; }
 		set {
 			ParallaxImage2.TexturePath = value;
+			texture2Path = value;
 			texture2 = null;
 		}
 	}

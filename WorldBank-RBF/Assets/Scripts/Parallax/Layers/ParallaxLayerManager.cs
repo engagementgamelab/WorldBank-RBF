@@ -109,15 +109,13 @@ public class ParallaxLayerManager : MonoBehaviour {
     }
 
     void Clear () {
-    	ObjectPool o = ObjectPool.GetPool<ParallaxLayer> ();
-    	if (o == null || o.ActiveInstances.Count == 0) return;
 		foreach (ParallaxLayer layer in layers)
 			layer.Destroy ();
 		layers.Clear ();
     }
 
 	void RefreshLayers () {
-	
+		
         layers = EditorObjectPool.GetObjectsOfTypeInOrder<ParallaxLayer> ();
 
         // Remove layers
