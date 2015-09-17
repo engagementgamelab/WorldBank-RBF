@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 public class PrioritizationManager : NotebookCanvas {
 
-	public GameObject continueButton;
+	// public GameObject continueButton;
+	public Button continueButton;
 
 	public RectTransform namingPanel;
 	public RectTransform feedbackPanel;
@@ -15,10 +16,12 @@ public class PrioritizationManager : NotebookCanvas {
 
 	void Awake () {
 		PlayerData.TacticPriorityGroup.onUpdate += OnUpdatePriorities;
+		continueButton.interactable = false;
 	}
 
 	public override void Open () {
-		continueButton.SetActive (NotebookManager.Instance.MakingPlan);
+		// continueButton.SetActive (NotebookManager.Instance.MakingPlan);
+		// continueButton.interactable = PlayerData.TacticPriorityGroup.Count == 6;
 	}
 
 	public void NamePlan() {
@@ -54,7 +57,8 @@ public class PrioritizationManager : NotebookCanvas {
 	}
 
 	void OnUpdatePriorities () {
-		continueButton.SetActive (PlayerData.TacticPriorityGroup.Count == 6);
+		// continueButton.SetActive (PlayerData.TacticPriorityGroup.Count == 6);
+		continueButton.interactable = PlayerData.TacticPriorityGroup.Count == 6;
 	}
 
 	// Get response from submitting a plan

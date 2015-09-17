@@ -11,8 +11,27 @@ public class TacticSlot : DragLocation, IDropHandler, IPointerDownHandler {
 	Tactic currentTactic;
 	TacticItem tacticItem;
 
+	bool dropEnabled = true;
+	public bool DropEnabled {
+		get { return dropEnabled; }
+		set { 
+			dropEnabled = value; 
+			Button.enabled = value;
+		}
+	}
+
 	bool HasTactic {
 		get { return currentTactic != null; }
+	}
+
+	Button button = null;
+	Button Button {
+		get {
+			if (button == null) {
+				button = GetComponent<Button> ();
+			}
+			return button;
+		}
 	}
 
 	public void ClearSlot () {
@@ -54,7 +73,9 @@ public class TacticSlot : DragLocation, IDropHandler, IPointerDownHandler {
 		return t;
 	}
 
+	#region IPointerDownHandler implementation
 	public void OnPointerDown (PointerEventData eventData) {
+		if (!DropEnabled) return;
 		if (currentTactic == null)
 			return;
 		Tactic t = CreateTactic ();
@@ -65,9 +86,11 @@ public class TacticSlot : DragLocation, IDropHandler, IPointerDownHandler {
 		tacticItem = null;
 		text.text = "";
 	}
+	#endregion
 
 	#region IDropHandler implementation
 	public void OnDrop (PointerEventData eventData) {
+		if (!DropEnabled) return;
 		Tactic selectedTactic = Tactic.selected;
 		if (selectedTactic == null)
 			return;
