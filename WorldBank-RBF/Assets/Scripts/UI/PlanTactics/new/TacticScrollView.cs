@@ -41,7 +41,6 @@ public class TacticScrollView : MB, IBeginDragHandler, IDragHandler, IDropHandle
 	#region IBeginDragHandler
 	public void OnBeginDrag (PointerEventData eventData) {
 		bool isVertical = IsVerticalDrag (eventData.delta);
-		Debug.Log (isVertical);
 		if (verticalScroll != isVertical) {
 			verticalScroll = isVertical;
 			Events.instance.Raise (new ScrollDirectionEvent (verticalScroll));

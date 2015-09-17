@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PortraitsGroup : MonoBehaviour, IPointerDownHandler {
+public class PortraitsGroup : MonoBehaviour {
 
 	CanvasGroup canvasGroup = null;
 	CanvasGroup CanvasGroup {
@@ -16,9 +16,5 @@ public class PortraitsGroup : MonoBehaviour, IPointerDownHandler {
 	public bool BlockRaycasts {
 		get { return CanvasGroup.blocksRaycasts; }
 		set { CanvasGroup.blocksRaycasts = value; }
-	}
-
-	public void OnPointerDown (PointerEventData eventData) {
-		Debug.Log ("heard");
 	}
 }

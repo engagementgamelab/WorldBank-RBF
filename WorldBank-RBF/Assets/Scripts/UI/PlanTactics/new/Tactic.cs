@@ -24,7 +24,7 @@ public class Tactic : MB {
 	bool wasClicked = false;
 	bool animating = false;
 	bool locationChanged = false;
-	bool contextOpen = false;
+	int openContext = -1;
 	
 	TacticPlaceholder placeholder;
 
@@ -152,6 +152,9 @@ public class Tactic : MB {
 
 		if (Input.GetMouseButton (0)) {
 			
+			if (Vector2.Distance (dragPosition, (Vector2)transform.position - (Vector2)Input.mousePosition) < 1f)
+				return;
+
 			// Wait a small amount of time to check if user is performing vertical or horizontal drag
 			if (delay > 0) {
 				delay -= Time.deltaTime;
@@ -209,7 +212,7 @@ public class Tactic : MB {
 			if (DragData.ToLocation is TacticSlot) {
 
 				// container to slot
-				if (contextOpen) ToggleContext ();
+				if (openContext > -1) ToggleContext (-1);
 				placeholder.ShrinkAndDestroy ();
 				ShrinkAndDestroy ();
 			} else {
@@ -398,16 +401,24 @@ public class Tactic : MB {
 			&& mousePosition.y > ypos - height * 0.5f);
 	}
 
-	public void ToggleContext () {
-		if (contextOpen) {
-			textGroup.SetActive (true);
-			contextGroup.SetActive (false);
-			contextOpen = false;
+	public void ToggleContext (int index) {
+		if (openContext > -1) {
+			CloseContext ();
 		} else {
-			textGroup.SetActive (false);
-			contextGroup.SetActive (true);
-			contextOpen = true;
+			OpenContext (index);
 		}
+	}
+
+	void OpenContext (int index) {
+		textGroup.SetActive (false);
+		contextGroup.SetActive (true);
+		openContext = index;
+	}
+
+	void CloseContext () {
+		textGroup.SetActive (true);
+		contextGroup.SetActive (false);
+		openContext = -1;
 	}
 
 	// Events
@@ -421,6 +432,10 @@ public class Tactic : MB {
 	}
 
 	public void OnClickPortrait (int index) {
-		ToggleContext ();
+		contextText.text = item.Context[index];
+		if (openContext == index)
+			CloseContext ();
+		else
+			OpenContext (index);
 	}
 }

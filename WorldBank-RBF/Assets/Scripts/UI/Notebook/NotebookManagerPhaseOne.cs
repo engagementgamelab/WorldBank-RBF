@@ -26,6 +26,7 @@ public class NotebookManagerPhaseOne : MonoBehaviour {
 	public bool CanCloseNotebook {
 		get {
 			string currentCity = PlayerData.CityGroup.CurrentCity;
+			Debug.Log (currentCity + ", " + DataManager.SceneContext);
 			return (
 				(currentCity == DataManager.SceneContext
 				&& !NotebookManager.Instance.MakingPlan)
