@@ -71,7 +71,8 @@ public class ScenarioChatScreen : ChatScreen {
 		// Create buttons for all options if not speaking to advisor
 		AddOptions(currentCardOptions, null, true);
 
-		AddResponseSpeech(_data.initiating_dialogue, charRef, true);
+		if (gameObject.activeSelf)
+			AddResponseSpeech(_data.initiating_dialogue, charRef, true);
 
 		Events.instance.AddListener<ScenarioEvent> (OnScenarioEvent);
 
@@ -164,7 +165,7 @@ public class ScenarioChatScreen : ChatScreen {
 				currentCardOptions.Add(option);
 		}
 
-		if(advisor.dialogue != null) {
+		if(advisor.dialogue != null && gameObject.activeSelf) {
 			AddResponseSpeech(advisor.dialogue, DataManager.GetDataForCharacter(strAdvisorSymbol));
 
 			// SFX

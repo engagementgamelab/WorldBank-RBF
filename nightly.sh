@@ -63,7 +63,7 @@ then
 	url="$(drive url -i $new_file_id)";
 
 	# Tell slack about the new file
-	if [ -z "$MANUAL_BUILD" ]
+	if [ "$MANUAL_BUILD" != "" ]
 	then
 		echo "New daily build for $1 posted ($url)" | ~/go/bin/slackcat -n "EL Dev Server" -i ":lab:"
 	else

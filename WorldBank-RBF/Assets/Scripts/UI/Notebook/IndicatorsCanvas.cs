@@ -8,14 +8,20 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	public Animator scenarioAnimator;
 	public Text yearEndPromptText;
+	public Text phaseEndPromptText;
 
+	public RectTransform actionsView;
 	public RectTransform actionsColumn;
-	public RectTransform scenarioInfo;
+	public RectTransform decisionPanel;
+	public RectTransform summaryPanel;
 
 	public RectTransform[] dataBarBgs;
 	public RectTransform[] dataBarFills;
+	public CanvasGroup[] dataBarStars;
 
 	public Text[] dataBarCurrentText;
+	public Image[] dataBarArrowsUp;
+	public Image[] dataBarArrowsDown;
 
 	public static Dictionary<string, int[]> SelectedOptions = new Dictionary<string, int[]>();
 	public static List<int[]> AppliedAffects = new List<int[]>();
@@ -45,22 +51,17 @@ public class IndicatorsCanvas : NotebookCanvas {
 			int ind = 0;
 			
 			foreach(string affect in currentAffects) {
-				if(barSizesCurrent[ind] < barSizesTarget[ind])
-					barSizesCurrent[ind] = barSizesCurrent[ind]+2;
+				if(barSizesCurrent[ind] < barSizesTarget[ind]+3)
+					barSizesCurrent[ind] = barSizesCurrent[ind]+3;
+				else if(ind < 2)
+					ind++;
 
-				dataBarFills[ind].sizeDelta = new Vector2(barSizesCurrent[ind], dataBarFills[ind].rect.height);
-				ind++;
+				dataBarFills[ind].sizeDelta = new Vector2(Mathf.Clamp(barSizesCurrent[ind], 0, dataBarBgs[ind].rect.width), dataBarFills[ind].rect.height);
 			}
 
 		}
 
 	}
-
-    void OnDisable() {
-
-		scenarioInfo.gameObject.SetActive(true);
-
-    }
 
     void RenderIndicators() {
 
@@ -72,23 +73,30 @@ public class IndicatorsCanvas : NotebookCanvas {
 		foreach(string affect in currentAffects) {
 	
 			float affectVal = 0;
-			float affectValPrevious = 0;
+			float affectGoal = (float)GoalAffects[ind];
 
 			Single.TryParse(currentAffects[ind], out affectVal);
 			
+			// Set text to affect delta
 			if(previousAffects !=null && previousAffects[ind] != null) {
-				Single.TryParse(previousAffects[ind], out affectValPrevious);
-				dataBarCurrentText[ind].text = ((float)GoalAffects[ind] - affectVal).ToString();
+				dataBarCurrentText[ind].text = affectVal.ToString();
+
+				dataBarArrowsUp[ind].gameObject.SetActive(affectVal > 0);
+				dataBarArrowsDown[ind].gameObject.SetActive(affectVal < 0);
 			}
 
-			affectVal = Mathf.Clamp(affectVal, 0, (float)GoalAffects[ind]);
+			// Get affect vs goal
+			float currentVal = Mathf.Clamp( (affectGoal + affectVal), 0, affectGoal );
 
-			affectVal = (affectVal / (float)GoalAffects[ind]) * dataBarBgs[ind].rect.width;
+			float barWidth = Mathf.Clamp( (currentVal / affectGoal) * dataBarBgs[ind].rect.width, 0, dataBarBgs[ind].rect.width );
 
 			dataBarFills[ind].sizeDelta = new Vector2(0, dataBarFills[ind].rect.height);
 
+			// Show star?
+		 	dataBarStars[ind].alpha = (currentVal >= affectGoal) ? 1 : 0;
+
 			barSizesCurrent.Add(0f);
-			barSizesTarget.Add(affectVal);
+			barSizesTarget.Add(barWidth);
 			
 			ind++;
 
@@ -101,6 +109,14 @@ public class IndicatorsCanvas : NotebookCanvas {
 			actionTaken.Display(action.Key, action.Value);
 
 			actionTaken.transform.SetParent(actionsColumn.transform);
+			actionTaken.transform.localScale = Vector3.one;
+
+		}
+
+		// TODO: No options?
+		if(SelectedOptions.Count == 0) {
+
+		   //  strActionsSummary = "<i><b>You did not take any actions this year!</b></i>"
 
 		}
 
@@ -108,10 +124,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	// Update indicators
 	public override void UpdateIndicators(int intBirths, int intVaccinations, int intQOC) {
-
-		intBirths = Mathf.Clamp(intBirths, 0, 100);
-		intVaccinations = Mathf.Clamp(intVaccinations, 0, 100);
-		intQOC = Mathf.Clamp(intQOC, 0, 100);
 
 		if(currentAffects != null)
 			previousAffects = currentAffects;
@@ -150,7 +162,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 														    		IndicatorsCanvas.AppliedAffects[IndicatorsCanvas.AppliedAffects.Count-1]
 														    	  );
 
-    	string strActionsSummary = "<i>Your actions for this year:</i>\n";
     	string[] yearEndPrompts = (currentYear == 1) ? scenarioConfig.prompt_year_1 : scenarioConfig.prompt_year_2;
     	string yearEndMessage;
 
@@ -160,12 +171,24 @@ public class IndicatorsCanvas : NotebookCanvas {
 
     	// If player has made changes, choose prompt based on if indicators are positive
     	else
-    		yearEndMessage = yearEndPrompts[Convert.ToInt32(indicatorsNegative)+1];
+    		yearEndMessage = yearEndPrompts[Convert.ToInt32(indicatorsNegative)+1];;
 
-	    // else
-		   //  strActionsSummary = "<i><b>You did not take any actions this year!</b></i>";
+    	if(currentYear == 3)
+    	{
+    		summaryPanel.gameObject.SetActive(true);
+    		decisionPanel.gameObject.SetActive(false);
+    		actionsView.gameObject.SetActive(false);
 
-    	yearEndPromptText.text = yearEndMessage;
+	    	phaseEndPromptText.text = yearEndMessage;
+    	}
+    	else
+    	{
+    		summaryPanel.gameObject.SetActive(false);
+    		decisionPanel.gameObject.SetActive(true);
+    		actionsView.gameObject.SetActive(true);
+
+	    	yearEndPromptText.text = yearEndMessage;
+    	}
 
     	AddYearEndOptions(scenarioConfig.choices);
 
@@ -215,9 +238,25 @@ public class IndicatorsCanvas : NotebookCanvas {
 	}
 	
 	public void DebugIndicators() {
-		GoalAffects = new [] {80, 85, 90};
+		GoalAffects = new [] {10, 25, 50};
 
-		UpdateIndicators(new System.Random().Next(0, 100), new System.Random().Next(0, 100), new System.Random().Next(0, 100));
+		SelectedOptions.Clear();
+
+		SelectedOptions.Add("Contract Outside Organization to Administer Program", new [] {-1, 4, -3});
+		SelectedOptions.Add("Conditional Cash Transfer", new [] {1, 4, 3});
+		SelectedOptions.Add("Clarify the separation of functions and responsibilities", new [] {4, -2, -9});
+		SelectedOptions.Add("Terminate the contract at the end of this year", new [] {0, 3, 1});
+		SelectedOptions.Add("Award bonuses to hospital staff", new [] {0, 3, 1});
+
+		int a = new System.Random().Next(-10, 4);
+		int b = new System.Random().Next(-6, 10);
+		int c = new System.Random().Next(-4, 4);
+
+		Debug.Log (a + ", " + b + ", " + c);
+
+		UpdateIndicators(a, b, c);
+
+		showIndicators = true;
 	}
 
 }
