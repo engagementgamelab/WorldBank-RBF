@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class TacticScrollView : MB, IBeginDragHandler, IDragHandler, IDropHandler {
+public class TacticScrollView : MB, IBeginDragHandler, IDragHandler, IDropHandler, IPointerUpHandler {
 
 	public TacticsContainer container;
 	
@@ -33,6 +33,7 @@ public class TacticScrollView : MB, IBeginDragHandler, IDragHandler, IDropHandle
 	}
 
 	bool IsVerticalDrag (Vector2 delta, float range=0.25f) {
+		if (delta.magnitude < 5f) return false;
 		Vector2 deltaNormalized = delta.normalized;
 		return deltaNormalized.x > -range && deltaNormalized.x < range;
 	}
@@ -40,6 +41,7 @@ public class TacticScrollView : MB, IBeginDragHandler, IDragHandler, IDropHandle
 	#region IBeginDragHandler
 	public void OnBeginDrag (PointerEventData eventData) {
 		bool isVertical = IsVerticalDrag (eventData.delta);
+		Debug.Log (isVertical);
 		if (verticalScroll != isVertical) {
 			verticalScroll = isVertical;
 			Events.instance.Raise (new ScrollDirectionEvent (verticalScroll));
@@ -48,13 +50,13 @@ public class TacticScrollView : MB, IBeginDragHandler, IDragHandler, IDropHandle
 
 	public void OnDrag (PointerEventData eventData) {
 		
-		if (verticalScroll) {
-			bool isVertical = IsVerticalDrag (eventData.delta, 0.4f);
+		/*if (verticalScroll) {
+			bool isVertical = IsVerticalDrag (eventData.delta, 0.1f);
 			if (!isVertical) {
 				verticalScroll = isVertical;
 				Events.instance.Raise (new ScrollDirectionEvent (verticalScroll));
 			}		
-		}
+		}*/
 	}
 	#endregion
 
@@ -63,5 +65,12 @@ public class TacticScrollView : MB, IBeginDragHandler, IDragHandler, IDropHandle
 		if (Tactic.selected != null)
 			Tactic.selected.SetDropLocation (container);
 	}
+	#endregion
+
+	#region IPointerUpHandler implementation
+	public void OnPointerUp (PointerEventData eventData) {
+		verticalScroll = false;
+		Events.instance.Raise (new ScrollDirectionEvent (verticalScroll));
+	}	
 	#endregion
 }

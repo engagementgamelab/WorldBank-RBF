@@ -7,6 +7,7 @@ public class Tactic : MB {
 
 	public static Tactic selected = null;
 
+	public PortraitsGroup portraitsGroup;
 	public List<PortraitTextBox> portraits;
 	public Text titleText;
 	public Text descriptionText;
@@ -89,7 +90,6 @@ public class Tactic : MB {
 	}
 
 	void Awake () {
-		CanvasGroup.blocksRaycasts = false;
 		Events.instance.AddListener<ScrollDirectionEvent> (OnScrollDirectionEvent);
 	}
 
@@ -103,12 +103,10 @@ public class Tactic : MB {
 		
 		this.item = item;
 		
-		// portrait.NPCSymbol = item.Npc;
 		item.onUpdateUnlocked += OnUpdateUnlocked;
 		SetPortraits ();
 		titleText.text = item.Title;
 		descriptionText.text = item.Description;
-		// contextText.text = item.Context;
 		verticalDrag = false;
 		dragging = false;
 	}
@@ -211,6 +209,7 @@ public class Tactic : MB {
 			if (DragData.ToLocation is TacticSlot) {
 
 				// container to slot
+				if (contextOpen) ToggleContext ();
 				placeholder.ShrinkAndDestroy ();
 				ShrinkAndDestroy ();
 			} else {
@@ -226,6 +225,7 @@ public class Tactic : MB {
 	}
 
 	public void StartDragging (DragLocation fromLocation, bool setDragPosition=true) {
+		portraitsGroup.BlockRaycasts = false;
 		Fade (0.75f);
 		DragData.FromLocation = fromLocation;
 		selected = this;
@@ -236,6 +236,7 @@ public class Tactic : MB {
 	}
 
 	void StopDragging () {
+		portraitsGroup.BlockRaycasts = true;
 		Fade (1f);
 		dragging = false;
 		delay = delayAmount;
