@@ -75,8 +75,8 @@ public class DialogManager : MonoBehaviour {
 			dialogBox.Close();
 			dialogBox = null;
 		}
-		if (npcDialogBox != null)
-			npcDialogBox.Close ();
+		// if (npcDialogBox != null)
+		// 	npcDialogBox.Close ();
 	}
 
 	/// <summary>
@@ -188,6 +188,7 @@ public class DialogManager : MonoBehaviour {
 		if (!character.NoChoices && !PlayerData.InteractionGroup.Empty) {
 			btnChoices.Add ("Learn More", () => {
 				// CloseAll ();
+				npcDialogBox.Clear ();
 				NPCFocusBehavior.Instance.DialogFocus ();
 			});
 		}
@@ -335,7 +336,8 @@ public class DialogManager : MonoBehaviour {
 
 	void CloseAndUnfocus () {
 		NPCFocusBehavior.Instance.DefaultFocus ();
-		CloseAll ();
+		// CloseAll ();
+		npcDialogBox.Close ();
 	}
 	
 	// TODO: This needs some work - text doesn't fade correctly, and also it needs to handle

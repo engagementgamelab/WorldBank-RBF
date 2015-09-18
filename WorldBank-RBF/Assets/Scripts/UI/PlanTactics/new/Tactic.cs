@@ -228,6 +228,7 @@ public class Tactic : MB {
 	}
 
 	public void StartDragging (DragLocation fromLocation, bool setDragPosition=true) {
+		AudioManager.Sfx.Play ("picktactic", "plan");
 		portraitsGroup.BlockRaycasts = false;
 		Fade (0.75f);
 		DragData.FromLocation = fromLocation;
@@ -239,6 +240,7 @@ public class Tactic : MB {
 	}
 
 	void StopDragging () {
+		AudioManager.Sfx.Play ("placetactic", "plan");
 		portraitsGroup.BlockRaycasts = true;
 		Fade (1f);
 		dragging = false;

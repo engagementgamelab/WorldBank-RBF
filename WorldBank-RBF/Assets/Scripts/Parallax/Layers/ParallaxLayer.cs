@@ -33,7 +33,17 @@ public class ParallaxLayer : MB, IEditorPoolable {
 	public float RightMax {
 		get { 
 			if (images == null || images.Count == 0) return 0;
-			Transform rightImage = images[images.Count-1].Transform;
+			
+			ParallaxImage i = null;
+			int index = images.Count-1;
+			while (i == null && index > -1) {
+				if (images[index].gameObject.activeSelf)
+					i = images[index];
+				index --;
+			}
+
+			Transform rightImage = i.Transform;//images[images.Count-1].Transform;
+			Debug.Log (rightImage.position.x);
 			return rightImage.position.x - rightImage.localScale.x * 0.5f;
 		}
 	}

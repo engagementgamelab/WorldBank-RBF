@@ -120,7 +120,8 @@ public class CameraPositioner : MB {
 	public float XMax {
 		get { return xMax; }
 		set {
-			xMax = value + 4.5f;
+			// xMax = value + 4.5f;
+			xMax = value;
 			Transform.SetPositionX (Mathf.Min (xMax, Position.x));
 		}
 	}

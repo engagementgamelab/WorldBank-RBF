@@ -53,7 +53,7 @@ public class CityInfoBox : MB {
 					return;
 				}
 				Body = "You've already visited this city but you can pass through it.";
-				SetButtons ("Cancel", Close, "Visit", () => TravelTo (city, button.ActiveRoute));
+				SetButtons ("Cancel", Close, "Visit", () => TravelTo (city, button.ActiveRoute, false));
 			} else {
 				if (currentCity && PlayerData.InteractionGroup.Count > 0) {
 					NotebookManagerPhaseOne.Instance.CloseCanvases ();
@@ -63,7 +63,7 @@ public class CityInfoBox : MB {
 				if (currentCity) {
 					SetButtons ("Cancel", Close, "Extra Day", () => StayExtraDay (city));
 				} else {
-					SetButtons ("Cancel", Close, "Visit", () => TravelTo (city, button.ActiveRoute));	
+					SetButtons ("Cancel", Close, "Visit", () => TravelTo (city, button.ActiveRoute, true));	
 				}
 			}
 		} else {
@@ -95,8 +95,8 @@ public class CityInfoBox : MB {
 		SetActive (false);
 	}
 
-	void TravelTo (CityItem city, RouteItem route) {
-		CitiesManager.Instance.TravelToCity (city, route);
+	void TravelTo (CityItem city, RouteItem route, bool reopenBox) {
+		CitiesManager.Instance.TravelToCity (city, route, reopenBox);
 		Close ();
 	}
 

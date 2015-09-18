@@ -6,6 +6,25 @@ using System.Collections.Generic;
 
 public class NpcDialogBox : MB {
 
+	struct Content {
+
+		public readonly string Header;
+		public readonly string Body;
+		public readonly Dictionary<string, UnityAction> Choices;
+		public readonly bool Left;
+
+		public bool Empty {
+			get { return Header == "" && Body == "" && Choices == null; }
+		}
+
+		public Content (string headerContent, string bodyContent, Dictionary<string, UnityAction> choices, bool left=false) {
+			Header = headerContent;
+			Body = bodyContent;
+			Choices = choices;
+			Left = left;
+		}
+	}
+
 	Transform background = null;
 	Transform Background {
 		get {
@@ -34,48 +53,169 @@ public class NpcDialogBox : MB {
 	public Text body;
 	public Transform contentContainer;
 	public List<NpcActionButton> buttons;
-	public List<FadeText> fadeTexts;
+	public Scrollbar scrollbar;
 	public CanvasGroup boxGroup;
 	public CanvasGroup contentGroup;
 	public Color backColor = Color.white;
 
-	const float fadeTime = 0.1f;
-	bool fading = false;
+	readonly Dictionary<string, float> fadeTimes = new Dictionary<string, float> {
+		{ "inbox", 0.1f },
+		{ "outbox", 0.2f },
+		{ "incontent", 0.1f },
+		{ "outcontent", 0.2f },
+		{ "inbutton", 0.5f },
+		{ "outbutton", 0.1f }
+	};
+
+	Content currentContent;
+	Content emptyContent = new Content ("", "", null);
 
 	void Start () {
 		SetActive (false);
-		contentGroup.alpha = 0f;
 	}
 
 	public void Open (string headerContent, string bodyContent, Dictionary<string, UnityAction> choices, bool left) {
-		
-		bool wasActive = IsActive;
-		SetActive (true);
-
-		if (wasActive) {
-			FadeOutContent (() => SetContent (headerContent, bodyContent, choices, left ? 0 : 1, left ? 0 : 180));
+		if (IsActive) {
+			Content newContent = new Content (headerContent, bodyContent, choices, left);
+			if (currentContent.Empty) {
+				FadeInContent (newContent);
+			} else {
+				SwapContent (newContent);
+			}
 		} else {
-			SetContent (headerContent, bodyContent, choices, left ? 0 : 1, left ? 0 : 180);
-			FadeIn (false);
+			FadeInFromClose (new Content (headerContent, bodyContent, choices, left));
 		}
 	}
 
-	void SetContent (string headerContent, string bodyContent, Dictionary<string, UnityAction> choices, int siblingIndex, float bgRotation) {
-		SetButtons (choices);
-		header.text = headerContent;
-		body.text = bodyContent;
-		contentContainer.SetSiblingIndex (siblingIndex);
-		Background.SetLocalEulerAnglesZ (bgRotation);
+	public void Clear () {
+		FadeOutContent ();
 	}
 
 	public void Close () {
-		DisableButtons ();
-		FadeOut ();
+		FadeOutFromOpen ();
 	}
 
+	void ApplyContent (Content content) {
+		SetButtons (content.Choices);
+		header.text = content.Header;
+		body.text = content.Body;
+		currentContent = content;
+		scrollbar.value = 0f;
+	}
+
+	void ClearContent () {
+		ClearButtons ();
+		scrollbar.value = 0f;	
+		header.text = "";
+		body.text = "";
+		currentContent = emptyContent;
+	}
+
+	void FadeInFromClose (Content content) {
+		SetActive (true);
+		ApplyContent (content);
+		SetButtonsAlpha (0f);
+		SetButtonsInteractable (false);
+		contentGroup.alpha = 0f;
+		StartCoroutine (CoFadeInFromClose (() => SetButtonsInteractable (true)));
+	}
+
+	void FadeOutFromOpen () {
+		SetButtonsInteractable (false);
+		StartCoroutine (CoFadeOutFromOpen (() => {
+			ClearContent ();
+			SetActive (false);
+		}));
+	}
+
+	void FadeInContent (Content content) {
+		ApplyContent (content);
+		SetButtonsInteractable (false);
+		StartCoroutine (CoFadeInContent (() => SetButtonsInteractable (true)));
+	}
+
+	void FadeOutContent () {
+		SetButtonsInteractable (false);
+		StartCoroutine (CoFadeOutContent (ClearContent));
+	}
+
+	void SwapContent (Content newContent) {
+		StartCoroutine (CoSwapContent (
+			() => {
+				ClearContent ();
+				ApplyContent (newContent);
+				SetButtonsInteractable (false);
+			},
+			() => SetButtonsInteractable (true)
+		));
+	}
+
+	IEnumerator CoFadeInFromClose (System.Action onEnd) {
+		yield return StartCoroutine (CoFade (boxGroup, 0f, 1f, fadeTimes["inbox"]));
+		yield return StartCoroutine (CoFade (contentGroup, 0f, 1f, fadeTimes["incontent"]));
+		yield return StartCoroutine (CoFadeInButtons (fadeTimes["inbutton"]));
+		onEnd ();
+	}
+
+	IEnumerator CoFadeOutFromOpen (System.Action onEnd) {
+		yield return StartCoroutine (CoFadeOutButtons (fadeTimes["outbutton"]));
+		yield return StartCoroutine (CoFade (contentGroup, 1f, 0f, fadeTimes["outcontent"]));
+		yield return StartCoroutine (CoFade (boxGroup, 1f, 0f, fadeTimes["outbox"]));
+		onEnd ();
+	}
+
+	IEnumerator CoFadeInContent (System.Action onEnd) {
+		yield return StartCoroutine (CoFade (contentGroup, 0f, 1f, fadeTimes["incontent"]));
+		yield return StartCoroutine (CoFadeInButtons (fadeTimes["inbutton"]));
+		if (onEnd != null) onEnd ();
+	}
+
+	IEnumerator CoFadeOutContent (System.Action onEnd) {
+		yield return StartCoroutine (CoFadeOutButtons (fadeTimes["outbutton"]));
+		yield return StartCoroutine (CoFade (contentGroup, 1f, 0f, fadeTimes["outcontent"]));
+		if (onEnd != null) onEnd ();
+	}
+
+	IEnumerator CoSwapContent (System.Action midFade, System.Action onEnd) {
+		yield return StartCoroutine (CoFadeOutContent (null));
+		midFade ();
+		yield return StartCoroutine (CoFadeInContent (onEnd));
+	}
+
+	void SetButtonsInteractable (bool interactable) {
+		foreach (NpcActionButton b in buttons) {
+			if (b.gameObject.activeSelf)
+				b.Button.interactable = interactable;
+		}
+	}
+
+	void SetButtonsAlpha (float alpha) {
+		foreach (NpcActionButton b in buttons)
+			b.Alpha = alpha;
+	}
+
+	IEnumerator CoFadeInButtons (float time) {
+		foreach (NpcActionButton b in buttons) {
+			if (b.gameObject.activeSelf) {
+				yield return StartCoroutine (b.CoFade (0f, 1f, time));
+			}
+		}		
+	}
+
+	IEnumerator CoFadeOutButtons (float time) {
+		for (int i = buttons.Count-1; i > -1; i --) {
+			NpcActionButton b = buttons[i];
+			if (b.gameObject.activeSelf) {
+				yield return StartCoroutine (b.CoFade (1f, 0f, time));
+			}
+		}		
+	}
+	
 	void SetActive (bool active) {
 		Background.gameObject.SetActive (active);
 		Panel.gameObject.SetActive (active);
+		if (!active)
+			ClearContent ();
 	}
 
 	void SetButtons (Dictionary<string, UnityAction> choices) {
@@ -106,40 +246,11 @@ public class NpcDialogBox : MB {
 		button.Icon.gameObject.SetActive (!backButton && content != "Learn More");
 		button.Color = backButton ? backColor : button.DefaultColor;
 		button.Button.onClick.AddListener (action);
-		button.Button.onClick.AddListener (ClearButtons);
 		button.Button.interactable = true;
-		button.FadeIn (0.33f);
-	}
-
-	void DisableButtons () {
-		foreach (NpcActionButton button in buttons) {
-			if (button.gameObject.activeSelf)
-				button.Button.interactable = false;
-		}
-	}
-
-	void FadeIn (bool wasActive) {
-		if (!wasActive)
-			StartCoroutine (CoFade (boxGroup, 0f, 1f, fadeTime));
-		StartCoroutine (CoFade (contentGroup, 0f, 1f, fadeTime));
-	}
-
-	void FadeOut () {
-		StartCoroutine (CoFade (contentGroup, 1f, 0f, fadeTime));
-		StartCoroutine (CoFade (boxGroup, 1f, 0f, fadeTime, () => SetActive (false)));
-	}
-
-	void FadeOutContent (System.Action midFade) {
-		StartCoroutine (CoFade (contentGroup, 1f, 0f, fadeTime, () => {
-			midFade ();
-			FadeIn (true);
-		}));
 	}
 
 	IEnumerator CoFade (CanvasGroup group, float from, float to, float time, System.Action onEnd=null) {
 		
-		while (fading) yield return null;
-		fading = true;
 		float eTime = 0f;
 	
 		while (eTime < time) {
@@ -150,6 +261,5 @@ public class NpcDialogBox : MB {
 		}
 
 		if (onEnd != null) onEnd ();
-		fading = false;
 	}
 }

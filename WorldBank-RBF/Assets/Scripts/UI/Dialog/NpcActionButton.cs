@@ -71,8 +71,14 @@ public class NpcActionButton : MB {
 			color = value;
 			var colors = Button.colors;
 			colors.normalColor = (Color)color;
+			colors.disabledColor = (Color)color;
 			Button.colors = colors;
 		}
+	}
+
+	public float Alpha {
+		get { return CanvasGroup.alpha; }
+		set { CanvasGroup.alpha = value; }
 	}
 
 	public Color DefaultColor {
@@ -84,23 +90,35 @@ public class NpcActionButton : MB {
 		}
 	}
 
-	public void FadeIn (float time) {
-		StartCoroutine (CoFade (0f, 1f, time));
+	public void FadeIn (float time, float delay=0f, System.Action onEnd=null) {
+		StartCoroutine (CoFade (0f, 1f, time, delay, onEnd));
 	}
 
-	public void FadeOut (float time) {
-		StartCoroutine (CoFade (1f, 0f, time));
+	public void FadeOut (float time, float delay=0f, System.Action onEnd=null) {
+		StartCoroutine (CoFade (1f, 0f, time, delay, onEnd));
 	}
 
-	IEnumerator CoFade (float from, float to, float time) {
+	public IEnumerator CoFade (float from, float to, float time) {
+		yield return StartCoroutine (CoFade (from, to, time, 0f, null));
+	}
+
+	IEnumerator CoFade (float from, float to, float time, float delay, System.Action onEnd) {
 		
 		float eTime = 0f;
+
+		while (eTime < delay) {
+			eTime += Time.deltaTime;
+		}
+
+		eTime = 0f;
 	
 		while (eTime < time) {
 			eTime += Time.deltaTime;
 			float progress = Mathf.SmoothStep (from, to, eTime / time);
-			CanvasGroup.alpha = progress;			
+			Alpha = progress;
 			yield return null;
 		}
+
+		if (onEnd != null) onEnd ();
 	}
 }

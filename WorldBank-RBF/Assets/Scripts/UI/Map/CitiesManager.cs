@@ -87,6 +87,14 @@ public class CitiesManager : MB {
 		MoveIndicator (onArrive, route);
 	}
 
+	public void TravelToCity (CityItem city, RouteItem route, bool reopenBox) {
+		Debug.Log (Cities[city.Symbol]);
+		if (reopenBox)
+			TravelToCity (city, route, () => cityInfoBox.Open (Cities[city.Symbol]));
+		else
+			TravelToCity (city, route);
+	}
+
 	/// <summary>
 	/// Moves to the given city and sets the interaction count.
 	/// </summary>
