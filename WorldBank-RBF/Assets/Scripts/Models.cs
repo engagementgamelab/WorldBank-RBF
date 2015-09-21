@@ -58,6 +58,7 @@ namespace Models {
         public Dictionary<string, NPC[]> phase_one { get; set; }
         public PhaseTwo phase_two { get; set; }
         public Dictionary<string, Tooltip> tutorial { get; set; }
+        public Dictionary<string, string> ui_text { get; set; }
 
     }
 
