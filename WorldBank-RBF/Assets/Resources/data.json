@@ -442,7 +442,7 @@
       "description": "This is the Capitol City of Zariba. Home to the offices of the Ministry of Health and where your journey to help Zariba begins! The Capitol sits on the main transportation line. With easy access to the glorious rail system, travelers can go from the Capitol to the most southern city, Zima, in only a few days time.",
       "enabled": true,
       "npc_interactions": [
-        7,
+        6,
         0
       ]
     }
@@ -2216,7 +2216,7 @@
           },
           "Making a Program": {
             "text": [
-              "\"You can use your notebook to keep track of where you have been, what you have learned, and what options seem to make sense for your program. Click it now and explore it. As you can see, for now, it is mostly blank. That will change.\""
+              "\"You can use your notebook to keep track of where you have been, what you have learned, and what options seem to make sense for your program. The icon to open your notebook is on the lower left of your screen.\""
             ]
           },
           "Talk to People": {
@@ -2349,7 +2349,7 @@
         "dialogue": {
           "Initial": {
             "text": [
-              "You stand a little closer and are able to hear their conversation. \"Damn arthritis,\" one says, grabbing at a tile. The other replies, \"You should visit Kibari and see Mr. Todd. Best medicine man in Zariba!\" You realize they haven't noticed your presence. Do you [[Keep listening]] or [[Interrupt]]?",
+              "You stand a little closer and are able to hear their conversation. \"Damn arthritis,\" one says, grabbing at a tile. The other replies, \"You should visit Kibari and see Mr. Todd. Best medicine man in Zariba!\" You realize they haven't noticed your presence. Do you [[Keep listening]] or interrupt to [[ask about kibari]] or [[ask about Zima]].",
               "\"Excellent move,\" one says. \"I have you on the run, now,\" replies the second. \"Ouch... damn arthritis.\" \"You need to see Mr. Todd.\""
             ]
           },
@@ -2364,7 +2364,7 @@
               "It sounds like the wrong medicine was prescribed in Crup. Doctors must follow protocol."
             ]
           },
-          "Interrupt": {
+          "Ask About Kibari": {
             "text": [
               "You interrupt their conversation to ask about Kibari. \"People walk there. Mr. Todd's customers are very loyal. But if you do not wish to walk, a bus goes to Kibari twice a day...\" the first man says. \"It's your move,\" the other grumbles, growing impatient."
             ],
@@ -2373,6 +2373,17 @@
             ],
             "unlocks_context": [
               "You discovered a new route to Kibari."
+            ]
+          },
+          "Ask About Zima": {
+            "text": [
+              "\"My favorite part of the lower region is the wonderful ride from here to Zima,\" the first man says. \"You will want to jump on the commuter bus and hitch a ride down the highland highway. Say hi to Dr. Notega for me!\""
+            ],
+            "unlocks": [
+              "unlockable_route_crup_to_zima"
+            ],
+            "unlocks_context": [
+              "You discovered a new route to Zima."
             ]
           }
         }
@@ -7848,7 +7859,6 @@
             "contract_additional_ngo_2"
           ],
           "final_options_affects": [
-            "terminate_contract_at_end_of_year_9",
             "increase_funding_for_ngo_2",
             "terminate_contract_at_end_of_year_9",
             "contract_additional_ngo_2"
@@ -9943,6 +9953,15 @@
       "speed": 30,
       "cost": 2,
       "transportation_mode": "train"
+    },
+    {
+      "symbol": "crup_to_zima",
+      "city1": "crup",
+      "city2": "zima",
+      "unlocked": false,
+      "speed": 30,
+      "cost": 2,
+      "transportation_mode": "truck"
     }
   ],
   "tutorial": {
@@ -9974,7 +9993,8 @@
       "mask_size": [
         128,
         180
-      ]
+      ],
+      "confirm": true
     },
     "phase_1_interactions_counter": {
       "overlay_location": "Center",
@@ -9994,7 +10014,8 @@
       "mask_size": [
         84,
         54
-      ]
+      ],
+      "confirm": true
     },
     "phase_1_move_around": {
       "overlay_location": "Center",
@@ -10014,7 +10035,8 @@
       "mask_size": [
         500,
         295
-      ]
+      ],
+      "confirm": true
     },
     "phase_1_unlocked_something": {
       "overlay_location": "Center",
@@ -10034,7 +10056,8 @@
       "mask_size": [
         244,
         98
-      ]
+      ],
+      "confirm": true
     },
     "phase_1_plan_creation_screen": {
       "overlay_location": "Center",
@@ -10054,7 +10077,8 @@
       "mask_size": [
         46,
         47
-      ]
+      ],
+      "confirm": true
     },
     "phase_1_tactics": {
       "overlay_location": "Bottom-Right",
@@ -10074,7 +10098,8 @@
       "mask_size": [
         302,
         86
-      ]
+      ],
+      "confirm": true
     },
     "phase_1_tactic_slots": {
       "overlay_location": "Bottom-Left",
@@ -10094,7 +10119,8 @@
       "mask_size": [
         302,
         105
-      ]
+      ],
+      "confirm": true
     },
     "phase_1_continue_talking": {
       "overlay_location": "Bottom-Left",
@@ -10108,13 +10134,14 @@
         1.87
       ],
       "mask_position": [
-        0,
-        0
+        262,
+        -389
       ],
       "mask_size": [
-        1,
-        1
-      ]
+        148,
+        71
+      ],
+      "confirm": true
     },
     "phase_1_map": {
       "overlay_location": "Bottom-Right",
@@ -10128,13 +10155,14 @@
         1.82
       ],
       "mask_position": [
-        0,
-        0
+        623,
+        -393
       ],
       "mask_size": [
-        1,
-        1
-      ]
+        140,
+        66
+      ],
+      "confirm": true
     },
     "phase_1_city_routes": {
       "overlay_location": "Bottom-Right",
@@ -10148,13 +10176,76 @@
         1
       ],
       "mask_position": [
-        0,
-        0
+        610,
+        -384
       ],
       "mask_size": [
-        1,
-        1
+        148,
+        67
+      ],
+      "confirm": true
+    },
+    "phase_1_travel": {
+      "overlay_location": "Bottom-Left",
+      "text": "Read the description to decide if you want to travel to this city. Click the visit button, or click cancel to return to the map. ",
+      "spotlight_position": [
+        -0.34,
+        -0.14
+      ],
+      "spotlight_size": [
+        1.66,
+        1.17
+      ],
+      "mask_position": [
+        236,
+        -69
+      ],
+      "mask_size": [
+        263,
+        198
       ]
+    },
+    "phase_1_travel_days": {
+      "overlay_location": "Center",
+      "text": "This shows how many days you have left to explore Zariba. Every time you travel to a new city it will cost some number of days, depending on the route. When you run out of days the game ends, so choose routes carefully! ",
+      "spotlight_position": [
+        0.31,
+        -1.91
+      ],
+      "spotlight_size": [
+        3.92,
+        2.54
+      ],
+      "mask_position": [
+        434,
+        -275
+      ],
+      "mask_size": [
+        156,
+        50
+      ],
+      "confirm": true
+    },
+    "phase_1_conversation_points": {
+      "overlay_location": "Center",
+      "text": "Hold on, you still have conversation points left in this city! Making the best proposal depends on gathering as much information as possible from people here. Remember, you can see your remaining interactions at the upper-left. Click on the map icon to return to the city. ",
+      "spotlight_position": [
+        -2.72,
+        0.27
+      ],
+      "spotlight_size": [
+        3.4,
+        2.54
+      ],
+      "mask_position": [
+        446,
+        -256
+      ],
+      "mask_size": [
+        148,
+        71
+      ],
+      "confirm": true
     },
     "phase_1_start": {
       "overlay_location": "Center",
@@ -10356,6 +10447,11 @@
       "unlocked": true
     },
     {
+      "symbol": "unlockable_route_crup_to_zima",
+      "title": "Route to Zima",
+      "unlocked": false
+    },
+    {
       "symbol": "unlockable_incentivise_providers_to_deliver_services",
       "title": "Incentivise Providers to Deliver Services",
       "description": [
@@ -10406,7 +10502,7 @@
       "description": [
         "This would help improve patient/provider relationships in order to increase use of important services long term."
       ],
-      "priority": 2,
+      "priority": 3,
       "type": "behavior_knowledge_and_professionalism"
     },
     {
@@ -10478,7 +10574,7 @@
       "description": [
         "This would launch an educational information campaign to explain major changes in the health system."
       ],
-      "priority": 3,
+      "priority": 0,
       "type": "demand_side_behavior_and_knowledge"
     },
     {

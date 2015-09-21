@@ -88,7 +88,6 @@ public class CitiesManager : MB {
 	}
 
 	public void TravelToCity (CityItem city, RouteItem route, bool reopenBox) {
-		Debug.Log (Cities[city.Symbol]);
 		if (reopenBox)
 			TravelToCity (city, route, () => cityInfoBox.Open (Cities[city.Symbol]));
 		else

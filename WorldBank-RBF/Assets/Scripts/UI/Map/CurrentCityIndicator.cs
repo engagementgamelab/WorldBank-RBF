@@ -13,7 +13,13 @@ public class CurrentCityIndicator : MB {
 
 	public void Move (Transform parent, RouteItem route, System.Action onEnd=null) {
 		
-		List<Vector3> positions = route.Positions.ConvertAll (x => x); // Clone the list
+		List<Vector3> positions;
+		try {
+			positions = route.Positions.ConvertAll (x => x); // Clone the list
+		} catch {
+			throw new System.Exception ("The route between " + route.Terminals.city1 + " and " + route.Terminals.city2 + " does not have a list of positions.");
+		}
+		
 		bool reverse = route.Terminals.Reverse (PlayerData.CityGroup.CurrentCity);
 		float speed = route.Speed;
 

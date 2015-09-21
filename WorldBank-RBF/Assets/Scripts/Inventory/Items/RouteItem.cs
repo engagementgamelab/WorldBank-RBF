@@ -381,6 +381,32 @@ public class RouteLines {
 					new Vector3 (-146.7519f, -67.3006f, 0f),
 					new Vector3 (-144.8907f, -73.60077f, 0f)
 				});
+				routeLines.Add (new Terminals ("crup", "zima"), new List<Vector3> () {
+					new Vector3 (143.5495f, 213.6667f, 0f),
+					new Vector3 (155.513f, 210.4792f, 0f),
+					new Vector3 (170f, 207.7552f, 0f),
+					new Vector3 (180.8047f, 205.7266f, 0f),
+					new Vector3 (193.4063f, 201.8724f, 0f),
+					new Vector3 (206.0677f, 196.0781f, 0f),
+					new Vector3 (224.7552f, 186.9818f, 0f),
+					new Vector3 (237.6458f, 180.1432f, 0f),
+					new Vector3 (241.0938f, 179.6797f, 0f),
+					new Vector3 (243.6146f, 179.013f, 0f),
+					new Vector3 (246.3099f, 176.3177f, 0f),
+					new Vector3 (246.9766f, 173.8255f, 0f),
+					new Vector3 (253.5833f, 170.6667f, 0f),
+					new Vector3 (264.7943f, 164.987f, 0f),
+					new Vector3 (272.0677f, 160.4662f, 0f),
+					new Vector3 (280.4427f, 156.151f, 0f),
+					new Vector3 (289.1354f, 148.849f, 0f),
+					new Vector3 (297.362f, 140.1563f, 0f),
+					new Vector3 (302.5781f, 134.0417f, 0f),
+					new Vector3 (303.2448f, 130.625f, 0f),
+					new Vector3 (301.8828f, 125.5833f, 0f),
+					new Vector3 (299.1589f, 121.1198f, 0f),
+					new Vector3 (295.3333f, 116.3385f, 0f),
+					new Vector3 (293.3047f, 111.7891f, 0f)
+				});
 			}
 			return routeLines;
 		}
