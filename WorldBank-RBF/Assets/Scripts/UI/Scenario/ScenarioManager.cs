@@ -37,14 +37,11 @@ public class ScenarioManager : MonoBehaviour {
 
 	Timers.TimerInstance phaseCooldown;
 	Timers.TimerInstance problemCardCooldown;
-	Timers.TimerInstance monthCooldown;
 	
 	ScenarioYearEndDialog yearEndPanel;
 
 	int[] currentAffectValues;
 	int[] currentAffectGoals;
-
-	string[] monthsLabels = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct",	"Nov", "Dec" };
 
 	List<int[]> usedAffects = new List<int[]>();
 
@@ -154,6 +151,12 @@ public class ScenarioManager : MonoBehaviour {
 
     }
 
+    public void OpenPlans() {
+
+        NetworkManager.Instance.GetURL("/plan/all/", PlansRetrieved);
+
+    }
+
     /// <summary>
     /// Increment card index and open next scenario card, show year break, or end the scenario.
     /// </summary>
@@ -169,20 +172,9 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Should we display a year break (happens if forced by timer)?
 		if(nextCardIndex == yearLength) {
+			
 			// Hide all scenario problem cards
 			EndYear();
-
-			// Show end of scenario
-			if(currentYear == 3) {
-
-				// Show indicators
-				// NotebookManager.Instance.OpenIndicators();
-
-				monthCooldown.Stop();
-
-				return;
-
-			}
 
 			return;
 			
@@ -245,15 +237,10 @@ public class ScenarioManager : MonoBehaviour {
 			else
 				problemCardCooldown.Restart();
 		}
-
-		// Hide "no messages"
-		scenarioChat.noMessagesPanel.gameObject.SetActive(false);
 		
 		// SFX
 		if(currentCardIndex > 0)
 			AudioManager.Sfx.Play ("newproblem", "Phase2");
-
-		CalculateIndicators();
 
 	}
 
@@ -261,6 +248,9 @@ public class ScenarioManager : MonoBehaviour {
     /// End the current year.
     /// </summary>
 	void EndYear () {
+		
+
+		CalculateIndicators();
 		
 		// Next year will start at card 0
 		currentCardIndex = -1;
@@ -369,7 +359,7 @@ public class ScenarioManager : MonoBehaviour {
     	IndicatorsCanvas.GoalAffects = response["affects_goal"] as int[];
 
     	// Add defaults to used affects and calc indicators
-    	usedAffects.Add(response["default_affects"] as int[]);
+    	// usedAffects.Add(response["default_affects"] as int[]);
 
     	OpenScenarioCard(0);
 
@@ -452,7 +442,7 @@ public class ScenarioManager : MonoBehaviour {
 		
     	if(atYearEnd) {
 			Debug.Log("======== END OF YEAR " + currentYear + " ========");
-			monthCooldown.Stop();
+			// monthCooldown.Stop();
 
 			openYearEnd = true;
 			GetNextCard();
@@ -461,7 +451,7 @@ public class ScenarioManager : MonoBehaviour {
 			Debug.Log("======== END OF MONTH " + currentMonth + " ========");
 
 			cardCooldownElapsed = problemCardDuration;
-			monthCooldown.Restart();
+			// monthCooldown.Restart();
 		}
 
     }
@@ -507,11 +497,15 @@ public class ScenarioManager : MonoBehaviour {
 				}
 
     			if(problemCardDuration > 0) {
-    				scenarioChat.noMessagesPanel.gameObject.SetActive(true);
+					scenarioChat.NoMessages();
     				queueProblemCard = true;
     			}
     			else
 	    			NextProblemCard(e.eventSymbol);
+
+	    		// Add affect for this event to used affects
+				Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(e.eventSymbol);
+				usedAffects.Add(dictAffect.Values.ToArray());
 
     			break;
 

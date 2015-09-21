@@ -24,7 +24,6 @@ public class ScenarioChatScreen : ChatScreen {
     }
 
     public Transform advisorsContainer;
-	public Transform noMessagesPanel;
     public Text contactsTitleText;
     public Text debugText;
 
@@ -132,13 +131,25 @@ public class ScenarioChatScreen : ChatScreen {
 	}
 
 	public void Clear () {
-    	ObjectPool.DestroyChildren<AdvisorMessage>(messagesContainer);
+
+    	ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer);
     	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer);
+    	ObjectPool.DestroyChildren<IndicatorsMessage>(messagesContainer);
+
     	RemoveOptions ();
 
     	// Disable advisors
 		advisorsContainer.GetComponent<CanvasGroup>().interactable = false;
 		advisorsContainer.GetComponent<CanvasGroup>().alpha = .4f;
+
+	}
+
+	public void NoMessages() {
+		
+		Clear();
+
+		AddSystemMessage("No messages.");
+
 	}
 
 	IEnumerator AdvisorSelected(string strAdvisorSymbol) {
@@ -196,16 +207,11 @@ public class ScenarioChatScreen : ChatScreen {
 
 	void AddIndicatorsMessage(Dictionary<string, int> dictAffect) {
 
-		List<string> message = new List<string>();
-
-		if(dictAffect["indicator_1"] != 0)
-			message.Add("Vac: " + dictAffect["indicator_1"]);
-		if(dictAffect["indicator_2"] != 0)
-			message.Add("Facilities: " + dictAffect["indicator_2"]);
-		if(dictAffect["indicator_3"] != 0)
-			message.Add("QoC: " + dictAffect["indicator_3"]);
-
-		AddSystemMessage(string.Join(", ", message.ToArray()));
+		IndicatorsMessage message = ObjectPool.Instantiate<IndicatorsMessage>("Scenario");
+		message.Display(dictAffect);
+		
+		message.transform.SetParent(messagesContainer);
+		message.transform.localScale = Vector3.one;
 
 	}
 
@@ -236,6 +242,8 @@ public class ScenarioChatScreen : ChatScreen {
 				new List<string> { "Confirm Feedback" },
 				new List<ChatAction> { nextCardAction }
 			);
+
+			Debug.Log("feedback: " + npc.Key + " for: " + _data.symbol);
 
 			AddResponseSpeech(npc.Value.feedback[eventSymbol].ToString(), 
 							  DataManager.GetDataForCharacter(npc.Key), false, true);
