@@ -488,4 +488,25 @@ public class DataManager {
         return gameData.tutorial[tooltipKey];
 
     }
+
+    /// <summary>
+    /// Get the UI text for the given key.
+    /// </summary>
+    /// <param name="strKey">Key for the text</param>
+    /// <returns>The obtained UI text.<returns>
+    public static string GetUITextByKey(string strKey) {
+        
+        try { 
+
+            return gameData.ui_text[strKey];
+
+        } 
+        catch(Exception e) {
+
+            throw new Exception("Unable to find UI text with key '" + strKey + "'! Hogwash!");
+     
+
+        }
+
+    }
 }
