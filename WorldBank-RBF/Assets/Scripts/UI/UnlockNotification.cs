@@ -44,7 +44,7 @@ public class UnlockNotification : MB {
 		{ 
 			"dialogue", 
 			new Settings (
-				"New dialogue unlocked!", 
+				"copy_unlock_notifications_dialog",
 				Color.cyan, 
 				new [] { "newtravel", "map" }
 			)
@@ -52,7 +52,7 @@ public class UnlockNotification : MB {
 		{ 
 			"route", 
 			new Settings (
-				"New route unlocked!", 
+				"copy_unlock_notifications_route",
 				Color.yellow, 
 				new [] { "newtravel", "map" }
 			)
@@ -60,7 +60,7 @@ public class UnlockNotification : MB {
 		{ 
 			"tactic", 
 			new Settings (
-				"New tactic unlocked!", 
+				"copy_unlock_notifications_tactic",
 				Color.white, 
 				new [] { "newtactic", "plan" }
 			)
@@ -68,7 +68,7 @@ public class UnlockNotification : MB {
 		{ 
 			"indicators", 
 			new Settings (
-				"Indicators updated!", 
+				"copy_unlock_notifications_indicators", 
 				Color.cyan, 
 				new [] { "graphupdated", "phase2" }
 			)
@@ -123,7 +123,7 @@ public class UnlockNotification : MB {
 	void SlideIn (string type, string context) {
 		currentNotification = type;
 		Settings s = settings[type];
-		HeaderText = s.Header;
+		HeaderText = DataManager.GetUIText (s.Header);
 		HeaderColor = s.Color;
 		AudioManager.Sfx.Play (s.Sfx[0], s.Sfx[1]);
 		BodyText = context;

@@ -14,7 +14,7 @@ public class DayCounter : MB {
 	}
 
 	void OnUpdateCount () {
-		string newText = "Days: " + PlayerData.DayGroup.Count;
+		string newText = PlayerData.DayGroup.Count.ToString ();
 		text.text = newText;
 		foreach (Text outline in outlines) {
 			outline.text = newText;

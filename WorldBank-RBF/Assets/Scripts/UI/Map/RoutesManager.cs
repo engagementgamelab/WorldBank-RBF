@@ -29,7 +29,7 @@ public class RoutesManager : MB {
 	/// <summary>
 	/// Gets a list of MapRoutes in the game.
 	/// </summary>
-	List<MapRoute> MapRoutes {
+	public List<MapRoute> MapRoutes {
 		get {
 			if (mapRoutes == null) {
 				mapRoutes = new List<MapRoute> ();

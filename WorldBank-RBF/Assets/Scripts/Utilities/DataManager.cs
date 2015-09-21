@@ -161,6 +161,18 @@ public class DataManager {
     }
 
     /// <summary>
+    /// Get the UI Text associated with the given key.
+    /// </summary>
+    /// <returns>Copy associated with the key.</returns>
+    public static string GetUIText (string key) {
+        string val;
+        if (gameData.ui_text.TryGetValue (key, out val)) {
+            return val;
+        } 
+        return "";
+    }
+
+    /// <summary>
     /// Get all current cities available in game data.
     /// </summary>
     /// <returns>An array of City.</returns>

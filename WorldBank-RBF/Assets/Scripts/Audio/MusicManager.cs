@@ -13,6 +13,7 @@ public class MusicManager : MB {
 	}
 
 	void Start () {
+		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
 		PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
 	}
 
@@ -21,10 +22,10 @@ public class MusicManager : MB {
 		if (currentlyPlaying.Count > 0) {
 			Music.FadeOut (currentlyPlaying[0], 1f, () => {
 				Music.Stop (currentlyPlaying[0]);
-				Play (city);
+				// Play (city);
 			});
 		} else {
-			Play (city);
+			// Play (city);
 		}
 	}
 
@@ -32,5 +33,9 @@ public class MusicManager : MB {
 		Music.Play (city);
 		if (Music.Playing.Count > 0)
 			Music.FadeIn (city, 1f);
+	}
+
+	void OnArriveInCityEvent (ArriveInCityEvent e) {
+		Play (e.City);
 	}
 }

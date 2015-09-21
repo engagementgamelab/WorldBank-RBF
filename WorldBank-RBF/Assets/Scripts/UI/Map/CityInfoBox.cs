@@ -33,46 +33,40 @@ public class CityInfoBox : MB {
 	/// </summary>
 	/// <param name="button">The CityButton that was clicked on.</param>
 	public void Open (CityButton button) {
-		
-		if (PlayerData.DayGroup.Empty) {
-			Header = "Out of days";
-			Body = "You're all out of travel days!";
-			SetActive (true);
-			return;
-		}
 
 		CityItem city = button.CityItem;
 		bool currentCity = button.CityItem.Symbol == PlayerData.CityGroup.CurrentCity;
+		Body = city.Model.description;
 
-		if (city.Visited) {
-
-			// Special case: Players can not spend an extra day in Capitol City
-			if (city.StayedExtraDay || city.Symbol == "capitol") {
-				if (currentCity) {
+		if (currentCity) {
+			if (city.StayedExtraDay) {
+				if (!PlayerData.InteractionGroup.Empty)
 					NotebookManagerPhaseOne.Instance.CloseCanvases ();
-					return;
-				}
-				Body = "You've already visited this city but you can pass through it.";
-				SetButtons ("Cancel", Close, "Visit", () => TravelTo (city, button.ActiveRoute, false));
-			} else {
-				if (currentCity && PlayerData.InteractionGroup.Count > 0) {
-					NotebookManagerPhaseOne.Instance.CloseCanvases ();
-					return;
-				}
-				Body = "You've already visited this city but you can pass through it or spend an extra day talking to the rest of the people";
-				if (currentCity) {
-					SetButtons ("Cancel", Close, "Extra Day", () => StayExtraDay (city));
-				} else {
-					SetButtons ("Cancel", Close, "Visit", () => TravelTo (city, button.ActiveRoute, true));	
-				}
-			}
+				return;
+			} 
+			SetBody (city, "copy_city_extra_day");
+			SetButton ("Re-enter", () => StayExtraDay (city));
 		} else {
-			Body = city.Model.description;
-			SetButtons ("Cancel", Close, "Visit", () => Visit (city, button.ActiveRoute));
+			if (city.Visited) {
+				if (city.StayedExtraDay) {
+					SetBody (city, "copy_city_pass_through");
+					SetButton ("Continue", () => TravelTo (city, button.ActiveRoute, false));
+				} else {
+					SetBody (city, "copy_city_pass_through_extra_day");
+					SetButton ("Go", () => TravelTo (city, button.ActiveRoute, true));
+				}
+			} else {
+				SetBody (city, "copy_city_visit");
+				SetButton ("Visit", () => Visit (city, button.ActiveRoute));
+			}
 		}
 
 		Header = city.Model.display_name;
 		SetActive (true);
+	}
+
+	void SetBody (CityItem city, string key) {
+		Body = city.Model.description + "\n\n" + DataManager.GetUIText (key);
 	}
 
 	/// <summary>
@@ -96,12 +90,16 @@ public class CityInfoBox : MB {
 	}
 
 	void TravelTo (CityItem city, RouteItem route, bool reopenBox) {
+		if (RouteBlocked (city, route)) {
+			OpenRouteBlocked ();
+			return;
+		}
 		CitiesManager.Instance.TravelToCity (city, route, reopenBox);
 		Close ();
 	}
 
 	void Visit (CityItem city, RouteItem route) {
-		if (route.Terminals == new Terminals ("mile", "zima")) {
+		if (RouteBlocked (city, route)) {
 			OpenRouteBlocked ();
 			return;
 		}
@@ -112,6 +110,10 @@ public class CityInfoBox : MB {
 	void StayExtraDay (CityItem city) {
 		CitiesManager.Instance.StayExtraDay (city);
 		Close ();
+	}
+
+	void SetButton (string label, UnityAction onButton) {
+		SetButtons ("Cancel", Close, label, onButton);
 	}
 
 	void SetButtons (string label1, UnityAction onButton1, string label2="", UnityAction onButton2=null) {
@@ -134,5 +136,9 @@ public class CityInfoBox : MB {
 	void SetActive (bool active) {
 		panel.SetActive (active);
 		background.SetActive (active);
+	}
+
+	bool RouteBlocked (CityItem city, RouteItem route) {
+		return city.Symbol == "zima" && route.Terminals == new Terminals ("mile", "zima");
 	}
 }

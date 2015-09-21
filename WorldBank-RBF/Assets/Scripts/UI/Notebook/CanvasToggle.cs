@@ -59,7 +59,7 @@ public class CanvasToggle : MonoBehaviour {
 		SetCanvasActive (open);
 	}
 
-	public void SetCanvasActive (bool active) {
+	void SetCanvasActive (bool active) {
 		thisCanvas.gameObject.SetActive (active);
 		NotebookManagerPhaseOne.Instance.IsOpen = active;
 		activeCanvas = active ? thisCanvas : null;

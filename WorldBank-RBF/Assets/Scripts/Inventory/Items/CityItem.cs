@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
+﻿
 /// <summary>
 /// A city based on a data model.
 /// </summary>
@@ -41,5 +39,7 @@ public class CityItem : InventoryItem {
 	/// <param name="model">The model to base this city on.</param>
 	public CityItem (Models.City model) {
 		this.Model = model;
+		StayedExtraDay = Symbol == "capitol";
+		Visited = Symbol == "capitol";
 	}
 }

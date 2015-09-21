@@ -100,15 +100,15 @@ public class NpcDialogBox : MB {
 		header.text = content.Header;
 		body.text = content.Body;
 		currentContent = content;
-		scrollbar.value = 0f;
+		ResetScroll ();
 	}
 
 	void ClearContent () {
 		ClearButtons ();
-		scrollbar.value = 0f;	
 		header.text = "";
 		body.text = "";
 		currentContent = emptyContent;
+		ResetScroll ();
 	}
 
 	void FadeInFromClose (Content content) {
@@ -247,6 +247,10 @@ public class NpcDialogBox : MB {
 		button.Color = backButton ? backColor : button.DefaultColor;
 		button.Button.onClick.AddListener (action);
 		button.Button.interactable = true;
+	}
+
+	void ResetScroll () {
+		scrollbar.value = 1f;
 	}
 
 	IEnumerator CoFade (CanvasGroup group, float from, float to, float time, System.Action onEnd=null) {

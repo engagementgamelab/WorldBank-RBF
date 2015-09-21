@@ -85,6 +85,10 @@ public class ParallaxLayerManager : MonoBehaviour {
 	TextureLoader textureLoader = new TextureLoader ("", true);
 	#endif
 
+	void Awake () {
+		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
+	}
+
 	public void Create (Dictionary<int, List<string>> texturePaths) {
 		Clear ();
 		LayerCount = texturePaths.Count;
@@ -135,6 +139,9 @@ public class ParallaxLayerManager : MonoBehaviour {
         }
     }
 
+    void OnArriveInCityEvent (ArriveInCityEvent e) {
+    	LoadFromSymbol (e.City);
+    }
 
     #if UNITY_EDITOR
 	public void Reset () {

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 /// <summary>
 /// Contains all the cities in the game.
@@ -25,6 +23,13 @@ public class CityGroup : ItemGroup<CityItem> {
 			if (onUpdateCurrentCity != null)
 				onUpdateCurrentCity (currentCity);
 		}
+	}
+
+	/// <summary>
+	/// Gets the city item that the player is currently visiting.
+	/// </summary>
+	public CityItem CurrentCityItem {
+		get { return Cities.Find (x => x.Symbol == CurrentCity); }
 	}
 
 	/// <summary>

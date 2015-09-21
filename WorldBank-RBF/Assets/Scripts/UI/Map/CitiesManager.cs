@@ -130,8 +130,7 @@ public class CitiesManager : MB {
 
 		DataManager.SceneContext = currentCity;
 		NpcManager.InitNpcs ();
-		ParallaxLayerManager.Instance.LoadFromSymbol (currentCity);
 		
-		NotebookManagerPhaseOne.Instance.CloseCanvases ();
+		Events.instance.Raise (new ArriveInCityEvent (currentCity));
 	}
 }

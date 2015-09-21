@@ -111,19 +111,13 @@ public class CityButton : MB {
 	}
 
 	void UpdateInteractableState () {
+		
 		bool onRoute = IsOnCurrentCityRoute (PlayerData.CityGroup.CurrentCity);
-		if (IsCurrentCity) {
-			Button.interactable = true;
-			return;
-		}
-		if (!visitedCapitol && symbol != "capitol") {
-			Button.interactable = false;
-			return;
-		}
-		if (!PlayerData.InteractionGroup.Empty) {
-			Button.interactable = false;
-		} else {
+
+		if (PlayerData.InteractionGroup.Empty) {
 			Button.interactable = CanStayExtraDay || (onRoute && CanAffordCost);
+		} else {
+			Button.interactable = IsCurrentCity;
 		}
 	}
 }

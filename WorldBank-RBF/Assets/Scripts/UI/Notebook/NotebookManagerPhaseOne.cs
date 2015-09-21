@@ -26,19 +26,27 @@ public class NotebookManagerPhaseOne : MonoBehaviour {
 	public bool CanCloseNotebook {
 		get {
 			string currentCity = PlayerData.CityGroup.CurrentCity;
-			Debug.Log (currentCity + ", " + DataManager.SceneContext);
 			return (
 				(currentCity == DataManager.SceneContext
-				&& !NotebookManager.Instance.MakingPlan)
+				&& !NotebookManager.Instance.MakingPlan
+				&& !PlayerData.InteractionGroup.Empty)
 			);
 		}
 	}
 
 	public List<CanvasToggle> toggles;
 
+	void Awake () {
+		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
+	}
+
 	public void CloseCanvases () {
 		foreach (CanvasToggle toggle in toggles) {
 			toggle.Close ();
 		}
+	}
+
+	void OnArriveInCityEvent (ArriveInCityEvent e) {
+		CloseCanvases ();
 	}
 }
