@@ -74,7 +74,6 @@ public class InfoBox : MB {
 	}
 
 	void OnNoInteractions () {
-		// Open (ShowPlan ? "copy_out_of_days" : "copy_out_of_interactions");
 		StartCoroutine (CoOpen ());
 	}
 

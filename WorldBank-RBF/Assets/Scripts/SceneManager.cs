@@ -13,10 +13,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Parse;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class SceneManager : MonoBehaviour {
 
-	static SceneManager instance = null;
+	/*static SceneManager instance = null;
 	static public SceneManager Instance {
 		get {
 			if (instance == null) {
@@ -29,10 +32,9 @@ public class SceneManager : MonoBehaviour {
 			}
 			return instance;
 		}
-	}
+	}*/
 
 	public string sceneName;
-	public bool phaseOne;
 
 	[HideInInspector]
 	public int environmentIndex = 0;
@@ -56,14 +58,13 @@ public class SceneManager : MonoBehaviour {
       
 	}
 
-
     #if UNITY_EDITOR
 	void OnGUI() {
 		GUIStyle style = new GUIStyle();
 		
 		style.fontSize = 13;
 		style.fontStyle = FontStyle.BoldAndItalic;
-	    
+
 	    GUI.contentColor = Color.white;
 
         GUI.Label(new Rect(4, 4, 100, 20), "ENVIRONMENT: " + environment, style);
@@ -88,10 +89,15 @@ public class SceneManager : MonoBehaviour {
 		{
 
 			#if UNITY_EDITOR
-				PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
+				if (EditorApplication.currentScene != "Assets/Scenes/Menus.unity") {
+					PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
+				} /*else {
+					loginUI = ObjectPool.Instantiate<PlayerLoginRegisterUI>();
+					loginUI.Callback = UserAuthenticateResponse;	
+				}*/
 			#else
-				loginUI = ObjectPool.Instantiate<PlayerLoginRegisterUI>();
-				loginUI.Callback = UserAuthenticateResponse;
+				// loginUI = ObjectPool.Instantiate<PlayerLoginRegisterUI>();
+				// loginUI.Callback = UserAuthenticateResponse;
 			#endif
 			
 		}

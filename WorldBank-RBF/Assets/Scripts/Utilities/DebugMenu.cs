@@ -18,6 +18,7 @@ public class DebugMenu : MonoBehaviour {
 
 	void OnGUI () {
 		GUI.color = Color.black;
+		GUILayout.Space (16);
 		showOptions = GUILayout.Toggle (showOptions, "Show debug options");
 		if (!showOptions) return;
 		GUI.color = Color.white;
