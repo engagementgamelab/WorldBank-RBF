@@ -454,8 +454,8 @@
       "description": "Congratulations on exceeding your goals. The pilot test we conducted has shown significant increases in all three major indicators. We are confident that over the next three years, this program will continue to bear fruit.",
       "default_affects": [
         10,
-        20,
-        15
+        12,
+        20
       ],
       "affects_bias": [
         -2,
@@ -468,9 +468,9 @@
       "grade": "B",
       "description": "The pilot test we ran showed some promising results. We have seen measurable increases in all three major indicators, especially in vaccinations. With proper implementation over the next three years, Facility Births and Quality of Care could rise to match it.",
       "default_affects": [
-        5,
-        15,
-        5
+        7,
+        10,
+        15
       ],
       "affects_bias": [
         -1,
@@ -483,9 +483,9 @@
       "grade": "C",
       "description": "The results of our pilot test were mixed to say the least. Indicators have barely budged and are within the margins of error. We recommend re-evaluation of the context. A second attempt could yield a program with greater efficacy.",
       "default_affects": [
-        0,
-        -5,
-        0
+        5,
+        5,
+        7
       ],
       "affects_bias": [
         -2,
@@ -498,9 +498,9 @@
       "grade": "D",
       "description": "We ran a pilot test and somehow, your program has done more harm than good. Maybe RBF isn't the right answer after all. We strongly recommend re-evaluation of the context. More research and surveys should help. If this program is put into practice, the implementer will have their work cut out for them!",
       "default_affects": [
-        -8,
-        -10,
-        0
+        2,
+        4,
+        4
       ],
       "affects_bias": [
         -2,
@@ -511,7 +511,12 @@
     {
       "score": "0-0",
       "grade": "F",
-      "description": "There are just not enough initiatives put into place for this program to move forward. Because of this, we weren't able to conduct an evaluation. I would recommend spending more time in the country in order to gather more information. Try visiting multiple cities and learning from many different people. You never know what you might learn."
+      "description": "There are just not enough initiatives put into place for this program to move forward. Because of this, we weren't able to conduct an evaluation. I would recommend spending more time in the country in order to gather more information. Try visiting multiple cities and learning from many different people. You never know what you might learn.",
+      "default_affects": [
+        0,
+        0,
+        0
+      ]
     }
   ],
   "indicator_affects": {
@@ -820,40 +825,40 @@
       "indicator_2": 0,
       "indicator_3": -1
     },
-    "increase_funding_for_verifiers_1": {
-      "indicator_1": 0,
-      "indicator_2": 2,
+    "data_capacity_building_1": {
+      "indicator_1": 5,
+      "indicator_2": 3,
       "indicator_3": 4
     },
     "centralize_control_over_travelling_nurses_1": {
       "indicator_1": -2,
       "indicator_2": -1,
-      "indicator_3": 2
+      "indicator_3": -2
     },
     "warn_community_verifiers_1": {
-      "indicator_1": 2,
-      "indicator_2": 1,
-      "indicator_3": -1
-    },
-    "require_nurses_to_return_to_file_1": {
       "indicator_1": -1,
       "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "require_nurses_to_return_to_file_1": {
+      "indicator_1": 2,
+      "indicator_2": 1,
       "indicator_3": 1
     },
     "warn_providers_to_follow_protocols_2": {
-      "indicator_1": -1,
-      "indicator_2": -1,
-      "indicator_3": 3
+      "indicator_1": 1,
+      "indicator_2": 3,
+      "indicator_3": 5
     },
     "decrease_incentives_2": {
-      "indicator_1": -2,
-      "indicator_2": -1,
-      "indicator_3": 0
+      "indicator_1": 0,
+      "indicator_2": -3,
+      "indicator_3": -1
     },
     "maintain_current_rates_2": {
-      "indicator_1": 2,
-      "indicator_2": -1,
-      "indicator_3": 2
+      "indicator_1": 1,
+      "indicator_2": 5,
+      "indicator_3": 7
     },
     "warning_10": {
       "indicator_1": -1,
@@ -4888,11 +4893,6 @@
             "medium"
           ],
           "characters": {
-            "dep_minister_of_health": {
-              "feedback": {
-                "data_capacity_building_1": "Alright, if you really think this will help, I'm willing to give it a chance."
-              }
-            },
             "director_regional_health_services": {
               "dialogue": "It might help if they were clearing their movements through my office. Then we would know where they are going, and that they are headed where they're needed.",
               "unlocks": [
@@ -4911,7 +4911,8 @@
                 "data_capacity_building_1"
               ],
               "feedback": {
-                "centralize_control_over_travelling_nurses_1": "I'm wary of adding another level of bureaucracy to this, but it may help..."
+                "centralize_control_over_travelling_nurses_1": "I'm wary of adding another level of bureaucracy to this, but it may help...",
+                "data_capacity_building_1": "Alright, if you really think this will help, I'm willing to give it a chance."
               }
             },
             "third_party_verifier": {
@@ -4939,7 +4940,6 @@
               "narrows": [
                 "dep_minister_of_health",
                 "director_regional_health_services",
-                "coach",
                 "clinic_manager",
                 "hospital_administrator",
                 "health_provider_3",
@@ -4951,7 +4951,6 @@
               "narrows": [
                 "dep_minister_of_health",
                 "director_regional_health_services",
-                "coach",
                 "clinic_manager",
                 "hospital_administrator",
                 "health_provider_3",
@@ -4969,18 +4968,18 @@
           "initiating_npc": "dep_minister_of_health",
           "initiating_dialogue": "We have been looking at the numbers, and vaccination delivery has risen much faster than projected. We can't explain it.",
           "starting_options": [
-            "maintain_current_rates_2"
+            "decrease_incentives_2"
           ],
           "starting_options_affects": [
-            "maintain_current_rates_2"
+            "decrease_incentives_2"
           ],
           "starting_options_cost": [
             "small"
           ],
           "final_options": [
             "warn_providers_to_follow_protocols_2",
-            "decrease_incentives_2",
-            "maintain_current_rates_2"
+            "maintain_current_rates_2",
+            "decrease_incentives_2"
           ],
           "final_options_affects": [
             "warn_providers_to_follow_protocols_2",
@@ -4994,24 +4993,12 @@
           ],
           "characters": {
             "director_regional_health_services": {
-              "dialogue": "For some reason people in this region have been taking advantage of this service much more than others. Perhaps providers are pushing the services too strongly.",
-              "unlocks": [
-                "decrease_incentives_2"
-              ],
-              "unlocks_affects": [
-                "decrease_incentives_2"
-              ]
+              "dialogue": "For some reason people have been taking advantage of this service more than other services. It would be good to investigate this further, perhaps providers are pushing the services too strongly."
             },
             "coach": {
-              "dialogue": "The simplest solution is to just decrease the incentives for checkups. We could use that money elsewhere, to hire more staff, for example.",
-              "unlocks": [
-                "decrease_incentives_2"
-              ],
-              "unlocks_affects": [
-                "decrease_incentives_2"
-              ],
+              "dialogue": "We can reduce the fee for this, but we need to think carefully about what other effects that will have on the program.",
               "feedback": {
-                "decrease_incentives_2": "Makes sense to me. We can use that money to improve other services."
+                "decrease_incentives_2": "I'll research the best way to do this without having any undesired effects."
               }
             },
             "third_party_verifier": {
@@ -5026,19 +5013,29 @@
                 "warn_providers_to_follow_protocols_2"
               ]
             },
-            "clinic_manager": {
-              "feedback": {
-                "maintain_current_rates_2": "Smooth sailing ahead. Nice talking to you!"
-              }
-            },
             "hospital_administrator": {
-              "dialogue": "Really? I haven't noticed anything like that at my hospital. Anyway, I thought vaccinating people was a good thing.",
+              "dialogue": "Really? We haven't yet achieved the WHO standard of less than 10 to 15 percent of cesarean sections, so I don't think you should be worried. I am keeping a close eye on this. I am glad to see more cesarean sections because I have been referring a lot of complicated deliveries.",
+              "unlocks": [
+                "maintain_current_rates_2"
+              ],
+              "unlocks_affects": [
+                "maintain_current_rates_2"
+              ],
               "feedback": {
                 "warn_providers_to_follow_protocols_2": "I'll have my staff re-assess these practices."
               }
             },
             "health_provider_3": {
-              "dialogue": "What's wrong with people getting vaccinated? It's better than the alternative."
+              "dialogue": "What's wrong with people getting outpatient services? It's better than the alternative.",
+              "unlocks": [
+                "maintain_current_rates_2"
+              ],
+              "unlocks_affects": [
+                "maintain_current_rates_2"
+              ],
+              "feedback": {
+                "maintain_current_rates_2": "I'm glad to refer complicated cases to the hospital."
+              }
             }
           }
         },
@@ -10820,10 +10817,6 @@
       "title": "Revise RBF Manual and Retraining"
     },
     {
-      "symbol": "increase_funding_for_verifiers_1",
-      "title": "Increase Funding for Community Verifiers"
-    },
-    {
       "symbol": "centralize_control_over_travelling_nurses_1",
       "title": "Centralize Control Over Outreach Nurses"
     },
@@ -10834,6 +10827,10 @@
     {
       "symbol": "require_nurses_to_return_to_file_1",
       "title": "Require Outreach Nurses to Return to Outreach Center to File"
+    },
+    {
+      "symbol": "data_capacity_building_1",
+      "title": "Build Capacity using Performance Data for Outreach"
     },
     {
       "symbol": "warn_providers_to_follow_protocols_2",

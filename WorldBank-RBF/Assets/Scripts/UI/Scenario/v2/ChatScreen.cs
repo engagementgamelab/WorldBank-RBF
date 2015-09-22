@@ -97,7 +97,7 @@ public class ChatScreen : GenericDialogBox {
 
 	public void RemoveResponses () {
 		
-		foreach (AdvisorMessage msg in messagesContainer.GetComponentsInChildren<AdvisorMessage>()) 
+		foreach (ScenarioChatMessage msg in messagesContainer.GetComponentsInChildren<ScenarioChatMessage>()) 
 			msg.gameObject.SetActive (false);
 
 	}
@@ -118,7 +118,7 @@ public class ChatScreen : GenericDialogBox {
 
 	protected void AddResponseSpeech(string strDialogue, Models.Character npc, bool initial=false, bool feedback=false) {
 		
-		AdvisorMessage response = ObjectPool.Instantiate<AdvisorMessage>("Scenario");
+		ScenarioChatMessage response = ObjectPool.Instantiate<ScenarioChatMessage>("Scenario");
 		
 		response.Initial = initial;
 		response.Feedback = feedback;

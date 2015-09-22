@@ -493,11 +493,20 @@ public class DataManager {
     /// <summary>
     /// Get a tooltip given its key.
     /// </summary>
-    /// <param name="tooltipKey">The key of the tooltip.</param>
+    /// <param name="strKey">The key of the tooltip.</param>
     /// <returns>The tooltip for this key</returns>
-    public static Tooltip GetTooltipByKey(string tooltipKey) {
+    public static Tooltip GetTooltipByKey(string strKey) {
+        
+        try { 
 
-        return gameData.tutorial[tooltipKey];
+            return gameData.tutorial[strKey];
+
+        } 
+        catch(Exception e) {
+
+            throw new Exception("Unable to find tutorial tooltip with key '" + strKey + "'! Poppycock!");
+
+        }
 
     }
 
@@ -517,7 +526,6 @@ public class DataManager {
 
             throw new Exception("Unable to find UI text with key '" + strKey + "'! Hogwash!");
      
-
         }
 
     }

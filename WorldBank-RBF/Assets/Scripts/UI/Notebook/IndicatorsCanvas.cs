@@ -7,8 +7,10 @@ using System.Collections.Generic;
 public class IndicatorsCanvas : NotebookCanvas {
 
 	public Animator scenarioAnimator;
+
 	public Text yearEndPromptText;
 	public Text phaseEndPromptText;
+	public Text timerText;
 
 	public RectTransform actionsView;
 	public RectTransform actionsColumn;
@@ -47,7 +49,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	void Update() {
 
-		if(currentAffects != null && showIndicators) {
+		if(currentAffects != null && barSizesTarget.Count > 0 && showIndicators) {
 			int ind = 0;
 			
 			foreach(string affect in currentAffects) {
@@ -70,23 +72,28 @@ public class IndicatorsCanvas : NotebookCanvas {
 		barSizesTarget.Clear();
 		barSizesCurrent.Clear();
 
-		foreach(string affect in currentAffects) {
+		ObjectPool.DestroyChildren<ActionTaken>(actionsColumn.transform);
+		
+		while(ind < currentAffects.Length) {
 	
-			float affectVal = 0;
+			float affectVal;
+			float affectValPrev;
+
 			float affectGoal = (float)GoalAffects[ind];
 
 			Single.TryParse(currentAffects[ind], out affectVal);
+			Single.TryParse(previousAffects[ind], out affectValPrev);
 			
 			// Set text to affect delta
 			if(previousAffects !=null && previousAffects[ind] != null) {
-				dataBarCurrentText[ind].text = affectVal.ToString();
+				dataBarCurrentText[ind].text = (affectVal - affectValPrev).ToString();
 
 				dataBarArrowsUp[ind].gameObject.SetActive(affectVal > 0);
 				dataBarArrowsDown[ind].gameObject.SetActive(affectVal < 0);
 			}
 
 			// Get affect vs goal
-			float currentVal = Mathf.Clamp( (affectGoal + affectVal), 0, affectGoal );
+			float currentVal = Mathf.Clamp( affectVal, 0, affectGoal );
 
 			float barWidth = Mathf.Clamp( (currentVal / affectGoal) * dataBarBgs[ind].rect.width, 0, dataBarBgs[ind].rect.width );
 
@@ -120,6 +127,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 		}
 
+		SelectedOptions.Clear();
+
     }
 
 	// Update indicators
@@ -131,8 +140,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 		AppliedAffects.Add(new [] { intBirths, intVaccinations, intQOC });
 		currentAffects = new [] { intBirths.ToString(), intVaccinations.ToString(), intQOC.ToString() };
 
-		RenderIndicators();
-
 		// SFX
 		// AudioManager.Sfx.Play ("graphupdated", "Phase2");
 
@@ -143,6 +150,10 @@ public class IndicatorsCanvas : NotebookCanvas {
 		animator.Play("IndicatorsOpen");
 		scenarioAnimator.Play("ScenarioClose");
 
+		timerText.gameObject.SetActive(false);
+		
+		RenderIndicators();
+
 		showIndicators = true;
 
 	}
@@ -151,6 +162,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 		animator.Play("IndicatorsClose");
 		scenarioAnimator.Play("ScenarioOpen");
+
+		timerText.gameObject.SetActive(true);
 
 		showIndicators = false;
 	}
@@ -191,8 +204,6 @@ public class IndicatorsCanvas : NotebookCanvas {
     	}
 
     	AddYearEndOptions(scenarioConfig.choices);
-
-		SelectedOptions.Clear();
     }
 
 	void AddYearEndOptions (Dictionary<string, string>[] options) {
