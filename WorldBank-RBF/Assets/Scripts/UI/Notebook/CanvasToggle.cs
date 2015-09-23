@@ -60,15 +60,23 @@ public class CanvasToggle : MonoBehaviour {
 		SetCanvasActive (open);
 		
 		List<TacticItem> tactics = PlayerData.TacticGroup.Tactics;
-		// Tutorial (player is in capitol and has tactics)
-		if(PlayerData.CityGroup.CurrentCity == "capitol" && tactics.Where(i => i.Unlocked).Count() > 0) {
-			
-			if(thisCanvas.GetType() == typeof(PrioritizationManager))
-				DialogManager.instance.CreateTutorialScreen(open ? "phase_1_tactics" : "phase_1_continue_talking");
-			
-			else if(thisCanvas.GetType() == typeof(MapManager2))
+		bool inCapitol = ( PlayerData.CityGroup.CurrentCity == "capitol" );
+		bool hasTactics = ( tactics.Where(i => i.Unlocked).Count() > 0 );
+		
+		// Tactics/plan screen tutorial (player is in capitol and has tactics) 
+		if(thisCanvas.GetType() == typeof(PrioritizationManager) && inCapitol && hasTactics)
+			DialogManager.instance.CreateTutorialScreen(open ? "phase_1_tactics" : "phase_1_continue_talking");
+		
+		// Map
+		else if(thisCanvas.GetType() == typeof(MapManager2)) {
+
+			if(inCapitol && PlayerData.InteractionGroup.Count == 0)
 				DialogManager.instance.CreateTutorialScreen("phase_1_map");
+			else if(PlayerData.InteractionGroup.Count > 0)
+				DialogManager.instance.CreateTutorialScreen("phase_1_conversation_points");
+
 		}
+
 	}
 
 	void SetCanvasActive (bool active) {

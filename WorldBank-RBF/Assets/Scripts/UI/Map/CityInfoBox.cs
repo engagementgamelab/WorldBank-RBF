@@ -63,6 +63,11 @@ public class CityInfoBox : MB {
 
 		Header = city.Model.display_name;
 		SetActive (true);
+
+		// Tutorial (in capitol and has tactics)
+		if(PlayerData.CityGroup.CurrentCity == "capitol")
+			DialogManager.instance.CreateTutorialScreen("phase_1_travel");
+
 	}
 
 	void SetBody (CityItem city, string key) {
@@ -105,6 +110,9 @@ public class CityInfoBox : MB {
 		}
 		CitiesManager.Instance.VisitCity (city, route);
 		Close ();
+
+		// Close tutorial
+		DialogManager.instance.RemoveTutorialScreen();
 	}
 
 	void StayExtraDay (CityItem city) {

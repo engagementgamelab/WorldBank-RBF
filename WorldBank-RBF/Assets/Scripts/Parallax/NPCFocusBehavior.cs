@@ -86,8 +86,6 @@ public class NPCFocusBehavior : MonoBehaviour {
 			 	DialogManager.instance.CreateTutorialScreen("phase_1_interactions_counter");
 			else if(choicesCount == 0)
 				DialogManager.instance.CreateTutorialScreen("phase_1_move_around");
-			else if(PlayerData.InteractionGroup.Count == 0)
-				DialogManager.instance.CreateTutorialScreen("phase_1_capitol_end");
 		}
 
 	}

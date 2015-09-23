@@ -75,6 +75,8 @@ public class DataManager {
     public static List<string> usedTooltips = new List<string>();
     public static readonly string DataNotLoaded = "<data not loaded>";
 
+    public static bool tutorialEnabled;
+
     static string currentSceneContext;
     static JsonReaderSettings _readerSettings = new JsonReaderSettings();
 
