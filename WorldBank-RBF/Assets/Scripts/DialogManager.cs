@@ -259,6 +259,8 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	public void CreateTutorialScreen(string strTooltipKey, string strNextKey=null, UnityAction confirmAction=null) {
 
+		RemoveTutorialScreen();
+
 		// Do not show if already seen
 		if(DataManager.usedTooltips.Contains(strTooltipKey))
 			return;
