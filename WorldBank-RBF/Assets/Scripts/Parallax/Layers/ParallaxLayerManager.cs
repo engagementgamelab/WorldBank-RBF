@@ -98,6 +98,7 @@ public class ParallaxLayerManager : MonoBehaviour {
 	}
 
 	public void Load (string path, bool useResources=true) {
+		
 		Clear ();
 		ModelSerializer.Load (this, path, useResources);
 

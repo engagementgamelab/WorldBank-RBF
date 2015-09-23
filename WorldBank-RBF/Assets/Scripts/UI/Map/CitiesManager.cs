@@ -125,7 +125,6 @@ public class CitiesManager : MB {
 	}
 
 	void OnVisit () {
-
 		string currentCity = PlayerData.CityGroup.CurrentCity;
 
 		DataManager.SceneContext = currentCity;

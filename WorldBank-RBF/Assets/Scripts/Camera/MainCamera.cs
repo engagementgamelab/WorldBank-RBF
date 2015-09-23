@@ -141,9 +141,10 @@ public class MainCamera : MB {
 
 	void OnLoadCity () {
 		
-		Positioner.XMax = ParallaxLayerManager.Instance.FurthestNPCDistance;
+		// Positioner.XMax = ParallaxLayerManager.Instance.FurthestNPCDistance;
 
 		// TODO: uncomment this line once all the cities are in --- this sets the correct x max for the camera
-		// Positioner.XMax = ParallaxLayerManager.Instance.Layers[0].RightMax;
+		Positioner.XMax = ParallaxLayerManager.Instance.Layers[0].RightMax;
+		Debug.Log (Positioner.XMax);
 	}
 }
