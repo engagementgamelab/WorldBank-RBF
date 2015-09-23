@@ -129,6 +129,10 @@ public class CitiesManager : MB {
 
 		DataManager.SceneContext = currentCity;
 		NpcManager.InitNpcs ();
+
+		// Tutorial
+		if(currentCity == "capitol")
+			DialogManager.instance.CreateTutorialScreen("phase_1_initial", "phase_1_skip_tutorial");
 		
 		Events.instance.Raise (new ArriveInCityEvent (currentCity));
 	}

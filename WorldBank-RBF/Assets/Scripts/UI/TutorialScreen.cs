@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
@@ -92,7 +93,7 @@ public class TutorialScreen : MonoBehaviour {
 	public RectTransform maskButtonRect;
 	public RawImage spotlightImage;
 
-	Button confirmButton;
+	GenericButton confirmButton;
 	CanvasGroup group;
 
 	public Rect maskRect = new Rect(1, 0, 1, 1);
@@ -111,16 +112,19 @@ public class TutorialScreen : MonoBehaviour {
 
 	}
 
-	public void Load(string strKey, string strNextKey=null) {
+	public void Load(string strKey, string strNextKey=null, UnityAction confirmAction=null) {
 
 		group = gameObject.GetComponent<CanvasGroup>();
-		confirmButton = transform.Find("Overlay/Button").GetComponent<Button>();
+		confirmButton = transform.Find("Overlay/Button").GetComponent<GenericButton>();
 
 		Models.Tooltip tooltip = DataManager.GetTooltipByKey(strKey);
 		OverlayPosition(tooltip.overlay_location);
 
 		overlayPanel.GetComponentInChildren<Text>().text = tooltip.text;
 		overlayText = tooltip.text;
+
+		if(tooltip.confirm_next != null)
+			strNextKey = tooltip.confirm_next;
 
 		if(tooltip.spotlight_position == null) {
 			spotlightEnabled = false;
@@ -140,11 +144,19 @@ public class TutorialScreen : MonoBehaviour {
 
 		confirmButton.gameObject.SetActive(tooltip.confirm);
 
-		confirmButton.onClick.RemoveAllListeners ();
-		confirmButton.onClick.AddListener(() => ObjectPool.Destroy<TutorialScreen>(transform));
+		confirmButton.Button.onClick.RemoveAllListeners ();
+		confirmButton.Button.onClick.AddListener(() => ObjectPool.Destroy<TutorialScreen>(transform));
 
-		if(!String.IsNullOrEmpty(strNextKey))
-			confirmButton.onClick.AddListener(() => DialogManager.instance.CreateTutorialScreen(strNextKey));
+		// Custom action
+		if(confirmAction != null)
+			confirmButton.Button.onClick.AddListener(confirmAction);
+
+		if(!String.IsNullOrEmpty(strNextKey)) {
+			confirmButton.Button.onClick.AddListener(() => DialogManager.instance.CreateTutorialScreen(strNextKey));
+			confirmButton.Text = "Next";
+		}
+		else
+			confirmButton.Text = "Ok";
 		
 	}
 
@@ -188,4 +200,5 @@ public class TutorialScreen : MonoBehaviour {
 		maskButtonRect.anchoredPosition = new Vector2(maskRect.x, maskRect.y);
 		
 	}
+	
 }

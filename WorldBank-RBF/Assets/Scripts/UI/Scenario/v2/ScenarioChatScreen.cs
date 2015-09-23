@@ -132,9 +132,9 @@ public class ScenarioChatScreen : ChatScreen {
 
 	public void Clear () {
 
-    	ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer);
-    	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer);
-    	ObjectPool.DestroyChildren<IndicatorsMessage>(messagesContainer);
+    	ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer, "Scenario");
+    	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer, "Scenario");
+    	ObjectPool.DestroyChildren<IndicatorsMessage>(messagesContainer, "Scenario");
 
     	RemoveOptions ();
 

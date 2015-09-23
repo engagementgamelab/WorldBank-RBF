@@ -77,10 +77,10 @@ public class ObjectPool : MonoBehaviour {
 		return pools[poolName];
 	}
 
-	static ObjectPool GetPool (string typeName) {
+	static ObjectPool GetPool (string typeName, string additionalPath=null) {
 		string poolName = typeName + "Pool";
 		if (!pools.ContainsKey (poolName)) {
-			CreatePool (typeName);
+			CreatePool (typeName, additionalPath);
 		}
 		return pools[poolName];
 	}
@@ -93,11 +93,11 @@ public class ObjectPool : MonoBehaviour {
 		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (prefabName, additionalPath).transform);
 	}
 
-	static void CreatePool (string typeName) {
+	static void CreatePool (string typeName, string additionalPath=null) {
 		string poolName = typeName + "Pool";
 		GameObject go = new GameObject (poolName);
 		// DontDestroyOnLoad (go); // 9/2/15 - this was causing problems - jay
-		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (typeName).transform);	
+		go.AddComponent<ObjectPool> ().Init (poolName, CreatePrefab (typeName, additionalPath).transform);	
 	}
 
 	static Transform CreatePrefab (string prefabName, string additionalPath=null) {
@@ -109,8 +109,12 @@ public class ObjectPool : MonoBehaviour {
 			go = Instantiate (resourceObj) as GameObject;
 		}
 		catch {
-			if(go == null)
-				throw new System.Exception ("The prefab '" + prefabName + "' was not found in the Resources/Prefabs folder or any of its subfolders.");
+			if(go == null) {
+				if(additionalPath == null)
+					throw new System.Exception ("The prefab '" + prefabName + "' was not found in the Resources/Prefabs folder or any of its subfolders.");
+				else
+					throw new System.Exception ("The prefab '" + prefabName + "' was not found in the Resources/Prefabs '" + additionalPath + "' subfolder.");
+			}
 		}
 
 		#if UNITY_EDITOR
@@ -199,23 +203,23 @@ public class ObjectPool : MonoBehaviour {
 		return GetPool<T> ().CreateInstance (position);
 	}
 
-	public static void Destroy<T> (Transform instance) where T : MonoBehaviour {
+	public static void Destroy<T> (Transform instance, string additionalPath=null) where T : MonoBehaviour {
 		if (instance == null) return;
 		StartupLoad ();
-		GetPool<T> ().ReleaseInstance (instance);
+		GetPool<T> (additionalPath).ReleaseInstance (instance);
 	}
 
-	public static void Destroy<T> (List<Transform> instances) where T : MonoBehaviour {
+	public static void Destroy<T> (List<Transform> instances, string additionalPath=null) where T : MonoBehaviour {
 		if (instances == null || instances.Count == 0) return;
 		StartupLoad ();
-		ObjectPool p = GetPool<T> ();
+		ObjectPool p = GetPool<T> (additionalPath);
 		int count = instances.Count;
 		for (int i = 0; i < count; i ++) {
 			p.ReleaseInstance (instances[i]);
 		}
 	}
 
-	public static void DestroyChildren<T> (Transform instance) where T : MonoBehaviour {
+	public static void DestroyChildren<T> (Transform instance, string additionalPath=null) where T : MonoBehaviour {
 		if (instance == null) return;
 
 		T[] removeObjects = instance.GetComponentsInChildren<T>(true);
@@ -223,7 +227,7 @@ public class ObjectPool : MonoBehaviour {
 		if(removeObjects.Length == 0) return;
 
 		foreach (T obj in removeObjects)
-			Destroy<T>(obj.transform);
+			Destroy<T>(obj.transform, additionalPath);
 	}
 
 	public static void DestroyAll<T> (string additionalPath=null) where T : MonoBehaviour {

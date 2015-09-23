@@ -75,9 +75,21 @@ public class NPCFocusBehavior : MonoBehaviour {
 	const float npcDialogSeparation = 0.45f; // % of screen
 	bool focusing = false;
 
-	public void DefaultFocus () {
+	public void DefaultFocus (int choicesCount=0) {
+		
 		Focus ();
 		FocusLevel = FocusLevel.Default;
+
+		// Tutorial
+		if(npc.symbol == "rahb_capitol_city") {
+			if(choicesCount == 1)
+			 	DialogManager.instance.CreateTutorialScreen("phase_1_interactions_counter");
+			else if(choicesCount == 0)
+				DialogManager.instance.CreateTutorialScreen("phase_1_move_around");
+			else if(PlayerData.InteractionGroup.Count == 0)
+				DialogManager.instance.CreateTutorialScreen("phase_1_capitol_end");
+		}
+
 	}
 
 	public void PreviewFocus (ParallaxNpc npc) {

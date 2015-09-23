@@ -78,10 +78,12 @@ namespace Models {
     public class User {
 
         public string _id { get; set; }
-        // public DateTime last_accessed { get; set; }
-        // public string location { get; set; }
         public string username { get; set; }
         public string current_scenario { get; set; }
+        
+        public bool tutorial_1 { get; set; }
+        public bool tutorial_2 { get; set; }
+        
         public Plan plan { get; set; }
 
     }
@@ -396,6 +398,8 @@ namespace Models {
         public string overlay_location { get; set; }
         public string text { get; set; }
         public bool confirm { get; set; }
+        public string confirm_next { get; set; }
+        public string[] options { get; set; }
     
     }
 }

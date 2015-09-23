@@ -18,11 +18,19 @@ public class PrioritizationManager : NotebookCanvas {
 		PlayerData.TacticPriorityGroup.onUpdate += OnUpdatePriorities;
 		continueButton.interactable = false;
 	}
+/*
+	void OnEnable() { 
 
-	public override void Open () {
-		// continueButton.SetActive (NotebookManager.Instance.MakingPlan);
-		// continueButton.interactable = PlayerData.TacticPriorityGroup.Count == 6;
 	}
+
+	void OnDisable() { 
+
+		List<TacticItem> tactics = PlayerData.TacticGroup.Tactics;
+		// Tutorial (player is in capitol and quits tactics screen)
+		if(PlayerData.CityGroup.CurrentCity == "capitol" && tactics.Where(i => i.Unlocked).Count() > 0)
+			DialogManager.instance.CreateTutorialScreen("phase_1_continue_talking");
+
+	}*/
 
 	public void NamePlan() {
 
@@ -40,6 +48,7 @@ public class PrioritizationManager : NotebookCanvas {
         plan.tactics = PlayerData.TacticPriorityGroup.Tactics;
 
         formFields.Add("plan", plan);
+        formFields.Add("save_plan", true);
 
 		PlayerManager.Instance.SaveData (formFields, SubmitPlanCallback);
 
