@@ -153,7 +153,7 @@ public class ScenarioChatScreen : ChatScreen {
 	}
 
 	IEnumerator AdvisorSelected(string strAdvisorSymbol) {
-		
+	    		
 		AddSystemMessage("...");
 
 		yield return new WaitForSeconds(1);
@@ -203,6 +203,9 @@ public class ScenarioChatScreen : ChatScreen {
 
 		// SFX
 		AudioManager.Sfx.Play ("addtodiscussion", "Phase2");
+
+		// Tutorial
+		DialogManager.instance.CreateTutorialScreen("phase_2_conference_action");
 	}
 
 	void AddIndicatorsMessage(Dictionary<string, int> dictAffect) {
@@ -217,6 +220,9 @@ public class ScenarioChatScreen : ChatScreen {
 
 	IEnumerator ShowFeedback(string eventSymbol)
 	{
+
+	    DialogManager.instance.RemoveTutorialScreen();
+	    
 		yield return new WaitForSeconds(1f);
 			
 		Clear();
@@ -256,6 +262,9 @@ public class ScenarioChatScreen : ChatScreen {
 
 			// SFX
 			AudioManager.Sfx.Play ("planconfirm", "UI");
+
+			// Tutorial
+			DialogManager.instance.CreateTutorialScreen("phase_2_supervisor");
 		}
 		else {
 			// Broadcast to open next card

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class NotebookManagerPhaseOne : MonoBehaviour {
 
+
 	static NotebookManagerPhaseOne instance = null;
 	static public NotebookManagerPhaseOne Instance {
 		get {
@@ -38,6 +39,8 @@ public class NotebookManagerPhaseOne : MonoBehaviour {
 
 	void Awake () {
 		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
+
+		Events.instance.AddListener<TutorialEvent>(OnTutorialEvent);
 	}
 
 	public void CloseCanvases () {
@@ -49,4 +52,34 @@ public class NotebookManagerPhaseOne : MonoBehaviour {
 	void OnArriveInCityEvent (ArriveInCityEvent e) {
 		CloseCanvases ();
 	}
+
+    /// <summary>
+    // Callback for TutorialEvent, filtering for type of event
+    /// </summary>
+    void OnTutorialEvent(TutorialEvent e) {
+
+    	switch(e.eventType) {
+
+    		case "skip_tutorial":
+
+	    		DataManager.tutorialEnabled = false;
+
+	    		DialogManager.instance.RemoveTutorialScreen();
+	    		
+	    		// Reset interactions
+				PlayerData.InteractionGroup.ClearTutorial();
+
+				// Open map
+				toggles[1].OnClick();
+				
+    			break;
+
+    		default:
+
+    			DialogManager.instance.CreateTutorialScreen(e.eventType);	    		
+    			break;
+
+    	}
+    }
+
 }

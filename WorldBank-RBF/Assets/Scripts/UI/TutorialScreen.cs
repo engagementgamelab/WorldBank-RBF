@@ -94,6 +94,9 @@ public class TutorialScreen : MonoBehaviour {
 	public RawImage spotlightImage;
 
 	GenericButton confirmButton;
+	GenericButton yesButton;
+	GenericButton noButton;
+
 	CanvasGroup group;
 
 	public Rect maskRect = new Rect(1, 0, 1, 1);
@@ -115,7 +118,10 @@ public class TutorialScreen : MonoBehaviour {
 	public void Load(string strKey, string strNextKey=null, UnityAction confirmAction=null) {
 
 		group = gameObject.GetComponent<CanvasGroup>();
-		confirmButton = transform.Find("Overlay/Button").GetComponent<GenericButton>();
+
+		confirmButton = transform.Find("Overlay/Buttons/Confirm button").GetComponent<GenericButton>();
+		yesButton = transform.Find("Overlay/Buttons/Yes button").GetComponent<GenericButton>();
+		noButton = transform.Find("Overlay/Buttons/No button").GetComponent<GenericButton>();
 
 		Models.Tooltip tooltip = DataManager.GetTooltipByKey(strKey);
 		OverlayPosition(tooltip.overlay_location);
@@ -155,8 +161,32 @@ public class TutorialScreen : MonoBehaviour {
 			confirmButton.Button.onClick.AddListener(() => DialogManager.instance.CreateTutorialScreen(strNextKey));
 			confirmButton.Text = "Next";
 		}
-		else
+		else {
 			confirmButton.Text = "Ok";
+
+			if(tooltip.confirm_action != null)
+				confirmButton.Button.onClick.AddListener(() => Events.instance.Raise(new TutorialEvent(tooltip.confirm_action)));
+		}
+
+		if(tooltip.yes_no) {
+			yesButton.gameObject.SetActive(true);
+			noButton.gameObject.SetActive(true);
+
+			yesButton.Text = tooltip.yes_label;
+			noButton.Text = tooltip.no_label;
+
+			yesButton.Button.onClick.RemoveAllListeners ();
+			yesButton.Button.onClick.AddListener(() => Events.instance.Raise(new TutorialEvent(tooltip.yes_action)));
+
+			noButton.Button.onClick.RemoveAllListeners ();
+			noButton.Button.onClick.AddListener(() => Events.instance.Raise(new TutorialEvent(tooltip.no_action)));
+		}
+		else {
+
+			yesButton.gameObject.SetActive(false);
+			noButton.gameObject.SetActive(false);
+
+		}
 		
 	}
 

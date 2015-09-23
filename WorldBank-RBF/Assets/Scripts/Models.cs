@@ -397,8 +397,17 @@ namespace Models {
         public float[] mask_size { get; set; }
         public string overlay_location { get; set; }
         public string text { get; set; }
+  
         public bool confirm { get; set; }
+        public bool yes_no { get; set; }
+
         public string confirm_next { get; set; }
+        public string confirm_action { get; set; }
+        public string yes_label { get; set; }
+        public string no_label { get; set; }
+        public string yes_action { get; set; }
+        public string no_action { get; set; }
+
         public string[] options { get; set; }
     
     }

@@ -94,13 +94,7 @@ public class SceneManager : MonoBehaviour {
 			#if UNITY_EDITOR
 				if (EditorApplication.currentScene != "Assets/Scenes/Menus.unity") {
 					PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
-				} /*else {
-					loginUI = ObjectPool.Instantiate<PlayerLoginRegisterUI>();
-					loginUI.Callback = UserAuthenticateResponse;	
-				}*/
-			#else
-				// loginUI = ObjectPool.Instantiate<PlayerLoginRegisterUI>();
-				// loginUI.Callback = UserAuthenticateResponse;
+				}
 			#endif
 			
 		}
@@ -129,7 +123,7 @@ public class SceneManager : MonoBehaviour {
 	/// <summary>
 	/// Obtains game config data and passes it to global data manager
 	/// </summary>
-	private void LoadGameConfig()
+	void LoadGameConfig()
 	{
 		// Open stream to API JSON config file
 		TextAsset apiJson = (TextAsset)Resources.Load("api", typeof(TextAsset));
@@ -151,7 +145,7 @@ public class SceneManager : MonoBehaviour {
 	/// <summary>
 	/// Obtains and sets global game data
 	/// </summary>
-	private void SetGameData() {
+	void SetGameData() {
 
 		string gameData = null;
 
@@ -184,4 +178,5 @@ public class SceneManager : MonoBehaviour {
 			DataManager.SetGameData(gameData);
 
 	}
+	
 }

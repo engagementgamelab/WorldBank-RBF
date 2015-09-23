@@ -70,6 +70,9 @@ public class SupervisorChatScreen : ChatScreen {
 		// Disable screen if out of tactics for this year
 		disabledPanel.gameObject.SetActive(queuedTactics.Count == 0);
 
+		// Tutorial
+		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor_opened");
+
  	}
 
  	void OpenTacticCard () {

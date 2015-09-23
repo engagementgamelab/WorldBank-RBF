@@ -87,6 +87,8 @@ public abstract class ItemGroup {
 /// </summary>
 public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	
+	bool tutorialSkip;
+
 	public override string ID { get { return ""; } }
 
 	public List<T> MyItems {
@@ -196,7 +198,18 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	public override void Clear () {
 		items.Clear ();
 		SendUpdateMessage ();
-		SendEmptyMessage ();
+
+		// Send message only if not cleared due to tutorial skip
+		if(!tutorialSkip)
+			SendEmptyMessage ();
+	}
+
+	public void ClearTutorial() {
+
+		tutorialSkip = true;
+		Clear();
+		tutorialSkip = false;
+
 	}
 
 	/// <summary>

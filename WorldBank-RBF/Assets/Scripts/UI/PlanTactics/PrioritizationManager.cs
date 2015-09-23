@@ -68,6 +68,9 @@ public class PrioritizationManager : NotebookCanvas {
 		// Clear all Object Pool objects and pools before loading new scene
 		ObjectPool.Clear();
 
+		// Re-enable tutorial for now
+		DataManager.tutorialEnabled = false;
+
 		Application.LoadLevel("PhaseTwo");
 
 	}

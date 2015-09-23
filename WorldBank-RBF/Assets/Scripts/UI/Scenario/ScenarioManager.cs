@@ -33,9 +33,6 @@ public class ScenarioManager : MonoBehaviour {
 	public float problemCardDurationOverride = 0;
 	public float monthLengthSecondsOverride = 0;
 
-	public bool enableCooldown;
-
-	Timers.TimerInstance phaseCooldown;
 	Timers.TimerInstance problemCardCooldown;
 	
 	ScenarioYearEndDialog yearEndPanel;
@@ -49,6 +46,7 @@ public class ScenarioManager : MonoBehaviour {
 
 	object tacticsAvailable;
 
+	bool enableCooldown;
 	bool queueProblemCard;
 	bool openProblemCard;
 	bool openYearEnd;
@@ -64,7 +62,6 @@ public class ScenarioManager : MonoBehaviour {
 
 	float problemCardDuration;
 	float cardCooldownElapsed;
-	float phaseCooldownElapsed;
 
 	float monthLengthSeconds;
 	float phaseLength;
@@ -79,6 +76,7 @@ public class ScenarioManager : MonoBehaviour {
         NetworkManager.Instance.GetURL("/plan/all/", PlansRetrieved);
 
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
+		Events.instance.AddListener<TutorialEvent>(OnTutorialEvent);
 
 		// Listen for problem card cooldown tick
 		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
@@ -93,8 +91,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		scenarioCardCooldownAnimator = scenarioCardCooldownText.gameObject.GetComponent<Animator>();
 
-		// DialogManager.instance.CreateTutorialScreen("tooltip_2");
-
+		if(!DataManager.tutorialEnabled)
+			enableCooldown = true;
 	}
 
 	void Update () {
@@ -223,24 +221,12 @@ public class ScenarioManager : MonoBehaviour {
 		// Create the card dialog
 		DialogManager.instance.SetCard(card);
 
-		// Start card cooldown
-		if(enableCooldown) {
-			if(problemCardCooldown == null) {
-				if(!problemCardDurationOverride.Equals(0f))
-					problemCardDuration = problemCardDurationOverride;
-
-				problemCardCooldown = Timers.StartTimer(gameObject, new [] { problemCardDuration });
-				problemCardCooldown.Symbol = "problem_card";
-				problemCardCooldown.onTick += OnCooldownTick;
-				problemCardCooldown.onEnd += GetNextCard;
-			}
-			else
-				problemCardCooldown.Restart();
-		}
-		
 		// SFX
 		if(currentCardIndex > 0)
 			AudioManager.Sfx.Play ("newproblem", "Phase2");
+
+		// Start card cooldown
+		BeginCooldown();
 
 	}
 
@@ -248,7 +234,6 @@ public class ScenarioManager : MonoBehaviour {
     /// End the current year.
     /// </summary>
 	void EndYear () {
-		
 
 		CalculateIndicators();
 		
@@ -268,6 +253,9 @@ public class ScenarioManager : MonoBehaviour {
 		indicatorsCanvas.EndYear(scenarioConf, currentYear);
 
 		indicatorsCanvas.Open();
+
+		// Tutorial
+		DialogManager.instance.CreateTutorialScreen("phase_2_year_end");
 
 	}
 
@@ -336,16 +324,6 @@ public class ScenarioManager : MonoBehaviour {
 			monthLengthSeconds = (monthLengthSecondsOverride == 0) ? (phaseLength / 36) : monthLengthSecondsOverride;
 		#endif
 
-		phaseCooldownElapsed = phaseLength;
-
-		if(enableCooldown) {
-
-			phaseCooldown = Timers.StartTimer(gameObject, new [] { phaseLength });
-			phaseCooldown.Symbol = "phase_cooldown";
-			phaseCooldown.onTick += OnCooldownTick;
-
-		}
-
 		Debug.Log("Scenario: " + response["current_scenario"].ToString());
 
     	// Set scene context from current scenario
@@ -371,7 +349,7 @@ public class ScenarioManager : MonoBehaviour {
     	// This is the only time we won't show notification
     	CalculateIndicators();
 
-		// DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_indicators");
+		DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_skip");
 
     }
 
@@ -380,7 +358,12 @@ public class ScenarioManager : MonoBehaviour {
     	// Set scene context from current scenario
     	DataManager.SceneContext = scenarioSymbol;
 
-    	problemCardDuration = (monthLengthSeconds * 12) / DataManager.ScenarioLength(scenarioTwistIndex);
+		problemCardDuration = (monthLengthSeconds * 12) / DataManager.ScenarioLength(scenarioTwistIndex);
+		
+		if(!problemCardDurationOverride.Equals(0f))
+			problemCardDuration = problemCardDurationOverride;
+		
+		cardCooldownElapsed = problemCardDuration;
 
     }
 
@@ -456,6 +439,22 @@ public class ScenarioManager : MonoBehaviour {
 
     }
 
+    void BeginCooldown() {
+		
+		if(!enableCooldown)
+			return;
+
+		if(problemCardCooldown == null) {
+			problemCardCooldown = Timers.StartTimer(gameObject, new [] { problemCardDuration });
+			problemCardCooldown.Symbol = "problem_card";
+			problemCardCooldown.onTick += OnCooldownTick;
+			problemCardCooldown.onEnd += GetNextCard;
+		}
+		else
+			problemCardCooldown.Restart();
+
+    }
+
     /// <summary>
     // Callback for ScenarioEvent, filtering for type of event
     /// </summary>
@@ -468,14 +467,10 @@ public class ScenarioManager : MonoBehaviour {
     		case "feedback":
 
     			// Pause cooldown
-    			problemCardCooldown.Stop();
-    			scenarioCardCooldownAnimator.Play("TimerPause");
-    			break;
-   			
-    		case "next":
-    			// Resume cooldown
-    			problemCardCooldown.Resume();
-    			scenarioCardCooldownAnimator.Play("TimerRunning");
+    			if(problemCardCooldown != null) {
+	    			problemCardCooldown.Stop();
+	    			scenarioCardCooldownAnimator.Play("TimerPause");
+    			}
 
 				// Initialize tactics cards after first problem card done
 				if(currentYear == 1 && currentCardIndex == 0) {
@@ -495,6 +490,14 @@ public class ScenarioManager : MonoBehaviour {
 					supervisorChatTab.GetComponent<Button>().enabled = true;
 
 				}
+    			break;
+   			
+    		case "next":
+    			// Resume cooldown
+    			if(problemCardCooldown != null) {
+	    			problemCardCooldown.Resume();
+	    			scenarioCardCooldownAnimator.Play("TimerRunning");
+	    		}
 
     			if(problemCardDuration > 0) {
 					scenarioChat.NoMessages();
@@ -529,15 +532,45 @@ public class ScenarioManager : MonoBehaviour {
     }
 
     /// <summary>
+    // Callback for TutorialEvent, filtering for type of event
+    /// </summary>
+    void OnTutorialEvent(TutorialEvent e) {
+
+    	switch(e.eventType) {
+
+    		case "skip_tutorial":
+
+	    		DataManager.tutorialEnabled = false;
+
+	    		DialogManager.instance.RemoveTutorialScreen();
+	    		
+	    		enableCooldown = true;
+	    		BeginCooldown();
+    			break;
+
+ 			case "close":
+
+	    		DialogManager.instance.RemoveTutorialScreen();
+
+	    		enableCooldown = true;
+	    		BeginCooldown();
+ 				break;
+
+    		default:
+
+    			DialogManager.instance.CreateTutorialScreen(e.eventType);	    		
+    			break;
+
+    	}
+    }
+
+    /// <summary>
     // Callback for TimerTick
     /// </summary>
     void OnCooldownTick(GameEvents.TimerTick e) {
 
     	if(e.Symbol == "problem_card")
 			cardCooldownElapsed = problemCardDuration - e.SecondsElapsed;
-    	
-    	else if(e.Symbol == "phase_cooldown")
-			phaseCooldownElapsed = phaseLength - e.SecondsElapsed;
 
 
     }

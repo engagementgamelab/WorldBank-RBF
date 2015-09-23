@@ -9,7 +9,6 @@ public class ScenarioChatMessage : PortraitTextBox {
 	public Transform textContainer;
 
 	public Image leftPortrait;
-	public Image rightPortrait;
 
 	bool initial = false;
 	bool feedback = false;
