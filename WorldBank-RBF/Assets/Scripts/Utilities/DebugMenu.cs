@@ -42,9 +42,9 @@ public class DebugMenu : MonoBehaviour {
 		}
 		if (GUILayout.Button ("unlock 2 tactics")) {
 			// PlayerData.UnlockItem ("unlockable_vouchers_for_services", "This would provide vouchers to poor people so they can receive necessary services at a greatly reduces price.");
-			PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system", "naw you can't get context because YOU ARE A DEBUGger");
+			// PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system", "naw you can't get context because YOU ARE A DEBUGger");
 			// PlayerData.UnlockItem ("unlockable_incentivise_providers_to_deliver_services", "Context text");
-    		// PlayerData.UnlockItem ("unlockable_incentivise_providers_to_follow_protocols", "Context text");
+    		PlayerData.UnlockItem ("unlockable_incentivise_providers_to_follow_protocols", "Context text");
     		// PlayerData.UnlockItem ("unlockable_improve_patient_and_provider_relationship", "Context text");
     		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements", "plz plz you can't get context if you debug the game like that :(");
     		// PlayerData.UnlockItem ("unlockable_information_campaign_to_change_cultural_customs_and_behavior", "Context text");

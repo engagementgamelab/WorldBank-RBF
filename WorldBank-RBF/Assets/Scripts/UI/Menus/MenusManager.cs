@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class MenusManager : MonoBehaviour {
 
+	public static string defaultScreen = "title";
+
 	public Transform title;
 	public Transform register;
 	public Transform phaseSelection;
@@ -55,8 +57,8 @@ public class MenusManager : MonoBehaviour {
 	}
 
 	void Awake () {
-		currentScreen = title;
-		SetActiveScreen (title);
+		currentScreen = Screens[defaultScreen];
+		SetActiveScreen (currentScreen);
 	}
 
 	public void SetScreen (string key) {

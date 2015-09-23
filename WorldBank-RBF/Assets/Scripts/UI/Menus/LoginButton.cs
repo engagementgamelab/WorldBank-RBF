@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Text.RegularExpressions;
 
 public class LoginButton : MonoBehaviour {
 

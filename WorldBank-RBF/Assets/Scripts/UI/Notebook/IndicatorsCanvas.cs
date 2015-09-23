@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class IndicatorsCanvas : NotebookCanvas {
 
+	public bool phaseOne = false;
 	public Animator scenarioAnimator;
 
 	public Text yearEndPromptText;
@@ -39,13 +40,22 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	bool showIndicators;
 
-	Animator animator;
+	// Animator animator;
+	Animator animator = null;
+	Animator Animator {
+		get {
+			if (animator == null) {
+				animator = GetComponent<Animator> ();
+			}
+			return animator;
+		}
+	}
 	
-	void Start() {
+	/*void Start() {
 
 		animator = gameObject.GetComponent<Animator>();
 
-	}
+	}*/
 
 	void Update() {
 
@@ -72,8 +82,9 @@ public class IndicatorsCanvas : NotebookCanvas {
 		barSizesTarget.Clear();
 		barSizesCurrent.Clear();
 
-		ObjectPool.DestroyChildren<ActionTaken>(actionsColumn.transform);
-		
+		if (!phaseOne)
+			ObjectPool.DestroyChildren<ActionTaken>(actionsColumn.transform);
+
 		while(ind < currentAffects.Length) {
 	
 			float affectVal;
@@ -85,9 +96,9 @@ public class IndicatorsCanvas : NotebookCanvas {
 			Single.TryParse(previousAffects[ind], out affectValPrev);
 			
 			// Set text to affect delta
-			if(previousAffects !=null && previousAffects[ind] != null) {
+			if(!phaseOne && previousAffects !=null && previousAffects[ind] != null) {
 				dataBarCurrentText[ind].text = (affectVal - affectValPrev).ToString();
-
+				
 				dataBarArrowsUp[ind].gameObject.SetActive(affectVal > 0);
 				dataBarArrowsDown[ind].gameObject.SetActive(affectVal < 0);
 			}
@@ -137,6 +148,9 @@ public class IndicatorsCanvas : NotebookCanvas {
 		if(currentAffects != null)
 			previousAffects = currentAffects;
 
+		if (phaseOne)
+			previousAffects = new [] { 0.ToString (), 0.ToString (), 0.ToString () };
+
 		AppliedAffects.Add(new [] { intBirths, intVaccinations, intQOC });
 		currentAffects = new [] { intBirths.ToString(), intVaccinations.ToString(), intQOC.ToString() };
 
@@ -147,10 +161,12 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	public override void Open() {
 
-		animator.Play("IndicatorsOpen");
-		scenarioAnimator.Play("ScenarioClose");
+		Animator.Play("IndicatorsOpen");
 
-		timerText.gameObject.SetActive(false);
+		if (!phaseOne) {
+			scenarioAnimator.Play("ScenarioClose");
+			timerText.gameObject.SetActive(false);
+		}
 		
 		RenderIndicators();
 
@@ -160,10 +176,12 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	public override void Close() {
 
-		animator.Play("IndicatorsClose");
-		scenarioAnimator.Play("ScenarioOpen");
+		Animator.Play("IndicatorsClose");
 
-		timerText.gameObject.SetActive(true);
+		if (!phaseOne) {
+			scenarioAnimator.Play("ScenarioOpen");
+			timerText.gameObject.SetActive(true);
+		}
 
 		showIndicators = false;
 	}

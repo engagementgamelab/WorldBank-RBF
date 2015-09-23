@@ -14,6 +14,13 @@ public class PrioritizationManager : NotebookCanvas {
 	public Text scoreText;
 	public Text feedbackText;
 
+	public PilotYearAnimation animation;
+	public ResultsScreen results;
+
+	public Dictionary<string, object> Results { get; private set; }
+
+	float animationTime = 5f;
+
 	void Awake () {
 		PlayerData.TacticPriorityGroup.onUpdate += OnUpdatePriorities;
 		continueButton.interactable = false;
@@ -73,14 +80,27 @@ public class PrioritizationManager : NotebookCanvas {
 	// Get response from submitting a plan
 	void SubmitPlanCallback(Dictionary<string, object> response) {
 
-	 	scoreText.text = "Score: " + response["score"].ToString();
+	 	/*scoreText.text = "Score: " + response["score"].ToString();
 	 	feedbackText.text = response["description"].ToString();
+	 	int[] indicators = response["indicators"] as int[];*/
+
+	 	Results = response;
+
+	 	namingPanel.gameObject.SetActive (false);
+	 	animation.gameObject.SetActive (true);
+	 	animation.Animate (animationTime);
+	 	Invoke ("OpenResults", animationTime);
 
 	 	// Show feedback in data panel (allows player to continue)
-		feedbackPanel.gameObject.SetActive(true);
+		// feedbackPanel.gameObject.SetActive(true);
 		
 
 		PlayerManager.Instance.TrackEvent("Plan Saved", "Phase One");
 
+	}
+
+	void OpenResults () {
+		results.gameObject.SetActive (true);
+		results.SetResults (Results);
 	}
 }
