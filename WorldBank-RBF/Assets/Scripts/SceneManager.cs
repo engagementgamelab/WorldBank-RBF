@@ -41,6 +41,9 @@ public class SceneManager : MonoBehaviour {
 	[HideInInspector]
 	public string environment;
 
+	[HideInInspector]
+	public bool tutorialEnabled;
+
 	public delegate void AuthCallbackDelegate();
 
 	private PlayerLoginRegisterUI loginUI;
@@ -134,6 +137,13 @@ public class SceneManager : MonoBehaviour {
 
 		// Set in data manager class with chosen environment config
 		DataManager.SetGameConfig(strConfigData.ReadToEnd(), environment);
+
+
+	    #if UNITY_EDITOR
+			DataManager.tutorialEnabled = tutorialEnabled;
+		#else
+			DataManager.tutorialEnabled = true;
+		#endif
 
 		strConfigData.Close();
 	}

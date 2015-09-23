@@ -259,6 +259,9 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	public void CreateTutorialScreen(string strTooltipKey, string strNextKey=null, UnityAction confirmAction=null) {
 
+		if(!DataManager.tutorialEnabled)
+			return;
+
 		RemoveTutorialScreen();
 
 		// Do not show if already seen

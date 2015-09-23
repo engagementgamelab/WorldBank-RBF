@@ -36,6 +36,8 @@ public class TestOnInspector : Editor
 	    
 	    // Update the selected choice in the underlying object
 	    _sceneManager.environment = environments[_sceneManager.environmentIndex];
+
+		_sceneManager.tutorialEnabled = EditorGUILayout.Toggle("Tutorial On", _sceneManager.tutorialEnabled);
 	    
 	    // Save the changes back to the object
 	    EditorUtility.SetDirty(target);
