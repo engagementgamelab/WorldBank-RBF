@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class TitleScreen : MonoBehaviour {
 
@@ -20,7 +19,7 @@ public class TitleScreen : MonoBehaviour {
 		if (e == "") {
 			ShowError ("Please enter an email address.");
 		} else {
-			PlayerManager.Instance.Authenticate(e.Replace ("\n", ""), "password");
+			PlayerManager.Instance.Authenticate(e.Replace ("\n", ""));
 		}
 	}
 
@@ -37,10 +36,8 @@ public class TitleScreen : MonoBehaviour {
     	if (!e.success) {
 	    	// txtError.text = e.error;
 	    	// txtError.gameObject.SetActive(true);
-	    	// Callback(false);
 	    	Debug.Log ("no success");
 	    } else {
-	    	// Callback(true);
 	    	Debug.Log ("success");
 	    	OnAuthenticate ();
 	    }

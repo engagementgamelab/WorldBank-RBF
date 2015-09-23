@@ -15,7 +15,9 @@ public class UIText : MonoBehaviour {
 		}
 	}
 
-	void Awake () {
-		Text.text = DataManager.GetUIText (key);
+	void OnEnable () {
+		string t = DataManager.GetUIText (key);
+		if (t != DataManager.DataNotLoaded)
+			Text.text = t;
 	}
 }

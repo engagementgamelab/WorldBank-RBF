@@ -55,12 +55,12 @@ public class PlayerManager : MonoBehaviour {
 
     private Models.Plan _userCurrentPlan;
 
-    public void Authenticate(string email, string pass) {
+    public void Authenticate(string email, string pass="") {
 
         Dictionary<string, object> authFields = new Dictionary<string, object>();
 
         authFields.Add("email", email);
-        authFields.Add("password", pass);
+        // authFields.Add("password", pass);
 
         /*ParseUser.LogInAsync(user.username, pass).ContinueWith(t =>
         {
@@ -78,7 +78,19 @@ public class PlayerManager : MonoBehaviour {
         
     }
 
-    public void Register(string email, string username, string location, string pass, string passConfirm) {
+    public void Register (string email, string firstName, string lastName) {
+
+        Dictionary<string, object> registerFields = new Dictionary<string, object>();
+
+        registerFields.Add("email", email);
+        registerFields.Add("first_name", firstName);
+        registerFields.Add("last_name", lastName);
+
+        NetworkManager.Instance.PostURL("/user/create/", registerFields, AuthCallback);
+
+    }
+
+    /*public void Register(string email, string username, string location, string pass, string passConfirm) {
 
         if(pass != passConfirm)
         {          
@@ -104,7 +116,7 @@ public class PlayerManager : MonoBehaviour {
 
         NetworkManager.Instance.PostURL("/user/create/", registerFields, AuthCallback);
         
-    }
+    }*/
 
     public void AuthCallback(Dictionary<string, object> response) {
 

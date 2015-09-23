@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 
@@ -9,16 +8,22 @@ public class CaretPositioner : MB, ISelectHandler {
 	RectTransform Caret {
 		get {
 			if (caret == null) {
-				RectTransform child = (RectTransform)Transform.GetChild (0);
-				if (child.name.Contains ("Caret"))
-					caret = child;
+				foreach (RectTransform child in Transform) {
+					if (child.name.Contains ("Caret"))
+						caret = child;
+				}
 			}
 			return caret;
 		}
 	}
 
 	public void OnSelect (BaseEventData eventData) {
-		if (Caret != null)
-			Caret.offsetMax = new Vector2 (Caret.offsetMax.x, 4);
+		StartCoroutine (CoSetCaretPosition ());
+	}
+
+	IEnumerator CoSetCaretPosition () {
+		while (gameObject.activeSelf && Caret == null)
+			yield return null;
+		Caret.offsetMax = new Vector2 (Caret.offsetMax.x, 4);
 	}
 }

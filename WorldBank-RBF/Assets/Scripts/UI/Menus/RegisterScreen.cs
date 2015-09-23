@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using UnityEngine.EventSystems;
 
 public class RegisterScreen : MonoBehaviour {
 
@@ -9,16 +9,47 @@ public class RegisterScreen : MonoBehaviour {
 	public Text firstName;
 	public Text lastName;
 
+	EventSystem system;
+
+	void Start () {
+		system = EventSystem.current;
+	}
+
 	public void OnCancel () {
 		menus.SetScreen ("title");
 	}
 
 	public void OnRegister () {
-		/*PlayerManager.Instance.Register(
+		PlayerManager.Instance.Register (
 			email.text.Replace ("\n", ""), 
-			txtUsername.text.Replace ("\n", ""), 
-			txtLocation.text.Replace ("\n", ""), 
-			inputPassword.text.Replace ("\n", ""), 
-			inputPasswordAgain.text.Replace ("\n", ""));*/
+			firstName.text.Replace ("\n", ""), 
+			lastName.text.Replace ("\n", ""));
+		menus.SetScreen ("title");
 	}
+
+	void Update () {
+
+    	// Tab navigation - really rough
+    	if (Input.GetKeyDown (KeyCode.Tab)) {
+    		Selectable next = Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)
+    			? system.currentSelectedGameObject.GetComponent<Selectable> ().FindSelectableOnUp ()
+    			: system.currentSelectedGameObject.GetComponent<Selectable> ().FindSelectableOnDown ();
+
+    		if (next != null) {
+    			InputField input = next.GetComponent<InputField> ();
+    			if (input != null) {
+
+    				// Navigate forwards
+    				input.OnPointerClick (new PointerEventData (system));
+    				system.SetSelectedGameObject (next.gameObject);
+    				
+    			} else {
+    				
+    				// Navigate backwards
+    				next = Selectable.allSelectables[0];
+    				system.SetSelectedGameObject(next.gameObject);
+    			}
+    		}
+    	}
+    }
 }

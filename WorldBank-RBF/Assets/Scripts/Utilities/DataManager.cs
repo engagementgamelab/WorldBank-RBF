@@ -73,6 +73,7 @@ public class DataManager {
 
     public static List<string> tacticNames;
     public static List<string> usedTooltips = new List<string>();
+    public static readonly string DataNotLoaded = "<data not loaded>";
 
     static string currentSceneContext;
     static JsonReaderSettings _readerSettings = new JsonReaderSettings();
@@ -166,6 +167,10 @@ public class DataManager {
     /// </summary>
     /// <returns>Copy associated with the key.</returns>
     public static string GetUIText (string key) {
+        
+        if (gameData == null)
+            return DataNotLoaded;
+
         string val;
         if (gameData.ui_text.TryGetValue (key, out val)) {
             return val;
