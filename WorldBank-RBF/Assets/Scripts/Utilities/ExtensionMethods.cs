@@ -112,6 +112,12 @@ public static class ExtensionMethods {
 		return null;
 	}
 
+	public static void SetSiblingLast (this Transform transform) {
+		if (transform.parent == null)
+			return;
+		transform.SetSiblingIndex (transform.parent.childCount);
+	}
+
 	public static void Reset (this Transform transform) {
 		transform.localPosition = Vector3.zero;
 		transform.localEulerAngles = new Vector3 (0, 0, 0);

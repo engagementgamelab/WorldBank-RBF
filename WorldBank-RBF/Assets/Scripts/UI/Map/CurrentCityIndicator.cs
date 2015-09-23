@@ -1,8 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 public class CurrentCityIndicator : MB {
+
+	public Sprite bus;
+	public Sprite train;
+	public Sprite truck;
+	public Sprite airship;
+
+	Image travelImage = null;
+	Image TravelImage {
+		get {
+			if (travelImage == null) {
+				travelImage = Transform.GetChild (0).GetComponent<Image> ();
+			}
+			return travelImage;
+		}
+	}
 
 	static bool moving = false;
 	public static bool Moving {
@@ -12,6 +28,8 @@ public class CurrentCityIndicator : MB {
 	bool pulsing = false;
 
 	public void Move (Transform parent, RouteItem route, System.Action onEnd=null) {
+
+		SetTravelImage (route.TransportationMode);
 		
 		List<Vector3> positions;
 		try {
@@ -24,6 +42,7 @@ public class CurrentCityIndicator : MB {
 		float speed = route.Speed;
 
 		Parent = parent;
+		Parent.SetSiblingLast ();
 		if (reverse)
 			positions.Reverse ();
 
@@ -34,19 +53,18 @@ public class CurrentCityIndicator : MB {
 
 	void OnEnable () {
 		pulsing = true;
-		StartCoroutine (CoPulse ());
 	}
 
 	void OnDisable () {
 		pulsing = false;
 	}
 
-	IEnumerator CoPulse () {
-		
-		while (pulsing) {
-			float scale = Mathf.SmoothStep (0.1f, 0.5f, 0.1f + Mathf.PingPong (Time.time, 0.75f));
-			LocalScale = new Vector3 (scale, scale, 1f);
-			yield return null;
+	void SetTravelImage (string mode) {
+		switch (mode) {
+			case "train": TravelImage.sprite = train; break;
+			case "truck": TravelImage.sprite = truck; break;
+			case "bus": TravelImage.sprite = bus; break;
+			case "airship": TravelImage.sprite = airship; break;
 		}
 	}
 

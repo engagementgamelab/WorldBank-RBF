@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MainCamera : MB {
 
@@ -140,11 +141,7 @@ public class MainCamera : MB {
 	}
 
 	void OnLoadCity () {
-		
-		// Positioner.XMax = ParallaxLayerManager.Instance.FurthestNPCDistance;
-
-		// TODO: uncomment this line once all the cities are in --- this sets the correct x max for the camera
-		Positioner.XMax = ParallaxLayerManager.Instance.Layers[0].RightMax;
-		Debug.Log (Positioner.XMax);
+		List<ParallaxLayer> layers = ParallaxLayerManager.Instance.Layers;
+		Positioner.XMax = layers[layers.Count-1].RightMax;
 	}
 }

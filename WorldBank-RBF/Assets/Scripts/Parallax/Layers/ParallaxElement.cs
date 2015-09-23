@@ -83,11 +83,12 @@ public class ParallaxElement : ParallaxImage {
 
 	float ZFocusPoint {
 		get { 
-			if (ColliderHeight > 0.8f) {
+			/*if (ColliderHeight > 0.8f) {
 				return ColliderYPosition + ColliderHeight * 0.67f; 
 			} else {
 				return ColliderYPosition;
-			}
+			}*/
+			return ColliderYPosition + ColliderHeight * 0.33f;
 		}
 	}
 

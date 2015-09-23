@@ -41,10 +41,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 					i = images[index];
 				index --;
 			}
-
-			Transform rightImage = i.Transform;//images[images.Count-1].Transform;
-			Debug.Log (rightImage.position.x);
-			return rightImage.position.x - rightImage.localScale.x * 0.5f;
+			return i.Transform.position.x;
 		}
 	}
 
