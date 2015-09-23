@@ -43,15 +43,17 @@ public class ScenarioChatMessage : PortraitTextBox {
 
 			currentPadding = initPadding;
 
+			textContainer.gameObject.SetActive(true);
+			initialTextContainer.gameObject.SetActive(true);
+			feedbackTextContainer.gameObject.SetActive(true);
+
 			if(initial) {
-				feedbackTextContainer.gameObject.SetActive(false);
-				initialTextContainer.gameObject.SetActive(true);
 				textContainer.gameObject.SetActive(false);
+				feedbackTextContainer.gameObject.SetActive(false);
 				
 				responseText = initialTextContainer.GetChild(1).GetComponent<Text>();
 			}
 			else if(feedback) {
-				feedbackTextContainer.gameObject.SetActive(true);
 				initialTextContainer.gameObject.SetActive(false);
 				textContainer.gameObject.SetActive(false);
 				
@@ -59,7 +61,6 @@ public class ScenarioChatMessage : PortraitTextBox {
 			}
 			else {
 				feedbackTextContainer.gameObject.SetActive(false);
-				textContainer.gameObject.SetActive(true);
 				initialTextContainer.gameObject.SetActive(false);
 
 				responseText = textContainer.GetChild(1).GetComponent<Text>();

@@ -97,6 +97,9 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 
 	void SendClickMessage () {
 		NPCFocusBehavior.Instance.PreviewFocus (this);
+
+		// Tutorial
+		DialogManager.instance.RemoveTutorialScreen();
 	}
 
 	IEnumerator CoCheckForDrag () {

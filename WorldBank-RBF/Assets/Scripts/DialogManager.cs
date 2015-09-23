@@ -236,6 +236,7 @@ public class DialogManager : MonoBehaviour {
 					continue;
 
 				btnChoices.Add (displayName, () => {
+
 					AudioManager.Sfx.Play (voice + "response");
 					PlayerData.InteractionGroup.Remove ();
 					character.SelectChoice (
@@ -244,23 +245,31 @@ public class DialogManager : MonoBehaviour {
 						character.Symbol
 					);
 					OpenNpcDialog (currNpc, voice, left, false);
+
 				});
 			}
 		}
 
-		btnChoices.Add ("Back", CloseAndUnfocus);
+		btnChoices.Add ("Back",() => { CloseAndUnfocus(character.Choices.Count); });
 		npcDialogBox.Open (character.DisplayName, dialog, btnChoices, left);
 	}
 
 	/// <summary>
 	/// Generate a tooltip screen
 	/// </summary>
-	public void CreateTutorialScreen(string strTooltipKey, string strNextKey=null) {
+	public void CreateTutorialScreen(string strTooltipKey, string strNextKey=null, UnityAction confirmAction=null) {
+
+		// Do not show if already seen
+		if(DataManager.usedTooltips.Contains(strTooltipKey))
+			return;
 
 		TutorialScreen tutScreen = ObjectPool.Instantiate<TutorialScreen>();
-		tutScreen.Load(strTooltipKey, strNextKey);
+		tutScreen.Load(strTooltipKey, strNextKey, confirmAction);
 
 		tutScreen.transform.SetParent(GameObject.Find("Overlay").transform);
+
+		// Add to used tooltips
+		DataManager.usedTooltips.Add(strTooltipKey);
 
 	}
 
@@ -269,22 +278,6 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	public void RemoveTutorialScreen() {
 		ObjectPool.DestroyAll<TutorialScreen>();
-	}
-
-	GenericButton CreateButton (string text, UnityAction onClick) {
-		GenericButton btn = ObjectPool.Instantiate<GenericButton> ();
-		btn.Text = text;
-		btn.Button.onClick.RemoveAllListeners ();
-		btn.Button.onClick.AddListener (onClick);
-		btn.Button.interactable = !PlayerData.InteractionGroup.Empty;
-		return btn;
-	}
-
-	void CreateBackButton (BackButtonDelegate backEvent) {
-		Button backButton = dialogBox.BackButton;
-		dialogBox.BackButton.gameObject.SetActive (true);
-		backButton.onClick.RemoveAllListeners ();
-		backButton.onClick.AddListener(() => backEvent ());
 	}
 
 	Dictionary<string, bool> GetChoices (CharacterItem character, string dialog) {
@@ -334,8 +327,8 @@ public class DialogManager : MonoBehaviour {
 		return true;
 	}
 
-	void CloseAndUnfocus () {
-		NPCFocusBehavior.Instance.DefaultFocus ();
+	void CloseAndUnfocus (int choicesCount=0) {
+		NPCFocusBehavior.Instance.DefaultFocus (choicesCount);
 		// CloseAll ();
 		npcDialogBox.Close ();
 	}

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CanvasToggle : MonoBehaviour {
 
@@ -57,6 +58,17 @@ public class CanvasToggle : MonoBehaviour {
 		bool open = !thisCanvas.gameObject.activeSelf;
 		PlaySfx (open);
 		SetCanvasActive (open);
+		
+		List<TacticItem> tactics = PlayerData.TacticGroup.Tactics;
+		// Tutorial (player is in capitol and has tactics)
+		if(PlayerData.CityGroup.CurrentCity == "capitol" && tactics.Where(i => i.Unlocked).Count() > 0) {
+			
+			if(thisCanvas.GetType() == typeof(PrioritizationManager))
+				DialogManager.instance.CreateTutorialScreen(open ? "phase_1_tactics" : "phase_1_continue_talking");
+			
+			else if(thisCanvas.GetType() == typeof(MapManager2))
+				DialogManager.instance.CreateTutorialScreen("phase_1_map");
+		}
 	}
 
 	void SetCanvasActive (bool active) {
@@ -64,6 +76,7 @@ public class CanvasToggle : MonoBehaviour {
 		NotebookManagerPhaseOne.Instance.IsOpen = active;
 		activeCanvas = active ? thisCanvas : null;
 		Image.sprite = active ? returnImage : defaultImage;
+
 	}
 
 	void SetButtonActive (bool active) {

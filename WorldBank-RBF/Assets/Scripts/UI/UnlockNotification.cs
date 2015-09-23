@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class UnlockNotification : MB {
 
@@ -128,7 +129,13 @@ public class UnlockNotification : MB {
 		AudioManager.Sfx.Play (s.Sfx[0], s.Sfx[1]);
 		BodyText = context;
 		StartCoroutine (CoSlide (startPosition, endPosition));
-		Invoke ("SlideOut", 10f);
+
+		// Tutorial (player unlocks first tactic; do not slide out until confirm)
+		List<TacticItem> tactics = PlayerData.TacticGroup.Tactics;
+		if(tactics.Where(i => i.Unlocked).Count() == 1)
+			DialogManager.instance.CreateTutorialScreen("phase_1_unlocked_something", "phase_1_plan_creation_screen", () => { SlideOut(); });
+		else
+			Invoke ("SlideOut", 10f);
 	}
 
 	void SlideOut () {

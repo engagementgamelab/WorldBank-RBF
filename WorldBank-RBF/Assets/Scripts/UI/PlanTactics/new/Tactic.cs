@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Tactic : MB {
 
@@ -215,6 +216,12 @@ public class Tactic : MB {
 				if (openContext > -1) ToggleContext (-1);
 				placeholder.ShrinkAndDestroy ();
 				ShrinkAndDestroy ();
+
+				List<TacticItem> tactics = PlayerData.TacticGroup.Tactics;
+				// Tutorial (player is in capitol and has tactics)
+				if(PlayerData.CityGroup.CurrentCity == "capitol" && tactics.Where(i => i.Unlocked).Count() > 0)
+					DialogManager.instance.CreateTutorialScreen("phase_1_tactic_slots");
+
 			} else {
 
 				// container to container

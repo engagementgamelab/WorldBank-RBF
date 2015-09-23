@@ -72,6 +72,7 @@ public class DataManager {
     }
 
     public static List<string> tacticNames;
+    public static List<string> usedTooltips = new List<string>();
 
     static string currentSceneContext;
     static JsonReaderSettings _readerSettings = new JsonReaderSettings();
