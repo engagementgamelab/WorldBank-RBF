@@ -113,7 +113,8 @@ public class MainCamera : MB {
 	const float MAX_ZOOM = 12f;
 
 	void Awake () {
-		ParallaxLayerManager.Instance.onLoad += OnLoadCity;
+		// ParallaxLayerManager.Instance.onLoad += OnLoadCity;
+		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
 	}
 
 	void Start () {
@@ -144,5 +145,23 @@ public class MainCamera : MB {
 		// List<ParallaxLayer> layers = ParallaxLayerManager.Instance.Layers;
 		// Positioner.XMax = layers[0].RightMax;
 		Positioner.XMax = ParallaxLayerManager.Instance.NearestLayer.RightMax;
+	}
+
+	void OnArriveInCityEvent (ArriveInCityEvent e) {
+
+		string city = e.City;
+		float xMax = 0f;
+
+		switch (city) {
+			case "malcom": xMax = 71f; break;
+			case "mile": xMax = 60f; break;
+			case "kibari": xMax = 70f; break;
+			case "crup": xMax = 69f; break; 
+			case "zima": xMax = 46f; break;
+			case "capitol": xMax = 31f; break;
+			case "valeria": xMax = 33f; break;
+		}
+
+		Positioner.XMax = xMax;
 	}
 }
