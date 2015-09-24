@@ -119,6 +119,12 @@ public class Tactic : MB {
 		foreach (PortraitTextBox p in portraits)
 			p.gameObject.SetActive (false);
 		
+		int npcCount = npcs.Count;
+		if (npcCount > 3) {
+			Debug.LogWarning ("Too many NPCs to display on tactic card");
+			npcCount = 3;
+		}
+
 		for (int i = 0; i < npcs.Count; i ++) {
 			portraits[i].gameObject.SetActive (true);
 			portraits[i].NPCSymbol = npcs[i];
