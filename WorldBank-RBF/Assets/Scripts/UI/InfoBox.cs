@@ -51,6 +51,8 @@ public class InfoBox : MB {
 
 	void Open (string key) {
 
+		AudioManager.Sfx.Play ("openinfo", "ui");
+
 		currentKey = key;
 		body.text = DataManager.GetUIText (key);
 

@@ -61,6 +61,8 @@ public class CityInfoBox : MB {
 			}
 		}
 
+		AudioManager.Sfx.Play ("openinfo", "ui");
+
 		Header = city.Model.display_name;
 		SetActive (true);
 
@@ -79,14 +81,15 @@ public class CityInfoBox : MB {
 	/// </summary>
 	public void OpenRouteBlocked () {
 		Header = "Blocked";
-		Body = "You return to the train station and learn that bad weather has triggered a landslide to the east. The train tracks between Mile and Zima have been destroyed.\nA young man tugs on your shirt and grins. He says he drives a produce truck and can get you to Kibari, the heart of the highlands. \"From there,\" he says, \"you can get anywhere!\"";
+		// Body = "You return to the train station and learn that bad weather has triggered a landslide to the east. The train tracks between Mile and Zima have been destroyed.\nA young man tugs on your shirt and grins. He says he drives a produce truck and can get you to Kibari, the heart of the highlands. \"From there,\" he says, \"you can get anywhere!\"";
+		Body = DataManager.GetUIText ("copy_blocked_route");
 		SetButtons ("Ok", UnlockRoute);
 		SetActive (true);
 	}
 
 	void UnlockRoute () {
 		PlayerData.RouteGroup.Lock ("unlockable_route_mile_to_zima");
-		PlayerData.UnlockItem("unlockable_route_kibari_to_mile");
+		PlayerData.UnlockItem("unlockable_route_kibari_to_mile", DataManager.GetUIText ("copy_unlock_blocked_route"));
 		Close ();
 	}
 

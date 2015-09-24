@@ -154,7 +154,7 @@ public class MainCamera : MB {
 
 		switch (city) {
 			case "malcom": xMax = 71f; break;
-			case "mile": xMax = 60f; break;
+			case "mile": xMax = 57f; break;
 			case "kibari": xMax = 70f; break;
 			case "crup": xMax = 69f; break; 
 			case "zima": xMax = 46f; break;

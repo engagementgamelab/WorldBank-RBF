@@ -46,7 +46,7 @@ public class UnlockNotification : MB {
 			"dialogue", 
 			new Settings (
 				"copy_unlock_notifications_dialog",
-				Color.cyan, 
+				new Color (0.11f, 0.35f, 0.463f), 
 				new [] { "newtravel", "map" }
 			)
 		},
@@ -54,7 +54,7 @@ public class UnlockNotification : MB {
 			"route", 
 			new Settings (
 				"copy_unlock_notifications_route",
-				Color.yellow, 
+				new Color (0.874f, 0.773f, 0.506f), 
 				new [] { "newtravel", "map" }
 			)
 		},
@@ -70,7 +70,7 @@ public class UnlockNotification : MB {
 			"indicators", 
 			new Settings (
 				"copy_unlock_notifications_indicators", 
-				Color.cyan, 
+				new Color (0.874f, 0.773f, 0.506f), 
 				new [] { "graphupdated", "phase2" }
 			)
 		}
