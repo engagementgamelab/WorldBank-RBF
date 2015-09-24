@@ -83,8 +83,14 @@ public class CanvasToggle : MonoBehaviour {
 		thisCanvas.gameObject.SetActive (active);
 		NotebookManagerPhaseOne.Instance.IsOpen = active;
 		activeCanvas = active ? thisCanvas : null;
-		Image.sprite = active ? returnImage : defaultImage;
 
+		if (!NotebookManagerPhaseOne.Instance.CanCloseNotebook) {
+			Image.sprite = defaultImage;
+			Button.interactable = false;
+		} else {
+			Image.sprite = active ? returnImage : defaultImage;
+			Button.interactable = true;
+		}
 	}
 
 	void SetButtonActive (bool active) {
