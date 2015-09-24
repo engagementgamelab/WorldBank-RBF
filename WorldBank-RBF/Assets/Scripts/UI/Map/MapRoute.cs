@@ -7,13 +7,13 @@ using System.Collections;
 /// </summary>
 public class MapRoute : MB {
 
-	Text text = null;
-	Text Text {
+	RectTransform travelDays = null;
+	RectTransform TravelDays {
 		get {
-			if (text == null) {
-				text = Transform.GetChild (1).GetComponent<Text> ();
+			if (travelDays == null) {
+				travelDays = Transform.GetChild (1).GetComponent<RectTransform> ();
 			}
-			return text;
+			return travelDays;
 		}
 	}
 
@@ -43,7 +43,7 @@ public class MapRoute : MB {
 	bool Unlocked {
 		set {
 			RouteImage.gameObject.SetActive (value);
-			Text.gameObject.SetActive (value);
+			TravelDays.gameObject.SetActive (value);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class MapRoute : MB {
 	/// Sets the text that represents the cost to travel along the route.
 	/// </summary>
 	int Cost {
-		set { Text.text = value.ToString (); }
+		set { costText.text = value.ToString (); }
 	}
 
 	RouteItem routeItem = null;
@@ -84,6 +84,7 @@ public class MapRoute : MB {
 	
 	public string city1;
 	public string city2;
+	public Text costText;
 	bool newUnlock = false;
 
 	public void OnUpdateUnlocked () {
