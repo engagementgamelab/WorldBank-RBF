@@ -8,8 +8,8 @@ public static class AudioManager {
 		{
 			#if UNITY_EDITOR && !UNITY_WEBPLAYER
 			{ "ambience", false },
-			{ "music", true },
-			{ "sfx", true }
+			{ "music", false },
+			{ "sfx", false }
 			#else
 			{ "ambience", false },
 			{ "music", false },

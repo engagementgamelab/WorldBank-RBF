@@ -61,14 +61,16 @@ public class AmbienceZone : MB, IEditorPoolable {
 	}
 
 	void OnDisable () {
-		if (ambience != null)
-			ambience.Stop ();
+		if (ambience != null) {
+			AudioManager.Ambience.FadeOut (ambience.Name, 1f, () => ambience.Stop ());
+			// ambience.Stop ();
+		}
 	}
 
 	IEnumerator CoPlay () {
 		while (context == "" || CityContext == "")
 			yield return null;
-		ambience = AudioManager.Ambience.PlayAmbience (CityContext, context);
+		ambience = AudioManager.Ambience.PlayAmbience (CityContext, context, Attenuation);
 	}
 
 	#if UNITY_EDITOR

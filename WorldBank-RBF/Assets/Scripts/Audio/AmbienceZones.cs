@@ -19,7 +19,7 @@ public class AmbienceZones : MB {
 	};
 
 	void Start () {
-		// PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
+		PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
 		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
 	}
 
@@ -118,7 +118,7 @@ public class AmbienceZones : MB {
 		LoadFromSymbol (e.City);
 	}
 
-	/*void OnUpdateCurrentCity (string city) {
-		LoadFromSymbol (city);
-	}*/
+	void OnUpdateCurrentCity (string city) {
+		Reset ();
+	}
 }

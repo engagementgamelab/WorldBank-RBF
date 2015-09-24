@@ -36,9 +36,12 @@ public class AmbienceGroup : AudioGroup<AmbienceItem> {
 
 	public AmbienceGroup () : base ("Ambience") {}
 
-	public AmbienceItem PlayAmbience (string city, string context="") {
+	public AmbienceItem PlayAmbience (string city, string context="", float fadeTo=1f) {
 		AmbienceItem item = FindAmbienceWithContext (city, context);
-		if (item != null) Play (item);
+		if (item != null) {
+			Play (item);
+			Fade (item, 0f, fadeTo, 1f);
+		}
 		return item;
 	}
 

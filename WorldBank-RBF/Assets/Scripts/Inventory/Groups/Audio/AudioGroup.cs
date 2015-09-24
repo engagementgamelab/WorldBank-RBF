@@ -173,6 +173,7 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 		if (!Settings.allowSimultaneous)
 			StopAll ();
 
+		item.Attenuation = 1f;
 		item.Play ();
 		playing.Add (item);
 	}
@@ -258,10 +259,10 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 	/// <param name="time">Fade duration.</param>
 	/// <param name="onEndFade">Callback when the fade ends (optional).</param>
 	public void FadeOut (AudioItem item, float time, System.Action onEndFade=null) {
-		Fade (item, 1f, 0f, time, onEndFade);
+		Fade (item, item.Attenuation, 0f, time, onEndFade);
 	}
 
-	void Fade (AudioItem item, float from, float to, float time, System.Action onEndFade=null) {
+	public void Fade (AudioItem item, float from, float to, float time, System.Action onEndFade=null) {
 		Fader.Instance.Fade (item, from, to, time, onEndFade);
 	}
 }
