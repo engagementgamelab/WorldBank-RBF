@@ -19,7 +19,8 @@ public class AmbienceZones : MB {
 	};
 
 	void Start () {
-		PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
+		// PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
+		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
 	}
 
 	public void AddZone () {
@@ -36,9 +37,23 @@ public class AmbienceZones : MB {
 		Reset ();
 		ModelSerializer.Load (this, path);
 		AmbienceZone[] zoneArr = GameObject.FindObjectsOfType (typeof (AmbienceZone)) as AmbienceZone[];
-		zones = zoneArr.ToList ();
+
+		// Put the zones in order
+		while (zones.Count < zoneArr.Length) {
+			for (int i = 0; i < zoneArr.Length; i ++) {
+				if (zoneArr[i].Index == zones.Count-1)
+					zones.Add (zoneArr[i]);	
+			}
+		}
+
+		// Parent the zones
 		foreach (AmbienceZone zone in zones) {
 			zone.Parent = Transform;
+		}
+
+		// Set siblings according to index
+		foreach (Transform child in Transform) {
+			child.SetSiblingIndex (child.GetScript<AmbienceZone> ().Index);
 		}
 		UpdateZones ();
 	}
@@ -99,7 +114,11 @@ public class AmbienceZones : MB {
 		Gizmos.DrawLine (new Vector3 (cursor, 0, 10), new Vector3 (cursor, 10, 10));
 	}
 
-	void OnUpdateCurrentCity (string city) {
-		LoadFromSymbol (city);
+	void OnArriveInCityEvent (ArriveInCityEvent e) {
+		LoadFromSymbol (e.City);
 	}
+
+	/*void OnUpdateCurrentCity (string city) {
+		LoadFromSymbol (city);
+	}*/
 }

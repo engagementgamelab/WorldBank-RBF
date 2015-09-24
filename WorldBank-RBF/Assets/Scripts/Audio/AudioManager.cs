@@ -7,7 +7,7 @@ public static class AudioManager {
 		public static readonly Dictionary<string, bool> Mutes = new Dictionary<string, bool>
 		{
 			#if UNITY_EDITOR && !UNITY_WEBPLAYER
-			{ "ambience", true },
+			{ "ambience", false },
 			{ "music", true },
 			{ "sfx", true }
 			#else

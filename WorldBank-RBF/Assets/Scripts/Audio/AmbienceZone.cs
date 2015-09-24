@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 #if UNITY_EDITOR
 [ExecuteInEditMode]
@@ -22,14 +23,8 @@ public class AmbienceZone : MB, IEditorPoolable {
 		get { return attenuation; }
 		set {
 			attenuation = value;
-			if (attenuation > 0f) {
-				if (ambience == null)
-					ambience = AudioManager.Ambience.PlayAmbience (CityContext, context);
+			if (ambience != null)
 				ambience.Attenuation = attenuation;
-			} else {
-				AudioManager.Ambience.StopAmbience (CityContext, context);
-				ambience = null;
-			}
 		}
 	}
 
@@ -49,6 +44,10 @@ public class AmbienceZone : MB, IEditorPoolable {
 		fadeLength = 25;
 	}
 
+	void OnEnable () {
+		StartCoroutine (CoPlay ());
+	}
+
 	public void SetAttenuation (float position) {
 		if (position < FadeStart || position > FadeEnd) {
 			Attenuation = 0;
@@ -64,6 +63,12 @@ public class AmbienceZone : MB, IEditorPoolable {
 	void OnDisable () {
 		if (ambience != null)
 			ambience.Stop ();
+	}
+
+	IEnumerator CoPlay () {
+		while (context == "" || CityContext == "")
+			yield return null;
+		ambience = AudioManager.Ambience.PlayAmbience (CityContext, context);
 	}
 
 	#if UNITY_EDITOR

@@ -61,6 +61,11 @@ public class MenusManager : MonoBehaviour {
 		SetActiveScreen (currentScreen);
 	}
 
+	public static void GotoScreen (string key) {
+		defaultScreen = key;
+		Application.LoadLevel ("Menus");
+	}
+
 	public void SetScreen (string key) {
 		SetScreen (Screens[key]);
 	}

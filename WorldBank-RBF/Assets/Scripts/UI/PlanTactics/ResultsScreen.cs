@@ -21,7 +21,6 @@ public class ResultsScreen : MonoBehaviour {
 	}
 
 	public void OnPressNext () {
-		MenusManager.defaultScreen = "plan";
-		Application.LoadLevel ("Menus");
+		MenusManager.GotoScreen ("plan");
 	}
 }

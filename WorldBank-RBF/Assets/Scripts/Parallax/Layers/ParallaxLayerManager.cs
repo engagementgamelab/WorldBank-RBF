@@ -63,6 +63,23 @@ public class ParallaxLayerManager : MonoBehaviour {
 		}
 	}
 
+	public ParallaxLayer NearestLayer {
+		get {
+			if (layers == null || layers.Count == 0) {
+				return null;
+			}
+			float nearestDistance = Mathf.Infinity;
+			ParallaxLayer nearestLayer = null;
+			foreach (ParallaxLayer layer in layers) {
+				if (layer.Position.z < nearestDistance) {
+					nearestLayer = layer;
+					nearestDistance = layer.Position.z;
+				}
+			}
+			return nearestLayer;
+		}
+	}
+
 	public float FurthestNPCDistance {
 		get {
 			float furthestDistance = 0;

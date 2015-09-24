@@ -141,7 +141,8 @@ public class MainCamera : MB {
 	}
 
 	void OnLoadCity () {
-		List<ParallaxLayer> layers = ParallaxLayerManager.Instance.Layers;
-		Positioner.XMax = layers[layers.Count-1].RightMax;
+		// List<ParallaxLayer> layers = ParallaxLayerManager.Instance.Layers;
+		// Positioner.XMax = layers[0].RightMax;
+		Positioner.XMax = ParallaxLayerManager.Instance.NearestLayer.RightMax;
 	}
 }
