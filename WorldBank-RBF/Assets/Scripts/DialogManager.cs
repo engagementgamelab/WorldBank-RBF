@@ -221,9 +221,15 @@ public class DialogManager : MonoBehaviour {
 
 		Dictionary<string, UnityAction> btnChoices = new Dictionary<string, UnityAction> ();
 
+		// int choicesCount = 3;
+
 		if (!character.NoChoices) {
 			foreach (var choice in character.Choices) {
 				
+				/*if (choicesCount <= 0)
+					break;
+					
+				choicesCount --;*/
 				Models.Dialogue model = choice.Value;
 				
 				string ck = choice.Key;
@@ -231,7 +237,7 @@ public class DialogManager : MonoBehaviour {
 
 				if (!DialogueUnlocked (model, ck, ref displayName))
 					continue;
-
+				
 				if (!(character.Returning && initial) && !choices.ContainsKey (ck.ToLower ()))
 					continue;
 
@@ -290,13 +296,13 @@ public class DialogManager : MonoBehaviour {
 	Dictionary<string, bool> GetChoices (CharacterItem character, string dialog) {
 
 		// Match any characters in between [[ and ]]
-		string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
+		/*string strKeywordRegex = "(\\[)(\\[)(.*?)(\\])(\\])";
 		Regex regexKeywords = new Regex (strKeywordRegex, RegexOptions.IgnoreCase);
 		MatchCollection keyMatches = regexKeywords.Matches (dialog);
-		TextInfo textInfo = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo;
+		TextInfo textInfo = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo;*/
 		Dictionary<string, bool> choices = new Dictionary<string, bool> ();
 
-		foreach (Match m in keyMatches) {
+		/*foreach (Match m in keyMatches) {
 		    if (m.Success) {
 		    	string strKeyword = m.Groups[3].ToString();
 		    	string choiceKey = textInfo.ToTitleCase (strKeyword.ToLower ());
@@ -306,21 +312,25 @@ public class DialogManager : MonoBehaviour {
 		    		choices.Add (strKeyword, false);
 		    	}
 		    }
+		}*/
+
+		foreach (var c in character.Choices) {
+			choices.Add (c.Key, true);
 		}
+
 		return choices;
 	}
 
 	string HighlightChoices (CharacterItem character, string dialog, Dictionary<string, bool> choices) {
 		
-		foreach (var choice in choices) {
+		/*foreach (var choice in choices) {
 			string strKeyword = choice.Key;
 			bool unlocked = choice.Value;
-			/*if (unlocked) {
-				dialog = dialog.Replace ("[[" + strKeyword + "]]", "<color=orange>" + strKeyword + "</color>");
-			} else {*/
-				dialog = dialog.Replace ("[[" + strKeyword + "]]", strKeyword);
-			//}
-		}
+			dialog = dialog.Replace ("[[" + strKeyword + "]]", strKeyword);
+		}*/
+
+		dialog = dialog.Replace ("[[", "");
+		dialog = dialog.Replace ("]]", "");
 
 		return dialog;
 	}
