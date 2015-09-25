@@ -20,7 +20,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 	public Text[] tacticsLabels;
 	public Text[] indicatorsLabels;
 
-	Models.Plan[] plans;
+	Models.PlanRecord[] plans;
 
 	int PlanCount {
 		get { return 4; } //plans.Count-1; }
@@ -103,7 +103,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 
     	Debug.Log(response);
 
-    	 plans = JsonReader.Deserialize<Models.Plan[]>(response["plans"].ToString());
+    	 plans = JsonReader.Deserialize<Models.PlanRecord[]>(response["plans"].ToString());
 
     	 ShowPlan(0);
 
