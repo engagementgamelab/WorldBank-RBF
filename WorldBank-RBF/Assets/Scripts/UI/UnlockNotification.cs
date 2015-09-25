@@ -46,7 +46,7 @@ public class UnlockNotification : MB {
 			"dialogue", 
 			new Settings (
 				"copy_unlock_notifications_dialog",
-				new Color (0.11f, 0.35f, 0.463f), 
+				new Color (0.58f, 0.69f, 0.792f), 
 				new [] { "newtravel", "map" }
 			)
 		},

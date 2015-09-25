@@ -125,7 +125,7 @@ public class Tactic : MB {
 			npcCount = 3;
 		}
 
-		for (int i = 0; i < npcs.Count; i ++) {
+		for (int i = 0; i < npcCount; i ++) {
 			portraits[i].gameObject.SetActive (true);
 			portraits[i].NPCSymbol = npcs[i];
 		}

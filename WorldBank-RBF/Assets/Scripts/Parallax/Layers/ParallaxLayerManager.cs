@@ -114,7 +114,7 @@ public class ParallaxLayerManager : MonoBehaviour {
 		}
 	}
 
-	public void Load (string path, bool useResources=true) {
+	void Load (string path, bool useResources=true) {
 		
 		Clear ();
 		ModelSerializer.Load (this, path, useResources);
@@ -126,7 +126,7 @@ public class ParallaxLayerManager : MonoBehaviour {
 		if (onLoad != null) onLoad ();
     }
 
-    public void LoadFromSymbol (string symbol) {
+    void LoadFromSymbol (string symbol) {
     	Load ("Config/PhaseOne/Cities/" + symbol);
     }
 
@@ -158,6 +158,7 @@ public class ParallaxLayerManager : MonoBehaviour {
     }
 
     void OnArriveInCityEvent (ArriveInCityEvent e) {
+    	UnityEngine.Debug.Log (e.City);
     	LoadFromSymbol (e.City);
     }
 

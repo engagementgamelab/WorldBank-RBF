@@ -6,6 +6,7 @@ public class DebugMenu : MonoBehaviour {
 
 	bool showOptions = false;
 	bool capitolVisited = false;
+	bool twoTacticsUnlocked = false;
 
 	#if DEVELOPMENT_BUILD || UNITY_EDITOR
 	void Start () {
@@ -40,7 +41,7 @@ public class DebugMenu : MonoBehaviour {
 			PlayerData.UnlockItem ("unlockable_vouchers_for_services", "no context because you are boop doop debugging yore goop");
 			PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system", "NO FMUPPING CONTEXT because blug blug dree buggabot");
 		}
-		if (GUILayout.Button ("unlock 2 tactics")) {
+		if (!twoTacticsUnlocked && GUILayout.Button ("unlock 2 tactics")) {
 			// PlayerData.UnlockItem ("unlockable_vouchers_for_services", "This would provide vouchers to poor people so they can receive necessary services at a greatly reduces price.");
 			// PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system", "naw you can't get context because YOU ARE A DEBUGger");
 			// PlayerData.UnlockItem ("unlockable_incentivise_providers_to_deliver_services", "Context text");
@@ -49,6 +50,7 @@ public class DebugMenu : MonoBehaviour {
     		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements", "plz plz you can't get context if you debug the game like that :(");
     		// PlayerData.UnlockItem ("unlockable_information_campaign_to_change_cultural_customs_and_behavior", "Context text");
     		// PlayerData.UnlockItem ("unlockable_dialogue_mr_todd", "Context text");
+    		// twoTacticsUnlocked = true;
     	}
     	if (GUILayout.Button ("skip to phase 2")) {
     		ObjectPool.Clear();
