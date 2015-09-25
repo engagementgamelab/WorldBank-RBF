@@ -158,7 +158,6 @@ public class ParallaxLayerManager : MonoBehaviour {
     }
 
     void OnArriveInCityEvent (ArriveInCityEvent e) {
-    	UnityEngine.Debug.Log (e.City);
     	LoadFromSymbol (e.City);
     }
 

@@ -130,8 +130,12 @@ public class CityInfoBox : MB {
 	}
 
 	void StayExtraDay (CityItem city) {
-		CitiesManager.Instance.StayExtraDay (city);
-		Close ();
+		StartCoroutine (CoClose (() => {
+				panel.SetActive (false);
+				background.SetActive (false);
+				CitiesManager.Instance.StayExtraDay (city);
+			}
+		));
 	}
 
 	void SetButton (string label, UnityAction onButton) {

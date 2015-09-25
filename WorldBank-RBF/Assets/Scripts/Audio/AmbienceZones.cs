@@ -115,7 +115,8 @@ public class AmbienceZones : MB {
 	}
 
 	void OnArriveInCityEvent (ArriveInCityEvent e) {
-		LoadFromSymbol (e.City);
+		if (PlayerData.CityGroup.CurrentCity != cityContext)
+			LoadFromSymbol (e.City);
 	}
 
 	void OnUpdateCurrentCity (string city) {
