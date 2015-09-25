@@ -34,7 +34,8 @@ public class PrioritizationManager : NotebookCanvas {
 
 	public void SubmitPlan(Text planNameInput) {
 
-		Debug.Log (planNameInput.text);
+		AudioManager.Music.StopAll ();
+		AudioManager.Ambience.StopAll ();
 
         Dictionary<string, object> formFields = new Dictionary<string, object>();
 

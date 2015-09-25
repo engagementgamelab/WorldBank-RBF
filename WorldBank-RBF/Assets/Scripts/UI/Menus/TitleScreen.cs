@@ -55,7 +55,11 @@ public class TitleScreen : MonoBehaviour {
     	if (returningPlayer) {
     		menus.SetScreen ("phase");
 		} else {
-			menus.SetScreen ("loading");
+			AudioManager.Music.FadeOut ("title_theme", 0.5f, () => {
+					AudioManager.Music.Stop ("title_theme");
+					menus.SetScreen ("loading");
+				}
+			);
 		}
     }
 

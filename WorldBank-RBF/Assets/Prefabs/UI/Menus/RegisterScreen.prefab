@@ -47,6 +47,8 @@ GameObject:
   - 114: {fileID: 11425348}
   - 114: {fileID: 11458162}
   - 114: {fileID: 11437212}
+  - 114: {fileID: 11472936}
+  - 114: {fileID: 11493360}
   m_Layer: 5
   m_Name: RegisterButton
   m_TagString: Untagged
@@ -207,6 +209,7 @@ GameObject:
   - 114: {fileID: 11489478}
   - 114: {fileID: 11429328}
   - 114: {fileID: 11466296}
+  - 114: {fileID: 11432560}
   m_Layer: 5
   m_Name: CancelButton
   m_TagString: Untagged
@@ -380,6 +383,7 @@ GameObject:
   - 114: {fileID: 11400112}
   - 114: {fileID: 11434838}
   - 114: {fileID: 11471416}
+  - 114: {fileID: 11426450}
   m_Layer: 5
   m_Name: EmailField
   m_TagString: Untagged
@@ -453,7 +457,18 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   m_OnValueChange:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11426450}
+        m_MethodName: OnUpdateEmail
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.InputField+OnChangeEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_SelectionColor: {r: .65882355, g: .807843149, b: 1, a: .752941191}
@@ -619,7 +634,18 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   m_OnValueChange:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11472936}
+        m_MethodName: OnUpdateName
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.InputField+OnChangeEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_SelectionColor: {r: .65882355, g: .807843149, b: 1, a: .752941191}
@@ -761,6 +787,17 @@ MonoBehaviour:
   email: {fileID: 11439770}
   firstName: {fileID: 11439028}
   lastName: {fileID: 11414376}
+--- !u!114 &11426450
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 199522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b77b7639831f54125a37bc0f70c6c4dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11427128
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -847,8 +884,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11432560}
+        m_MethodName: OnTriggerAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &11432560
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 167680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipName: buttonpressnegative
+  group: ui
+  type: 1
 --- !u!114 &11433060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1084,7 +1146,18 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   m_OnValueChange:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11472936}
+        m_MethodName: OnUpdateName
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.InputField+OnChangeEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_SelectionColor: {r: .65882355, g: .807843149, b: 1, a: .752941191}
@@ -1160,6 +1233,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11432560}
+        m_MethodName: OnTriggerAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &11459582
@@ -1217,6 +1301,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe58157db424547a98474cb6cbbd3966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11472936
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d09d3ea8f5a24cdab688eb3ca0e0502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  email: {fileID: 11400112}
+  firstName: {fileID: 11410184}
+  lastName: {fileID: 11451780}
 --- !u!114 &11474908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1361,6 +1459,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11493360
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipName: buttonpresspositive
+  group: ui
+  type: 1
 --- !u!114 &11495314
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1509,8 +1621,8 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 433.522705, y: -332}
-  m_SizeDelta: {x: 867.04541, y: 216}
+  m_AnchoredPosition: {x: 300, y: -332}
+  m_SizeDelta: {x: 600, y: 216}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22403858
 RectTransform:
@@ -1581,7 +1693,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 433.522705, y: -24}
+  m_AnchoredPosition: {x: 300, y: -24}
   m_SizeDelta: {x: 400, y: 48}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22430968
@@ -1617,7 +1729,7 @@ RectTransform:
   m_RootOrder: 3
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 433.522705, y: -192}
+  m_AnchoredPosition: {x: 300, y: -192}
   m_SizeDelta: {x: 400, y: 48}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22436120
@@ -1651,8 +1763,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 433.522705, y: 0}
-  m_SizeDelta: {x: 867.04541, y: 160}
+  m_AnchoredPosition: {x: 300, y: 0}
+  m_SizeDelta: {x: 600, y: 160}
   m_Pivot: {x: .5, y: 1}
 --- !u!224 &22439002
 RectTransform:
@@ -1670,7 +1782,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 433.522705, y: -80}
+  m_AnchoredPosition: {x: 300, y: -80}
   m_SizeDelta: {x: 400, y: 48}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22443824
@@ -1723,7 +1835,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 433.522705, y: -136}
+  m_AnchoredPosition: {x: 300, y: -136}
   m_SizeDelta: {x: 400, y: 48}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22471718
@@ -1741,8 +1853,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 433.522705, y: -192}
-  m_SizeDelta: {x: 867.04541, y: 24}
+  m_AnchoredPosition: {x: 300, y: -192}
+  m_SizeDelta: {x: 600, y: 24}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22475182
 RectTransform:

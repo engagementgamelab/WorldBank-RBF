@@ -203,10 +203,11 @@ public class AudioGroup<T> : ItemGroup<T> where T : AudioItem, new () {
 	/// <param name="name">Name of the AudioItem.</param>
 	/// <param name="groupId">Name of the group that the AudioItem is in.</param>
 	public void Stop (string name, string groupId="") {
-		Stop (name, groupId);
+		// Stop (name, groupId);
+		Stop (GetItem (name, groupId));
 	}
 
-	void StopAll () {
+	public void StopAll () {
 		foreach (AudioItem item in playing)
 			item.Stop ();
 		playing.Clear ();

@@ -50,7 +50,7 @@ public class DebugMenu : MonoBehaviour {
     		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements", "plz plz you can't get context if you debug the game like that :(");
     		// PlayerData.UnlockItem ("unlockable_information_campaign_to_change_cultural_customs_and_behavior", "Context text");
     		// PlayerData.UnlockItem ("unlockable_dialogue_mr_todd", "Context text");
-    		// twoTacticsUnlocked = true;
+    		twoTacticsUnlocked = true;
     	}
     	if (GUILayout.Button ("skip to phase 2")) {
     		ObjectPool.Clear();

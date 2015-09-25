@@ -59,6 +59,7 @@ public class MenusManager : MonoBehaviour {
 	void Awake () {
 		currentScreen = Screens[defaultScreen];
 		SetActiveScreen (currentScreen);
+		AudioManager.Music.Play ("title_theme");
 	}
 
 	public static void GotoScreen (string key) {

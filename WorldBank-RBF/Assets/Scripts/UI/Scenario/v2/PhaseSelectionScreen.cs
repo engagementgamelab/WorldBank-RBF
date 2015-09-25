@@ -6,7 +6,11 @@ public class PhaseSelectionScreen : MonoBehaviour {
 	public MenusManager menus;
 
 	public void OnPhaseOne () {
-		menus.SetScreen ("loading");
+		AudioManager.Music.FadeOut ("title_theme", 0.5f, () => {
+				AudioManager.Music.Stop ("title_theme");
+				StartCoroutine (CoGotoLoad ());
+			}
+		);
 	}
 
 	public void OnPhaseTwo () {
@@ -15,5 +19,11 @@ public class PhaseSelectionScreen : MonoBehaviour {
 
 	public void OnBack () {
 		menus.SetScreen ("title");
+	}
+
+	IEnumerator CoGotoLoad () {
+		yield return new WaitForFixedUpdate ();
+		ObjectPool.Clear ();
+		menus.SetScreen ("loading");
 	}
 }

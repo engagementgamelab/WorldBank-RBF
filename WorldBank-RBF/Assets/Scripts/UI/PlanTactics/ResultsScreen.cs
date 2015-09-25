@@ -21,6 +21,7 @@ public class ResultsScreen : MonoBehaviour {
 	}
 
 	public void OnPressNext () {
+		ObjectPool.Clear ();
 		MenusManager.GotoScreen ("plan");
 	}
 }
