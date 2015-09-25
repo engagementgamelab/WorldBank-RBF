@@ -110,6 +110,9 @@ class GenerateBuilds {
     {
 
         EditorUserBuildSettings.SwitchActiveBuildTarget(buildTarget);
+
+        PlayerSettings.showUnitySplashScreen = false;
+        
         PrepareMaterials();
 
         string name = APP_NAME;

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using JsonFx.Json;
 
 public class PlanSelectionScreen : MonoBehaviour {
@@ -18,12 +19,13 @@ public class PlanSelectionScreen : MonoBehaviour {
 	public GameObject rightArrow;
 
 	public Text[] tacticsLabels;
+	public Text[] yourIndicatorsLabels;
 	public Text[] indicatorsLabels;
 
 	Models.PlanRecord[] plans;
 
 	int PlanCount {
-		get { return 4; } //plans.Count-1; }
+		get { return plans.Length-1; }
 	}
 	
 	int planIndex;
@@ -51,7 +53,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 		if (PlanIndex < PlanCount)
 			PlanIndex ++;
 
-		rightArrow.SetActive(!(PlanIndex == PlanCount-1));
+		rightArrow.SetActive(!(PlanIndex == PlanCount));
 		leftArrow.SetActive(!(PlanIndex == 0));
 
 		ShowPlan(PlanIndex);
@@ -61,7 +63,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 		if (PlanIndex > 0)
 			PlanIndex --;
 
-		rightArrow.SetActive(!(PlanIndex == PlanCount-1));
+		rightArrow.SetActive(!(PlanIndex == PlanCount));
 		leftArrow.SetActive(!(PlanIndex == 0));
 
 		ShowPlan(PlanIndex);
@@ -78,7 +80,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 	void ShowPlan(int planIndex) {
 
     	int tactInt = 0;
-
+    	
     	foreach(Text label in tacticsLabels) {
 
     		label.text = PlayerData.TacticGroup.GetName(plans[planIndex].tactics[tactInt]);
@@ -89,6 +91,7 @@ public class PlanSelectionScreen : MonoBehaviour {
     	indicatorsLabels[0].text = "Facility Births: " + plans[planIndex].default_affects[0]+"%";
     	indicatorsLabels[1].text = "Vaccinations: " + plans[planIndex].default_affects[1]+"%";
     	indicatorsLabels[2].text = "Quality of Care: " + plans[planIndex].default_affects[2]+"%";
+	        
 
     	header.text = plans[planIndex].name;
     	DataManager.currentPlanId = plans[planIndex]._id;
@@ -101,11 +104,13 @@ public class PlanSelectionScreen : MonoBehaviour {
     /// <param name="response">Textual response from /plan/all/ endpoint.</param>
     void PlansRetrieved(Dictionary<string, object> response) {
 
-    	Debug.Log(response);
+		plans = JsonReader.Deserialize<Models.PlanRecord[]>(response["plans"].ToString());
 
-    	 plans = JsonReader.Deserialize<Models.PlanRecord[]>(response["plans"].ToString());
+    	ShowPlan(0);
 
-    	 ShowPlan(0);
+    	yourIndicatorsLabels[0].text = "Facility Births: " + plans[0].default_affects[0]+"%";
+    	yourIndicatorsLabels[1].text = "Vaccinations: " + plans[0].default_affects[1]+"%";
+    	yourIndicatorsLabels[2].text = "Quality of Care: " + plans[0].default_affects[2]+"%";
 
     }
 }
