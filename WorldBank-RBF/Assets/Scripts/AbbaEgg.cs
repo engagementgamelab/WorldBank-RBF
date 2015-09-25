@@ -6,6 +6,7 @@ public class AbbaEgg : MonoBehaviour {
 
 	public Image abbaImage;
 
+	bool initial = true;
 	bool unlocked = false;
 	string spelled = "";
 
@@ -27,6 +28,10 @@ public class AbbaEgg : MonoBehaviour {
 	}
 
 	public void OnPressAbba () {
+		if (initial) {
+			abbaImage.rectTransform.sizeDelta = new Vector2 (-650, -500);
+			initial = false;
+		}
 		// abbaImage.SetActive (false);
 	}
 }
