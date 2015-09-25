@@ -18,7 +18,7 @@ using System.Collections.Generic;
 class GenerateBuilds {
 
     // These are the scenes that the build server is going to use
-    static string[] SCENES = new string[] {"PhaseOne", "PhaseTwo"};
+    static string[] SCENES = new string[] {"PhaseOne", "Menus", "PhaseTwo"};
 
     // Options for all builds
     static BuildOptions BUILD_OPTIONS = BuildOptions.Development | BuildOptions.AllowDebugging;
