@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using System.Collections;
 
 public class CityInfoBox : MB {
 
@@ -26,6 +27,16 @@ public class CityInfoBox : MB {
 	string Body {
 		get { return body.text; }
 		set { body.text = value; }
+	}
+
+	Image backgroundImage = null;
+	Image BackgroundImage {
+		get {
+			if (backgroundImage == null) {
+				backgroundImage = background.GetComponent<Image> ();
+			}
+			return backgroundImage;
+		}
 	}
 
 	/// <summary>
@@ -145,11 +156,55 @@ public class CityInfoBox : MB {
 	}
 
 	void SetActive (bool active) {
-		panel.SetActive (active);
-		background.SetActive (active);
+		
+		if (active) {
+			panel.SetActive (true);
+			background.SetActive (true);
+			StartCoroutine (CoFade (0f, 0.5f, 0.2f));
+			StartCoroutine (CoExpand (Vector3.zero, Vector3.one, 0.2f));
+		} else {
+			StartCoroutine (CoClose (
+				() => {
+					panel.SetActive (false);
+					background.SetActive (false);
+				}
+			));
+		}
 	}
 
 	bool RouteBlocked (CityItem city, RouteItem route) {
 		return city.Symbol == "zima" && route.Terminals == new Terminals ("mile", "zima");
+	}
+
+	IEnumerator CoClose (System.Action onEnd) {
+		yield return StartCoroutine (CoFade (0.5f, 0f, 0.2f));
+		yield return StartCoroutine (CoExpand (Vector3.one, Vector3.zero, 0.2f));
+		onEnd ();
+	}
+
+	IEnumerator CoFade (float from, float to, float time) {
+		
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			BackgroundImage.color = new Color (0f, 0f, 0f, Mathf.Lerp (from, to, progress));
+			yield return null;
+		}
+	}
+
+	IEnumerator CoExpand (Vector3 from, Vector3 to, float time) {
+		
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			panel.transform.SetLocalScale (Vector3.Lerp (from, to, progress));
+			yield return null;
+		}
+
+		panel.transform.SetLocalScale (to);
 	}
 }

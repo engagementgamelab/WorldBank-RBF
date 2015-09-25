@@ -33,6 +33,16 @@ public class InfoBox : MB {
 		}
 	}
 
+	Image backgroundImage = null;
+	Image BackgroundImage {
+		get {
+			if (backgroundImage == null) {
+				backgroundImage = Background.GetComponent<Image> ();
+			}
+			return backgroundImage;
+		}
+	}
+
 	bool ShowPlan {
 		get {
 			int dayCount = PlayerData.DayGroup.Count;
@@ -47,6 +57,10 @@ public class InfoBox : MB {
 
 	void Start () {
 		PlayerData.InteractionGroup.onEmpty += OnNoInteractions;
+	}
+
+	public void Open (string header, string content) {
+		
 	}
 
 	void Open (string key) {
@@ -90,5 +104,33 @@ public class InfoBox : MB {
 			yield return null;
 
 		Open (ShowPlan ? "copy_out_of_days" : "copy_out_of_interactions");
+		StartCoroutine (CoFade (0f, 0.5f, 0.25f));
+		StartCoroutine (CoExpand (Vector3.zero, Vector3.one, 0.25f));
+	}
+
+	IEnumerator CoFade (float from, float to, float time) {
+		
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			BackgroundImage.color = new Color (0f, 0f, 0f, Mathf.Lerp (from, to, progress));
+			yield return null;
+		}
+	}
+
+	IEnumerator CoExpand (Vector3 from, Vector3 to, float time) {
+		
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			Panel.transform.SetLocalScale (Vector3.Lerp (from, to, progress));
+			yield return null;
+		}
+
+		Panel.transform.SetLocalScale (to);
 	}
 }

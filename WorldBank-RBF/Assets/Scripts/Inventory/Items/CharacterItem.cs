@@ -133,7 +133,7 @@ public class CharacterItem : ModelItem {
 		currentDialog = Choices.FirstOrDefault (x => x.Key == choice);
 		Dialogue dialog = currentDialog.Value;
 		
-		if (dialog.unlocks != null) {
+		if (dialog != null && dialog.unlocks != null) {
 
 			string[] unlockableSymbols = dialog.unlocks;
 			foreach (string symbol in unlockableSymbols) {

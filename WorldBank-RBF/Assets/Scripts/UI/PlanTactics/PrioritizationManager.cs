@@ -19,7 +19,7 @@ public class PrioritizationManager : NotebookCanvas {
 
 	public Dictionary<string, object> Results { get; private set; }
 
-	float animationTime = 5f;
+	float animationTime = 15f;
 
 	void Awake () {
 		PlayerData.TacticPriorityGroup.onUpdate += OnUpdatePriorities;
@@ -46,6 +46,8 @@ public class PrioritizationManager : NotebookCanvas {
 	}
 
 	public void SubmitPlan(Text planNameInput) {
+
+		Debug.Log (planNameInput.text);
 
         Dictionary<string, object> formFields = new Dictionary<string, object>();
 

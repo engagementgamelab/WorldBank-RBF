@@ -238,6 +238,7 @@ public class DialogManager : MonoBehaviour {
 				btnChoices.Add (displayName, () => {
 
 					AudioManager.Sfx.Play (voice + "response");
+					
 					PlayerData.InteractionGroup.Remove ();
 					character.SelectChoice (
 						ck, 

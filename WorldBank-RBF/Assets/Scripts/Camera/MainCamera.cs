@@ -163,5 +163,6 @@ public class MainCamera : MB {
 		}
 
 		Positioner.XMax = xMax;
+		Positioner.XPosition = ParallaxLayerManager.Instance.CameraStartPosition;
 	}
 }

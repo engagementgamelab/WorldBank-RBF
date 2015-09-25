@@ -1,23 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using System.Collections.Generic;
 
-public class DayCounter : MB {
+public class DayCounter : Counter {
 
-	public Text text;
-	public List<Text> outlines;
-
-	void Awake () {
-		PlayerData.DayGroup.onUpdate += OnUpdateCount;
-		OnUpdateCount ();
+	protected override float Offset { // hack alert
+		get { return -25f; }
 	}
 
-	void OnUpdateCount () {
-		string newText = PlayerData.DayGroup.Count.ToString ();
-		text.text = newText;
-		foreach (Text outline in outlines) {
-			outline.text = newText;
-		}
+	protected override void SetUpdateCallback () {
+		PlayerData.DayGroup.onUpdate += OnUpdate;
+	}
+
+	protected override void OnUpdate () {
+		Count = PlayerData.DayGroup.Count;
 	}
 }

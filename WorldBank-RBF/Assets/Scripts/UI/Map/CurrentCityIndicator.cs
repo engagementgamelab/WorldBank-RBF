@@ -74,7 +74,7 @@ public class CurrentCityIndicator : MB {
 		int index = 0;
 
 		while (index < positionCount) {
-			yield return StartCoroutine (CoMove (positions[index], positions[index+1], speed*2f));
+			yield return StartCoroutine (CoMove (positions[index], positions[index+1], speed));
 			index ++;
 			yield return null;
 		}

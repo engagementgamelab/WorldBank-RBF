@@ -107,7 +107,11 @@ public class CityButton : MB {
 	public void HandleClick () {
 		if (CurrentCityIndicator.Moving) return;
 		AudioManager.Sfx.Play ("buttonpressneutral", "ui");
-		InfoBox.Open (this);
+		if (PlayerData.InteractionGroup.Count > 0) {
+			NotebookManagerPhaseOne.Instance.CloseCanvases ();
+		} else {
+			InfoBox.Open (this);
+		}
 	}
 
 	void UpdateInteractableState () {
