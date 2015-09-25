@@ -70,7 +70,14 @@ public class PlanSelectionScreen : MonoBehaviour {
 	}
 
 	public void Continue () {
-		Application.LoadLevel("PhaseTwo");
+		
+		AudioManager.Music.FadeOut ("title_theme", 0.5f, () => {
+				MenusManager.gotoSceneOnLoad = "PhaseTwo";
+				AudioManager.Music.Stop ("title_theme");
+				StartCoroutine (CoGotoLoad ());
+			}
+		);
+		
 	}
 
 	public void GoBack () {
@@ -113,4 +120,10 @@ public class PlanSelectionScreen : MonoBehaviour {
     	yourIndicatorsLabels[2].text = "Quality of Care: " + plans[0].default_affects[2]+"%";
 
     }
+
+	IEnumerator CoGotoLoad () {
+		yield return new WaitForFixedUpdate ();
+		ObjectPool.Clear ();
+		menus.SetScreen ("loading");
+	}
 }

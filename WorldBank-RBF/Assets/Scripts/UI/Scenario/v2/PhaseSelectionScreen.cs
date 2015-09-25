@@ -15,12 +15,7 @@ public class PhaseSelectionScreen : MonoBehaviour {
 	}
 
 	public void OnPhaseTwo () {
-		AudioManager.Music.FadeOut ("title_theme", 0.5f, () => {
-				MenusManager.gotoSceneOnLoad = "PhaseTwo";
-				AudioManager.Music.Stop ("title_theme");
-				StartCoroutine (CoGotoLoad ());
-			}
-		);
+		menus.SetScreen("plan");
 	}
 
 	public void OnBack () {
