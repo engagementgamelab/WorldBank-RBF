@@ -59,8 +59,11 @@ public class InfoBox : MB {
 		PlayerData.InteractionGroup.onEmpty += OnNoInteractions;
 	}
 
-	public void Open (string header, string content) {
-		
+	public void Open (string headerText, string contentText) {
+		AudioManager.Sfx.Play ("openinfo", "ui");
+		body.text = contentText;
+		header.text = headerText;
+		SetActive (true);
 	}
 
 	void Open (string key) {
