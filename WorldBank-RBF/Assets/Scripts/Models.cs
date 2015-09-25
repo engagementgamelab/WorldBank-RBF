@@ -297,22 +297,26 @@ namespace Models {
     public class Plan {
 
         [JsonMember]
-        public string _id { get; set; }
-        [JsonMember]
         public string name { get; set; }
         [JsonMember]
-        public int score { get; set; }
-        [JsonMember]
         public string[] tactics { get; set; }
-        [JsonMember]
+
+    }
+    
+    // Used for retrieval only
+    public class PlanRecord {
+
+        public string _id { get; set; }
+        public string name { get; set; }
+        public int score { get; set; }
+        public string[] tactics { get; set; }
         public string[] default_affects { get; set; }
 
-        [JsonMember]
         public bool pbc { get; set; }
-        [JsonMember]
         public bool autonomy { get; set; }
 
     }
+
 
     public class GameDataConverter : JsonConverter {
 

@@ -74,6 +74,13 @@ class GenerateBuilds {
         PerformWebBuild();
     }
 
+    [MenuItem ("Build/Build Desktop")]
+    static void MakeDesktopBuilds()
+    {
+        PerformMacOSXBuild();
+        PerformPCBuild();
+    }
+
     [MenuItem ("Build/Build Staging")]
     static void MakeStagingBuilds()
     {
