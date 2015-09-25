@@ -245,7 +245,10 @@ namespace Models {
 
         public string[] prompt_year_1 { get; set; }
         public string[] prompt_year_2 { get; set; }
+        public string[] prompt_year_2_twist { get; set; }
+        
         public Dictionary<string, string>[] choices { get; set; }
+        public Dictionary<string, string>[] choices_twist { get; set; }
 
     }
 
