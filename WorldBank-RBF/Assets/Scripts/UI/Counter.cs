@@ -56,7 +56,7 @@ public class Counter : MB {
 	}
 
 	IEnumerator CoAnimate () {
-		yield return StartCoroutine (CoScale (Vector3.one, Vector3.zero, 0.2f));
+		yield return StartCoroutine (CoScale (Vector3.one, new Vector3 (1f, 0f, 1f), 0.2f));
 		StartCoroutine (CoRise (Offset, endY+Offset, 0.5f)); // why??? - jay, 9/24/15
 		StartCoroutine (CoFade (1f, 0f, 0.5f));
 		text.text = newText;
