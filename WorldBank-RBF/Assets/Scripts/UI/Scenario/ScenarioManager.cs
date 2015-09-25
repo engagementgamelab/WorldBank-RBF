@@ -328,9 +328,11 @@ public class ScenarioManager : MonoBehaviour {
 
 		problemCardDuration = (monthLengthSeconds * 12) / DataManager.ScenarioLength(scenarioTwistIndex);
 		
-		if(!problemCardDurationOverride.Equals(0f))
-			problemCardDuration = problemCardDurationOverride;
-		
+		#if UNITY_EDITOR
+			if(!problemCardDurationOverride.Equals(0f))
+				problemCardDuration = problemCardDurationOverride;
+		#endif
+
 		cardCooldownElapsed = problemCardDuration;
 
     }
