@@ -73,7 +73,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 		
 		AudioManager.Music.FadeOut ("title_theme", 0.5f, () => {
 				MenusManager.gotoSceneOnLoad = "PhaseTwo";
-				AudioManager.Music.Stop ("title_theme");
+				AudioManager.StopAll ();
 				StartCoroutine (CoGotoLoad ());
 			}
 		);

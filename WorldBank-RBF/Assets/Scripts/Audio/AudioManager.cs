@@ -43,4 +43,10 @@ public static class AudioManager {
 	public static SfxGroup Sfx {
 		get { return (SfxGroup)Inventory["sfx"]; }
 	}
+
+	public static void StopAll () {
+		Ambience.StopAll ();
+		Sfx.StopAll ();
+		Music.StopAll ();
+	}
 }

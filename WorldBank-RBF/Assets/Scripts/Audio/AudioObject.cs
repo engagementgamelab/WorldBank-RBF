@@ -6,15 +6,18 @@ public class AudioObject : MB, IEditorPoolable {
 
 	public int Index { get; set; }
 
-	AudioSource source = null;
+	/*AudioSource source = null;
 	AudioSource Source {
 		get {
-			if (source == null && this != null) {
-				source = GetComponent<AudioSource> ();
-			}
-			return source;
+			// if (source == null && this != null) {
+				// source = GetComponent<AudioSource> ();
+			// }
+			// return source;
+			return GetComponent<AudioSource> ();
 		}
-	}
+	}*/
+
+	public AudioSource Source;
 
 	public bool IsPlaying { 
 		get { 
