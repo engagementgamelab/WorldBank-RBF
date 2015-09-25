@@ -93,6 +93,8 @@ public class MenusManager : MonoBehaviour {
 				sliding = false;
 				if (currentScreen == loading)
 					Application.LoadLevel ("PhaseOne");
+				else if(currentScreen == planSelection)
+					planSelection.gameObject.GetComponent<PlanSelectionScreen>().Init();
 			}
 		));
 	}

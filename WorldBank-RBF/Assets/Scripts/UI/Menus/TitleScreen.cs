@@ -14,6 +14,14 @@ public class TitleScreen : MonoBehaviour {
 		ClearError ();
 	}
 
+	void Start() {
+
+		#if UNITY_EDITOR
+			email.transform.parent.GetComponent<InputField>().text = "tester@elab.emerson.edu";
+		#endif
+
+	}
+
 	public void OnLogin () {
 		string e = email.text;
 		if (e == "") {

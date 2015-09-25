@@ -43,6 +43,7 @@ public class ScenarioManager : MonoBehaviour {
 	List<int[]> usedAffects = new List<int[]>();
 
 	Animator scenarioCardCooldownAnimator;
+	Animator supervisorChatTabAnimator;
 
 	object tacticsAvailable;
 
@@ -71,10 +72,6 @@ public class ScenarioManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-	    // Get plans
-		// if(PlayerManager.Instance.Authenticated)
-        NetworkManager.Instance.GetURL("/plan/all/", PlansRetrieved);
-
 		Events.instance.AddListener<ScenarioEvent>(OnScenarioEvent);
 		Events.instance.AddListener<TutorialEvent>(OnTutorialEvent);
 
@@ -83,16 +80,19 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Culture for formatting floats to seconds
 		floatFormatter = new CultureInfo("en-US", false).NumberFormat;
+
+		scenarioCardCooldownAnimator = scenarioCardCooldownText.gameObject.GetComponent<Animator>();
+		supervisorChatTabAnimator = supervisorChatTab.gameObject.GetComponent<Animator>();
 		floatFormatter.NumberDecimalDigits = 0;
 
 		// Turn off supervisor tab for start
-		supervisorChatTab.GetComponent<CanvasGroup>().alpha = .5f;
+		supervisorChatTabAnimator.Play("SupervisorTabOff");
 		supervisorChatTab.GetComponent<Button>().enabled = false;
-
-		scenarioCardCooldownAnimator = scenarioCardCooldownText.gameObject.GetComponent<Animator>();
 
 		if(!DataManager.tutorialEnabled)
 			enableCooldown = true;
+
+		GetScenarioForPlan(DataManager.currentPlanId);
 	}
 
 	void Update () {
@@ -117,41 +117,6 @@ public class ScenarioManager : MonoBehaviour {
 			return;
         
         problemCardCooldown.Stop();
-
-    }
-
-    /// <summary>
-    /// Callback that handles all display for plans after they are retrieved.
-    /// </summary>
-    /// <param name="response">Textual response from /plan/all/ endpoint.</param>
-    void PlansRetrieved(string response) {
-
-    	Dictionary<string, string>[] planData = JsonReader.Deserialize<Dictionary<string, string>[]>(response);
-
-		List<GenericButton> btnList = new List<GenericButton>();
-
-		foreach(Dictionary<string, string> choice in planData) {
-
-			string planId = choice["id"];
-
-			GenericButton btnChoice = ObjectPool.Instantiate<GenericButton>();
-
-			btnChoice.Text = choice["name"];
-
-			btnChoice.Button.onClick.RemoveAllListeners();
-			btnChoice.Button.onClick.AddListener (() => GetScenarioForPlan(planId));
-
-			btnList.Add(btnChoice);
-
-		}
-
-		DialogManager.instance.CreateChoiceDialog("Choose Plan:", btnList);
-
-    }
-
-    public void OpenPlans() {
-
-        NetworkManager.Instance.GetURL("/plan/all/", PlansRetrieved);
 
     }
 
@@ -264,6 +229,9 @@ public class ScenarioManager : MonoBehaviour {
 		GetNextCard();
 		currentQueueIndex++;
 
+		// Tutorial
+		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor");
+
 	}
 
 	void NextYear() {
@@ -280,7 +248,7 @@ public class ScenarioManager : MonoBehaviour {
 
 		NotebookManager.Instance.ToggleTabs();
 
-		supervisorChatTab.GetComponent<CanvasGroup>().alpha = 1;
+		supervisorChatTabAnimator.Play("SupervisorTabOn");
 		supervisorChatTab.GetComponent<Button>().enabled = true;
 
 		// Close indicators
@@ -455,6 +423,29 @@ public class ScenarioManager : MonoBehaviour {
 
     }
 
+    void EnableSupervisor() {
+
+		// Initialize tactics cards after first problem card done
+		if(currentYear == 1 && currentCardIndex == 0) {
+			List<string> availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+			
+			// Also add tactics that show only if they are not part of player's selected plan
+			foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
+			{
+				if(!availableTactics.Contains(tactic))
+					availableTactics.Add(tactic);
+			}
+
+			DialogManager.instance.SetAvailableTactics (availableTactics);
+
+			// Enable supervisor tab
+			supervisorChatTabAnimator.Play("SupervisorTabOn");
+			supervisorChatTab.GetComponent<Button>().enabled = true;
+
+		}
+    
+    }
+
     /// <summary>
     // Callback for ScenarioEvent, filtering for type of event
     /// </summary>
@@ -471,35 +462,22 @@ public class ScenarioManager : MonoBehaviour {
 	    			problemCardCooldown.Stop();
 	    			scenarioCardCooldownAnimator.Play("TimerPause");
     			}
-
-				// Initialize tactics cards after first problem card done
-				if(currentYear == 1 && currentCardIndex == 0) {
-					List<string> availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
-					
-					// Also add tactics that show only if they are not part of player's selected plan
-					foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
-					{
-						if(!availableTactics.Contains(tactic))
-							availableTactics.Add(tactic);
-					}
-
-					DialogManager.instance.SetAvailableTactics (availableTactics);
-
-					// Enable supervisor tab
-					supervisorChatTab.GetComponent<CanvasGroup>().alpha = 1;
-					supervisorChatTab.GetComponent<Button>().enabled = true;
-
-				}
     			break;
    			
     		case "next":
+    			bool firstTutorialProblem = (DataManager.tutorialEnabled && currentCardIndex == 0);
+
+				DialogManager.instance.RemoveTutorialScreen();
+				
+				EnableSupervisor();
+
     			// Resume cooldown
     			if(problemCardCooldown != null) {
 	    			problemCardCooldown.Resume();
 	    			scenarioCardCooldownAnimator.Play("TimerRunning");
 	    		}
 
-    			if(problemCardDuration > 0) {
+    			if(problemCardDuration > 0 && (!firstTutorialProblem || !DataManager.tutorialEnabled)) {
 					scenarioChat.NoMessages();
     				queueProblemCard = true;
     			}

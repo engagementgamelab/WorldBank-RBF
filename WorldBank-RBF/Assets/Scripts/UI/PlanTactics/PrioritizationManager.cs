@@ -25,19 +25,6 @@ public class PrioritizationManager : NotebookCanvas {
 		PlayerData.TacticPriorityGroup.onUpdate += OnUpdatePriorities;
 		continueButton.interactable = false;
 	}
-/*
-	void OnEnable() { 
-
-	}
-
-	void OnDisable() { 
-
-		List<TacticItem> tactics = PlayerData.TacticGroup.Tactics;
-		// Tutorial (player is in capitol and quits tactics screen)
-		if(PlayerData.CityGroup.CurrentCity == "capitol" && tactics.Where(i => i.Unlocked).Count() > 0)
-			DialogManager.instance.CreateTutorialScreen("phase_1_continue_talking");
-
-	}*/
 
 	public void NamePlan() {
 
@@ -78,27 +65,20 @@ public class PrioritizationManager : NotebookCanvas {
 	}
 
 	void OnUpdatePriorities () {
-		// continueButton.SetActive (PlayerData.TacticPriorityGroup.Count == 6);
+
 		continueButton.interactable = PlayerData.TacticPriorityGroup.Count == 6;
+	
 	}
 
 	// Get response from submitting a plan
 	void SubmitPlanCallback(Dictionary<string, object> response) {
-
-	 	/*scoreText.text = "Score: " + response["score"].ToString();
-	 	feedbackText.text = response["description"].ToString();
-	 	int[] indicators = response["indicators"] as int[];*/
 
 	 	Results = response;
 
 	 	namingPanel.gameObject.SetActive (false);
 	 	animation.gameObject.SetActive (true);
 	 	animation.Animate (animationTime);
-	 	Invoke ("OpenResults", animationTime);
-
-	 	// Show feedback in data panel (allows player to continue)
-		// feedbackPanel.gameObject.SetActive(true);
-		
+	 	Invoke ("OpenResults", animationTime);		
 
 		PlayerManager.Instance.TrackEvent("Plan Saved", "Phase One");
 

@@ -20,7 +20,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	public RectTransform[] dataBarBgs;
 	public RectTransform[] dataBarFills;
-	public CanvasGroup[] dataBarStars;
+	public Animator[] dataBarStars;
 
 	public Text[] dataBarCurrentText;
 	public Image[] dataBarArrowsUp;
@@ -35,10 +35,13 @@ public class IndicatorsCanvas : NotebookCanvas {
 	string[] previousAffects;
 	string[] currentAffects;
 
+	bool[] atGoal = new bool[3] {false, false, false};
+
 	List<float> barSizesTarget = new List<float>();
 	List<float> barSizesCurrent = new List<float>();
 
 	bool showIndicators;
+	float indicatorAnimateDelta = 5;
 
 	// Animator animator;
 	Animator animator = null;
@@ -63,10 +66,21 @@ public class IndicatorsCanvas : NotebookCanvas {
 			int ind = 0;
 			
 			foreach(string affect in currentAffects) {
-				if(barSizesCurrent[ind] < barSizesTarget[ind]+3)
-					barSizesCurrent[ind] = barSizesCurrent[ind]+3;
-				else if(ind < 2)
-					ind++;
+				indicatorAnimateDelta -= 0.003f;
+				if(barSizesCurrent[ind] < barSizesTarget[ind]+indicatorAnimateDelta)
+					barSizesCurrent[ind] = barSizesCurrent[ind]+indicatorAnimateDelta;
+				else {
+
+					// Show star?
+					if(atGoal[ind])
+						dataBarStars[ind].Play("IndicatorsStarShow");
+
+					if(ind < 2) {
+						indicatorAnimateDelta = 5;
+						ind++;
+					}
+
+				}
 
 				dataBarFills[ind].sizeDelta = new Vector2(Mathf.Clamp(barSizesCurrent[ind], 0, dataBarBgs[ind].rect.width), dataBarFills[ind].rect.height);
 			}
@@ -75,7 +89,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	}
 
-    void RenderIndicators() {
+    IEnumerator RenderIndicators() {
 
 		int ind = 0;
 
@@ -111,7 +125,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 			dataBarFills[ind].sizeDelta = new Vector2(0, dataBarFills[ind].rect.height);
 
 			// Show star?
-		 	dataBarStars[ind].alpha = (currentVal >= affectGoal) ? 1 : 0;
+			atGoal[ind] = (currentVal >= affectGoal);
 
 			barSizesCurrent.Add(0f);
 			barSizesTarget.Add(barWidth);
@@ -139,6 +153,10 @@ public class IndicatorsCanvas : NotebookCanvas {
 		}
 
 		SelectedOptions.Clear();
+
+    	yield return new WaitForSeconds(1.1f);
+
+		showIndicators = true;
 
     }
 
@@ -168,9 +186,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 			timerText.gameObject.SetActive(false);
 		}
 		
-		RenderIndicators();
-
-		showIndicators = true;
+	 	StartCoroutine("RenderIndicators");
 
 	}
 
