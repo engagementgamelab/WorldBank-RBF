@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class MenusManager : MonoBehaviour {
 
 	public static string defaultScreen = "title";
+	public static string gotoSceneOnLoad = "PhaseOne";
 
 	public Transform title;
 	public Transform register;
@@ -92,8 +93,9 @@ public class MenusManager : MonoBehaviour {
 			() => {
 				SetActiveScreen (currentScreen);
 				sliding = false;
-				if (currentScreen == loading)
-					Application.LoadLevel ("PhaseOne");
+				if (currentScreen == loading) {
+					Application.LoadLevel (gotoSceneOnLoad);
+				}
 				else if(currentScreen == planSelection)
 					planSelection.gameObject.GetComponent<PlanSelectionScreen>().Init();
 			}
