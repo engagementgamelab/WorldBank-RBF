@@ -111,10 +111,17 @@ public class IndicatorsCanvas : NotebookCanvas {
 			
 			// Set text to affect delta
 			if(!phaseOne && previousAffects !=null && previousAffects[ind] != null) {
+				
 				dataBarCurrentText[ind].text = (affectVal - affectValPrev).ToString();
 				
-				dataBarArrowsUp[ind].gameObject.SetActive(affectVal > 0);
-				dataBarArrowsDown[ind].gameObject.SetActive(affectVal < 0);
+				if((affectVal - affectValPrev) == 0) {
+					dataBarArrowsUp[ind].gameObject.SetActive(false);
+					dataBarArrowsDown[ind].gameObject.SetActive(false);
+				} else {
+					dataBarArrowsUp[ind].gameObject.SetActive((affectVal - affectValPrev) > 0);
+					dataBarArrowsDown[ind].gameObject.SetActive((affectVal - affectValPrev) < 0);
+				}
+
 			}
 
 			// Get affect vs goal
