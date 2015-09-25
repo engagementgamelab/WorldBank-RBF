@@ -65,6 +65,12 @@ public class NotebookManagerPhaseOne : MonoBehaviour {
 	    		DataManager.tutorialEnabled = false;
 
 	    		DialogManager.instance.RemoveTutorialScreen();
+
+	    		// Unlock tutorial tactics
+				PlayerData.UnlockItem ("unlockable_grant_providers_autonomy", DataManager.GetUITextByKey("copy_unlockable_grant_providers_autonomy"), "finance_minister_capitol_city");
+				PlayerData.UnlockItem ("unlockable_incentivise_providers_to_deliver_services", DataManager.GetUITextByKey("copy_unlockable_incentivise_providers_to_deliver_services"), "dep_minister_of_health_capitol_city");
+				PlayerData.UnlockItem ("unlockable_vouchers_for_services", DataManager.GetUITextByKey("copy_unlockable_vouchers_for_services"), "regional_director_of_health_services_capitol_city");
+				PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system", DataManager.GetUITextByKey("copy_unlockable_information_campaign_to_explain_changes_to_system"), "regional_director_of_health_services_capitol_city");
 	    		
 	    		// Reset interactions
 				PlayerData.InteractionGroup.ClearTutorial();
