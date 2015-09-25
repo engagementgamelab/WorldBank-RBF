@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Contains all the plan tactics in the game.
@@ -14,6 +15,12 @@ public class TacticGroup : ModelGroup<TacticItem> {
 	/// </summary>
 	public List<TacticItem> Tactics {
 		get { return Items.ConvertAll (x => (TacticItem)x); }
+	}
+
+	public string GetName(string symbol) {
+
+		return Tactics.Single(t => t.Symbol == symbol).Title;
+
 	}
 
 }

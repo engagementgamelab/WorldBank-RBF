@@ -9,6 +9,9 @@ public class ScenarioChatMessage : PortraitTextBox {
 	public Transform textContainer;
 
 	public Image leftPortrait;
+	public Image defaultArrow;
+	public Image initialArrow;
+	public Image feedbackArrow;
 
 	bool initial = false;
 	bool feedback = false;
@@ -42,25 +45,29 @@ public class ScenarioChatMessage : PortraitTextBox {
 
 			currentPadding = initPadding;
 
-			textContainer.gameObject.SetActive(true);
-			initialTextContainer.gameObject.SetActive(true);
-			feedbackTextContainer.gameObject.SetActive(true);
+			textContainer.gameObject.SetActive(false);
+			initialTextContainer.gameObject.SetActive(false);
+			feedbackTextContainer.gameObject.SetActive(false);
+
+			defaultArrow.gameObject.SetActive(false);
+			initialArrow.gameObject.SetActive(false);
+			feedbackArrow.gameObject.SetActive(false);
 
 			if(initial) {
-				textContainer.gameObject.SetActive(false);
-				feedbackTextContainer.gameObject.SetActive(false);
-				
+				initialTextContainer.gameObject.SetActive(true);
+				initialArrow.gameObject.SetActive(true);
+
 				responseText = initialTextContainer.GetChild(1).GetComponent<Text>();
 			}
 			else if(feedback) {
-				initialTextContainer.gameObject.SetActive(false);
-				textContainer.gameObject.SetActive(false);
+				feedbackTextContainer.gameObject.SetActive(true);
+				feedbackArrow.gameObject.SetActive(true);
 				
 				responseText = feedbackTextContainer.GetChild(1).GetComponent<Text>();				
 			}
 			else {
-				feedbackTextContainer.gameObject.SetActive(false);
-				initialTextContainer.gameObject.SetActive(false);
+				textContainer.gameObject.SetActive(true);
+				defaultArrow.gameObject.SetActive(true);
 
 				responseText = textContainer.GetChild(1).GetComponent<Text>();
 			}

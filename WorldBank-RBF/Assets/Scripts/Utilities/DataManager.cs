@@ -77,7 +77,10 @@ public class DataManager {
 
     public static bool tutorialEnabled;
 
+    public static string currentPlanId;
+    
     static string currentSceneContext;
+    
     static JsonReaderSettings _readerSettings = new JsonReaderSettings();
 
     static GameConfig config;

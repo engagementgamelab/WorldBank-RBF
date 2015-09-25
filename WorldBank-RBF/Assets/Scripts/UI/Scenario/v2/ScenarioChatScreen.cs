@@ -27,6 +27,8 @@ public class ScenarioChatScreen : ChatScreen {
     public Text contactsTitleText;
     public Text debugText;
 
+    public Animator supervisorChatTabAnimator;
+
     List<string> previousAdvisorOptions;
     List<string> currentAdvisorOptions;
 	List<string> currentCardOptions;
@@ -221,6 +223,10 @@ public class ScenarioChatScreen : ChatScreen {
 	IEnumerator ShowFeedback(string eventSymbol)
 	{
 
+		// Disable supervisor tab
+		supervisorChatTabAnimator.Play("SupervisorTabOff");
+		supervisorChatTabAnimator.gameObject.GetComponent<Button>().enabled = false;
+
 	    DialogManager.instance.RemoveTutorialScreen();
 	    
 		yield return new WaitForSeconds(1f);
@@ -264,7 +270,7 @@ public class ScenarioChatScreen : ChatScreen {
 			AudioManager.Sfx.Play ("planconfirm", "UI");
 
 			// Tutorial
-			DialogManager.instance.CreateTutorialScreen("phase_2_supervisor");
+			DialogManager.instance.CreateTutorialScreen("phase_2_feedback");
 		}
 		else {
 			// Broadcast to open next card

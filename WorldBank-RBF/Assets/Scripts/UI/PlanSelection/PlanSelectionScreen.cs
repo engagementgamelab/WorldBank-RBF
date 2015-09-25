@@ -1,20 +1,29 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using JsonFx.Json;
 
 public class PlanSelectionScreen : MonoBehaviour {
 
-	public Text instructions;
+	public MenusManager menus;
+
+	public Text header;
 	public PlanContainer plan;
 	public IndicatorsSummary yourPlan;
 	public IndicatorsSummary thisPlan;
 	public PreviewPosition previewPosition;
 
-	List<Models.Plan> plans;
+	public GameObject leftArrow;
+	public GameObject rightArrow;
+
+	public Text[] tacticsLabels;
+	public Text[] indicatorsLabels;
+
+	Models.Plan[] plans;
 
 	int PlanCount {
-		get { return 5; } //plans.Count-1; }
+		get { return 4; } //plans.Count-1; }
 	}
 	
 	int planIndex;
@@ -26,25 +35,77 @@ public class PlanSelectionScreen : MonoBehaviour {
 		}
 	}
 
-	public void Init (List<Models.Plan> plans) {
-		this.plans = plans;
+	public void Init () {
+		// this.plans = plans;
+
+        // Insert user ID
+		Dictionary<string, object> userField = new Dictionary<string, object> {{ "user_id", PlayerManager.Instance.ID }};
+
+	    // Get plans
+        NetworkManager.Instance.PostURL("/plan/all/", userField, PlansRetrieved);
+
+
 	}
 
 	public void NextPlan () {
 		if (PlanIndex < PlanCount)
 			PlanIndex ++;
+
+		rightArrow.SetActive(!(PlanIndex == PlanCount-1));
+		leftArrow.SetActive(!(PlanIndex == 0));
+
+		ShowPlan(PlanIndex);
 	}
 
 	public void PreviousPlan () {
 		if (PlanIndex > 0)
 			PlanIndex --;
+
+		rightArrow.SetActive(!(PlanIndex == PlanCount-1));
+		leftArrow.SetActive(!(PlanIndex == 0));
+
+		ShowPlan(PlanIndex);
 	}
 
 	public void Continue () {
-		Debug.Log ("continue");
+		Application.LoadLevel("PhaseTwo");
 	}
 
 	public void GoBack () {
-		Debug.Log ("go back");
+		menus.SetScreen ("title");
 	}
+
+	void ShowPlan(int planIndex) {
+
+    	int tactInt = 0;
+
+    	foreach(Text label in tacticsLabels) {
+
+    		label.text = PlayerData.TacticGroup.GetName(plans[planIndex].tactics[tactInt]);
+    		tactInt++;
+
+    	}
+
+    	indicatorsLabels[0].text = "Facility Births: " + plans[planIndex].default_affects[0]+"%";
+    	indicatorsLabels[1].text = "Vaccinations: " + plans[planIndex].default_affects[1]+"%";
+    	indicatorsLabels[2].text = "Quality of Care: " + plans[planIndex].default_affects[2]+"%";
+
+    	header.text = plans[planIndex].name;
+    	DataManager.currentPlanId = plans[planIndex]._id;
+
+	}
+
+    /// <summary>
+    /// Callback that handles all display for plans after they are retrieved.
+    /// </summary>
+    /// <param name="response">Textual response from /plan/all/ endpoint.</param>
+    void PlansRetrieved(Dictionary<string, object> response) {
+
+    	Debug.Log(response);
+
+    	 plans = JsonReader.Deserialize<Models.Plan[]>(response["plans"].ToString());
+
+    	 ShowPlan(0);
+
+    }
 }

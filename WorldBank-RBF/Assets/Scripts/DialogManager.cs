@@ -262,6 +262,7 @@ public class DialogManager : MonoBehaviour {
 
 		if(!DataManager.tutorialEnabled)
 			return;
+		
 
 		RemoveTutorialScreen();
 

@@ -304,8 +304,14 @@ namespace Models {
         public int score { get; set; }
         [JsonMember]
         public string[] tactics { get; set; }
-        // [JsonMember]
-        // public string[] tactics { get; set; }
+        [JsonMember]
+        public string[] default_affects { get; set; }
+
+        [JsonMember]
+        public bool pbc { get; set; }
+        [JsonMember]
+        public bool autonomy { get; set; }
+
     }
 
     public class GameDataConverter : JsonConverter {

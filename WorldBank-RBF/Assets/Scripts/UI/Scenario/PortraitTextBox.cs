@@ -21,6 +21,7 @@ public class PortraitTextBox : GenericButton {
 	
 	public Transform npcName;
 	public Transform initialNpcName;
+	public Transform feedbackNpcName;
 
 	/// <summary>
     /// Set the NPC Name on the button
@@ -41,7 +42,8 @@ public class PortraitTextBox : GenericButton {
 
 			if(initialNpcName != null)
 				initialNpcName.GetComponent<Text>().text = value;
-
+			if(feedbackNpcName != null)
+				feedbackNpcName.GetComponent<Text>().text = value;
 		}
 
 	}
