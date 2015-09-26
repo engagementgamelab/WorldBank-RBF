@@ -22,6 +22,8 @@ public class PlanSelectionScreen : MonoBehaviour {
 	public Text[] yourIndicatorsLabels;
 	public Text[] indicatorsLabels;
 
+	Animator planAnimator;
+
 	Models.PlanRecord[] plans;
 
 	int PlanCount {
@@ -35,6 +37,12 @@ public class PlanSelectionScreen : MonoBehaviour {
 			planIndex = value;
 			previewPosition.Position = value;
 		}
+	}
+
+	void Start() {
+
+		planAnimator = gameObject.GetComponent<Animator>();
+
 	}
 
 	public void Init () {
@@ -56,7 +64,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 		rightArrow.SetActive(!(PlanIndex == PlanCount));
 		leftArrow.SetActive(!(PlanIndex == 0));
 
-		ShowPlan(PlanIndex);
+		StartCoroutine(ShowPlan(PlanIndex));
 	}
 
 	public void PreviousPlan () {
@@ -66,7 +74,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 		rightArrow.SetActive(!(PlanIndex == PlanCount));
 		leftArrow.SetActive(!(PlanIndex == 0));
 
-		ShowPlan(PlanIndex);
+		StartCoroutine(ShowPlan(PlanIndex, true));
 	}
 
 	public void Continue () {
@@ -84,9 +92,21 @@ public class PlanSelectionScreen : MonoBehaviour {
 		menus.SetScreen ("title");
 	}
 
-	void ShowPlan(int planIndex) {
+	IEnumerator ShowPlan(int planIndex, bool prev=false) {
 
-    	int tactInt = 0;
+		planAnimator.Play("PlanColumnHide" + (prev ? "Prev" : "Next"));
+
+		yield return new WaitForSeconds(.5f);
+
+		SetPlanData(planIndex);
+
+		planAnimator.Play("PlanColumnShow" + (prev ? "Prev" : "Next"));
+
+	}
+
+	void SetPlanData(int planIndex) {
+
+		int tactInt = 0;
     	
     	foreach(Text label in tacticsLabels) {
 
@@ -98,7 +118,6 @@ public class PlanSelectionScreen : MonoBehaviour {
     	indicatorsLabels[0].text = "Facility Births: " + plans[planIndex].default_affects[0]+"%";
     	indicatorsLabels[1].text = "Vaccinations: " + plans[planIndex].default_affects[1]+"%";
     	indicatorsLabels[2].text = "Quality of Care: " + plans[planIndex].default_affects[2]+"%";
-	        
 
     	header.text = plans[planIndex].name;
     	DataManager.currentPlanId = plans[planIndex]._id;
@@ -113,7 +132,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 
 		plans = JsonReader.Deserialize<Models.PlanRecord[]>(response["plans"].ToString());
 
-    	ShowPlan(0);
+    	SetPlanData(0);
 
     	yourIndicatorsLabels[0].text = "Facility Births: " + plans[0].default_affects[0]+"%";
     	yourIndicatorsLabels[1].text = "Vaccinations: " + plans[0].default_affects[1]+"%";
