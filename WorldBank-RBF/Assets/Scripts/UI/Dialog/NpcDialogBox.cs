@@ -58,7 +58,7 @@ public class NpcDialogBox : MB {
 	public Scrollbar scrollbar;
 	public CanvasGroup boxGroup;
 	public CanvasGroup contentGroup;
-	
+
 	Color defaultColor = new Color (0.874f, 0.773f, 0.506f);
 	Color backColor = Color.white;
 	Color unlockColor = new Color (0.58f, 0.69f, 0.792f);
@@ -249,12 +249,11 @@ public class NpcDialogBox : MB {
 		button.gameObject.SetActive (true);
 		button.Text.Text.text = content.Replace ("~", "");
 		button.Icon.gameObject.SetActive (!backButton && content != "Learn More");
-		// button.Color = backButton ? backColor : button.DefaultColor;
 		buttonTexts[index].color = backButton ? backColor : defaultColor;
 		buttonImages[index].color = backButton ? backColor : defaultColor;
 		button.Button.onClick.AddListener (action);
+		button.Button.onClick.AddListener (() => { button.Button.interactable = false; });
 		if (content.Contains ("~")) {
-			// button.Color = unlockColor;
 			buttonTexts[index].color = unlockColor;
 			buttonImages[index].color = unlockColor;
 		}

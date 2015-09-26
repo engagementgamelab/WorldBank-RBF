@@ -12,6 +12,7 @@ public class InfoBox : MB {
 	public Text buttonText;
 
 	string currentKey;
+	bool noDays = false;
 
 	GameObject panel = null;
 	GameObject Panel {
@@ -44,19 +45,12 @@ public class InfoBox : MB {
 	}
 
 	bool ShowPlan {
-		get {
-			int dayCount = PlayerData.DayGroup.Count;
-			if (dayCount == 0)
-				return true;
-			if (dayCount > 3 || !PlayerData.CityGroup.CurrentCityItem.StayedExtraDay)
-				return false;
-			return RoutesManager.Instance.MapRoutes
-				.Find (x => x.RouteItem.Cost <= dayCount) != null;
-		}
+		get { return PlayerData.DayGroup.Empty; }
 	}
 
 	void Start () {
 		PlayerData.InteractionGroup.onEmpty += OnNoInteractions;
+		PlayerData.DayGroup.onEmpty += OnNoDays;
 	}
 
 	public void Open (string headerText, string contentText) {
@@ -96,6 +90,11 @@ public class InfoBox : MB {
 		StartCoroutine (CoOpen ());
 	}
 
+	void OnNoDays () {
+		if (!noDays && PlayerData.InteractionGroup.Empty)
+			StartCoroutine (CoOpen ());
+	}
+
 	void SetActive (bool active) {
 		Panel.SetActive (active);
 		Background.SetActive (active);
@@ -107,6 +106,7 @@ public class InfoBox : MB {
 			yield return null;
 
 		Open (ShowPlan ? "copy_out_of_days" : "copy_out_of_interactions");
+		noDays = ShowPlan;
 		StartCoroutine (CoFade (0f, 0.5f, 0.25f));
 		StartCoroutine (CoExpand (Vector3.zero, Vector3.one, 0.25f));
 	}
