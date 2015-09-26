@@ -288,7 +288,8 @@ public class DialogManager : MonoBehaviour {
 	/// Remove all tooltip screens
 	/// </summary>
 	public void RemoveTutorialScreen() {
-		ObjectPool.DestroyAll<TutorialScreen>();
+		// ObjectPool.DestroyAll<TutorialScreen>();
+		Events.instance.Raise (new CloseTutorialEvent ());
 	}
 
 	Dictionary<string, bool> GetChoices (CharacterItem character, string dialog) {

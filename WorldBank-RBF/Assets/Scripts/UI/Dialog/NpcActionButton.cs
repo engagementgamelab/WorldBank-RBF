@@ -54,41 +54,10 @@ public class NpcActionButton : MB {
 		}
 	}
 
-	/*Color? defaultColor = null;
-	Color? color = null;
-	public Color Color {
-		get {
-			if (color == null) {
-				defaultColor = Button.colors.normalColor;
-				color = defaultColor;
-			}
-			return (Color)color;
-		}
-		set {
-			if (defaultColor == null) {
-				defaultColor = Button.colors.normalColor;
-			}
-			color = value;
-			var colors = Button.colors;
-			colors.normalColor = (Color)color;
-			colors.disabledColor = (Color)color;
-			Button.colors = colors;
-		}
-	}*/
-
 	public float Alpha {
 		get { return CanvasGroup.alpha; }
 		set { CanvasGroup.alpha = value; }
 	}
-
-	/*public Color DefaultColor {
-		get { 
-			if (defaultColor == null) {
-				defaultColor = Button.colors.normalColor;
-			}
-			return (Color)defaultColor; 
-		}
-	}*/
 
 	public void FadeIn (float time, float delay=0f, System.Action onEnd=null) {
 		StartCoroutine (CoFade (0f, 1f, time, delay, onEnd));

@@ -45,4 +45,19 @@ public class GenericButton : MonoBehaviour {
 		}
 
 	}
+
+	AudioTrigger audioTrigger = null;
+	AudioTrigger AudioTrigger {
+		get {
+			if (audioTrigger == null) {
+				audioTrigger = GetComponent<AudioTrigger> ();
+			}
+			return audioTrigger;
+		}
+	}
+
+	public void AddAudioTriggerListener () {
+		if (AudioTrigger != null)
+			Button.onClick.AddListener (AudioTrigger.OnTriggerAudio);
+	}
 }

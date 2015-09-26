@@ -2,6 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 public class TutorialScreen : MonoBehaviour {
@@ -78,6 +79,11 @@ public class TutorialScreen : MonoBehaviour {
 		}
 	}
 
+	bool Drag {
+		get { return MainCamera.Instance.Positioner.Drag.Enabled; }
+		set { MainCamera.Instance.Positioner.Drag.Enabled = value; }
+	}
+
 	[HideInInspector]
 	public bool spotlightEnabled;
 	
@@ -105,6 +111,10 @@ public class TutorialScreen : MonoBehaviour {
 	string tooltipKey;
 	string currentLayout;
 
+	void Awake () {
+		Events.instance.AddListener<CloseTutorialEvent> (OnCloseTutorialEvent);
+	}
+
 	void Start() {
 
 		Image maskImg = maskButtonRect.gameObject.GetComponent<Image>();
@@ -116,6 +126,10 @@ public class TutorialScreen : MonoBehaviour {
 	}
 
 	public void Load(string strKey, string strNextKey=null, UnityAction confirmAction=null) {
+
+		MainCamera.Instance.Positioner.Drag.OnDragUp ();
+		Drag = KeyCanDrag (strKey);
+		AudioManager.Sfx.Play ("openinfo", "ui");
 
 		group = gameObject.GetComponent<CanvasGroup>();
 
@@ -151,7 +165,8 @@ public class TutorialScreen : MonoBehaviour {
 		confirmButton.gameObject.SetActive(tooltip.confirm);
 
 		confirmButton.Button.onClick.RemoveAllListeners ();
-		confirmButton.Button.onClick.AddListener(() => ObjectPool.Destroy<TutorialScreen>(transform));
+		confirmButton.AddAudioTriggerListener ();
+		confirmButton.Button.onClick.AddListener(() => Events.instance.Raise (new CloseTutorialEvent ()));//ObjectPool.Destroy<TutorialScreen>(transform));
 
 		// Custom action
 		if(confirmAction != null)
@@ -176,10 +191,12 @@ public class TutorialScreen : MonoBehaviour {
 			noButton.Text = tooltip.no_label;
 
 			yesButton.Button.onClick.RemoveAllListeners ();
+			yesButton.AddAudioTriggerListener ();
 			yesButton.Button.onClick.AddListener(() => Events.instance.Raise(new TutorialEvent(tooltip.yes_action)));
 
 			noButton.Button.onClick.RemoveAllListeners ();
 			noButton.Button.onClick.AddListener(() => Events.instance.Raise(new TutorialEvent(tooltip.no_action)));
+			noButton.AddAudioTriggerListener ();
 		}
 		else {
 
@@ -231,4 +248,29 @@ public class TutorialScreen : MonoBehaviour {
 		
 	}
 	
+	void OnCloseTutorialEvent (CloseTutorialEvent e) {
+		ObjectPool.Destroy<TutorialScreen>(transform);
+		Drag = true;
+	}
+
+	bool KeyCanDrag (string key) {
+		if (key == "phase_1_move_around")
+			return true;
+		return false;
+	}
+
+	/*IEnumerator CoFadeAndDestroy () {
+		
+		float time = 0.33f;
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / time);
+			group.alpha = Mathf.Lerp (1f, 0f, progress);
+			yield return null;
+		}
+
+		ObjectPool.Destroy<TutorialScreen>(transform);
+	}*/
 }

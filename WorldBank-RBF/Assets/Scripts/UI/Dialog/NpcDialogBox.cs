@@ -63,6 +63,9 @@ public class NpcDialogBox : MB {
 	Color backColor = Color.white;
 	Color unlockColor = new Color (0.58f, 0.69f, 0.792f);
 
+	bool tutorialInteractions = false;
+	bool tutorialBack = false;
+
 	readonly Dictionary<string, float> fadeTimes = new Dictionary<string, float> {
 		{ "inbox", 0.1f },
 		{ "outbox", 0.2f },
@@ -189,8 +192,13 @@ public class NpcDialogBox : MB {
 
 	void SetButtonsInteractable (bool interactable) {
 		foreach (NpcActionButton b in buttons) {
-			if (b.gameObject.activeSelf)
-				b.Button.interactable = interactable;
+			if (b.gameObject.activeSelf) {
+				if (DataManager.tutorialEnabled && b.Text.Text.text == "Back" && !tutorialInteractions) {
+					b.Button.interactable = false;
+				} else {
+					b.Button.interactable = interactable;
+				}
+			}
 		}
 	}
 
@@ -245,18 +253,43 @@ public class NpcDialogBox : MB {
 	}
 
 	void AddButton (NpcActionButton button, string content, UnityAction action, int index) {
+		
 		bool backButton = content == "Back";
 		button.gameObject.SetActive (true);
 		button.Text.Text.text = content.Replace ("~", "");
 		button.Icon.gameObject.SetActive (!backButton && content != "Learn More");
 		buttonTexts[index].color = backButton ? backColor : defaultColor;
 		buttonImages[index].color = backButton ? backColor : defaultColor;
+		
 		button.Button.onClick.AddListener (action);
 		button.Button.onClick.AddListener (() => { button.Button.interactable = false; });
+
+		if (DataManager.tutorialEnabled) {
+			if (!tutorialInteractions) {
+				if (backButton) {
+					button.Button.interactable = false;
+					return;
+				} else if (content != "Learn More") {
+					button.Button.onClick.AddListener (() => {
+						DialogManager.instance.CreateTutorialScreen("phase_1_interactions_counter");
+						tutorialInteractions = true;
+					});
+				}
+			} else if (!tutorialBack) {
+				if (backButton) {
+					button.Button.onClick.AddListener (() => {
+						DialogManager.instance.CreateTutorialScreen("phase_1_move_around");
+						tutorialBack = true;
+					});
+				}
+			}
+		}
+
 		if (content.Contains ("~")) {
 			buttonTexts[index].color = unlockColor;
 			buttonImages[index].color = unlockColor;
 		}
+
 		button.Button.interactable = true;
 	}
 
