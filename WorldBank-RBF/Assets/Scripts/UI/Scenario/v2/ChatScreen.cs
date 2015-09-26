@@ -116,7 +116,7 @@ public class ChatScreen : GenericDialogBox {
 		}
 	}
 
-	protected void AddResponseSpeech(string strDialogue, Models.Character npc, bool initial=false, bool feedback=false) {
+	protected void AddResponseSpeech(string strDialogue, Models.Character npc, bool initial=false, bool feedback=false, Dictionary<string, int> affects=null) {
 		
 		ScenarioChatMessage response = ObjectPool.Instantiate<ScenarioChatMessage>("Scenario");
 		
@@ -127,6 +127,11 @@ public class ChatScreen : GenericDialogBox {
 		response.Content = strDialogue;
 		response.NPCSymbol = npc.symbol;
 
+
+		// Show indicators for feedback
+		if(feedback && affects != null)
+			response.feedbackIndicators.Display(affects);
+		
 		response.transform.SetParent(messagesContainer);
 		response.transform.localScale = Vector3.one;
 		

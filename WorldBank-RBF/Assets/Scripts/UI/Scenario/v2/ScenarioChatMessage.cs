@@ -13,6 +13,8 @@ public class ScenarioChatMessage : PortraitTextBox {
 	public Image initialArrow;
 	public Image feedbackArrow;
 
+    public IndicatorsMessage feedbackIndicators;
+
 	bool initial = false;
 	bool feedback = false;
 	bool leftSide = true;

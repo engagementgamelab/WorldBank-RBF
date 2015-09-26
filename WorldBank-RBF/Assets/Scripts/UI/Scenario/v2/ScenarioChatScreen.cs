@@ -210,16 +210,6 @@ public class ScenarioChatScreen : ChatScreen {
 		DialogManager.instance.CreateTutorialScreen("phase_2_conference_action");
 	}
 
-	void AddIndicatorsMessage(Dictionary<string, int> dictAffect) {
-
-		IndicatorsMessage message = ObjectPool.Instantiate<IndicatorsMessage>("Scenario");
-		message.Display(dictAffect);
-		
-		message.transform.SetParent(messagesContainer);
-		message.transform.localScale = Vector3.one;
-
-	}
-
 	IEnumerator ShowFeedback(string eventSymbol)
 	{
 
@@ -255,14 +245,10 @@ public class ScenarioChatScreen : ChatScreen {
 				new List<ChatAction> { nextCardAction }
 			);
 
-			Debug.Log("feedback: " + npc.Key + " for: " + _data.symbol);
-
-			AddResponseSpeech(npc.Value.feedback[eventSymbol].ToString(), 
-							  DataManager.GetDataForCharacter(npc.Key), false, true);
-
 			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(eventSymbol);
-
-			AddIndicatorsMessage(dictAffect);
+			
+			AddResponseSpeech(npc.Value.feedback[eventSymbol].ToString(), 
+							  DataManager.GetDataForCharacter(npc.Key), false, true, dictAffect);
 
 			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(eventSymbol).title, dictAffect.Values.ToArray());
 
