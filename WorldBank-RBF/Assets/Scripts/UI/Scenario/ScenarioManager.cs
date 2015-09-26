@@ -215,7 +215,7 @@ public class ScenarioManager : MonoBehaviour {
 		scenarioCardCooldownText.text = "Break - Year " + currentYear;
 
 		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
-		indicatorsCanvas.EndYear(scenarioConf, currentYear);
+		indicatorsCanvas.EndYear(scenarioConf, currentYear, scenarioTwistIndex);
 
 		indicatorsCanvas.Open();
 

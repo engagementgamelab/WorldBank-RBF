@@ -53,12 +53,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 			return animator;
 		}
 	}
-	
-	/*void Start() {
-
-		animator = gameObject.GetComponent<Animator>();
-
-	}*/
 
 	void Update() {
 
@@ -209,7 +203,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 		showIndicators = false;
 	}
 
-    public void EndYear (Models.ScenarioConfig scenarioConfig, int currentYear) {
+    public void EndYear (Models.ScenarioConfig scenarioConfig, int currentYear, int twistIndex) {
 
     	bool indicatorsNegative = !DataManager.IsIndicatorDeltaGood(
 														    		IndicatorsCanvas.AppliedAffects[0], 
@@ -217,6 +211,14 @@ public class IndicatorsCanvas : NotebookCanvas {
 														    	  );
 
     	string[] yearEndPrompts = (currentYear == 1) ? scenarioConfig.prompt_year_1 : scenarioConfig.prompt_year_2;
+
+    	if(currentYear == 2 && twistIndex == 1) {
+	    	yearEndPrompts = scenarioConfig.prompt_year_2_twist;
+    		AddYearEndOptions(scenarioConfig.choices_twist);
+    	}
+    	else
+    		AddYearEndOptions(scenarioConfig.choices);
+
     	string yearEndMessage;
 
     	// If player has not made any changes, choose first prompt
@@ -243,8 +245,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	    	yearEndPromptText.text = yearEndMessage;
     	}
-
-    	AddYearEndOptions(scenarioConfig.choices);
     }
 
 	void AddYearEndOptions (Dictionary<string, string>[] options) {
