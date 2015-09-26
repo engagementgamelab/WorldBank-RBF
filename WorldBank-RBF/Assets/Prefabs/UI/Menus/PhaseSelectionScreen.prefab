@@ -50,7 +50,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &133512
 GameObject:
   m_ObjectHideFlags: 1
@@ -164,7 +164,6 @@ GameObject:
   - 222: {fileID: 22242144}
   - 114: {fileID: 11492932}
   - 114: {fileID: 11418384}
-  - 114: {fileID: 11412524}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -200,7 +199,6 @@ GameObject:
   - 114: {fileID: 11473494}
   - 114: {fileID: 11432522}
   - 114: {fileID: 11414260}
-  - 114: {fileID: 11464088}
   m_Layer: 5
   m_Name: PhaseTwo
   m_TagString: Untagged
@@ -272,7 +270,6 @@ GameObject:
   - 114: {fileID: 11403328}
   - 114: {fileID: 11480080}
   - 114: {fileID: 11437514}
-  - 114: {fileID: 11437490}
   m_Layer: 5
   m_Name: PhaseOne
   m_TagString: Untagged
@@ -331,20 +328,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &11412524
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 156002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clipName: buttonpressnegative
-  group: ui
-  type: 1
 --- !u!114 &11414260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -434,17 +417,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 11412524}
-        m_MethodName: OnTriggerAudio
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &11431686
@@ -509,17 +481,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 11464088}
-        m_MethodName: OnTriggerAudio
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &11434632
@@ -568,20 +529,6 @@ MonoBehaviour:
   m_Spacing: 40
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
---- !u!114 &11437490
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 199330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clipName: buttonpresspositive
-  group: ui
-  type: 1
 --- !u!114 &11437514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -717,20 +664,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: New Text
---- !u!114 &11464088
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 178786}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clipName: buttonpresspositive
-  group: ui
-  type: 1
 --- !u!114 &11472082
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -847,17 +780,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11431686}
         m_MethodName: OnPhaseOne
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 11464088}
-        m_MethodName: OnTriggerAudio
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1170,10 +1092,10 @@ RectTransform:
   - {fileID: 22441428}
   m_Father: {fileID: 22457142}
   m_RootOrder: 2
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 533.333374, y: -90.0000153}
-  m_SizeDelta: {x: 233.333344, y: 60.0000305}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22440540
 RectTransform:
@@ -1208,10 +1130,10 @@ RectTransform:
   - {fileID: 22420070}
   m_Father: {fileID: 22457142}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 176.666672, y: -90.0000153}
-  m_SizeDelta: {x: 233.333344, y: 60.0000305}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22441428
 RectTransform:
@@ -1282,10 +1204,10 @@ RectTransform:
   - {fileID: 22403292}
   m_Father: {fileID: 22457142}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 355, y: -90.0000153}
-  m_SizeDelta: {x: 43.3333359, y: 60.0000305}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22491408
 RectTransform:
