@@ -53,10 +53,15 @@ public class NpcDialogBox : MB {
 	public Text body;
 	public Transform contentContainer;
 	public List<NpcActionButton> buttons;
+	public List<Text> buttonTexts;
+	public List<Image> buttonImages;
 	public Scrollbar scrollbar;
 	public CanvasGroup boxGroup;
 	public CanvasGroup contentGroup;
-	public Color backColor = Color.white;
+	
+	Color defaultColor = new Color (0.874f, 0.773f, 0.506f);
+	Color backColor = Color.white;
+	Color unlockColor = new Color (0.58f, 0.69f, 0.792f);
 
 	readonly Dictionary<string, float> fadeTimes = new Dictionary<string, float> {
 		{ "inbox", 0.1f },
@@ -223,12 +228,12 @@ public class NpcDialogBox : MB {
 		int index = 0;
 		foreach (var choice in choices) {
 			if (choice.Key == "Back") continue;
-			AddButton (buttons[index], choice.Key, choice.Value);
+			AddButton (buttons[index], choice.Key, choice.Value, index);
 			index ++;
 		}
 		UnityAction backAction;
 		if (choices.TryGetValue ("Back", out backAction)) {
-			AddButton (buttons[index], "Back", backAction);
+			AddButton (buttons[index], "Back", backAction, index);
 		}
 	}
 
@@ -239,13 +244,20 @@ public class NpcDialogBox : MB {
 		}
 	}
 
-	void AddButton (NpcActionButton button, string content, UnityAction action) {
+	void AddButton (NpcActionButton button, string content, UnityAction action, int index) {
 		bool backButton = content == "Back";
 		button.gameObject.SetActive (true);
-		button.Text.Text.text = content;
+		button.Text.Text.text = content.Replace ("~", "");
 		button.Icon.gameObject.SetActive (!backButton && content != "Learn More");
-		button.Color = backButton ? backColor : button.DefaultColor;
+		// button.Color = backButton ? backColor : button.DefaultColor;
+		buttonTexts[index].color = backButton ? backColor : defaultColor;
+		buttonImages[index].color = backButton ? backColor : defaultColor;
 		button.Button.onClick.AddListener (action);
+		if (content.Contains ("~")) {
+			// button.Color = unlockColor;
+			buttonTexts[index].color = unlockColor;
+			buttonImages[index].color = unlockColor;
+		}
 		button.Button.interactable = true;
 	}
 

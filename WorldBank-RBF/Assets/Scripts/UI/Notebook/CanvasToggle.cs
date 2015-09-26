@@ -50,6 +50,7 @@ public class CanvasToggle : MonoBehaviour {
 	}
 
 	public void OnClick () {
+		if (CurrentCityIndicator.Moving) return;
 		if (activeCanvas == thisCanvas && !NotebookManagerPhaseOne.Instance.CanCloseNotebook) 
 			return;
 		foreach (CanvasToggle toggle in otherToggles) {

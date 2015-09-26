@@ -221,15 +221,9 @@ public class DialogManager : MonoBehaviour {
 
 		Dictionary<string, UnityAction> btnChoices = new Dictionary<string, UnityAction> ();
 
-		// int choicesCount = 3;
-
-		if (!character.NoChoices) {
+		if (!character.NoChoices && !PlayerData.InteractionGroup.Empty) {
 			foreach (var choice in character.Choices) {
-				
-				/*if (choicesCount <= 0)
-					break;
-					
-				choicesCount --;*/
+			
 				Models.Dialogue model = choice.Value;
 				
 				string ck = choice.Key;
@@ -240,6 +234,10 @@ public class DialogManager : MonoBehaviour {
 				
 				if (!(character.Returning && initial) && !choices.ContainsKey (ck.ToLower ()))
 					continue;
+
+				// Hack that gives the dialogue option a different color if it is an unlockable
+				if (ck.StartsWith ("unlockable_dialogue_"))
+					displayName += "~";
 
 				btnChoices.Add (displayName, () => {
 
