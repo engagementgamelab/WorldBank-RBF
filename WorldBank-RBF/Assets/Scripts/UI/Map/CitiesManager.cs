@@ -144,8 +144,13 @@ public class CitiesManager : MB {
 		NpcManager.InitNpcs ();
 
 		// Tutorial
-		if(currentCity == "capitol")
-			DialogManager.instance.CreateTutorialScreen("phase_1_initial", "phase_1_skip_tutorial");
+		if(currentCity == "capitol") {
+			// Allow skipping only if player has already sent a plan in derby derp
+			if(PlayerManager.Instance.PlanSubmitted)
+				DialogManager.instance.CreateTutorialScreen("phase_1_initial", "phase_1_skip_tutorial");
+			else
+				DialogManager.instance.CreateTutorialScreen("phase_1_initial", "phase_1_rahb");
+		}
 		
 		Events.instance.Raise (new ArriveInCityEvent (currentCity));
 	}

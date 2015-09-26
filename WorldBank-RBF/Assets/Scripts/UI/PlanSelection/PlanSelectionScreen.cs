@@ -45,15 +45,13 @@ public class PlanSelectionScreen : MonoBehaviour {
 
 	}
 
-	public void Init () {
-		// this.plans = plans;
+	void OnEnable () {
 
         // Insert user ID
 		Dictionary<string, object> userField = new Dictionary<string, object> {{ "user_id", PlayerManager.Instance.ID }};
 
 	    // Get plans
         NetworkManager.Instance.PostURL("/plan/all/", userField, PlansRetrieved);
-
 
 	}
 

@@ -81,8 +81,8 @@ namespace Models {
         public string username { get; set; }
         public string current_scenario { get; set; }
         
-        public bool tutorial_1 { get; set; }
-        public bool tutorial_2 { get; set; }
+        public bool submitted_plan { get; set; }
+        public bool phase_two_done { get; set; }
         
         public Plan plan { get; set; }
 

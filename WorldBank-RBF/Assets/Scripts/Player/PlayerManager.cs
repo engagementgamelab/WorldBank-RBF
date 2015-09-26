@@ -50,29 +50,37 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
-    private bool _isAuthenticated;
-    private string _playerId;
+    /// <summary>
+    /// Get player's plan submission status.
+    /// </summary>
+    public bool PlanSubmitted {
+        get {
+            return _submittedPlan;
+        }
+    }
 
-    private Models.Plan _userCurrentPlan;
+    /// <summary>
+    /// Get player's phase two completion status.
+    /// </summary>
+    public bool PhaseTwoDone {
+        get {
+            return _phaseTwoDone;
+        }
+    }
+
+    bool _isAuthenticated;
+    bool _phaseTwoDone;
+    bool _submittedPlan;
+
+    string _playerId;
+
+    Models.Plan _userCurrentPlan;
 
     public void Authenticate(string email, string pass="") {
 
         Dictionary<string, object> authFields = new Dictionary<string, object>();
 
         authFields.Add("email", email);
-        // authFields.Add("password", pass);
-
-        /*ParseUser.LogInAsync(user.username, pass).ContinueWith(t =>
-        {
-            if (t.IsFaulted || t.IsCanceled)
-            {
-                // The login failed. Check the error to see why.
-            }
-            else
-            {
-                // Login was successful.
-            }
-        });*/
 
         NetworkManager.Instance.PostURL("/user/auth/", authFields, AuthCallback);
         
@@ -89,34 +97,6 @@ public class PlayerManager : MonoBehaviour {
         NetworkManager.Instance.PostURL("/user/create/", registerFields, AuthCallback);
 
     }
-
-    /*public void Register(string email, string username, string location, string pass, string passConfirm) {
-
-        if(pass != passConfirm)
-        {          
-            Events.instance.Raise(new PlayerLoginEvent(false, "Password and Password Confirmation do not match!"));
-            return;
-        }
-
-        Dictionary<string, object> registerFields = new Dictionary<string, object>();
-
-        registerFields.Add("email", email);
-        registerFields.Add("username", username);
-        registerFields.Add("location", location);
-        registerFields.Add("password", pass);
-
-        var user = new ParseUser()
-        {
-            Username = username,
-            Password = pass,
-            Email = email
-        };
-
-        Task signUpTask = user.SignUpAsync();
-
-        NetworkManager.Instance.PostURL("/user/create/", registerFields, AuthCallback);
-        
-    }*/
 
     public void AuthCallback(Dictionary<string, object> response) {
 
@@ -138,6 +118,9 @@ public class PlayerManager : MonoBehaviour {
         Models.User user = JsonReader.Deserialize<Models.User>(output.ToString());
 
         _playerId = user._id;
+        _submittedPlan = user.submitted_plan;
+        _phaseTwoDone = user.phase_two_done;
+        
         _isAuthenticated = Convert.ToBoolean(response["auth"]);
 
         Events.instance.Raise(new PlayerLoginEvent(true));

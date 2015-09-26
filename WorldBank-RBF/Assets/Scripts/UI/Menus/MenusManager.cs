@@ -98,8 +98,6 @@ public class MenusManager : MonoBehaviour {
 				if (currentScreen == loading) {
 					Application.LoadLevel (gotoSceneOnLoad);
 				}
-				else if(currentScreen == planSelection)
-					planSelection.gameObject.GetComponent<PlanSelectionScreen>().Init();
 			}
 		));
 	}

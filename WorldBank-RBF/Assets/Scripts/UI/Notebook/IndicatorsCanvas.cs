@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -17,6 +18,9 @@ public class IndicatorsCanvas : NotebookCanvas {
 	public RectTransform actionsColumn;
 	public RectTransform decisionPanel;
 	public RectTransform summaryPanel;
+
+	public GameObject prevArrow;
+	public GameObject nextArrow;
 
 	public RectTransform[] dataBarBgs;
 	public RectTransform[] dataBarFills;
@@ -42,6 +46,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	bool showIndicators;
 	float indicatorAnimateDelta = 5;
+
+	int currentActionTakenIndex;
 
 	// Animator animator;
 	Animator animator = null;
@@ -135,16 +141,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 		}
 
-		foreach(KeyValuePair<string, int[]> action in SelectedOptions) {
-
-			ActionTaken actionTaken = ObjectPool.Instantiate<ActionTaken>("Scenario");
-
-			actionTaken.Display(action.Key, action.Value);
-
-			actionTaken.transform.SetParent(actionsColumn.transform);
-			actionTaken.transform.localScale = Vector3.one;
-
-		}
+		ShowActionTaken(0);
 
 		// TODO: No options?
 		if(SelectedOptions.Count == 0) {
@@ -245,6 +242,37 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	    	yearEndPromptText.text = yearEndMessage;
     	}
+    }
+
+    public void ShowPreviousAction() {
+    	ShowActionTaken(currentActionTakenIndex - 1);
+    }
+
+    public void ShowNextAction() {
+    	ShowActionTaken(currentActionTakenIndex + 1);
+    }
+
+    public void ShowActionTaken(int index) {
+
+		ObjectPool.DestroyChildren<ActionTaken>(actionsColumn.transform, "Scenario");
+
+		string actionName = SelectedOptions.Keys.ToList()[index];
+		int[] actionIndicators = SelectedOptions[actionName];
+
+		ActionTaken actionTaken = ObjectPool.Instantiate<ActionTaken>("Scenario");
+
+		actionTaken.Display(actionName, actionIndicators);
+
+		actionTaken.transform.SetParent(actionsColumn.transform);
+		actionTaken.transform.localScale = Vector3.one;
+		actionTaken.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+		actionTaken.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+
+		currentActionTakenIndex = index;
+
+		prevArrow.SetActive(!(index == 0));
+		nextArrow.SetActive(!(index == (SelectedOptions.Count-1)));
+
     }
 
 	void AddYearEndOptions (Dictionary<string, string>[] options) {
