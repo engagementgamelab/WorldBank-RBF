@@ -13,15 +13,30 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Timers : MonoBehaviour {
+    private static Timers _instance = null;
+        
+    public static Timers Instance {
+        get {
+            if (_instance == null) {
+                _instance = FindObjectOfType (typeof (Timers)) as Timers;
+
+                if (_instance == null) {
+                    GameObject obj = new GameObject ();
+                    obj.hideFlags = HideFlags.HideAndDontSave;
+                    _instance = obj.AddComponent<Timers> ();
+                }
+            }
+            return _instance;
+        }
+    }
 
 	public delegate void OnEnd();
 	public delegate void OnTick(GameEvents.TimerTick e);
 
-	#region Static registers
-	public static List<TimerInstance> AllTimers = new List<TimerInstance>();
-	public static List<TimerInstance> TimersToAdd = new List<TimerInstance>();
+	public List<TimerInstance> AllTimers = new List<TimerInstance>();
+	public List<TimerInstance> TimersToAdd = new List<TimerInstance>();
 
-	public static TimerInstance StartTimer(GameObject target, float[] possibleDurations) {
+	public TimerInstance StartTimer(GameObject target, float[] possibleDurations) {
 		Timers obj = target.GetComponent<Timers>();
 		
 		if (obj == null) {
@@ -34,7 +49,6 @@ public class Timers : MonoBehaviour {
 
 		return newTimer;
 	}
-	#endregion
 
     public class TimerInstance {
     	public string Symbol { 
