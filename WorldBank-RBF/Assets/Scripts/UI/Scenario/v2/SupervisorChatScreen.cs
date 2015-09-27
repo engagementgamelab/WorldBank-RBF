@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections.Generic;
@@ -22,6 +22,7 @@ public class SupervisorChatScreen : ChatScreen {
 	float cooldownElapsed = 0;
 
 	bool investigateFurther;
+	bool tacticsQueued;
 
 	SystemMessage investigateMsg;
 
@@ -34,6 +35,27 @@ public class SupervisorChatScreen : ChatScreen {
 
 	SupervisorState state = SupervisorState.WaitingForProblem;
 
+	void OnEnable() {
+
+ 		rightPanel.gameObject.SetActive(false);
+
+		// Tutorial
+		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor_opened");
+
+		if(tacticsQueued) {
+			state = SupervisorState.WaitingForProblem;
+			ShowTactics();
+			tacticsQueued = false;
+		}
+
+	}
+
+	void OnDisable() {
+
+ 		rightPanel.gameObject.SetActive(true);
+
+	}
+
 	/// <summary>
     /// Get/set
     /// </summary>
@@ -42,7 +64,10 @@ public class SupervisorChatScreen : ChatScreen {
             tacticsAvailable = value;
             queuedTactics = value;
 
-            ShowTactics();
+            if(!gameObject.activeSelf)
+            	tacticsQueued = true;
+            else
+	            ShowTactics();
         }
     }
 
@@ -55,18 +80,6 @@ public class SupervisorChatScreen : ChatScreen {
     		return supervisor;
     	}
     }
-
- 	public override void OnEnable() {
-
- 		base.OnEnable();
-
-		// Disable screen if out of tactics for this year
-		disabledPanel.gameObject.SetActive(queuedTactics.Count == 0);
-
-		// Tutorial
-		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor_opened");
-
- 	}
 
  	public void Clear() {
 
@@ -145,9 +158,6 @@ public class SupervisorChatScreen : ChatScreen {
 
 		if (queuedTactics.Count > 0)
 			OpenTacticCard ();
-		// Out of tactics for this year
-		else
-			disabledPanel.gameObject.SetActive(true);
 	}
 
 	void EndInvestigation () {

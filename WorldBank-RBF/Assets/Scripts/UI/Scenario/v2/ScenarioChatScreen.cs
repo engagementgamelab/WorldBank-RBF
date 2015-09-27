@@ -44,9 +44,9 @@ public class ScenarioChatScreen : ChatScreen {
 
 	bool cardQueued;
 
- 	public override void OnEnable() {
+ 	void OnEnable() {
 
- 		base.OnEnable();
+ 		rightPanel.gameObject.SetActive(true);
 
  		if(cardQueued) {
 	 		Initialize();
@@ -101,12 +101,19 @@ public class ScenarioChatScreen : ChatScreen {
     	List<string> removeAdvisors = previousAdvisorOptions
     		.Except (currentAdvisorOptions).ToList ();
 
+    	// Remove initiator from advisors if npc does not have dialogue
+    	if(!_data.characters.Keys.Contains(_data.initiating_npc) || !_data.characters[_data.initiating_npc].hasDialogue)
+	    	removeAdvisors.Add(_data.initiating_npc);
+
     	List<string> newAdvisors = currentAdvisorOptions
 			.Except (previousAdvisorOptions).ToList ();
 
     	foreach (string characterSymbol in removeAdvisors) {
     		
     		Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
+
+    		if(btnListAdvisors.FirstOrDefault (x => x.NPCName == charRef.display_name) == null)
+    			continue;
     		
     		AdvisorButton btnChoice = btnListAdvisors.FirstOrDefault (x => x.NPCName == charRef.display_name);
 
