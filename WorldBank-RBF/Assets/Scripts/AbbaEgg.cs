@@ -28,7 +28,8 @@ public class AbbaEgg : MonoBehaviour {
 		"Without a song or a dance what are we?",
 		"Without a song or a dance what are we?",
 		"Without a song or a dance what are we?",
-		"You seemed so far away though you were standing near\n\nYou made me feel alive but something died I fear"
+		"You seemed so far away though you were standing near\n\nYou made me feel alive but something died I fear",
+		"Memories, good days, bad days\n\nThey'll be with me\n\nAlways"
 	};
 
 	void Update () {
@@ -40,6 +41,10 @@ public class AbbaEgg : MonoBehaviour {
 			spelled = "";
 		}
 		if (spelled == "abba") {
+			spelled = "";
+			AudioManager.Music.Play ("abba-tune");
+			CancelInvoke ("StopDancingQueen");
+			Invoke ("StopDancingQueen", 12f);
 			abbaImage.gameObject.SetActive (true);
 		}
 	}
@@ -48,5 +53,9 @@ public class AbbaEgg : MonoBehaviour {
 		abbaImage.gameObject.SetActive (false);
 		int r = (int)Mathf.Round (Random.value * insights.Length-1);
 		infoBox.Open ("ABBA moment of insight", "\n" + insights[r]);
+	}
+
+	void StopDancingQueen () {
+		AudioManager.Music.Stop ("abba-tune");
 	}
 }

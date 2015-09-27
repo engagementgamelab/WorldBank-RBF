@@ -4,15 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class UnlockNotification : MB {
+public class Notification : MB {
 
 	public RectTransform panel;
 	public Text header;
 	public Text body;
 	public CanvasToggle plan;
 	public CanvasToggle map;
-
-	public List<Notification> notifications;
 
 	string HeaderText {
 		get { return header.text; }
@@ -83,63 +81,27 @@ public class UnlockNotification : MB {
 	bool sliding = false;
 	string currentNotification;
 
-	float displayDelay = 0.5f;
-
-	List<string[]> notificationQueue = new List<string[]> ();
-
 	void Start () {
 
-		/*endPosition = panel.localPosition.x;
+		endPosition = panel.localPosition.x;
 		startPosition = endPosition + panel.sizeDelta.x + 10;
-		panel.SetLocalPositionX (startPosition);*/
+		panel.SetLocalPositionX (startPosition);
 
-		PlayerData.DialogueGroup.onUnlock += OnAddDialogue;
-		PlayerData.RouteGroup.onUnlock += OnAddRoute;
-		PlayerData.TacticGroup.onUnlock += OnAddTactic;
+		Transform.SetLocalScaleY (0f);
 
-		NotebookManager.Instance.onUpdate += OnIndicatorsUpdated;
 		NPCFocusBehavior.Instance.onSetFocus += OnSetFocus;
-
-		/*foreach (Notification n in notifications) {
-			n.gameObject.SetActive (false);
-		}*/
 	}
 
-	void OnAddDialogue (DialogueItem dialogue) {
-		OnAdd ("dialogue", dialogue.Context[dialogue.Context.Count-1]);
-	}
-
-	void OnAddRoute (RouteItem route) {
-		OnAdd ("route", route.Context[route.Context.Count-1]);
-	}
-
-	void OnAddTactic (TacticItem tactic) {
-		OnAdd ("tactic", tactic.Context[tactic.Context.Count-1]);
-	}
-
-	void OnIndicatorsUpdated () {
-		OnAdd ("indicators", "Click here to open.");
-	}
-
-	void OnAdd (string type, string context) {
-		// StartCoroutine (CoWaitForDialogueComplete (type, context));
-		notificationQueue.Add (new [] { type, context });
-	}
-
-	/*IEnumerator CoWaitForDialogueComplete (string type, string context) {
-		while (!NPCFocusBehavior.Instance.Unfocused)
-			yield return null;
-		// SlideIn (type, context);
-	}*/
-
-	/*void SlideIn (string type, string context) {
+	public void SlideIn (string type, string context) {
+		
 		currentNotification = type;
 		Settings s = settings[type];
 		HeaderText = DataManager.GetUIText (s.Header);
 		HeaderColor = s.Color;
 		AudioManager.Sfx.Play (s.Sfx[0], s.Sfx[1]);
 		BodyText = context;
-		StartCoroutine (CoSlide (startPosition, endPosition));
+		StartCoroutine (CoSlide (0f, 1f));
+		// StartCoroutine (CoSlide (startPosition, endPosition));
 
 		// Tutorial (player unlocks first tactic; do not slide out until confirm)
 		List<TacticItem> tactics = PlayerData.TacticGroup.Tactics;
@@ -149,10 +111,12 @@ public class UnlockNotification : MB {
 			Invoke ("SlideOut", 10f);
 	}
 
-	void SlideOut () {
+	public void SlideOut () {
 		CancelInvoke ();
-		if (panel.localPosition.x <= endPosition)
-			StartCoroutine (CoSlide (endPosition, startPosition));
+		// if (panel.localPosition.x <= endPosition)
+		if (!Mathf.Approximately (panel.localScale.y, 0f))
+			StartCoroutine (CoSlide (1f, 0f));
+			// StartCoroutine (CoSlide (endPosition, startPosition));
 	}
 
 	IEnumerator CoSlide (float from, float to) {
@@ -160,17 +124,21 @@ public class UnlockNotification : MB {
 		if (sliding) yield break;
 		sliding = true;
 
-		float time = 0.5f;
+		float time = 0.25f;
 		float eTime = 0f;
 	
 		while (eTime < time) {
 			eTime += Time.deltaTime;
 			float progress = Mathf.SmoothStep (0, 1, eTime / time);
-			panel.SetLocalPositionX (Mathf.Lerp (from, to, progress));
+			// panel.SetLocalPositionX (Mathf.Lerp (from, to, progress));
+			panel.SetLocalScaleY (Mathf.Lerp (from, to, progress));
+			panel.SetLocalScaleX (Mathf.Lerp (from, to, progress));
 			yield return null;
 		}
 
-		panel.SetLocalPositionX (to);
+		// panel.SetLocalPositionX (to);
+		panel.SetLocalScaleX (to);
+		panel.SetLocalScaleY (to);
 		sliding = false;
 	}
 
@@ -182,30 +150,10 @@ public class UnlockNotification : MB {
 			case "indicators": NotebookManager.Instance.indicators.Open(); break;
 		}
 		SlideOut ();
-	}*/
-
-	void OnSetFocus (FocusLevel focus) {
-		/*if (focus == FocusLevel.Preview || focus == FocusLevel.Dialog)
-			SlideOut ();*/
-		if (focus == FocusLevel.Default) {
-			StartCoroutine (CoShowNotifications ());
-		} else {
-			notificationQueue.Clear ();
-		}
 	}
 
-	IEnumerator CoShowNotifications () {
-
-		float eTime = 0f;
-
-		for (int i = 0; i < notificationQueue.Count; i ++) {
-			string[] nq = notificationQueue[i];
-			notifications[i].SlideIn (nq[0], nq[1]);
-			while (eTime < displayDelay) {
-				eTime += Time.deltaTime;
-				yield return null;
-			}
-			eTime = 0f;
-		}
+	void OnSetFocus (FocusLevel focus) {
+		if (focus == FocusLevel.Preview || focus == FocusLevel.Dialog)
+			SlideOut ();
 	}
 }
