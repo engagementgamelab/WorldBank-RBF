@@ -76,7 +76,7 @@ public class ScenarioManager : MonoBehaviour {
 		Events.instance.AddListener<TutorialEvent>(OnTutorialEvent);
 
 		// Listen for problem card cooldown tick
-		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
+		// Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
 
 		// Culture for formatting floats to seconds
 		floatFormatter = new CultureInfo("en-US", false).NumberFormat;
@@ -159,6 +159,12 @@ public class ScenarioManager : MonoBehaviour {
 
 	}
 
+	public void LoadMainMenu() {
+
+		Application.LoadLevel("Menus");
+		
+	}
+
     /// <summary>
     /// Displays a scenario card, given the current card index.
     /// </summary>
@@ -221,6 +227,9 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Tutorial
 		DialogManager.instance.CreateTutorialScreen("phase_2_year_end");
+
+		// Clear all supervisor dialog
+		supervisorChat.Clear();
 
 	}
 
@@ -317,7 +326,11 @@ public class ScenarioManager : MonoBehaviour {
     	// This is the only time we won't show notification
     	CalculateIndicators();
 
-		DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_skip");
+		// Allow skipping only if player has already finished phase two before shooby doopy
+		if(PlayerManager.Instance.PhaseTwoDone)
+			DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_skip");
+		else
+			DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_first_problem");
 
     }
 
@@ -415,7 +428,7 @@ public class ScenarioManager : MonoBehaviour {
 			return;
 
 		if(problemCardCooldown == null) {
-			problemCardCooldown = Timers.StartTimer(gameObject, new [] { problemCardDuration });
+			problemCardCooldown = Timers.Instance.StartTimer(gameObject, new [] { problemCardDuration });
 			problemCardCooldown.Symbol = "problem_card";
 			problemCardCooldown.onTick += OnCooldownTick;
 			problemCardCooldown.onEnd += GetNextCard;
@@ -440,11 +453,11 @@ public class ScenarioManager : MonoBehaviour {
 
 			DialogManager.instance.SetAvailableTactics (availableTactics);
 
-			// Enable supervisor tab
-			supervisorChatTabAnimator.Play("SupervisorTabOn");
-			supervisorChatTab.GetComponent<Button>().enabled = true;
-
 		}
+
+		// Enable supervisor tab
+		supervisorChatTabAnimator.Play("SupervisorTabOn");
+		supervisorChatTab.GetComponent<Button>().enabled = true;
     
     }
 

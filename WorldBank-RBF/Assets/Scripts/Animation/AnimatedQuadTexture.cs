@@ -159,7 +159,9 @@ public class AnimatedQuadTexture : MB {
 	protected void UpdateSortingLayer () {
 		int sortingLayer = 10000 - (int)(Position.z * 100);
 		if (_Material != null) {
-			_Material.renderQueue = sortingLayer;
+//			_Material.renderQueue = sortingLayer;
+			if (_Material.renderQueue == 9999)
+				_Material.renderQueue = sortingLayer;
 		} else {
 			StartCoroutine (SetSortingLayerOnLoad ());
 		}

@@ -56,13 +56,6 @@ public class SupervisorChatScreen : ChatScreen {
     	}
     }
 
-	void Awake () {
-
-		// Listen for problem card cooldown tick
-		Events.instance.AddListener<GameEvents.TimerTick>(OnCooldownTick);
-
- 	}
-
  	public override void OnEnable() {
 
  		base.OnEnable();
@@ -72,6 +65,12 @@ public class SupervisorChatScreen : ChatScreen {
 
 		// Tutorial
 		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor_opened");
+
+ 	}
+
+ 	public void Clear() {
+
+ 		ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer);
 
  	}
 
@@ -145,7 +144,7 @@ public class SupervisorChatScreen : ChatScreen {
 
 		investigateMsg = AddSystemMessage ("Investigating");
 
-		investigateCooldown = Timers.StartTimer(gameObject, cooldownTime);
+		investigateCooldown = Timers.Instance.StartTimer(gameObject, cooldownTime);
 		investigateCooldown.Symbol = "tactic_results";
 		investigateCooldown.onTick += OnCooldownTick;
 		investigateCooldown.onEnd += EndInvestigation;
@@ -222,7 +221,7 @@ public class SupervisorChatScreen : ChatScreen {
 		ChatAction showTactics = new ChatAction();
 		showTactics.action = ShowTactics;
 
-		AddResponseSpeech (investigatingTactic.feedback_dialogue[option]);
+		AddResponseSpeech (investigatingTactic.feedback_dialogue[option], false, false, option);
 		state = SupervisorState.WaitingForProblem;
 		AddOptions (
 			new List<string> () { "OK" },
@@ -252,9 +251,15 @@ public class SupervisorChatScreen : ChatScreen {
     	}
     }
 
-    void AddResponseSpeech (string message, bool endOfCard=false, bool initial=false) {
-    	AddResponseSpeech (message, Supervisor, initial);
+    void AddResponseSpeech (string message, bool endOfCard=false, bool initial=false, string optionUsed=null) {
 
+    	if(optionUsed != null) {
+			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(optionUsed);
+			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(optionUsed).title, dictAffect.Values.ToArray());
+		}
+
+    	AddResponseSpeech (message, Supervisor, initial, false);
+    	
     	if(endOfCard)
 	    	SkipCard();
 		
