@@ -151,7 +151,8 @@ public class CameraPositioner : MB {
 		if(!enableMovement) return;
 
 		Drag.OnDrag ();
-		if (Drag.Enabled) XPosition = Position.x + Input.GetAxis ("Horizontal") * Time.deltaTime * 10f;
+		if (Drag.Enabled && NPCFocusBehavior.Instance.FocusLevel == FocusLevel.Default)
+			XPosition = Position.x + Input.GetAxis ("Horizontal") * Time.deltaTime * 10f;
 
 	}
 

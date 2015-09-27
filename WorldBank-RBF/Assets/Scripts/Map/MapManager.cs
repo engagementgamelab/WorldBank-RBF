@@ -20,7 +20,7 @@ using System.Collections.Generic;
 // TODO: Tons of cleanup/docs!
 public class MapManager : MonoBehaviour {
 
-	public CanvasRenderer dialogueBoxPrefab;
+	/*public CanvasRenderer dialogueBoxPrefab;
 	public Button cityButtonPrefab;
 
 	public string citySceneName;
@@ -34,19 +34,19 @@ public class MapManager : MonoBehaviour {
 
 	public GameObject daysLeftPanel;
 
-	private Transform cityCanvas;
+	// private Transform cityCanvas;
 	private Transform cameraTransform;
 
 	private Collider mapCollider;
 
-	private Quaternion initialCamRotation;
-	private Quaternion targetCamRotation;
+	// private Quaternion initialCamRotation;
+	// private Quaternion targetCamRotation;
 
-	private Vector3 initialCamPosition;
-	private Vector3 targetCamPosition;
+	// private Vector3 initialCamPosition;
+	// private Vector3 targetCamPosition;
 
-	private Vector3 initialDialogScale;
-	private Vector2 initialDialogAnchor;
+	// private Vector3 initialDialogScale;
+	// private Vector2 initialDialogAnchor;
 
     private Vector3 dragOrigin;
 
@@ -64,13 +64,13 @@ public class MapManager : MonoBehaviour {
 
 	private int daysAllowed = 9;
 	
-	private Vector3 cameraLimitPush;			// Position of cursor when mouse dragging starts
-	private bool isPanning;				// Is the camera being panned?
+	// private Vector3 cameraLimitPush;			// Position of cursor when mouse dragging starts
+	// private bool isPanning;				// Is the camera being panned?
 	private bool isRotating;			// Is the camera being rotated?
-	private bool isZooming;				// Is the camera zooming?
+	private bool isZooming;				// Is the camera zooming?*/
 
 
-	void Start () {
+	/*void Start () {
 
 		cityCanvas = transform.Find("Map Buttons");
 		mapCollider = transform.Find("Background").GetComponent<Collider>();
@@ -148,7 +148,7 @@ public class MapManager : MonoBehaviour {
 			cameraTransform.Translate(camTranslation, Space.World);
 			Camera.main.GetComponent<Rigidbody>().velocity = Vector3.zero;
 }
-	/*			else
+			else
 		{	
 			if(!isWithinXBounds)
 				cameraLimitPush = new Vector3((atMinXLimit ? -1 : 1) * cameraBounceFactor, 0, 0);
@@ -157,7 +157,7 @@ public class MapManager : MonoBehaviour {
 			
 			isPanning = true;
 		}
-*/
+
 		// Ensure camera is facing map
         Vector3 rotDelta = mapCollider.transform.position - cameraTransform.position;
 	    Quaternion targetRotation = Quaternion.LookRotation(rotDelta);
@@ -169,7 +169,7 @@ public class MapManager : MonoBehaviour {
 		// == Movement Code ==
 		
 		// Rotate camera along X and Y axis
-		/*if (isRotating)
+		if (isRotating)
 		{
 			// Get mouse displacement vector from original to current position
 	    	Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
@@ -180,14 +180,14 @@ public class MapManager : MonoBehaviour {
 			// Two rotations are required, one for x-mouse movement and one for y-mouse movement
 			Camera.main.GetComponent<Rigidbody>().AddTorque(-pos.y * turnSpeed * transform.right, ForceMode.Acceleration);
 			Camera.main.GetComponent<Rigidbody>().AddTorque(pos.x * turnSpeed * transform.up, ForceMode.Acceleration);
-		}*/
+		}
 		
 		// Move (pan) the camera on it's XY plane
 		if (isPanning)
 		{
 
 	        // Create camera limits based on map collider bounds
-/*	        Vector3 mapCenter = mapCollider.bounds.center;
+	        Vector3 mapCenter = mapCollider.bounds.center;
 
 	        float maxXLimit = mapCollider.bounds.max.x + 1;
 	        float minXLimit = mapCollider.bounds.min.x - 1;
@@ -214,7 +214,7 @@ public class MapManager : MonoBehaviour {
 
 			// Apply the pan's move vector in the orientation of the camera's front
 			Quaternion forwardRotation = Quaternion.LookRotation(transform.forward, transform.up);
-			move = forwardRotation * move;*/
+			move = forwardRotation * move;
 			
 			// Set Drag
 			Camera.main.GetComponent<Rigidbody>().drag = panDrag;
@@ -224,7 +224,7 @@ public class MapManager : MonoBehaviour {
 		}
 		
 		// Move the camera linearly along Z axis
-/*		if (isZooming)
+		if (isZooming)
 		{
 			// Get mouse displacement vector from original to current position
 	    		Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
@@ -235,7 +235,7 @@ public class MapManager : MonoBehaviour {
 			
 			// Zoom
 			Camera.main.GetComponent<Rigidbody>().AddForce(move, ForceMode.Acceleration);
-		}*/
+		}
 	}
 
 	/// <summary>
@@ -351,7 +351,7 @@ public class MapManager : MonoBehaviour {
 
 	}
 
-/*
+
     //Coroutine that will detect when the Closing animation is finished and it will deactivate the
     //hierarchy.
     IEnumerator DisablePanelDeleyed(Animator anim)

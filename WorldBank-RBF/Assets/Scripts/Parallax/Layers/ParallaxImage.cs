@@ -57,6 +57,11 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		if (Parent != null) gameObject.layer = Parent.gameObject.layer;
 		if (Forward) Transform.SetLocalPositionZ (-0.01f);
 		Transform.SetLocalPositionX (XOffset);
-		UpdateSortingLayer ();
+		// UpdateSortingLayer ();
+	}
+
+	protected override void Update () {
+		if (Forward) Transform.SetLocalPositionZ (-0.01f);
+		base.Update ();
 	}
 }

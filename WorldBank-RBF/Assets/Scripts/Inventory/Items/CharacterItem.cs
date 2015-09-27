@@ -13,7 +13,7 @@ public class CharacterItem : ModelItem {
 	/// <summary>
 	/// The NPC model associated with this character.
 	/// </summary>
-	public NPC Npc { get; private set; }
+	new public NPC Npc { get; private set; }
 
 	/// <summary>
 	/// The name that gets shown in the game.
@@ -137,7 +137,7 @@ public class CharacterItem : ModelItem {
 
 			string[] unlockableSymbols = dialog.unlocks;
 			foreach (string symbol in unlockableSymbols) {
-				Models.Unlockable unlockableRef = DataManager.GetUnlockableBySymbol(symbol);
+				// Models.Unlockable unlockableRef = DataManager.GetUnlockableBySymbol(symbol);
 				PlayerData.UnlockItem (symbol, context, npc);
 			}
 		}

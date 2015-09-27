@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 
@@ -104,6 +103,7 @@ public class ParallaxLayerManager : MonoBehaviour {
 
 	void Awake () {
 		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
+		PlayerData.CityGroup.onUpdateCurrentCity += OnUpdateCurrentCity;
 	}
 
 	public void Create (Dictionary<int, List<string>> texturePaths) {
@@ -159,6 +159,10 @@ public class ParallaxLayerManager : MonoBehaviour {
 
     void OnArriveInCityEvent (ArriveInCityEvent e) {
     	LoadFromSymbol (e.City);
+    }
+
+    void OnUpdateCurrentCity (string city) {
+    	Clear ();
     }
 
     #if UNITY_EDITOR

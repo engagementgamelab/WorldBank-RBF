@@ -66,7 +66,7 @@ public static class MaterialsManager {
 		m.SetFloat ("_Glossiness", 0);
 		m.mainTexture = texture;
 
-		if (texture.name.Contains ("layer")) {
+		/*if (texture.name.Contains ("layer")) {
 			if (texture.name.Contains ("layer1")) {
 				m.renderQueue = 9000;
 			} else if (texture.name.Contains ("layer2")) {
@@ -80,7 +80,7 @@ public static class MaterialsManager {
 			}
 		} else {
 			m.renderQueue = 9999;
-		}
+		}*/
 
 		return m;
 	}
