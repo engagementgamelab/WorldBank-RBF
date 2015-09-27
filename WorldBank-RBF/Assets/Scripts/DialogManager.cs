@@ -157,7 +157,9 @@ public class DialogManager : MonoBehaviour {
 	}
 
 	public void SetAvailableTactics (List<string> availableTactics) {
-		supervisorChat.Available = availableTactics;
+		
+		supervisorChat.Available = DataManager.GetTacticCardsForSymbols(availableTactics.ToArray());
+		
 	}
 
 	/// <summary>

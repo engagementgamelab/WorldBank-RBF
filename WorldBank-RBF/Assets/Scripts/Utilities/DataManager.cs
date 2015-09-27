@@ -79,12 +79,13 @@ public class DataManager {
 
     public static string currentPlanId;
     
+    public static GameEnvironment currentConfig;
+    
     static string currentSceneContext;
     
     static JsonReaderSettings _readerSettings = new JsonReaderSettings();
 
     static GameConfig config;
-    static GameEnvironment currentConfig;
 
     static GameData gameData;
     static GameDataTest gameDataTest;
@@ -415,19 +416,19 @@ public class DataManager {
     }
 
     /// <summary>
-    /// Get the phase two tactic card specified by the tactic's name, if there's one for the current year.
+    /// Get the phase two tactic cards specified by the tactics' symbols, if there's any for the current year.
     /// </summary>
-    /// <param name="cardName">Index of the scenario card</param>
-    /// <returns>The TacticCard for the symbol matching the input</returns>
-    public static TacticCard GetTacticCardByName(string cardName) {
+    /// <param name="cardSymbols">Card symbols</param>
+    /// <returns>The TacticCards for the symbols matching the input</returns>
+    public static List<TacticCard> GetTacticCardsForSymbols(string[] cardSymbols) {
 
-        TacticCard tacticRef = gameData.phase_two.tactics.FirstOrDefault(card => card.tactic_name == cardName && 
-                                                                                 card.year == gameData.phase_two.Year);
+        List<TacticCard> tacticRefs = gameData.phase_two.tactics.Where(card => cardSymbols.Contains(card.tactic_name) && 
+                                                                                 card.year == gameData.phase_two.Year).ToList();
 
-        if(tacticRef == null)
-            throw new Exception("Unable to find TacticCard with tactic name '" + cardName + "' for the current year! Damn.");
+        if(tacticRefs == null)
+            throw new Exception("Unable to find any TacticCard for tactic symbols '" + cardSymbols + "' for the current year! Damn.");
                 
-        return tacticRef;
+        return tacticRefs;
     }
 
     /// <summary>

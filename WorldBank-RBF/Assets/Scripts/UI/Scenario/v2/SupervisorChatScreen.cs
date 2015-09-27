@@ -11,8 +11,8 @@ public class SupervisorChatScreen : ChatScreen {
 	static Timers.TimerInstance tacticCardCooldown;
 	static Timers.TimerInstance investigateCooldown;
 
-	List<string> tacticsAvailable;
-	List<string> queuedTactics;
+	List<Models.TacticCard> tacticsAvailable;
+	List<Models.TacticCard> queuedTactics;
 
 	string tacticState;
 	Models.TacticCard investigatingTactic;
@@ -37,7 +37,7 @@ public class SupervisorChatScreen : ChatScreen {
 	/// <summary>
     /// Get/set
     /// </summary>
-    public List<string> Available {
+    public List<Models.TacticCard> Available {
         set {
             tacticsAvailable = value;
             queuedTactics = value;
@@ -70,29 +70,16 @@ public class SupervisorChatScreen : ChatScreen {
 
  	public void Clear() {
 
- 		ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer);
+ 		ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer, "Scenario");
 
  	}
 
  	void OpenTacticCard () {
 
- 		string tacticName = queuedTactics[cardIndex];
 		Models.TacticCard card = null;
 		investigateFurther = false;
 
-		try {
-
-			card = DataManager.GetTacticCardByName(tacticName);
-	
-		}
-		catch(System.Exception e) {
-			
-			Debug.LogWarning("Unable to locate a tactic card for '" + tacticName + "'. Removing from available tactics.", this);
-			queuedTactics.Remove (tacticName);
-			SkipCard ();
-			return;
-
-		}
+		card = queuedTactics[cardIndex];
 
 		ChatAction investigate = new ChatAction();
 		ChatAction skip = new ChatAction();
@@ -112,12 +99,7 @@ public class SupervisorChatScreen : ChatScreen {
 		
 		// Early-out if all tactics have been added
 		if (tacticsAvailable.Count == 0) return;
-			
-		// Add a random card from the available tactics
-		string tactic = tacticsAvailable[Random.Range (0, tacticsAvailable.Count-1)];
-		// tacticsAvailable.Remove (tactic);
-		// queuedTactics.Add (tactic);
-
+		
 		ShowTactics ();
 	}
 
@@ -138,7 +120,7 @@ public class SupervisorChatScreen : ChatScreen {
 		RemoveOptions ();
 
 		// Remove this tactic from the queue & set it as the tactic currently under investigation
-		queuedTactics.Remove (card.tactic_name);
+		queuedTactics.Remove (card);
 		investigatingTactic = card;
 		state = SupervisorState.Investigating;
 
@@ -204,12 +186,6 @@ public class SupervisorChatScreen : ChatScreen {
 
 		AddOptions (optionTitles, investigateActions, true);
 
-		// If we can't investigate more, remove button and show close
-		/*if(investigatingTactic.further_options == null) {
-			buttonInvestigate.gameObject.SetActive(false);
-			buttonObserve.Text = "Close";
-		}*/
-
 		investigateFurther = true;
 
 		if(tabAnimator.GetComponent<Button>().interactable)
@@ -230,6 +206,23 @@ public class SupervisorChatScreen : ChatScreen {
 
 	}
 
+    void AddResponseSpeech (string message, bool endOfCard=false, bool initial=false, string optionUsed=null) {
+
+    	if(optionUsed != null) {
+			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(optionUsed);
+			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(optionUsed).title, dictAffect.Values.ToArray());
+		}
+
+    	AddResponseSpeech (message, Supervisor, initial, false);
+    	
+    	if(endOfCard)
+	    	SkipCard();
+		
+		// SFX
+	    if(gameObject.activeSelf)
+			AudioManager.Sfx.Play ("assistantresponse", "Phase2");
+    }
+
 	/// <summary>
     // Callback for TimerTick, filtering for type of event
     /// </summary>
@@ -249,22 +242,5 @@ public class SupervisorChatScreen : ChatScreen {
 	    		RemoveSystemMessage(investigateMsg);
 
     	}
-    }
-
-    void AddResponseSpeech (string message, bool endOfCard=false, bool initial=false, string optionUsed=null) {
-
-    	if(optionUsed != null) {
-			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(optionUsed);
-			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(optionUsed).title, dictAffect.Values.ToArray());
-		}
-
-    	AddResponseSpeech (message, Supervisor, initial, false);
-    	
-    	if(endOfCard)
-	    	SkipCard();
-		
-		// SFX
-	    if(gameObject.activeSelf)
-			AudioManager.Sfx.Play ("assistantresponse", "Phase2");
     }
 }

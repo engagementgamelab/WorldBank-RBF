@@ -51,6 +51,9 @@ public class TitleScreen : MonoBehaviour {
 	    	Debug.Log ("no success");
 	    } else {
 	    	Debug.Log ("success");
+	    	// is returning if plan submitted
+	    	returningPlayer = PlayerManager.Instance.PlanSubmitted;
+	    	Debug.Log("returningPlayer: " + returningPlayer);
 	    	OnAuthenticate ();
 	    }
     }

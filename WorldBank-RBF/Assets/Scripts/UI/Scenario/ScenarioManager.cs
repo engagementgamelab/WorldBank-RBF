@@ -41,6 +41,7 @@ public class ScenarioManager : MonoBehaviour {
 	int[] currentAffectGoals;
 
 	List<int[]> usedAffects = new List<int[]>();
+	List<string> availableTactics;
 
 	Animator scenarioCardCooldownAnimator;
 	Animator supervisorChatTabAnimator;
@@ -229,7 +230,9 @@ public class ScenarioManager : MonoBehaviour {
 		DialogManager.instance.CreateTutorialScreen("phase_2_year_end");
 
 		// Clear all supervisor dialog
+		supervisorChat.gameObject.SetActive(true);
 		supervisorChat.Clear();
+		supervisorChat.gameObject.SetActive(false);
 
 	}
 
@@ -331,6 +334,16 @@ public class ScenarioManager : MonoBehaviour {
 			DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_skip");
 		else
 			DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_first_problem");
+
+		// Tactics setup
+		availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+		
+		// Also add tactics that show only if they are not part of player's selected plan
+		foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
+		{
+			if(!availableTactics.Contains(tactic))
+				availableTactics.Add(tactic);
+		}
 
     }
 
@@ -440,20 +453,7 @@ public class ScenarioManager : MonoBehaviour {
 
     void EnableSupervisor() {
 
-		// Initialize tactics cards after first problem card done
-		if(currentYear == 1 && currentCardIndex == 0) {
-			List<string> availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
-			
-			// Also add tactics that show only if they are not part of player's selected plan
-			foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
-			{
-				if(!availableTactics.Contains(tactic))
-					availableTactics.Add(tactic);
-			}
-
-			DialogManager.instance.SetAvailableTactics (availableTactics);
-
-		}
+		DialogManager.instance.SetAvailableTactics(availableTactics);
 
 		// Enable supervisor tab
 		supervisorChatTabAnimator.Play("SupervisorTabOn");

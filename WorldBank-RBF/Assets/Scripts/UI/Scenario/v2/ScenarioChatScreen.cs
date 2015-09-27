@@ -42,15 +42,25 @@ public class ScenarioChatScreen : ChatScreen {
 	int advisorsUseLimit = 3;
 	int advisorsUsed = 0;
 
+	bool cardQueued;
+
  	public override void OnEnable() {
 
  		base.OnEnable();
 
-		disabledPanel.gameObject.SetActive(false);
+ 		if(cardQueued) {
+	 		Initialize();
+	 		cardQueued = false;
+ 		}
 
  	}
 
     void Initialize () {
+
+    	if(!gameObject.activeSelf) {
+    		cardQueued = true;
+    		return;
+    	}
 
     	// Get initial character info
 		Models.Character charRef = DataManager.GetDataForCharacter(_data.initiating_npc);
