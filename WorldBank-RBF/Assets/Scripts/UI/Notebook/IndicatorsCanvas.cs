@@ -151,8 +151,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 		}
 
-		SelectedOptions.Clear();
-
     	yield return new WaitForSeconds(1.1f);
 
 		showIndicators = true;
@@ -196,6 +194,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 		}
 
 		showIndicators = false;
+
+		SelectedOptions.Clear();
 
 	}
 
