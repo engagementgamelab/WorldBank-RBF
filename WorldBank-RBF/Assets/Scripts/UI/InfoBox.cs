@@ -91,13 +91,30 @@ public class InfoBox : MB {
 	}
 
 	void OnNoDays () {
-		if (!noDays && PlayerData.InteractionGroup.Empty)
-			StartCoroutine (CoOpen ());
+		StartCoroutine (WaitForTravel ());
 	}
 
 	void SetActive (bool active) {
 		Panel.SetActive (active);
 		Background.SetActive (active);
+	}
+
+	IEnumerator WaitForTravel () {
+
+		// Wait to see if we begin traveling
+		yield return new WaitForFixedUpdate ();
+
+		// Wait while traveling
+		while (CurrentCityIndicator.Moving) {
+			yield return null;
+		}
+
+		// Wait to see if we enter the city
+		yield return new WaitForFixedUpdate ();
+
+		// If after all this waiting we don't have any interactions, show the dang box!
+		if (!noDays && PlayerData.InteractionGroup.Empty)
+			StartCoroutine (CoOpen ());
 	}
 
 	IEnumerator CoOpen () {
