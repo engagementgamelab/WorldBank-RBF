@@ -45,10 +45,6 @@ public class ChatScreen : GenericDialogBox {
 		if(clearAll)
 			RemoveOptions ();
 
-		// Reset animation state
-		foreach (ScenarioOptionButton btn in _btnListOptions) {
-			btn.GetComponent<Button>().animator.CrossFade("Normal", 0f);
-		}
 
 		int btnIndex = 0;
 
@@ -56,6 +52,9 @@ public class ChatScreen : GenericDialogBox {
 
 			ScenarioOptionButton btnChoice = _btnListOptions[btnIndex];
 			btnChoice.gameObject.SetActive (true);
+
+			// Reset animation state
+			btnChoice.GetComponent<Button>().animator.CrossFade("Normal", 0f);
 
 			btnChoice.Button.onClick.RemoveAllListeners();
 
@@ -89,6 +88,16 @@ public class ChatScreen : GenericDialogBox {
 			msg.gameObject.SetActive (false);
 
 	}
+
+	public virtual void Clear () {
+
+    	ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer, "Scenario");
+    	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer, "Scenario");
+    	ObjectPool.DestroyChildren<IndicatorsMessage>(messagesContainer, "Scenario");
+
+    	RemoveOptions ();
+
+    }
 
 	// Scenario option was selected
 	protected virtual void OptionSelected(string strOptionSymbol) {

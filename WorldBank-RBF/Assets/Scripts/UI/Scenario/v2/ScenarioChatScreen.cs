@@ -44,6 +44,12 @@ public class ScenarioChatScreen : ChatScreen {
 
 	bool cardQueued;
 
+	void Start() {
+
+		Events.instance.AddListener<ScenarioEvent> (OnScenarioEvent);
+
+	}
+
  	void OnEnable() {
 
  		rightPanel.gameObject.SetActive(true);
@@ -58,6 +64,11 @@ public class ScenarioChatScreen : ChatScreen {
     void Initialize () {
 
     	if(!gameObject.activeSelf) {
+
+			// Show LED if this tab not selected
+			if(tabAnimator.GetComponent<Button>().interactable)
+				tabAnimator.Play("ScenarioTabAlert");
+				
     		cardQueued = true;
     		return;
     	}
@@ -84,8 +95,6 @@ public class ScenarioChatScreen : ChatScreen {
 
 		if (gameObject.activeSelf)
 			AddResponseSpeech(_data.initiating_dialogue, charRef, true);
-
-		Events.instance.AddListener<ScenarioEvent> (OnScenarioEvent);
 
 		// Reset of advisors used and make advisors container interactable
 		advisorsUsed = 0;
@@ -149,13 +158,9 @@ public class ScenarioChatScreen : ChatScreen {
     	}
 	}
 
-	public void Clear () {
+	public override void Clear () {
 
-    	ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer, "Scenario");
-    	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer, "Scenario");
-    	ObjectPool.DestroyChildren<IndicatorsMessage>(messagesContainer, "Scenario");
-
-    	RemoveOptions ();
+		base.Clear();
 
     	// Disable advisors
 		advisorsContainer.GetComponent<CanvasGroup>().interactable = false;
@@ -168,6 +173,25 @@ public class ScenarioChatScreen : ChatScreen {
 		Clear();
 
 		AddSystemMessage("No messages.");
+
+	}
+
+	public void NoActionsTaken() {
+		
+		Clear();
+
+		AddSystemMessage(DataManager.GetUIText("copy_no_action_taken_problem"));
+	
+		ChatAction nextCardAction = new ChatAction();
+
+		UnityAction nextCard = (() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, null)));
+		nextCardAction.action = nextCard;
+
+		RemoveOptions();
+		AddOptions (
+			new List<string> { "Confirm Feedback" },
+			new List<ChatAction> { nextCardAction }
+		);
 
 	}
 
@@ -276,6 +300,7 @@ public class ScenarioChatScreen : ChatScreen {
 
 			// Tutorial
 			DialogManager.instance.CreateTutorialScreen("phase_2_feedback");
+
 		}
 		// Error
 		else 

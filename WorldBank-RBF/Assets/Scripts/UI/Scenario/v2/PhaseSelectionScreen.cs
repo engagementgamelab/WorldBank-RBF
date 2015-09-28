@@ -9,22 +9,23 @@ public class PhaseSelectionScreen : MonoBehaviour {
 		AudioManager.Music.FadeOut ("title_theme", 0.5f, () => {
 				MenusManager.gotoSceneOnLoad = "PhaseOne";
 				AudioManager.StopAll ();
-				StartCoroutine (CoGotoLoad ());
+				StartCoroutine (CoGotoLoad ("loading"));
 			}
 		);
 	}
 
 	public void OnPhaseTwo () {
-		menus.SetScreen("plan");
+		AudioManager.StopAll ();
+		StartCoroutine (CoGotoLoad ("plan"));
 	}
 
 	public void OnBack () {
 		menus.SetScreen ("title");
 	}
 
-	IEnumerator CoGotoLoad () {
+	IEnumerator CoGotoLoad (string strScreen) {
 		yield return new WaitForFixedUpdate ();
 		ObjectPool.Clear ();
-		menus.SetScreen ("loading");
+		menus.SetScreen (strScreen);
 	}
 }
