@@ -7,7 +7,6 @@ using System.Collections.Generic;
 public class ChatScreen : GenericDialogBox {
 
 	public Transform messagesContainer;
-	public Transform disabledPanel;
 	public Scrollbar messagesScrollbar;
 	public LayoutElement rightPanel;
 	public Animator advisorsPanel;
@@ -18,17 +17,6 @@ public class ChatScreen : GenericDialogBox {
 	public List<ScenarioOptionButton> _btnListOptions;
 
 	protected bool panelOpen = false;
-
-	public virtual void OnEnable () {
-		rightPanel.gameObject.SetActive (rightPanelActive);
-		if (rightPanelActive && !panelOpen) {
-			advisorsPanel.Play ("Opened");
-			panelOpen = true;
-		}
-
-		disabledPanel.gameObject.SetActive(false);
-
-	}
 	 
 	public class ChatAction
 	{

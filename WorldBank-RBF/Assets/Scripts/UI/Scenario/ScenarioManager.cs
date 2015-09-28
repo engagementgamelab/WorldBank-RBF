@@ -233,6 +233,11 @@ public class ScenarioManager : MonoBehaviour {
 		supervisorChat.gameObject.SetActive(true);
 		supervisorChat.Clear();
 		supervisorChat.gameObject.SetActive(false);
+		
+		// Ensure scenario chat is showing
+		scenarioChatTab.GetComponent<Button>().interactable = false;
+		supervisorChatTab.GetComponent<Button>().interactable = true;
+		scenarioChat.gameObject.SetActive(true);
 
 	}
 
@@ -255,6 +260,8 @@ public class ScenarioManager : MonoBehaviour {
 		currentMonth = 1;
 		
 		inYearEnd = false;
+
+		DialogManager.instance.SetAvailableTactics(availableTactics);
 
 		GetNextCard();
 
@@ -344,6 +351,7 @@ public class ScenarioManager : MonoBehaviour {
 			if(!availableTactics.Contains(tactic))
 				availableTactics.Add(tactic);
 		}
+		DialogManager.instance.SetAvailableTactics(availableTactics);
 
     }
 
@@ -452,8 +460,6 @@ public class ScenarioManager : MonoBehaviour {
     }
 
     void EnableSupervisor() {
-
-		DialogManager.instance.SetAvailableTactics(availableTactics);
 
 		// Enable supervisor tab
 		supervisorChatTabAnimator.Play("SupervisorTabOn");

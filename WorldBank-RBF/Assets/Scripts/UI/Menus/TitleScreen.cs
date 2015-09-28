@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class TitleScreen : MonoBehaviour {
 
@@ -63,12 +64,19 @@ public class TitleScreen : MonoBehaviour {
     		menus.SetScreen ("phase");
 		} else {
 			AudioManager.Music.FadeOut ("title_theme", 0.5f, () => {
-					AudioManager.Music.Stop ("title_theme");
-					menus.SetScreen ("loading");
+					MenusManager.gotoSceneOnLoad = "PhaseOne";
+					AudioManager.StopAll ();
+					StartCoroutine (CoGotoLoad ());
 				}
 			);
 		}
     }
+
+	IEnumerator CoGotoLoad () {
+		yield return new WaitForFixedUpdate ();
+		ObjectPool.Clear ();
+		menus.SetScreen ("loading");
+	}
 
     void ShowError (string error) {
     	txtError.text = error;
