@@ -249,7 +249,8 @@ public class ScenarioChatScreen : ChatScreen {
 		KeyValuePair<string, Models.Advisor> npc = _data.characters.Where(d => d.Value.hasFeedback && d.Value.feedback.ContainsKey(eventSymbol)).
 							 ToDictionary(d => d.Key, d => d.Value).FirstOrDefault();
 
-		if(!npc.Equals(null)) {
+		// Do we have an NPC with this feedback?
+		if(!npc.Equals(default(KeyValuePair<string, Models.Advisor>))) {
 
 			ChatAction nextCardAction = new ChatAction();
 
@@ -263,9 +264,10 @@ public class ScenarioChatScreen : ChatScreen {
 			);
 
 			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(eventSymbol);
+
+			string feedback = npc.Value.feedback[eventSymbol].ToString();
 			
-			AddResponseSpeech(npc.Value.feedback[eventSymbol].ToString(), 
-							  DataManager.GetDataForCharacter(npc.Key), false, true, dictAffect);
+			AddResponseSpeech(feedback, DataManager.GetDataForCharacter(npc.Key), false, true, dictAffect);
 
 			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(eventSymbol).title, dictAffect.Values.ToArray());
 
@@ -275,10 +277,9 @@ public class ScenarioChatScreen : ChatScreen {
 			// Tutorial
 			DialogManager.instance.CreateTutorialScreen("phase_2_feedback");
 		}
-		else {
-			// Broadcast to open next card
-			Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, eventSymbol));
-		}
+		// Error
+		else 
+			throw new Exception("No feedback found for '" + eventSymbol + "' in '" + _data.symbol + "'!!");
 
 	}
 
