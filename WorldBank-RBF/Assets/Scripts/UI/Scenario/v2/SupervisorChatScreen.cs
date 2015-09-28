@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class SupervisorChatScreen : ChatScreen {
+	
+	public Text debugPanelTacticsText;
 
 	TacticCardDialog currentTacticCard;
 
@@ -89,6 +91,13 @@ public class SupervisorChatScreen : ChatScreen {
 
  	void OpenTacticCard () {
 
+ 		if(queuedTactics.Count == 0) {
+ 			RemoveOptions();
+ 			AddSystemMessage("No more messages for this year.");
+
+ 			return;
+ 		}
+
 		Models.TacticCard card = null;
 		investigateFurther = false;
 
@@ -106,6 +115,8 @@ public class SupervisorChatScreen : ChatScreen {
 			new List<ChatAction> () { investigate, skip },
 			true
 		);
+
+		debugPanelTacticsText.text = "Tactic Symbol: " + card.symbol;
 	}
 
 	void AddCard () {
@@ -166,7 +177,11 @@ public class SupervisorChatScreen : ChatScreen {
 
 		List<ChatAction> investigateActions = new List<ChatAction>();
 
-		string[] optionSymbols = investigateFurther ? investigatingTactic.further_options : investigatingTactic.new_options;
+		List<string> optionSymbols = investigatingTactic.new_options.ToList<string>();
+
+		if(investigateFurther)
+			optionSymbols.AddRange(investigatingTactic.further_options);
+
 		List<string> optionTitles = optionSymbols.ToList().ConvertAll (x => DataManager.GetUnlockableBySymbol (x).title);
 
 		ChatAction investigate = new ChatAction();
@@ -185,6 +200,8 @@ public class SupervisorChatScreen : ChatScreen {
 			resultAction.action = feedback;
 			investigateActions.Add(resultAction);
 		}
+
+		Debug.Log("INVESTIGATE FURTHER: " + (investigatingTactic.further_options != null && !investigateFurther));
 		
 		if(investigatingTactic.further_options != null && !investigateFurther) {
 			optionTitles.Insert(0, "Investigate Further");

@@ -33,6 +33,10 @@ public class ScenarioManager : MonoBehaviour {
 	public float problemCardDurationOverride = 0;
 	public float monthLengthSecondsOverride = 0;
 
+	public Text debugPanelScenarioText;
+	public Text debugPanelProblemText;
+	public Button debugButton;
+
 	Timers.TimerInstance problemCardCooldown;
 	
 	ScenarioYearEndDialog yearEndPanel;
@@ -94,6 +98,14 @@ public class ScenarioManager : MonoBehaviour {
 			enableCooldown = true;
 
 		GetScenarioForPlan(DataManager.currentPlanId);
+
+		// Enable debug info
+		#if UNITY_EDITOR || DEVELOPMENT_BUILD
+			debugButton.gameObject.SetActive(true);
+		#else
+			debugButton.gameObject.SetActive(false);
+			debugPanelProblemText.transform.parent.gameObject.SetActive(false);
+		#endif
 	}
 
 	void Update () {
@@ -200,6 +212,8 @@ public class ScenarioManager : MonoBehaviour {
 		// Start card cooldown
 		BeginCooldown();
 
+		debugPanelProblemText.text = "Problem Symbol: " + card.symbol;
+
 	}
 
     /// <summary>
@@ -272,6 +286,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Close indicators
 		indicatorsCanvas.Close();
+
+		debugPanelScenarioText.text = "Scenario: " + DataManager.SceneContext.Replace("scenario_", "") + ", Year: " + currentYear;
 
 	}
 
@@ -368,6 +384,8 @@ public class ScenarioManager : MonoBehaviour {
 		#endif
 
 		cardCooldownElapsed = problemCardDuration;
+
+		debugPanelScenarioText.text = "Scenario: " + scenarioSymbol.Replace("scenario_", "") + ", Year: 1";
 
     }
 
