@@ -217,6 +217,20 @@ public static class ExtensionMethods {
 		transform.localScale = new Vector3 (scale, scale, scale);
 	}
 
+	// RectTransform
+
+	public static void SetAnchorPositionX (this RectTransform transform, float x) {
+		Vector2 p = transform.anchoredPosition;
+		p.x = x;
+		transform.anchoredPosition = p;
+	}
+
+	public static void SetPivotX (this RectTransform transform, float x) {
+		Vector2 p = transform.pivot;
+		p.x = x;
+		transform.pivot = p;	
+	}
+
 	/**
 	 *	Colliders
 	 */

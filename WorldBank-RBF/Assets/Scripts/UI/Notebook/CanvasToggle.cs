@@ -45,6 +45,12 @@ public class CanvasToggle : MonoBehaviour {
 		}
 	}
 
+	public void Open () {
+		if (activeCanvas != thisCanvas) {
+			OnClick ();
+		}
+	}
+
 	public void Close () {
 		SetCanvasActive (false);
 	}
