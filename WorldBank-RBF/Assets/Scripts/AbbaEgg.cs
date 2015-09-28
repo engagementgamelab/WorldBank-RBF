@@ -51,7 +51,7 @@ public class AbbaEgg : MonoBehaviour {
 
 	public void OnPressAbba () {
 		abbaImage.gameObject.SetActive (false);
-		int r = (int)Mathf.Round (Random.value * insights.Length-1);
+		int r = (int)Mathf.Round (Random.value * (insights.Length-1));
 		infoBox.Open ("ABBA moment of insight", "\n" + insights[r]);
 	}
 
