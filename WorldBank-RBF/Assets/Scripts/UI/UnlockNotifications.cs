@@ -27,6 +27,7 @@ public class UnlockNotifications : MonoBehaviour {
 	const float delay = 0.33f;
 
 	readonly List<string[]> queue = new List<string[]> ();
+	bool showedTutorial = false;
 
 	void Start () {
 
@@ -87,6 +88,10 @@ public class UnlockNotifications : MonoBehaviour {
 	}
 
 	void ActivateNotifications () {
+		if (DataManager.tutorialEnabled && !showedTutorial) {
+			DialogManager.instance.CreateTutorialScreen("phase_1_unlocked_something", "phase_1_plan_creation_screen");
+			showedTutorial = true;
+		}
 		for (int i = 0; i < queue.Count; i ++) {
 			notifications[i].gameObject.SetActive (true);
 			notifications[i].SetContent (queue[i][0], queue[i][1]);
