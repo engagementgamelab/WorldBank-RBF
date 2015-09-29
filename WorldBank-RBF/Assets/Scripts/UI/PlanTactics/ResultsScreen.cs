@@ -21,7 +21,17 @@ public class ResultsScreen : MonoBehaviour {
 	}
 
 	public void OnPressNext () {
+		
+		// Stop all audio before going to next scene
+		AudioManager.StopAll ();
+
 		ObjectPool.Clear ();
+
+		StartCoroutine (CoGotoScene ());
+	}
+
+	IEnumerator CoGotoScene () {
+		yield return new WaitForFixedUpdate ();
 		MenusManager.GotoScreen ("plan");
 	}
 }

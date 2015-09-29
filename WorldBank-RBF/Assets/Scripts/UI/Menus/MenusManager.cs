@@ -60,6 +60,12 @@ public class MenusManager : MonoBehaviour {
 	}
 
 	void Awake () {
+
+		Resolution[] resolutions = Screen.resolutions;
+        foreach (Resolution res in resolutions) {
+            print(res.width + "x" + res.height);
+        }
+
 		currentScreen = Screens[defaultScreen];
 		SetActiveScreen (currentScreen);
 		AudioManager.Music.Play ("title_theme");

@@ -47,6 +47,7 @@ GameObject:
   - 114: {fileID: 11430786}
   - 114: {fileID: 11489540}
   - 114: {fileID: 11408810}
+  - 114: {fileID: 11470604}
   m_Layer: 5
   m_Name: No button
   m_TagString: Untagged
@@ -160,6 +161,7 @@ GameObject:
   - 114: {fileID: 11461036}
   - 114: {fileID: 11479004}
   - 114: {fileID: 11493742}
+  - 114: {fileID: 11405970}
   m_Layer: 5
   m_Name: Confirm button
   m_TagString: Untagged
@@ -231,6 +233,7 @@ GameObject:
   - 114: {fileID: 11460632}
   - 114: {fileID: 11434468}
   - 114: {fileID: 11431656}
+  - 114: {fileID: 11420386}
   m_Layer: 5
   m_Name: Yes button
   m_TagString: Untagged
@@ -272,6 +275,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11405970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipName: buttonpresspositive
+  group: ui
+  type: 1
 --- !u!114 &11407412
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -332,6 +349,20 @@ MonoBehaviour:
     y: -2.3900001
     width: 3
     height: 3
+--- !u!114 &11420386
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 199128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipName: buttonpresspositive
+  group: ui
+  type: 1
 --- !u!114 &11424254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -349,17 +380,17 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 4626273e9495340d4956320a1421f3f4, type: 3}
     m_FontSize: 17
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 16
+    m_MaxSize: 18
     m_Alignment: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: This contact has given you new information! Some contacts just provide background
-    context, others give you ideas for new options you can take to solve the problem.
-    You can conference with up to two more before you make your decision.
+  m_Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus.
+    Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur
+    ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas matt
 --- !u!114 &11430786
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -430,7 +461,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11460632}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11405970}
+        m_MethodName: OnTriggerAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &11436602
@@ -680,7 +722,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -726,6 +768,20 @@ MonoBehaviour:
   m_Spacing: 20
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
+--- !u!114 &11470604
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipName: buttonpressnegative
+  group: ui
+  type: 1
 --- !u!114 &11472510
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -778,7 +834,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11461036}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11405970}
+        m_MethodName: OnTriggerAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &11486290
@@ -839,7 +906,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11430786}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11405970}
+        m_MethodName: OnTriggerAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &11491782
@@ -1089,7 +1167,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -20}
-  m_SizeDelta: {x: -40, y: 200}
+  m_SizeDelta: {x: -40, y: 117.300003}
   m_Pivot: {x: .5, y: 1}
 --- !u!224 &22429090
 RectTransform:
