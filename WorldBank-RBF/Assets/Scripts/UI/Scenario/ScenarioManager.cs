@@ -383,7 +383,7 @@ public class ScenarioManager : MonoBehaviour {
     void AssignScenario(string scenarioSymbol) {
 
     	// Set scene context from current scenario
-    	DataManager.SceneContext = scenarioSymbol;
+    	DataManager.SceneContext = "scenario_1";
 
 		problemCardDuration = (monthLengthSeconds * 12) / DataManager.ScenarioLength(scenarioTwistIndex);
 		

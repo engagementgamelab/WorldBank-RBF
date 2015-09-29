@@ -27,6 +27,8 @@ public class SupervisorChatScreen : ChatScreen {
 	bool investigateFurther;
 	bool tacticsQueued;
 
+	string optionSelected;
+
 	SystemMessage investigateMsg;
 
 	enum SupervisorState {
@@ -46,10 +48,18 @@ public class SupervisorChatScreen : ChatScreen {
 		// Tutorial
 		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor_opened");
 
+		// Display any queued tactics card
 		if(tacticsQueued) {
 			state = SupervisorState.WaitingForProblem;
 			ShowTactics();
 			tacticsQueued = false;
+		}
+
+		// Display feedback if queued
+		if(!System.String.IsNullOrEmpty(optionSelected))
+		{
+			StartCoroutine(ShowFeedback(optionSelected, true));
+			optionSelected = null;
 		}
 
 	}
@@ -203,11 +213,12 @@ public class SupervisorChatScreen : ChatScreen {
 		
 		if(investigatingTactic.further_options != null && !investigateFurther) {
 			optionTitles.Insert(0, "Investigate Further");
-			optionTitles.Add("View other problems");
 
 			investigateActions.Insert(0, investigate);
-			investigateActions.Add(skip);
 		}
+		
+		optionTitles.Add("View other problems");
+		investigateActions.Add(skip);
 
 		AddOptions (optionTitles, investigateActions, true);
 
@@ -225,21 +236,23 @@ public class SupervisorChatScreen : ChatScreen {
 
 	}
 
-	IEnumerator ShowFeedback(string option)
+	IEnumerator ShowFeedback(string option, bool nodelay=false)
 	{
+
+		optionSelected = option;
+
+		yield return new WaitForSeconds(1);
+			
+		Clear();
+
+		AddSystemMessage(DataManager.GetUIText("copy_waiting_for_feedback"));
+
+		yield return new WaitForSeconds(nodelay ? 1 : 3);
 
 		ChatAction showTactics = new ChatAction();
 		UnityAction showAction = (() => { state = SupervisorState.WaitingForProblem; ShowTactics(); });
 		showTactics.action = showAction;
-
-		yield return new WaitForSeconds(1f);
-			
-		Clear();
-
-		AddSystemMessage("Waiting for feedback...");
-
-		yield return new WaitForSeconds(3f);
-			
+	
 		Clear();
 
 		AddResponseSpeech (investigatingTactic.feedback_dialogue[option], false, false, option);
@@ -249,7 +262,7 @@ public class SupervisorChatScreen : ChatScreen {
 			new List<ChatAction> () { showTactics },
 			true
 		);
-
+	
 	}
 
     void AddResponseSpeech (string message, bool endOfCard=false, bool initial=false, string optionUsed=null) {

@@ -196,6 +196,8 @@ public class ScenarioChatScreen : ChatScreen {
 	}
 
 	IEnumerator AdvisorSelected(string strAdvisorSymbol) {
+
+		DisableAdvisors();
 	    		
 		AddSystemMessage("...");
 
@@ -216,7 +218,10 @@ public class ScenarioChatScreen : ChatScreen {
 		if(advisor.unlocks != null)
 		{
 			foreach(string option in advisor.unlocks)
-				currentCardOptions.Add(option);
+			{
+				if(!currentCardOptions.Contains(option))
+					currentCardOptions.Add(option);
+			}
 		}
 
 		if(advisor.dialogue != null && gameObject.activeSelf) {
@@ -239,10 +244,10 @@ public class ScenarioChatScreen : ChatScreen {
 		contactsTitleText.text = "Contacts (" + advisorsUsed + "/3)";
 
 		// Disable advisor container if player used their limit for this card
-		if(advisorsUsed == advisorsUseLimit) {
-			advisorsContainer.GetComponent<CanvasGroup>().interactable = false;
-			advisorsContainer.GetComponent<CanvasGroup>().alpha = .4f;
-		}
+		if(advisorsUsed == advisorsUseLimit) 
+			DisableAdvisors();
+		else
+			EnableAdvisors();
 
 		// SFX
 		AudioManager.Sfx.Play ("addtodiscussion", "Phase2");
@@ -264,7 +269,7 @@ public class ScenarioChatScreen : ChatScreen {
 			
 		Clear();
 
-		AddSystemMessage("Waiting for feedback...");
+		AddSystemMessage(DataManager.GetUIText("copy_waiting_for_feedback"));
 
 		yield return new WaitForSeconds(3f);
 			
@@ -306,6 +311,20 @@ public class ScenarioChatScreen : ChatScreen {
 		else 
 			throw new Exception("No feedback found for '" + eventSymbol + "' in '" + _data.symbol + "'!!");
 
+	}
+
+	void DisableAdvisors() {
+
+		advisorsContainer.GetComponent<CanvasGroup>().interactable = false;
+		advisorsContainer.GetComponent<CanvasGroup>().alpha = .4f;
+
+	}
+
+	void EnableAdvisors() {
+
+		advisorsContainer.GetComponent<CanvasGroup>().interactable = true;
+		advisorsContainer.GetComponent<CanvasGroup>().alpha = 1;
+		
 	}
 
 	void OnScenarioEvent (ScenarioEvent e) {
