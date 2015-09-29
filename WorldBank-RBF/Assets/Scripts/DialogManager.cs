@@ -157,7 +157,9 @@ public class DialogManager : MonoBehaviour {
 	}
 
 	public void SetAvailableTactics (List<string> availableTactics) {
-		supervisorChat.Available = availableTactics;
+		
+		supervisorChat.Available = DataManager.GetTacticCardsForSymbols(availableTactics.ToArray());
+		
 	}
 
 	/// <summary>
@@ -165,7 +167,7 @@ public class DialogManager : MonoBehaviour {
 	/// </summary>
 	public TacticCardDialog CreateTacticDialog(Models.TacticCard tactic) {
 
-		List<GenericButton> btnList = new List<GenericButton>();
+		// List<GenericButton> btnList = new List<GenericButton>();
 
 		TacticCardDialog tacticDialog = ObjectPool.Instantiate<TacticCardDialog>("Scenario");
 		tacticDialog.Data = tactic;

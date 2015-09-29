@@ -97,7 +97,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 		barSizesCurrent.Clear();
 
 		if (!phaseOne)
-			ObjectPool.DestroyChildren<ActionTaken>(actionsColumn.transform);
+			ObjectPool.DestroyChildren<ActionTaken>(actionsColumn.transform, "Scenario");
 
 		while(ind < currentAffects.Length) {
 	
@@ -141,7 +141,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 		}
 
-		ShowActionTaken(0);
+		if(SelectedOptions.Count > 0)
+			ShowActionTaken(0);
 
 		// TODO: No options?
 		if(SelectedOptions.Count == 0) {
@@ -149,8 +150,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 		   //  strActionsSummary = "<i><b>You did not take any actions this year!</b></i>"
 
 		}
-
-		SelectedOptions.Clear();
 
     	yield return new WaitForSeconds(1.1f);
 
@@ -169,9 +168,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 		AppliedAffects.Add(new [] { intBirths, intVaccinations, intQOC });
 		currentAffects = new [] { intBirths.ToString(), intVaccinations.ToString(), intQOC.ToString() };
-
-		// SFX
-		// AudioManager.Sfx.Play ("graphupdated", "Phase2");
 
 	}
 
@@ -198,6 +194,9 @@ public class IndicatorsCanvas : NotebookCanvas {
 		}
 
 		showIndicators = false;
+
+		SelectedOptions.Clear();
+
 	}
 
     public void EndYear (Models.ScenarioConfig scenarioConfig, int currentYear, int twistIndex) {
@@ -233,6 +232,13 @@ public class IndicatorsCanvas : NotebookCanvas {
     		actionsView.gameObject.SetActive(false);
 
 	    	phaseEndPromptText.text = yearEndMessage;
+
+		 	// End of year 3; update user record
+	        Dictionary<string, object> formFields = new Dictionary<string, object>();
+	        formFields.Add("save_phase_2", true);
+
+			PlayerManager.Instance.SaveData (formFields, UserSaveCallback);
+
     	}
     	else
     	{
@@ -297,6 +303,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 			btnChoice.Text = optionTxt;
 			btnChoice.Button.onClick.RemoveAllListeners ();
 			btnChoice.Button.onClick.AddListener (() => YearEndOptionSelected (optionTxt, optionVal));
+
 		}
 
 		ScenarioOptionButton btnNextYear = _btnListOptions[btnIndex];
@@ -315,6 +322,13 @@ public class IndicatorsCanvas : NotebookCanvas {
 		// Broadcast to affect current scenario path with the config value
 		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.DECISION_SELECTED, optionVal));
 		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT_YEAR));
+	}
+
+	// Get response from saving user state
+	void UserSaveCallback(Dictionary<string, object> response) {
+		
+		Debug.Log("Phase two user status updated.");
+	
 	}
 	
 	public void DebugIndicators() {

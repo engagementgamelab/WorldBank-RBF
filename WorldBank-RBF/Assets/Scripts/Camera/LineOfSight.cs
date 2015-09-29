@@ -36,17 +36,17 @@ public class LineOfSight : MB {
 
 	int rayCount = 7;
 	float width = 6f;
-	Vector3 direction;
-	float distance = 10000f;
-	bool overForegroundObject = false;
+	// Vector3 direction;
+	// float distance = 10000f;
+	// bool overForegroundObject = false;
 
 	void Start () {
-		float angle = (-MainCamera.FOV / 2f) + 2f;
+		/*float angle = (-MainCamera.FOV / 2f) + 2f;
 		direction = new Vector3 (
 			0f,
 			Mathf.Sin (angle * Mathf.Deg2Rad),
 			Mathf.Cos (angle * Mathf.Deg2Rad)
-		);
+		);*/
 	}
 
 	/*void Update () {

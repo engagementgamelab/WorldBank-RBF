@@ -18,7 +18,7 @@ public class TacticItem : ModelItem {
 	/// <summary>
 	/// Gets the model symbol.
 	/// </summary>
-	public string Symbol {
+	new public string Symbol {
 		get { return Model.symbol; }
 	}
 

@@ -52,10 +52,13 @@ public class DebugMenu : MonoBehaviour {
     		// PlayerData.UnlockItem ("unlockable_dialogue_mr_todd", "Context text");
     		twoTacticsUnlocked = true;
     	}
-    	if (GUILayout.Button ("skip to phase 2")) {
+    	if (GUILayout.Button ("1 day")) {
+    		PlayerData.DayGroup.Set (1);
+    	}
+    	/*if (GUILayout.Button ("skip to phase 2")) {
     		ObjectPool.Clear();
 			Application.LoadLevel("PhaseTwo");		
-    	}
+    	}*/
 	}
 	#endif
 }

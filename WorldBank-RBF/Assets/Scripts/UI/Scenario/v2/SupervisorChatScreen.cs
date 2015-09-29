@@ -1,18 +1,21 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 public class SupervisorChatScreen : ChatScreen {
+	
+	public Text debugPanelTacticsText;
 
 	TacticCardDialog currentTacticCard;
 
 	static Timers.TimerInstance tacticCardCooldown;
 	static Timers.TimerInstance investigateCooldown;
 
-	List<string> tacticsAvailable;
-	List<string> queuedTactics;
+	List<Models.TacticCard> tacticsAvailable;
+	List<Models.TacticCard> queuedTactics;
 
 	string tacticState;
 	Models.TacticCard investigatingTactic;
@@ -22,6 +25,7 @@ public class SupervisorChatScreen : ChatScreen {
 	float cooldownElapsed = 0;
 
 	bool investigateFurther;
+	bool tacticsQueued;
 
 	SystemMessage investigateMsg;
 
@@ -29,20 +33,45 @@ public class SupervisorChatScreen : ChatScreen {
 		PresentingProblem,
 		Investigating,
 		PresentingOptions,
+		Feedback,
 		WaitingForProblem
 	}
 
 	SupervisorState state = SupervisorState.WaitingForProblem;
 
+	void OnEnable() {
+
+ 		rightPanel.gameObject.SetActive(false);
+
+		// Tutorial
+		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor_opened");
+
+		if(tacticsQueued) {
+			state = SupervisorState.WaitingForProblem;
+			ShowTactics();
+			tacticsQueued = false;
+		}
+
+	}
+
+	void OnDisable() {
+
+ 		rightPanel.gameObject.SetActive(true);
+
+	}
+
 	/// <summary>
     /// Get/set
     /// </summary>
-    public List<string> Available {
+    public List<Models.TacticCard> Available {
         set {
             tacticsAvailable = value;
             queuedTactics = value;
 
-            ShowTactics();
+            if(!gameObject.activeSelf)
+            	tacticsQueued = true;
+            else
+	            ShowTactics();
         }
     }
 
@@ -56,43 +85,21 @@ public class SupervisorChatScreen : ChatScreen {
     	}
     }
 
- 	public override void OnEnable() {
-
- 		base.OnEnable();
-
-		// Disable screen if out of tactics for this year
-		disabledPanel.gameObject.SetActive(queuedTactics.Count == 0);
-
-		// Tutorial
-		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor_opened");
-
- 	}
-
- 	public void Clear() {
-
- 		ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer);
-
- 	}
-
  	void OpenTacticCard () {
+			
+		Clear();
 
- 		string tacticName = queuedTactics[cardIndex];
+ 		if(queuedTactics.Count == 0) {
+ 			RemoveOptions();
+ 			AddSystemMessage("No more messages for this year.");
+
+ 			return;
+ 		}
+
 		Models.TacticCard card = null;
 		investigateFurther = false;
 
-		try {
-
-			card = DataManager.GetTacticCardByName(tacticName);
-	
-		}
-		catch(System.Exception e) {
-			
-			Debug.LogWarning("Unable to locate a tactic card for '" + tacticName + "'. Removing from available tactics.", this);
-			queuedTactics.Remove (tacticName);
-			SkipCard ();
-			return;
-
-		}
+		card = queuedTactics[cardIndex];
 
 		ChatAction investigate = new ChatAction();
 		ChatAction skip = new ChatAction();
@@ -106,18 +113,15 @@ public class SupervisorChatScreen : ChatScreen {
 			new List<ChatAction> () { investigate, skip },
 			true
 		);
+
+		debugPanelTacticsText.text = "Tactic Symbol: " + card.symbol;
 	}
 
 	void AddCard () {
 		
 		// Early-out if all tactics have been added
 		if (tacticsAvailable.Count == 0) return;
-			
-		// Add a random card from the available tactics
-		string tactic = tacticsAvailable[Random.Range (0, tacticsAvailable.Count-1)];
-		// tacticsAvailable.Remove (tactic);
-		// queuedTactics.Add (tactic);
-
+		
 		ShowTactics ();
 	}
 
@@ -125,9 +129,11 @@ public class SupervisorChatScreen : ChatScreen {
 
 		// If supervisor is ready for new problems, open a new card
 		if (state == SupervisorState.WaitingForProblem && queuedTactics.Count > 0) {
+
 			cardIndex = 0;
 			OpenTacticCard ();
 			state = SupervisorState.PresentingProblem;
+			
 		}
 	}
 
@@ -138,7 +144,7 @@ public class SupervisorChatScreen : ChatScreen {
 		RemoveOptions ();
 
 		// Remove this tactic from the queue & set it as the tactic currently under investigation
-		queuedTactics.Remove (card.tactic_name);
+		queuedTactics.Remove (card);
 		investigatingTactic = card;
 		state = SupervisorState.Investigating;
 
@@ -163,9 +169,6 @@ public class SupervisorChatScreen : ChatScreen {
 
 		if (queuedTactics.Count > 0)
 			OpenTacticCard ();
-		// Out of tactics for this year
-		else
-			disabledPanel.gameObject.SetActive(true);
 	}
 
 	void EndInvestigation () {
@@ -174,7 +177,11 @@ public class SupervisorChatScreen : ChatScreen {
 
 		List<ChatAction> investigateActions = new List<ChatAction>();
 
-		string[] optionSymbols = investigateFurther ? investigatingTactic.further_options : investigatingTactic.new_options;
+		List<string> optionSymbols = investigatingTactic.new_options.ToList<string>();
+
+		if(investigateFurther)
+			optionSymbols.AddRange(investigatingTactic.further_options);
+
 		List<string> optionTitles = optionSymbols.ToList().ConvertAll (x => DataManager.GetUnlockableBySymbol (x).title);
 
 		ChatAction investigate = new ChatAction();
@@ -189,7 +196,7 @@ public class SupervisorChatScreen : ChatScreen {
 			string key = option;
 			ChatAction resultAction = new ChatAction();
 
-			UnityAction feedback = (() => AddResponseSpeech (investigatingTactic.feedback_dialogue[key], true));
+			UnityAction feedback = (() => OptionSelected(key));
 			resultAction.action = feedback;
 			investigateActions.Add(resultAction);
 		}
@@ -204,12 +211,6 @@ public class SupervisorChatScreen : ChatScreen {
 
 		AddOptions (optionTitles, investigateActions, true);
 
-		// If we can't investigate more, remove button and show close
-		/*if(investigatingTactic.further_options == null) {
-			buttonInvestigate.gameObject.SetActive(false);
-			buttonObserve.Text = "Close";
-		}*/
-
 		investigateFurther = true;
 
 		if(tabAnimator.GetComponent<Button>().interactable)
@@ -218,17 +219,57 @@ public class SupervisorChatScreen : ChatScreen {
 
 	protected override void OptionSelected (string option) {
 
+		state = SupervisorState.Feedback;
+
+		StartCoroutine(ShowFeedback(option));
+
+	}
+
+	IEnumerator ShowFeedback(string option)
+	{
+
 		ChatAction showTactics = new ChatAction();
-		showTactics.action = ShowTactics;
+		UnityAction showAction = (() => { state = SupervisorState.WaitingForProblem; ShowTactics(); });
+		showTactics.action = showAction;
+
+		yield return new WaitForSeconds(1f);
+			
+		Clear();
+
+		AddSystemMessage("Waiting for feedback...");
+
+		yield return new WaitForSeconds(3f);
+			
+		Clear();
 
 		AddResponseSpeech (investigatingTactic.feedback_dialogue[option], false, false, option);
-		state = SupervisorState.WaitingForProblem;
+
 		AddOptions (
-			new List<string> () { "OK" },
-			new List<ChatAction> () { showTactics }
+			new List<string> () { "Confirm feedback" },
+			new List<ChatAction> () { showTactics },
+			true
 		);
 
 	}
+
+    void AddResponseSpeech (string message, bool endOfCard=false, bool initial=false, string optionUsed=null) {
+
+    	if(optionUsed != null) {
+			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(optionUsed);
+			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(optionUsed).title, dictAffect.Values.ToArray());
+
+	    	AddResponseSpeech (message, Supervisor, initial, true, dictAffect);
+		}
+		else
+	    	AddResponseSpeech (message, Supervisor, initial, false);
+    	
+    	if(endOfCard)
+	    	SkipCard();
+		
+		// SFX
+	    if(gameObject.activeSelf)
+			AudioManager.Sfx.Play ("assistantresponse", "Phase2");
+    }
 
 	/// <summary>
     // Callback for TimerTick, filtering for type of event
@@ -249,22 +290,5 @@ public class SupervisorChatScreen : ChatScreen {
 	    		RemoveSystemMessage(investigateMsg);
 
     	}
-    }
-
-    void AddResponseSpeech (string message, bool endOfCard=false, bool initial=false, string optionUsed=null) {
-
-    	if(optionUsed != null) {
-			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(optionUsed);
-			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(optionUsed).title, dictAffect.Values.ToArray());
-		}
-
-    	AddResponseSpeech (message, Supervisor, initial, false);
-    	
-    	if(endOfCard)
-	    	SkipCard();
-		
-		// SFX
-	    if(gameObject.activeSelf)
-			AudioManager.Sfx.Play ("assistantresponse", "Phase2");
     }
 }

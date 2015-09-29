@@ -8,7 +8,6 @@ public class Counter : MB {
 	public Text animText;
 
 	string newText = "";
-	int prevCount = 0;
 	int count = 0;
 	float endY = 50f;
 
@@ -46,7 +45,6 @@ public class Counter : MB {
 				text.text = newText;
 			}
 			count = value;
-			prevCount = count;
 		}
 	}
 

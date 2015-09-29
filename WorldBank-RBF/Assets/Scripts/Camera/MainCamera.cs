@@ -52,13 +52,13 @@ public class MainCamera : MB {
 		}
 	}
 
-	new Camera camera;
+	Camera myCamera;
 	public Camera Camera {
 		get {
-			if (camera == null) {
-				camera = GetComponent<Camera> ();
+			if (myCamera == null) {
+				myCamera = GetComponent<Camera> ();
 			}                                
-			return camera;
+			return myCamera;
 		}
 	}
 

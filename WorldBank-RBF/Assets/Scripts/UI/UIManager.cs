@@ -5,7 +5,7 @@
 public class UIManager : MonoBehaviour {
 
 	public NpcDialogBox dialogBox;
-	public UnlockNotification unlockNotification;
+	public UnlockNotifications unlockNotification;
 	public InteractionsCounter interactions;
 	public GameObject mapCanvas;
 	public GameObject tacticsScreen;

@@ -42,15 +42,36 @@ public class ScenarioChatScreen : ChatScreen {
 	int advisorsUseLimit = 3;
 	int advisorsUsed = 0;
 
- 	public override void OnEnable() {
+	bool cardQueued;
 
- 		base.OnEnable();
+	void Start() {
 
-		disabledPanel.gameObject.SetActive(false);
+		Events.instance.AddListener<ScenarioEvent> (OnScenarioEvent);
+
+	}
+
+ 	void OnEnable() {
+
+ 		rightPanel.gameObject.SetActive(true);
+
+ 		if(cardQueued) {
+	 		Initialize();
+	 		cardQueued = false;
+ 		}
 
  	}
 
     void Initialize () {
+
+    	if(!gameObject.activeSelf) {
+
+			// Show LED if this tab not selected
+			if(tabAnimator.GetComponent<Button>().interactable)
+				tabAnimator.Play("ScenarioTabAlert");
+				
+    		cardQueued = true;
+    		return;
+    	}
 
     	// Get initial character info
 		Models.Character charRef = DataManager.GetDataForCharacter(_data.initiating_npc);
@@ -75,8 +96,6 @@ public class ScenarioChatScreen : ChatScreen {
 		if (gameObject.activeSelf)
 			AddResponseSpeech(_data.initiating_dialogue, charRef, true);
 
-		Events.instance.AddListener<ScenarioEvent> (OnScenarioEvent);
-
 		// Reset of advisors used and make advisors container interactable
 		advisorsUsed = 0;
 		advisorsContainer.GetComponent<CanvasGroup>().interactable = true;
@@ -91,12 +110,19 @@ public class ScenarioChatScreen : ChatScreen {
     	List<string> removeAdvisors = previousAdvisorOptions
     		.Except (currentAdvisorOptions).ToList ();
 
+    	// Remove initiator from advisors if npc does not have dialogue
+    	if(!_data.characters.Keys.Contains(_data.initiating_npc) || !_data.characters[_data.initiating_npc].hasDialogue)
+	    	removeAdvisors.Add(_data.initiating_npc);
+
     	List<string> newAdvisors = currentAdvisorOptions
 			.Except (previousAdvisorOptions).ToList ();
 
     	foreach (string characterSymbol in removeAdvisors) {
     		
     		Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
+
+    		if(btnListAdvisors.FirstOrDefault (x => x.NPCName == charRef.display_name) == null)
+    			continue;
     		
     		AdvisorButton btnChoice = btnListAdvisors.FirstOrDefault (x => x.NPCName == charRef.display_name);
 
@@ -132,13 +158,9 @@ public class ScenarioChatScreen : ChatScreen {
     	}
 	}
 
-	public void Clear () {
+	public override void Clear () {
 
-    	ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer, "Scenario");
-    	ObjectPool.DestroyChildren<SystemMessage>(messagesContainer, "Scenario");
-    	ObjectPool.DestroyChildren<IndicatorsMessage>(messagesContainer, "Scenario");
-
-    	RemoveOptions ();
+		base.Clear();
 
     	// Disable advisors
 		advisorsContainer.GetComponent<CanvasGroup>().interactable = false;
@@ -151,6 +173,25 @@ public class ScenarioChatScreen : ChatScreen {
 		Clear();
 
 		AddSystemMessage("No messages.");
+
+	}
+
+	public void NoActionsTaken() {
+		
+		Clear();
+
+		AddSystemMessage(DataManager.GetUIText("copy_no_action_taken_problem"));
+	
+		ChatAction nextCardAction = new ChatAction();
+
+		UnityAction nextCard = (() => Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, null)));
+		nextCardAction.action = nextCard;
+
+		RemoveOptions();
+		AddOptions (
+			new List<string> { "Confirm Feedback" },
+			new List<ChatAction> { nextCardAction }
+		);
 
 	}
 
@@ -232,7 +273,8 @@ public class ScenarioChatScreen : ChatScreen {
 		KeyValuePair<string, Models.Advisor> npc = _data.characters.Where(d => d.Value.hasFeedback && d.Value.feedback.ContainsKey(eventSymbol)).
 							 ToDictionary(d => d.Key, d => d.Value).FirstOrDefault();
 
-		if(!npc.Equals(null)) {
+		// Do we have an NPC with this feedback?
+		if(!npc.Equals(default(KeyValuePair<string, Models.Advisor>))) {
 
 			ChatAction nextCardAction = new ChatAction();
 
@@ -246,9 +288,10 @@ public class ScenarioChatScreen : ChatScreen {
 			);
 
 			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(eventSymbol);
+
+			string feedback = npc.Value.feedback[eventSymbol].ToString();
 			
-			AddResponseSpeech(npc.Value.feedback[eventSymbol].ToString(), 
-							  DataManager.GetDataForCharacter(npc.Key), false, true, dictAffect);
+			AddResponseSpeech(feedback, DataManager.GetDataForCharacter(npc.Key), false, true, dictAffect);
 
 			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(eventSymbol).title, dictAffect.Values.ToArray());
 
@@ -257,11 +300,11 @@ public class ScenarioChatScreen : ChatScreen {
 
 			// Tutorial
 			DialogManager.instance.CreateTutorialScreen("phase_2_feedback");
+
 		}
-		else {
-			// Broadcast to open next card
-			Events.instance.Raise(new ScenarioEvent(ScenarioEvent.NEXT, eventSymbol));
-		}
+		// Error
+		else 
+			throw new Exception("No feedback found for '" + eventSymbol + "' in '" + _data.symbol + "'!!");
 
 	}
 

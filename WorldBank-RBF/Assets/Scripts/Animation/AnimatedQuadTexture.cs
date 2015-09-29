@@ -15,7 +15,7 @@ public class AnimatedQuadTexture : MB {
 			_MeshRenderer.sharedMaterial = value;
 			if (value != null) {
 				gameObject.SetActive (true);
-				UpdateSortingLayer ();
+				// UpdateSortingLayer ();
 			}
 		}
 	}
@@ -64,6 +64,13 @@ public class AnimatedQuadTexture : MB {
 	float xScale;
 	float pauseTime;
 
+	float startPosition = -1f;
+
+	float sortingZPosition = -1f;
+	void OnEnable () {
+		sortingZPosition = -1f;
+	}
+
 	protected virtual void Awake () {
 		SetScale ();
 		SetOffset ();
@@ -87,7 +94,7 @@ public class AnimatedQuadTexture : MB {
 
 	public virtual void Refresh () {
 		if (texture != null) _Texture = texture;
-		UpdateSortingLayer ();
+		// UpdateSortingLayer ();
 	}
 
 	public void StartAnimating () {
@@ -156,12 +163,13 @@ public class AnimatedQuadTexture : MB {
 		pauseTime = Random.Range (intervalMin, intervalMax);
 	}
 
-	protected void UpdateSortingLayer () {
+	/*public void UpdateSortingLayer () {
 		int sortingLayer = 10000 - (int)(Position.z * 100);
 		if (_Material != null) {
-//			_Material.renderQueue = sortingLayer;
-			if (_Material.renderQueue == 9999)
-				_Material.renderQueue = sortingLayer;
+			_Material.renderQueue = sortingLayer;
+			// if (_Material.renderQueue == 9999)
+				// _Material.renderQueue = sortingLayer;
+			sortingZPosition = Position.z;
 		} else {
 			StartCoroutine (SetSortingLayerOnLoad ());
 		}
@@ -172,7 +180,23 @@ public class AnimatedQuadTexture : MB {
 			yield return null;
 		}
 		UpdateSortingLayer ();
+	}*/
+
+	protected virtual void Update () {
+		// if (!Mathf.Approximately (Position.z, startPosition)) {
+			int sortingLayer = 10000 - (int)(Position.z * 100);
+			if (_Material != null) {
+				_Material.renderQueue = sortingLayer;
+			}
+			// startPosition = Position.z;
+		// }
 	}
+
+	/*void OnGUI () {
+		GUI.color = Color.red;
+		Vector3 position = ScreenPositionHandler.WorldToScreen (Position);
+		GUI.Label (new Rect (position.x, position.y + Position.z*4, 200, 100), _Material.mainTexture.name + ": " + _Material.renderQueue.ToString () + "\nsorting z position: " + sortingZPosition);
+	}*/
 
 	#if PREVIEW_ANIMATIONS && UNITY_EDITOR
 	float _position = 0f;

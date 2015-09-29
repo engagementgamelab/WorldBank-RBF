@@ -2,9 +2,9 @@
 using UnityEngine.EventSystems;
 using System.Collections;
 
-public class MapCity : MB, IClickable {
+public class MapCity : MB {//, IClickable {
 
-	public string citySymbol;
+	/*public string citySymbol;
 
 	// Use this for initialization
 	void Start () {
@@ -34,5 +34,5 @@ public class MapCity : MB, IClickable {
 		if(!manager.CameraIsAnimating())
 			StartCoroutine(manager.ShowCityDialog(citySymbol));
 
-	}
+	}*/
 }

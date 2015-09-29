@@ -8,13 +8,16 @@ public class RouteRecorder : MonoBehaviour {
 		get { return Application.dataPath + "/routelines.txt"; }
 	}
 
-	public bool recordRoute = false;
 	bool recording = false;
+
+	public bool recordRoute = false;
 	public string city1 = "";
 	public string city2 = "";
 	public List<Vector3> routePositions = new List<Vector3> ();
 
+	#if UNITY_EDITOR && !UNITY_WEBPLAYER
 	public MapRoute route;
+	#endif
 
 	void Start () {
 		#if UNITY_EDITOR && !UNITY_WEBPLAYER

@@ -197,6 +197,12 @@ public static class ExtensionMethods {
 	}
 
 	// Scale
+	public static void SetLocalScaleX (this Transform transform, float x) {
+		Vector3 p = transform.localScale;
+		p.x = x;
+		transform.localScale = p;
+	}
+
 	public static void SetLocalScaleY (this Transform transform, float y) {
 		Vector3 p = transform.localScale;
 		p.y = y;
@@ -209,6 +215,20 @@ public static class ExtensionMethods {
 
 	public static void SetLocalScale (this Transform transform, float scale) {
 		transform.localScale = new Vector3 (scale, scale, scale);
+	}
+
+	// RectTransform
+
+	public static void SetAnchorPositionX (this RectTransform transform, float x) {
+		Vector2 p = transform.anchoredPosition;
+		p.x = x;
+		transform.anchoredPosition = p;
+	}
+
+	public static void SetPivotX (this RectTransform transform, float x) {
+		Vector2 p = transform.pivot;
+		p.x = x;
+		transform.pivot = p;	
 	}
 
 	/**

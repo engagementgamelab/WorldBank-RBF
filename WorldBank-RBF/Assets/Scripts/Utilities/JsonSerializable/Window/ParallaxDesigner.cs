@@ -35,7 +35,6 @@ public class ParallaxDesigner : EditorWindow {
         set { objectDrawer.Target = value; }
     }
 
-    GUILayoutOption largeButtonHeight = GUILayout.Height (25f);
     TextureLoader textureLoader;
     Vector2 scrollPos;
     GUILayoutOption[] options;

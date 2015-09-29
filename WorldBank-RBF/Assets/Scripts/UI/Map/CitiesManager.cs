@@ -125,8 +125,8 @@ public class CitiesManager : MB {
 	/// <param name="city">The city to stay an extra day in.</param>
 	public void StayExtraDay (CityItem city) {
 		city.StayedExtraDay = true;
-		PlayerData.DayGroup.Remove ();
 		PlayerData.InteractionGroup.SetExtraInteractions (city.Symbol);
+		PlayerData.DayGroup.Remove ();
 		OnVisit ();
 	}
 

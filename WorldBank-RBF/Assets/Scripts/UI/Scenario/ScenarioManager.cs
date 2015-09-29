@@ -33,6 +33,10 @@ public class ScenarioManager : MonoBehaviour {
 	public float problemCardDurationOverride = 0;
 	public float monthLengthSecondsOverride = 0;
 
+	public Text debugPanelScenarioText;
+	public Text debugPanelProblemText;
+	public Button debugButton;
+
 	Timers.TimerInstance problemCardCooldown;
 	
 	ScenarioYearEndDialog yearEndPanel;
@@ -41,6 +45,7 @@ public class ScenarioManager : MonoBehaviour {
 	int[] currentAffectGoals;
 
 	List<int[]> usedAffects = new List<int[]>();
+	List<string> availableTactics;
 
 	Animator scenarioCardCooldownAnimator;
 	Animator supervisorChatTabAnimator;
@@ -52,6 +57,7 @@ public class ScenarioManager : MonoBehaviour {
 	bool openProblemCard;
 	bool openYearEnd;
 	bool inYearEnd;
+	bool cardDismissed;
 
 	int scenarioTwistIndex;
 	int currentCardIndex;
@@ -93,6 +99,14 @@ public class ScenarioManager : MonoBehaviour {
 			enableCooldown = true;
 
 		GetScenarioForPlan(DataManager.currentPlanId);
+
+		// Enable debug info
+		#if UNITY_EDITOR || DEVELOPMENT_BUILD
+			debugButton.gameObject.SetActive(true);
+		#else
+			debugButton.gameObject.SetActive(false);
+			debugPanelProblemText.transform.parent.gameObject.SetActive(false);
+		#endif
 	}
 
 	void Update () {
@@ -127,6 +141,15 @@ public class ScenarioManager : MonoBehaviour {
 
 		if(inYearEnd)
 			return;
+
+		if(!cardDismissed) {
+			// Send player back to group chat
+			DisableSupervisor();
+
+			scenarioChat.NoActionsTaken();
+
+			return;
+		}
 	
 		// currentQueueIndex starts at 1, so decrement it
 		int cardIndex = currentCardIndex;
@@ -155,6 +178,7 @@ public class ScenarioManager : MonoBehaviour {
 
 		}
 
+		cardDismissed = false;
 		queueProblemCard = false;
 
 	}
@@ -169,8 +193,6 @@ public class ScenarioManager : MonoBehaviour {
     /// Displays a scenario card, given the current card index.
     /// </summary>
 	void OpenScenarioCard(int cardIndex, bool queue=false) {
-
-		Debug.Log("open scenario card with index " + cardIndex);
 
 		// Clear all prior chat
 		scenarioChat.Clear();
@@ -198,6 +220,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Start card cooldown
 		BeginCooldown();
+
+		debugPanelProblemText.text = "Problem Symbol: " + card.symbol;
 
 	}
 
@@ -229,11 +253,18 @@ public class ScenarioManager : MonoBehaviour {
 		DialogManager.instance.CreateTutorialScreen("phase_2_year_end");
 
 		// Clear all supervisor dialog
+		supervisorChat.gameObject.SetActive(true);
 		supervisorChat.Clear();
+		supervisorChat.gameObject.SetActive(false);
+		
+		// Ensure scenario chat is showing
+		scenarioChatTab.GetComponent<Button>().interactable = false;
+		supervisorChatTab.GetComponent<Button>().interactable = true;
+		scenarioChat.gameObject.SetActive(true);
 
 	}
 
-	void NextProblemCard(string strSymbol) {
+	void NextProblemCard() {
 		
 		GetNextCard();
 		currentQueueIndex++;
@@ -253,6 +284,8 @@ public class ScenarioManager : MonoBehaviour {
 		
 		inYearEnd = false;
 
+		DialogManager.instance.SetAvailableTactics(availableTactics);
+
 		GetNextCard();
 
 		NotebookManager.Instance.ToggleTabs();
@@ -262,6 +295,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Close indicators
 		indicatorsCanvas.Close();
+
+		debugPanelScenarioText.text = "Scenario: " + DataManager.SceneContext.Replace("scenario_", "") + ", Year: " + currentYear;
 
 	}
 
@@ -332,6 +367,17 @@ public class ScenarioManager : MonoBehaviour {
 		else
 			DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_first_problem");
 
+		// Tactics setup
+		availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+		
+		// Also add tactics that show only if they are not part of player's selected plan
+		foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
+		{
+			if(!availableTactics.Contains(tactic))
+				availableTactics.Add(tactic);
+		}
+		DialogManager.instance.SetAvailableTactics(availableTactics);
+
     }
 
     void AssignScenario(string scenarioSymbol) {
@@ -347,6 +393,8 @@ public class ScenarioManager : MonoBehaviour {
 		#endif
 
 		cardCooldownElapsed = problemCardDuration;
+
+		debugPanelScenarioText.text = "Scenario: " + scenarioSymbol.Replace("scenario_", "") + ", Year: 1";
 
     }
 
@@ -380,17 +428,11 @@ public class ScenarioManager : MonoBehaviour {
 
 		}
 
-		// currentAffectValues[0] += currentAffectBias[0];
-		// currentAffectValues[1] += currentAffectBias[1];
-		// currentAffectValues[2] += currentAffectBias[2];
-
 		Debug.Log("--> Indicators: " + currentAffectValues[0] + ", " + currentAffectValues[1] + ", " + currentAffectValues[2]);
 
 		usedAffects.Clear();
 
 		NotebookManager.Instance.UpdateIndicators(currentAffectValues[0], currentAffectValues[1], currentAffectValues[2]);
-
-		// scenarioInfoAnimator.Play("IndicatorsUpdate", -1, 0);
 
     }
 
@@ -440,25 +482,22 @@ public class ScenarioManager : MonoBehaviour {
 
     void EnableSupervisor() {
 
-		// Initialize tactics cards after first problem card done
-		if(currentYear == 1 && currentCardIndex == 0) {
-			List<string> availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
-			
-			// Also add tactics that show only if they are not part of player's selected plan
-			foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
-			{
-				if(!availableTactics.Contains(tactic))
-					availableTactics.Add(tactic);
-			}
-
-			DialogManager.instance.SetAvailableTactics (availableTactics);
-
-		}
-
 		// Enable supervisor tab
 		supervisorChatTabAnimator.Play("SupervisorTabOn");
 		supervisorChatTab.GetComponent<Button>().enabled = true;
     
+    }
+
+    void DisableSupervisor() {
+
+		// Disable supervisor tab
+		supervisorChatTabAnimator.Play("SupervisorTabOff");
+		supervisorChatTab.GetComponent<Button>().enabled = true;
+		supervisorChatTab.GetComponent<Button>().interactable = true;
+
+		supervisorChat.gameObject.SetActive(false);
+		scenarioChat.gameObject.SetActive(true);
+
     }
 
     /// <summary>
@@ -477,10 +516,14 @@ public class ScenarioManager : MonoBehaviour {
 	    			problemCardCooldown.Stop();
 	    			scenarioCardCooldownAnimator.Play("TimerPause");
     			}
+
+    			cardDismissed = true;
     			break;
    			
     		case "next":
     			bool firstTutorialProblem = (DataManager.tutorialEnabled && currentCardIndex == 0);
+
+				cardDismissed = true;
 
 				DialogManager.instance.RemoveTutorialScreen();
 				
@@ -497,11 +540,13 @@ public class ScenarioManager : MonoBehaviour {
     				queueProblemCard = true;
     			}
     			else
-	    			NextProblemCard(e.eventSymbol);
+	    			NextProblemCard();
 
 	    		// Add affect for this event to used affects
-				Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(e.eventSymbol);
-				usedAffects.Add(dictAffect.Values.ToArray());
+	    		if(e.eventSymbol != null) {
+					Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(e.eventSymbol);
+					usedAffects.Add(dictAffect.Values.ToArray());
+				}
 
     			break;
 
