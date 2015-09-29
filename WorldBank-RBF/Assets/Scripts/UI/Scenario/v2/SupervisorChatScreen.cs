@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,6 +33,7 @@ public class SupervisorChatScreen : ChatScreen {
 		PresentingProblem,
 		Investigating,
 		PresentingOptions,
+		Feedback,
 		WaitingForProblem
 	}
 
@@ -83,13 +85,9 @@ public class SupervisorChatScreen : ChatScreen {
     	}
     }
 
- 	public void Clear() {
-
- 		ObjectPool.DestroyChildren<ScenarioChatMessage>(messagesContainer, "Scenario");
-
- 	}
-
  	void OpenTacticCard () {
+			
+		Clear();
 
  		if(queuedTactics.Count == 0) {
  			RemoveOptions();
@@ -131,9 +129,11 @@ public class SupervisorChatScreen : ChatScreen {
 
 		// If supervisor is ready for new problems, open a new card
 		if (state == SupervisorState.WaitingForProblem && queuedTactics.Count > 0) {
+
 			cardIndex = 0;
 			OpenTacticCard ();
 			state = SupervisorState.PresentingProblem;
+			
 		}
 	}
 
@@ -196,12 +196,10 @@ public class SupervisorChatScreen : ChatScreen {
 			string key = option;
 			ChatAction resultAction = new ChatAction();
 
-			UnityAction feedback = (() => AddResponseSpeech (investigatingTactic.feedback_dialogue[key], true));
+			UnityAction feedback = (() => OptionSelected(key));
 			resultAction.action = feedback;
 			investigateActions.Add(resultAction);
 		}
-
-		Debug.Log("INVESTIGATE FURTHER: " + (investigatingTactic.further_options != null && !investigateFurther));
 		
 		if(investigatingTactic.further_options != null && !investigateFurther) {
 			optionTitles.Insert(0, "Investigate Further");
@@ -221,14 +219,35 @@ public class SupervisorChatScreen : ChatScreen {
 
 	protected override void OptionSelected (string option) {
 
+		state = SupervisorState.Feedback;
+
+		StartCoroutine(ShowFeedback(option));
+
+	}
+
+	IEnumerator ShowFeedback(string option)
+	{
+
 		ChatAction showTactics = new ChatAction();
-		showTactics.action = ShowTactics;
+		UnityAction showAction = (() => { state = SupervisorState.WaitingForProblem; ShowTactics(); });
+		showTactics.action = showAction;
+
+		yield return new WaitForSeconds(1f);
+			
+		Clear();
+
+		AddSystemMessage("Waiting for feedback...");
+
+		yield return new WaitForSeconds(3f);
+			
+		Clear();
 
 		AddResponseSpeech (investigatingTactic.feedback_dialogue[option], false, false, option);
-		state = SupervisorState.WaitingForProblem;
+
 		AddOptions (
-			new List<string> () { "OK" },
-			new List<ChatAction> () { showTactics }
+			new List<string> () { "Confirm feedback" },
+			new List<ChatAction> () { showTactics },
+			true
 		);
 
 	}
@@ -238,9 +257,11 @@ public class SupervisorChatScreen : ChatScreen {
     	if(optionUsed != null) {
 			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(optionUsed);
 			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(optionUsed).title, dictAffect.Values.ToArray());
-		}
 
-    	AddResponseSpeech (message, Supervisor, initial, false);
+	    	AddResponseSpeech (message, Supervisor, initial, true, dictAffect);
+		}
+		else
+	    	AddResponseSpeech (message, Supervisor, initial, false);
     	
     	if(endOfCard)
 	    	SkipCard();
