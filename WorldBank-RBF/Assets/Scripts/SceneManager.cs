@@ -92,7 +92,8 @@ public class SceneManager : MonoBehaviour {
 		{
 
 			#if UNITY_EDITOR
-				if (EditorApplication.currentScene != "Assets/Scenes/Menus.unity") {
+				if (EditorApplication.currentScene != "Assets/Scenes/Menus.unity"
+					&& EditorApplication.currentScene != "Assets/Scenes/ScreenSizeSetup.unity") {
 					PlayerManager.Instance.Authenticate("tester@elab.emerson.edu", "password");
 				}
 			#endif

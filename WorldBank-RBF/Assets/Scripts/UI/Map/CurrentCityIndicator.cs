@@ -48,7 +48,9 @@ public class CurrentCityIndicator : MB {
 
 		if (moving) return;
 		moving = true;
-		StartCoroutine (CoMove (positions, speed, onEnd));
+		StartCoroutine (CoMoveToRoute (positions[0], 
+			() => StartCoroutine (CoMove (positions, speed, onEnd))
+		));
 	}
 
 	void OnEnable () {
@@ -66,6 +68,22 @@ public class CurrentCityIndicator : MB {
 			case "bus": TravelImage.sprite = bus; break;
 			case "airship": TravelImage.sprite = airship; break;
 		}
+	}
+
+	IEnumerator CoMoveToRoute (Vector3 endPosition, System.Action onEnd) {
+
+		float eTime =  0f;
+		float time = 0.5f;
+		Vector3 startPosition = LocalPosition;
+
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float p = Mathf.SmoothStep (0, 1, eTime / time);
+			LocalPosition = Vector3.Lerp (startPosition, endPosition, p);
+			yield return null;
+		}
+
+		onEnd ();
 	}
 
 	IEnumerator CoMove (List<Vector3> positions, float speed, System.Action onEnd) {

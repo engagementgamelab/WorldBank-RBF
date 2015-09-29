@@ -2806,7 +2806,7 @@
           },
           "An Epidemic": {
             "text": [
-              "\"Have you heard? In the Highlands, access to services is limited and people do not value the importance of preventive services like vaccinations. Instead they only go to the clinic when they are sick.\" The first woman says this with a slight agitation. The second woman chimes in \"They should be utilizing outreach in this region and detecting epidemic casess. In the north, this has been is crucial to helping the area get back on its feet.\""
+              "\"Have you heard? In the Highlands, access to services is limited and people do not value the importance of preventive services like vaccinations. Instead, they only go to the clinic when they are sick.\" The first woman says this with a slight agitation. The second woman chimes in, \"They should be utilizing outreach in this region and detecting epidemic cases. In the north, this has been is crucial to helping the area get back on its feet.\""
             ],
             "unlocks": [
               "unlockable_outreach"
@@ -3373,7 +3373,7 @@
             },
             "hospital_administrator": {
               "feedback": {
-                "comply_with_ministry_1": "OK, we'll do our best."
+                "comply_with_ministry_1": "This seems reasonable and I will make sure we adjust according. We'll do our best."
               }
             }
           }
@@ -3459,7 +3459,7 @@
           }
         },
         {
-          "symbol": "poor_management",
+          "symbol": "poor_management_1",
           "name": "Poor Management",
           "priority": 3,
           "year": 1,
@@ -3825,12 +3825,12 @@
           ],
           "final_options": [
             "comply_with_ministry_request",
-            "clarify_separation_of_functions_2",
+            "clarify_separation_of_functions_and_responsibilities_2",
             "rework_rbf_manual_and_retrain"
           ],
           "final_options_affects": [
             "comply_with_ministry_request",
-            "clarify_separation_of_functions_2",
+            "clarify_separation_of_functions_and_responsibilities_2",
             "rework_rbf_manual_and_retrain"
           ],
           "final_options_cost": [
@@ -3842,7 +3842,7 @@
             "dep_minister_of_health": {
               "dialogue": "Our auditors have found mismanagement of funds. The providers need strict guidelines to provide the necessary services, and use the funds appropriately.",
               "feedback": {
-                "clarify_separation_of_functions": "This revision to the procurement guideline is within the scope of regulation, which is my role. But if you think it's essential for the providers to keep autonomy, we will step back on this."
+                "clarify_separation_of_functions_and_responsibilities_2": "This revision to the procurement guideline is within the scope of regulation, which is my role. But if you think it's essential for the providers to keep autonomy, we will step back on this."
               }
             },
             "director_regional_health_services": {
@@ -4080,7 +4080,7 @@
               "unlocks_affects": [
                 "revise_business_plan_10"
               ],
-              "Feedback": {
+              "feedback": {
                 "review_the_inspection": "Thank you! I think you'll find our quality is sufficient."
               }
             },
@@ -4097,7 +4097,7 @@
               "dialogue": "These are small clinics, with very little operating budget. Denying payment will cause immediate harm to the community."
             },
             "clinic_manager": {
-              "Feedback": {
+              "feedback": {
                 "revise_business_plan_10": "I would appreciate some support from the coach to figure out how we can improve things here.",
                 "deny_review": "If you aren't going to take me seriously, how can I have faith in this system?"
               }
@@ -5008,7 +5008,7 @@
                 "maintain_current_rates_2"
               ],
               "feedback": {
-                "maintain_current_rates_2": "I'm glad to refer complicated cases to the hospital."
+                "maintain_current_rates_2": "Very well, this will be no problem for me. I'm glad to refer complicated cases to the hospital."
               }
             }
           }
@@ -5625,10 +5625,10 @@
             "ngo_manager": {
               "dialogue": "We verify everything, I promise. We also give third-party access to the verification, there is no need for the government to also verify.",
               "unlocks": [
-                "cease_counter_verification_1"
+                "cease_counter_verification"
               ],
               "unlocks_affects": [
-                "cease_counter_verification_1"
+                "cease_counter_verification"
               ],
               "feedback": {
                 "pressure_the_ngo_to_comply_1": "It takes a lot of time for us to comply with all these verifications. I'm worried we won't have time to meet our targets if we're busy with paperwork."
@@ -8276,7 +8276,7 @@
         "name": "Lack of Information",
         "year": 1,
         "initiating_dialogue": "Community verifier says opinions about health care facilities aren't changing, and the campaign doesn't seem to be taking hold. Is this worth investigating?",
-        "investigate_dialogue": "Most people have not heard about the changes.",
+        "investigate_dialogue": "I've received reports that most people have not heard about the changes. This might be a problem we could fix!",
         "investigate_cooldown": [
           5,
           5,
@@ -8310,7 +8310,7 @@
         "name": "Misinformation",
         "year": 2,
         "initiating_dialogue": "People have been coming to facilities totally confused as they hear facilities are paid for service delivery, and yet they also pay for the services.",
-        "investigate_dialogue": "Misinformation is circulating about how the program works.",
+        "investigate_dialogue": "Misinformation is circulating about how the program works. We should definitely find a way to resolve this problem.",
         "investigate_cooldown": [
           5,
           5,
@@ -8479,7 +8479,7 @@
         "name": "Overprescription 2",
         "year": 3,
         "initiating_dialogue": "Our community verifier has informed us of more patients who have been prescribed more than five fancy medicines for something like a simple flu. They are then told to go to the private pharmacy to buy the drugs.",
-        "investigate_dialogue": "The private pharmacy is run by the doctor's nephew.",
+        "investigate_dialogue": "It seems as though the private pharmacy is run by the doctor's nephew. This could be a conflict of interest. What should we do to intervene?",
         "investigate_cooldown": [
           5,
           5,
@@ -8499,7 +8499,7 @@
           "unlockable_sanction_providers_performing_unnecessary_procedures"
         ],
         "feedback_dialogue": {
-          "unlockable_incentivise_best_practices_high_goals": "Just make sure include patient treatment charts against protocols. We do not want to pay for services below standard.",
+          "unlockable_incentivise_best_practices_high_goals": "Just make sure to include patient treatment charts against protocols. We do not want to pay for services below standard.",
           "unlockable_sanction_providers_performing_unnecessary_procedures": "This is a serious problem. I hope this will solve it.",
           "observe": "OK, we'll wait and see if anything changes."
         }
@@ -8531,7 +8531,7 @@
         ],
         "feedback_dialogue": {
           "unlockable_incentivise_best_practices_long_term": "There's no excuse for this: there are plenty of people to treat. We have to nip this in the bud.",
-          "unlockable_sanction_providers_who_fail_safety_inspection": "It's going to cost some money to make best practices possible, but it makes sense long-term.",
+          "unlockable_sanction_providers_who_fail_safety_inspection": "It's going to cost some money to make best practices possible, but it makes sense long-term. I will get on this right away.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
@@ -8957,7 +8957,7 @@
         "feedback_dialogue": {
           "unlockable_increase_incentives": "By raising the incentives, we can bring more women into these clinics.",
           "unlockable_cultural_campaign": "It will be a challenge to convince women to change their ways. I hope we are up to it!",
-          "unlockable_incentivise_traditional_midwives": "This is an interesting approach!",
+          "unlockable_incentivise_traditional_midwives": "This is an interesting approach! I think this will be a good balance between achieving our financial goals and keeping people healthy.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
@@ -9412,7 +9412,7 @@
           "unlockable_sensitization_campaign"
         ],
         "feedback_dialogue": {
-          "unlockable_directly_incensitive_service_better": "Patients can be really demanding, but if you get paid for making them happy, that should prioritize that for them.",
+          "unlockable_directly_incentivise_service_better": "Patients can be really demanding, but if you get paid for making them happy, that should prioritize that for them.",
           "unlockable_sensitization_campaign": "I'm thinking, for effectiveness' sake, we shouldn't just tell doctors to not be jerks. But sometimes they could stand to hear just that.",
           "observe": "OK, we'll wait and see if anything changes."
         }
@@ -10282,7 +10282,9 @@
     "copy_unlockable_grant_providers_autonomy": "The Finance Minister suggests more autonomy is needed for health staff in the region.",
     "copy_unlockable_incentivise_providers_to_deliver_services": "Facilities are not providing enough services. If they are incentivised to provide more, they probably will.",
     "copy_unlockable_vouchers_for_services": "The Regional Director of Health Services for the Highlands says 80% of people live in extreme poverty.",
-    "copy_unlockable_information_campaign_to_explain_changes_to_system": "It will be difficult to sensitize the population on changes, so good communication strategies will help."
+    "copy_unlockable_information_campaign_to_explain_changes_to_system": "It will be difficult to sensitize the population on changes, so good communication strategies will help.",
+    "copy_no_action_taken_problem": "You did not take any action for this problem! Your indicators have not changed.",
+    "copy_waiting_for_feedback": "Waiting for feedback..."
   },
   "unlockables": [
     {
@@ -11218,10 +11220,6 @@
     {
       "symbol": "grant_facilities_autonomy_2",
       "title": "Grant NGO Autonomy to Purchase Supplies"
-    },
-    {
-      "symbol": "increase_ngo_autonomy_1",
-      "title": "Increase NGO Autonomy"
     },
     {
       "symbol": "warn_ngo_5",
