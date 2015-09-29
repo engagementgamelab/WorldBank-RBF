@@ -32,6 +32,7 @@ public class ScenarioManager : MonoBehaviour {
 
 	public float problemCardDurationOverride = 0;
 	public float monthLengthSecondsOverride = 0;
+	public string scenarioOverride;
 
 	public Text debugPanelScenarioText;
 	public Text debugPanelProblemText;
@@ -382,8 +383,15 @@ public class ScenarioManager : MonoBehaviour {
 
     void AssignScenario(string scenarioSymbol) {
 
-    	// Set scene context from current scenario
-    	DataManager.SceneContext = "scenario_1";
+    	#if UNITY_EDITOR
+    		if(!System.String.IsNullOrEmpty(scenarioOverride))
+    			DataManager.SceneContext = scenarioOverride;
+    		else
+		    	DataManager.SceneContext = scenarioSymbol;
+    	#else
+	    	// Set scene context from current scenario
+	    	DataManager.SceneContext = scenarioSymbol;
+    	#endif
 
 		problemCardDuration = (monthLengthSeconds * 12) / DataManager.ScenarioLength(scenarioTwistIndex);
 		

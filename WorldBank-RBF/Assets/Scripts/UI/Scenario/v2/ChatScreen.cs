@@ -50,6 +50,8 @@ public class ChatScreen : GenericDialogBox {
 
 		foreach (string content in btnContent) {
 
+			string buttonSymbol = content;
+
 			ScenarioOptionButton btnChoice = _btnListOptions[btnIndex];
 			btnChoice.gameObject.SetActive (true);
 
@@ -59,8 +61,8 @@ public class ChatScreen : GenericDialogBox {
 			btnChoice.Button.onClick.RemoveAllListeners();
 
 			if(btnAction == null) {
-				btnChoice.Text = DataManager.GetUnlockableBySymbol(content).title;
-				btnChoice.Button.onClick.AddListener (() => OptionSelected(content));
+				btnChoice.Text = DataManager.GetUnlockableBySymbol(buttonSymbol).title;
+				btnChoice.Button.onClick.AddListener (() => OptionSelected(buttonSymbol));
 				
 				btnIndex ++;
 
@@ -101,6 +103,8 @@ public class ChatScreen : GenericDialogBox {
 
 	// Scenario option was selected
 	protected virtual void OptionSelected(string strOptionSymbol) {
+
+		Debug.Log("option selected: " + strOptionSymbol);
 
 		// Broadcast to get card feedback
 		Events.instance.Raise(new ScenarioEvent(ScenarioEvent.FEEDBACK, strOptionSymbol));
