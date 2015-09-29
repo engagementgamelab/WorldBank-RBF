@@ -5008,7 +5008,7 @@
                 "maintain_current_rates_2"
               ],
               "feedback": {
-                "maintain_current_rates_2": "I'm glad to refer complicated cases to the hospital."
+                "maintain_current_rates_2": "Very well, this will be no problem for me. I'm glad to refer complicated cases to the hospital."
               }
             }
           }
@@ -6473,7 +6473,8 @@
             }
           }
         }
-      ]
+      ],
+      "year_end": {}
     },
     "scenario_3": {
       "path_config": {
@@ -8276,7 +8277,7 @@
         "name": "Lack of Information",
         "year": 1,
         "initiating_dialogue": "Community verifier says opinions about health care facilities aren't changing, and the campaign doesn't seem to be taking hold. Is this worth investigating?",
-        "investigate_dialogue": "Most people have not heard about the changes.",
+        "investigate_dialogue": "I've received reports that most people have not heard about the changes. This might be a problem we could fix!",
         "investigate_cooldown": [
           5,
           5,
@@ -8479,7 +8480,7 @@
         "name": "Overprescription 2",
         "year": 3,
         "initiating_dialogue": "Our community verifier has informed us of more patients who have been prescribed more than five fancy medicines for something like a simple flu. They are then told to go to the private pharmacy to buy the drugs.",
-        "investigate_dialogue": "The private pharmacy is run by the doctor's nephew.",
+        "investigate_dialogue": "It seems as though the private pharmacy is run by the doctor's nephew. This could be a conflict of interest. What should we do to intervene?",
         "investigate_cooldown": [
           5,
           5,
@@ -8499,7 +8500,7 @@
           "unlockable_sanction_providers_performing_unnecessary_procedures"
         ],
         "feedback_dialogue": {
-          "unlockable_incentivise_best_practices_high_goals": "Just make sure include patient treatment charts against protocols. We do not want to pay for services below standard.",
+          "unlockable_incentivise_best_practices_high_goals": "Just make sure to include patient treatment charts against protocols. We do not want to pay for services below standard.",
           "unlockable_sanction_providers_performing_unnecessary_procedures": "This is a serious problem. I hope this will solve it.",
           "observe": "OK, we'll wait and see if anything changes."
         }
@@ -8531,7 +8532,7 @@
         ],
         "feedback_dialogue": {
           "unlockable_incentivise_best_practices_long_term": "There's no excuse for this: there are plenty of people to treat. We have to nip this in the bud.",
-          "unlockable_sanction_providers_who_fail_safety_inspection": "It's going to cost some money to make best practices possible, but it makes sense long-term.",
+          "unlockable_sanction_providers_who_fail_safety_inspection": "It's going to cost some money to make best practices possible, but it makes sense long-term. I will get on this right away.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
@@ -10282,7 +10283,9 @@
     "copy_unlockable_grant_providers_autonomy": "The Finance Minister suggests more autonomy is needed for health staff in the region.",
     "copy_unlockable_incentivise_providers_to_deliver_services": "Facilities are not providing enough services. If they are incentivised to provide more, they probably will.",
     "copy_unlockable_vouchers_for_services": "The Regional Director of Health Services for the Highlands says 80% of people live in extreme poverty.",
-    "copy_unlockable_information_campaign_to_explain_changes_to_system": "It will be difficult to sensitize the population on changes, so good communication strategies will help."
+    "copy_unlockable_information_campaign_to_explain_changes_to_system": "It will be difficult to sensitize the population on changes, so good communication strategies will help.",
+    "copy_no_action_taken_problem": "You did not take any action for this problem! Your indicators have not changed.",
+    "copy_waiting_for_feedback": "Waiting for feedback..."
   },
   "unlockables": [
     {
@@ -11218,10 +11221,6 @@
     {
       "symbol": "grant_facilities_autonomy_2",
       "title": "Grant NGO Autonomy to Purchase Supplies"
-    },
-    {
-      "symbol": "increase_ngo_autonomy_1",
-      "title": "Increase NGO Autonomy"
     },
     {
       "symbol": "warn_ngo_5",
