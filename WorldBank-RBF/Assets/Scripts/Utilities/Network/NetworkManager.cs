@@ -250,8 +250,9 @@ public class NetworkManager : MonoBehaviour {
             }
             else 
             {
-               exceptionMsg = "API Request Error: " + response["error"];
-                throw new Exception(exceptionMsg);
+                responseAction (response);
+               // exceptionMsg = "API Request Error: " + response["error"];
+               //  throw new Exception(exceptionMsg);
             }
             
         }

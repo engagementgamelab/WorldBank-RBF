@@ -24,11 +24,6 @@ public class CityLighting : MonoBehaviour {
 	}
 
 	void OnArriveInCityEvent (ArriveInCityEvent e) {
-		/*if (e.City == "kibari") {
-			kibari.SetActive (true);
-		} else {
-			kibari.SetActive (false);
-		}*/
 		SetLighting (e.City);
 	}
 
@@ -38,7 +33,6 @@ public class CityLighting : MonoBehaviour {
 		}
 		GameObject activeCity;
 		if (Cities.TryGetValue (city, out activeCity)) {
-			// cities[city].SetActive (true);
 			activeCity.SetActive (true);
 		}
 	}

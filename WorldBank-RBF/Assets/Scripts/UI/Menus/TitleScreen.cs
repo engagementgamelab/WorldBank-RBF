@@ -23,11 +23,16 @@ public class TitleScreen : MonoBehaviour {
 
 	}
 
+	void OnEnable () {
+		ClearError ();
+	}
+
 	public void OnLogin () {
 		string e = email.text;
 		if (e == "") {
 			ShowError ("Please enter an email address.");
 		} else {
+			ShowError ("Loading...");
 			PlayerManager.Instance.Authenticate(e.Replace ("\n", ""));
 		}
 	}
@@ -47,12 +52,8 @@ public class TitleScreen : MonoBehaviour {
 	void OnFormEvent (PlayerLoginEvent e) {
 
     	if (!e.success) {
-	    	// txtError.text = e.error;
-	    	// txtError.gameObject.SetActive(true);
-	    	Debug.Log ("no success");
+    		ShowError (e.error + " Have you registered?");
 	    } else {
-	    	Debug.Log ("success");
-	    	// is returning if plan submitted
 	    	returningPlayer = PlayerManager.Instance.PlanSubmitted;
 	    	Debug.Log("returningPlayer: " + returningPlayer);
 	    	OnAuthenticate ();
