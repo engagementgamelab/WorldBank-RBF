@@ -18,7 +18,7 @@ using System.Collections.Generic;
 class GenerateBuilds {
 
     // These are the scenes that the build server is going to use
-    static string[] SCENES = new string[] { "Menus", "PhaseOne", "PhaseTwo"};
+    static string[] SCENES = new string[] { "ScreenSizeSetup", "Menus", "PhaseOne", "PhaseTwo"};
 
     // Options for all builds
     static BuildOptions BUILD_OPTIONS = BuildOptions.Development | BuildOptions.AllowDebugging;
@@ -111,8 +111,17 @@ class GenerateBuilds {
 
         EditorUserBuildSettings.SwitchActiveBuildTarget(buildTarget);
 
+        // Disable all but 4x3
+        PlayerSettings.SetAspectRatio(AspectRatio.Aspect4by3, true);
+        PlayerSettings.SetAspectRatio(AspectRatio.Aspect16by10, false);
+        PlayerSettings.SetAspectRatio(AspectRatio.Aspect16by9, false);
+        PlayerSettings.SetAspectRatio(AspectRatio.Aspect5by4, false);
+        PlayerSettings.SetAspectRatio(AspectRatio.AspectOthers, false);
+
+        // Disable splash and res dialog
         PlayerSettings.showUnitySplashScreen = false;
-        
+        PlayerSettings.displayResolutionDialog = ResolutionDialogSetting.Disabled;
+
         PrepareMaterials();
 
         string name = APP_NAME;

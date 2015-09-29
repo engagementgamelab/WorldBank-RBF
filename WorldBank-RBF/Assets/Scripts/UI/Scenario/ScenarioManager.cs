@@ -32,6 +32,7 @@ public class ScenarioManager : MonoBehaviour {
 
 	public float problemCardDurationOverride = 0;
 	public float monthLengthSecondsOverride = 0;
+	public string scenarioOverride;
 
 	public Text debugPanelScenarioText;
 	public Text debugPanelProblemText;
@@ -258,8 +259,8 @@ public class ScenarioManager : MonoBehaviour {
 		supervisorChat.gameObject.SetActive(false);
 		
 		// Ensure scenario chat is showing
-		scenarioChatTab.GetComponent<Button>().interactable = false;
-		supervisorChatTab.GetComponent<Button>().interactable = true;
+		scenarioChatTab.interactable = false;
+		supervisorChatTab.interactable = true;
 		scenarioChat.gameObject.SetActive(true);
 
 	}
@@ -382,8 +383,15 @@ public class ScenarioManager : MonoBehaviour {
 
     void AssignScenario(string scenarioSymbol) {
 
-    	// Set scene context from current scenario
-    	DataManager.SceneContext = "scenario_1";
+    	#if UNITY_EDITOR
+    		if(!System.String.IsNullOrEmpty(scenarioOverride))
+    			DataManager.SceneContext = scenarioOverride;
+    		else
+		    	DataManager.SceneContext = scenarioSymbol;
+    	#else
+	    	// Set scene context from current scenario
+	    	DataManager.SceneContext = scenarioSymbol;
+    	#endif
 
 		problemCardDuration = (monthLengthSeconds * 12) / DataManager.ScenarioLength(scenarioTwistIndex);
 		
@@ -484,7 +492,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Enable supervisor tab
 		supervisorChatTabAnimator.Play("SupervisorTabOn");
-		supervisorChatTab.GetComponent<Button>().enabled = true;
+		supervisorChatTab.enabled = true;
+		supervisorChatTab.GetComponent<Button>().interactable = true;
     
     }
 
@@ -492,8 +501,13 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Disable supervisor tab
 		supervisorChatTabAnimator.Play("SupervisorTabOff");
-		supervisorChatTab.GetComponent<Button>().enabled = true;
-		supervisorChatTab.GetComponent<Button>().interactable = true;
+		supervisorChatTab.enabled = false;
+		supervisorChatTab.interactable = false;
+
+		// Ensure scenario tab enabled
+		scenarioChatTab.animator.Play("SupervisorTabOn");
+		scenarioChatTab.enabled = true;
+		supervisorChatTab.interactable = false;
 
 		supervisorChat.gameObject.SetActive(false);
 		scenarioChat.gameObject.SetActive(true);
