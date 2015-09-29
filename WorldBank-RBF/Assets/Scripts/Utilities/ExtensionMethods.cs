@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -287,6 +290,26 @@ public static class ExtensionMethods {
 			format == TextureFormat.DXT5
 		);
 	}
+
+	/**
+	 *	Player Settings
+	 */
+
+	#if UNITY_EDITOR
+	public static BuildTargetGroup GetBuildTargetGroup (this BuildTarget target) {
+		if (target == BuildTarget.StandaloneOSXUniversal ||
+			target == BuildTarget.StandaloneOSXIntel ||
+			target == BuildTarget.StandaloneWindows ||
+			target == BuildTarget.StandaloneLinux ||
+			target == BuildTarget.StandaloneWindows64 ||
+			target == BuildTarget.StandaloneLinux64 ||
+			target == BuildTarget.StandaloneLinuxUniversal ||
+			target == BuildTarget.StandaloneOSXIntel64) {
+			return BuildTargetGroup.Standalone;
+		}
+		return BuildTargetGroup.Unknown;
+	}
+	#endif
 
 	/**
 	 * Dictionary Converters

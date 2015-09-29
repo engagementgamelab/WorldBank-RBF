@@ -10,6 +10,7 @@ Created by Engagement Lab, 2015
 */
 
 #if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
@@ -90,6 +91,29 @@ class GenerateBuilds {
         PerformPCBuild();
     }
 
+    [MenuItem ("Build/Set Icons")]
+    static void SetIcons ()
+    {
+        SetIcons (BuildTarget.StandaloneOSXUniversal);
+    }
+
+    static void SetIcons(BuildTarget buildTarget)
+    {
+        if (buildTarget.GetBuildTargetGroup () == BuildTargetGroup.Standalone) {
+            Texture2D[] textures = new [] {
+                (Texture2D)Resources.Load ("AppIcons/icon_logo_1024"),
+                (Texture2D)Resources.Load ("AppIcons/icon_logo_512"),
+                (Texture2D)Resources.Load ("AppIcons/icon_logo_256"),
+                (Texture2D)Resources.Load ("AppIcons/icon_logo_128"),
+                (Texture2D)Resources.Load ("AppIcons/icon_logo_48"),
+                (Texture2D)Resources.Load ("AppIcons/icon_logo_32"),
+                (Texture2D)Resources.Load ("AppIcons/icon_logo_16")
+            };
+
+            PlayerSettings.SetIconsForTargetGroup (BuildTargetGroup.Standalone, textures);
+        }
+    }
+
     static string[] FindEnabledScenes() {
 
         List<string> EditorScenes = new List<string>();
@@ -130,6 +154,8 @@ class GenerateBuilds {
             name = APP_NAME + ".app";
         else if(platform == "PC") 
             name = APP_NAME + ".exe";         
+
+        SetIcons (buildTarget);
 
         string res = BuildPipeline.BuildPlayer(FindEnabledScenes(), TARGET_DIR + "/" + platform + "/" + name, buildTarget, BUILD_OPTIONS);
 
