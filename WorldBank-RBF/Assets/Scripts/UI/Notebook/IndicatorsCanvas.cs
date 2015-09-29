@@ -30,12 +30,13 @@ public class IndicatorsCanvas : NotebookCanvas {
 	public Image[] dataBarArrowsUp;
 	public Image[] dataBarArrowsDown;
 
-	public static Dictionary<string, int[]> SelectedOptions = new Dictionary<string, int[]>();
 	public static List<int[]> AppliedAffects = new List<int[]>();
 	public static int[] GoalAffects;
 
 	public List<ScenarioOptionButton> _btnListOptions;
 
+	static Dictionary<string, int[]> SelectedOptions = new Dictionary<string, int[]>();
+	
 	string[] previousAffects;
 	string[] currentAffects;
 
@@ -48,6 +49,18 @@ public class IndicatorsCanvas : NotebookCanvas {
 	float indicatorAnimateDelta = 5;
 
 	int currentActionTakenIndex;
+
+	/// <summary>
+    /// Add new selected option
+    /// </summary>
+    public static KeyValuePair<string, int[]> SelectedOption {
+        set {
+        	if(!SelectedOptions.Keys.Contains(value.Key))
+        		SelectedOptions.Add(value.Key, value.Value);
+        	else
+        		throw new Exception("Indicator affects for '" + value.Key + "' added already for this year!");
+        }
+    }
 
 	// Animator animator;
 	Animator animator = null;

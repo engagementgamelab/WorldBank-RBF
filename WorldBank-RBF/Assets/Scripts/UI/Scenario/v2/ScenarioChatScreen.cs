@@ -298,8 +298,8 @@ public class ScenarioChatScreen : ChatScreen {
 			
 			AddResponseSpeech(feedback, DataManager.GetDataForCharacter(npc.Key), false, true, dictAffect);
 
-			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(eventSymbol).title, dictAffect.Values.ToArray());
-
+			IndicatorsCanvas.SelectedOption = new KeyValuePair<string, int[]>(DataManager.GetUnlockableBySymbol(eventSymbol).title, dictAffect.Values.ToArray());
+			
 			// SFX
 			AudioManager.Sfx.Play ("planconfirm", "UI");
 

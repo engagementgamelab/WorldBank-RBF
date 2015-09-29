@@ -259,8 +259,8 @@ public class ScenarioManager : MonoBehaviour {
 		supervisorChat.gameObject.SetActive(false);
 		
 		// Ensure scenario chat is showing
-		scenarioChatTab.GetComponent<Button>().interactable = false;
-		supervisorChatTab.GetComponent<Button>().interactable = true;
+		scenarioChatTab.interactable = false;
+		supervisorChatTab.interactable = true;
 		scenarioChat.gameObject.SetActive(true);
 
 	}
@@ -492,7 +492,8 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Enable supervisor tab
 		supervisorChatTabAnimator.Play("SupervisorTabOn");
-		supervisorChatTab.GetComponent<Button>().enabled = true;
+		supervisorChatTab.enabled = true;
+		supervisorChatTab.GetComponent<Button>().interactable = true;
     
     }
 
@@ -500,8 +501,13 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Disable supervisor tab
 		supervisorChatTabAnimator.Play("SupervisorTabOff");
-		supervisorChatTab.GetComponent<Button>().enabled = true;
-		supervisorChatTab.GetComponent<Button>().interactable = true;
+		supervisorChatTab.enabled = false;
+		supervisorChatTab.interactable = false;
+
+		// Ensure scenario tab enabled
+		scenarioChatTab.animator.Play("SupervisorTabOn");
+		scenarioChatTab.enabled = true;
+		supervisorChatTab.interactable = false;
 
 		supervisorChat.gameObject.SetActive(false);
 		scenarioChat.gameObject.SetActive(true);

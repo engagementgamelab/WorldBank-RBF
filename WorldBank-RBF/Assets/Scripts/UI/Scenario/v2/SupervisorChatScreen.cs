@@ -7,6 +7,7 @@ using System.Linq;
 
 public class SupervisorChatScreen : ChatScreen {
 	
+	public Button scenarioChatTab;
 	public Text debugPanelTacticsText;
 
 	TacticCardDialog currentTacticCard;
@@ -26,8 +27,6 @@ public class SupervisorChatScreen : ChatScreen {
 
 	bool investigateFurther;
 	bool tacticsQueued;
-
-	string optionSelected;
 
 	SystemMessage investigateMsg;
 
@@ -54,14 +53,6 @@ public class SupervisorChatScreen : ChatScreen {
 			ShowTactics();
 			tacticsQueued = false;
 		}
-
-		// Display feedback if queued
-		if(!System.String.IsNullOrEmpty(optionSelected))
-		{
-			StartCoroutine(ShowFeedback(optionSelected, true));
-			optionSelected = null;
-		}
-
 	}
 
 	void OnDisable() {
@@ -123,6 +114,10 @@ public class SupervisorChatScreen : ChatScreen {
 			new List<ChatAction> () { investigate, skip },
 			true
 		);
+		
+		// SFX
+	    if(gameObject.activeSelf)
+			AudioManager.Sfx.Play ("fem1greeting", "NPCs");
 
 		debugPanelTacticsText.text = "Tactic Symbol: " + card.symbol;
 	}
@@ -201,6 +196,10 @@ public class SupervisorChatScreen : ChatScreen {
 		skip.action = SkipCard;
 
 		AddResponseSpeech (investigateFurther ? investigatingTactic.investigate_further_dialogue : investigatingTactic.investigate_dialogue);
+		
+		// SFX
+	    if(gameObject.activeSelf)
+			AudioManager.Sfx.Play ("fem1response", "NPCs");
 
 		foreach(string option in optionSymbols) {
 			string key = option;
@@ -238,8 +237,9 @@ public class SupervisorChatScreen : ChatScreen {
 
 	IEnumerator ShowFeedback(string option, bool nodelay=false)
 	{
-
-		optionSelected = option;
+		// Disable scenario chat
+		scenarioChatTab.interactable = false;
+		scenarioChatTab.animator.Play("SupervisorTabOff");
 
 		yield return new WaitForSeconds(1);
 			
@@ -256,12 +256,20 @@ public class SupervisorChatScreen : ChatScreen {
 		Clear();
 
 		AddResponseSpeech (investigatingTactic.feedback_dialogue[option], false, false, option);
+		
+		// SFX
+	    if(gameObject.activeSelf)
+			AudioManager.Sfx.Play ("fem1response", "NPCs");
 
 		AddOptions (
 			new List<string> () { "Confirm feedback" },
 			new List<ChatAction> () { showTactics },
 			true
 		);
+
+		// Enable scenario chat
+		scenarioChatTab.interactable = true;
+		scenarioChatTab.animator.Play("SupervisorTabOn");
 	
 	}
 
@@ -269,7 +277,7 @@ public class SupervisorChatScreen : ChatScreen {
 
     	if(optionUsed != null) {
 			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(optionUsed);
-			IndicatorsCanvas.SelectedOptions.Add(DataManager.GetUnlockableBySymbol(optionUsed).title, dictAffect.Values.ToArray());
+			IndicatorsCanvas.SelectedOption = new KeyValuePair<string, int[]>(DataManager.GetUnlockableBySymbol(optionUsed).title, dictAffect.Values.ToArray());
 
 	    	AddResponseSpeech (message, Supervisor, initial, true, dictAffect);
 		}
@@ -278,10 +286,6 @@ public class SupervisorChatScreen : ChatScreen {
     	
     	if(endOfCard)
 	    	SkipCard();
-		
-		// SFX
-	    if(gameObject.activeSelf)
-			AudioManager.Sfx.Play ("assistantresponse", "Phase2");
     }
 
 	/// <summary>

@@ -111,7 +111,9 @@ class GenerateBuilds {
 
         EditorUserBuildSettings.SwitchActiveBuildTarget(buildTarget);
 
+        // Disable splash and res dialog
         PlayerSettings.showUnitySplashScreen = false;
+        PlayerSettings.displayResolutionDialog = ResolutionDialogSetting.Disabled;
         
         PrepareMaterials();
 
