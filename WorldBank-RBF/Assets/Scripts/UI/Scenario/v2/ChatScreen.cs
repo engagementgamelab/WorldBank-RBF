@@ -8,7 +8,6 @@ public class ChatScreen : GenericDialogBox {
 
 	public Transform messagesContainer;
 	public Scrollbar messagesScrollbar;
-	public LayoutElement rightPanel;
 	public Animator advisorsPanel;
 	public Animator tabAnimator;
 
