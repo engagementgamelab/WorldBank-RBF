@@ -105,6 +105,10 @@ public class CityInfoBox : MB {
 	}
 
 	void Close () {
+		
+		// Close tutorial
+		DialogManager.instance.RemoveTutorialScreen();
+
 		SetActive (false);
 	}
 
