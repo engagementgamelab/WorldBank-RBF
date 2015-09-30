@@ -28,8 +28,6 @@ public class SupervisorChatScreen : ChatScreen {
 	bool investigateFurther;
 	bool tacticsQueued;
 
-	string optionToConfirm;
-
 	SystemMessage investigateMsg;
 
 	enum SupervisorState {
@@ -41,37 +39,7 @@ public class SupervisorChatScreen : ChatScreen {
 	}
 
 	SupervisorState state = SupervisorState.WaitingForProblem;
-
-	void OnEnable() {
-
- 		rightPanel.gameObject.SetActive(false);
-
-		// Tutorial
-		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor_opened");
-
-		// Display any queued tactics card
-		if(tacticsQueued) {
-			state = SupervisorState.WaitingForProblem;
-			ShowTactics();
-			tacticsQueued = false;
-		}
-
-		// Re-display feedback if option is queued
-		if(!System.String.IsNullOrEmpty(optionToConfirm)) {
-
-			StartCoroutine(ShowFeedback(optionToConfirm, true));
-	 		optionToConfirm = null;
-		
-		}
-
-	}
-
-	void OnDisable() {
-
- 		rightPanel.gameObject.SetActive(true);
-
-	}
-
+	
 	/// <summary>
     /// Get/set
     /// </summary>
@@ -247,16 +215,14 @@ public class SupervisorChatScreen : ChatScreen {
 	}
 
 	IEnumerator ShowFeedback(string option, bool nodelay=false) {
-
-		optionToConfirm = option;
+			
+		Clear();
 
 		// Disable scenario chat
 		scenarioChatTab.interactable = false;
 		scenarioChatTab.animator.Play("SupervisorTabOff");
 
 		yield return new WaitForSeconds(1);
-			
-		Clear();
 
 		AddSystemMessage(DataManager.GetUIText("copy_waiting_for_feedback"));
 

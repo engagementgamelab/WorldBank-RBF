@@ -52,8 +52,6 @@ public class ScenarioChatScreen : ChatScreen {
 
  	void OnEnable() {
 
- 		rightPanel.gameObject.SetActive(true);
-
  		if(cardQueued) {
 	 		Initialize();
 	 		cardQueued = false;

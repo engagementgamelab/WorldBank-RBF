@@ -3190,13 +3190,14 @@ GameObject:
   - 222: {fileID: 22248596}
   - 114: {fileID: 11463618}
   - 114: {fileID: 11450394}
+  - 225: {fileID: 22501324}
   m_Layer: 5
   m_Name: SupervisorChatScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &187212
 GameObject:
   m_ObjectHideFlags: 1
@@ -7904,7 +7905,6 @@ MonoBehaviour:
   activeBox: {fileID: 0}
   messagesContainer: {fileID: 22449360}
   messagesScrollbar: {fileID: 11477068}
-  rightPanel: {fileID: 11468052}
   advisorsPanel: {fileID: 9552688}
   tabAnimator: {fileID: 9510422}
   rightPanelActive: 0
@@ -8306,7 +8306,6 @@ MonoBehaviour:
   activeBox: {fileID: 0}
   messagesContainer: {fileID: 22463810}
   messagesScrollbar: {fileID: 11464088}
-  rightPanel: {fileID: 11468052}
   advisorsPanel: {fileID: 9552688}
   tabAnimator: {fileID: 9572412}
   rightPanelActive: 1
@@ -8788,8 +8787,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 186420}
-        m_MethodName: SetActive
+      - m_Target: {fileID: 11459898}
+        m_MethodName: set_interactable
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8799,9 +8798,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 11459898}
-        m_MethodName: set_interactable
-        m_Mode: 6
+      - m_Target: {fileID: 9572412}
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Default
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: DisableSupervisor
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8819,17 +8829,6 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 9572412}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Default
           m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -9189,7 +9188,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11475138}
   m_HandleRect: {fileID: 22410802}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -9313,28 +9312,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 186420}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 11466286}
-        m_MethodName: set_interactable
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 11459898}
         m_MethodName: set_interactable
         m_Mode: 6
@@ -9356,6 +9333,28 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: Default
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: EnableSupervisor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 11466286}
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
@@ -13896,10 +13895,10 @@ RectTransform:
   - {fileID: 22466994}
   m_Father: {fileID: 22400448}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 308.464996, y: -35.7410812}
-  m_SizeDelta: {x: 616.929993, y: 49.4821587}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22418064
 RectTransform:
@@ -14441,10 +14440,10 @@ RectTransform:
   - {fileID: 22443414}
   m_Father: {fileID: 22434856}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 99.4883347, y: -24.7410793}
-  m_SizeDelta: {x: 198.976669, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22434856
 RectTransform:
@@ -14461,10 +14460,10 @@ RectTransform:
   - {fileID: 22468536}
   m_Father: {fileID: 22400448}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 308.464996, y: -95.2232437}
-  m_SizeDelta: {x: 616.929993, y: 49.4821587}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22435012
 RectTransform:
@@ -14479,10 +14478,10 @@ RectTransform:
   - {fileID: 22437358}
   m_Father: {fileID: 22438410}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 331.964996, y: -185.281433}
-  m_SizeDelta: {x: 657.929993, y: 370.562866}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22435516
 RectTransform:
@@ -14514,10 +14513,10 @@ RectTransform:
   - {fileID: 22449360}
   m_Father: {fileID: 22437358}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 328.964996, y: 0}
-  m_SizeDelta: {x: 657.929993, y: 394.562866}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: 1}
 --- !u!224 &22437358
 RectTransform:
@@ -14533,10 +14532,10 @@ RectTransform:
   - {fileID: 22420128}
   m_Father: {fileID: 22435012}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 328.964996, y: -197.281433}
-  m_SizeDelta: {x: 657.929993, y: 394.562866}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22437458
 RectTransform:
@@ -14910,7 +14909,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -10, y: -1.52587891e-05}
-  m_SizeDelta: {x: -20, y: 30}
+  m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: .5, y: 1}
 --- !u!224 &22449976
 RectTransform:
@@ -15034,10 +15033,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 22427646}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 140.229141, y: -110.098038}
+  m_SizeDelta: {x: 248.458282, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22456162
 RectTransform:
@@ -15490,10 +15489,10 @@ RectTransform:
   - {fileID: 22400448}
   m_Father: {fileID: 22483146}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 328.964996, y: -59.9821587}
-  m_SizeDelta: {x: 657.929993, y: 119.964317}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22465846
 RectTransform:
@@ -15612,10 +15611,10 @@ RectTransform:
   - {fileID: 22456992}
   m_Father: {fileID: 22416604}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 465.19751, y: -24.7410793}
-  m_SizeDelta: {x: 303.464996, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22467018
 RectTransform:
@@ -15724,10 +15723,10 @@ RectTransform:
   - {fileID: 22492978}
   m_Father: {fileID: 22434856}
   m_RootOrder: 2
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 517.44165, y: -24.7410793}
-  m_SizeDelta: {x: 198.976669, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22468690
 RectTransform:
@@ -16273,10 +16272,10 @@ RectTransform:
   - {fileID: 22448550}
   m_Father: {fileID: 22438410}
   m_RootOrder: 2
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 331.964996, y: -454.687836}
-  m_SizeDelta: {x: 657.929993, y: 119.964317}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22483418
 RectTransform:
@@ -16291,10 +16290,10 @@ RectTransform:
   - {fileID: 22492118}
   m_Father: {fileID: 22416604}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 151.732498, y: -24.7410793}
-  m_SizeDelta: {x: 303.464996, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22483856
 RectTransform:
@@ -16309,10 +16308,10 @@ RectTransform:
   - {fileID: 22459394}
   m_Father: {fileID: 22434856}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 308.464996, y: -24.7410793}
-  m_SizeDelta: {x: 198.976669, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22484820
 RectTransform:
@@ -16326,10 +16325,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 22438410}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 331.964996, y: -382.634277}
-  m_SizeDelta: {x: 657.929993, y: 24.1428204}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22485538
 RectTransform:
@@ -16416,10 +16415,10 @@ RectTransform:
   - {fileID: 22440054}
   m_Father: {fileID: 22483146}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -59.9821587}
-  m_SizeDelta: {x: 0, y: 119.964317}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22487878
 RectTransform:
@@ -16880,6 +16879,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: .5, y: .5}
+--- !u!225 &22501324
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 186420}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!225 &22512010
 CanvasGroup:
   m_ObjectHideFlags: 1

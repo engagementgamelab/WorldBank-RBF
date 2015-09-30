@@ -28,6 +28,8 @@ public class ScenarioManager : MonoBehaviour {
 	public Button scenarioChatTab;
 	public Button supervisorChatTab;
 
+	public LayoutElement rightPanel;
+
 	public Text scenarioCardCooldownText;
 
 	public float problemCardDurationOverride = 0;
@@ -146,6 +148,7 @@ public class ScenarioManager : MonoBehaviour {
 		if(!cardDismissed) {
 			// Send player back to group chat
 			DisableSupervisor();
+			DisableSupervisorTab();
 
 			scenarioChat.NoActionsTaken();
 
@@ -189,6 +192,64 @@ public class ScenarioManager : MonoBehaviour {
 		Application.LoadLevel("Menus");
 		
 	}
+
+    public void EnableSupervisor() {
+
+    	CanvasGroup supervisorCanvas = supervisorChat.GetComponent<CanvasGroup>();
+
+		scenarioChat.gameObject.SetActive(false);
+
+		supervisorCanvas.alpha = 1;
+		supervisorCanvas.interactable = true;
+		supervisorCanvas.blocksRaycasts = true;
+
+ 		rightPanel.gameObject.SetActive(false);
+
+		// Tutorial
+		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor_opened");
+    
+    }
+
+    public void DisableSupervisor() {
+
+    	CanvasGroup supervisorCanvas = supervisorChat.GetComponent<CanvasGroup>();
+
+		// Ensure scenario tab enabled
+		scenarioChatTab.animator.Play("SupervisorTabOn");
+		scenarioChatTab.enabled = true;
+
+		scenarioChat.gameObject.SetActive(true);
+
+		supervisorCanvas.alpha = 0;
+		supervisorCanvas.interactable = false;
+		supervisorCanvas.blocksRaycasts = false;
+
+ 		rightPanel.gameObject.SetActive(true);
+
+    }
+
+    void EnableSupervisorTab() {
+
+
+		// Enable supervisor tab
+		supervisorChatTabAnimator.Play("SupervisorTabOn");
+		supervisorChatTab.enabled = true;
+		supervisorChatTab.interactable = true; 
+
+		// Flash tab if end of first card
+		if(currentYear == 1 && currentCardIndex == 1)
+			supervisorChatTab.animator.Play("ScenarioTabAlert");
+
+    }
+
+    void DisableSupervisorTab() {
+
+		// Disable supervisor tab
+		supervisorChatTabAnimator.Play("SupervisorTabOff");
+		supervisorChatTab.enabled = false;
+		supervisorChatTab.interactable = false;
+
+    }
 
     /// <summary>
     /// Displays a scenario card, given the current card index.
@@ -488,36 +549,6 @@ public class ScenarioManager : MonoBehaviour {
 
     }
 
-    void EnableSupervisor() {
-
-		// Enable supervisor tab
-		supervisorChatTabAnimator.Play("SupervisorTabOn");
-		supervisorChatTab.enabled = true;
-		supervisorChatTab.interactable = true; 
-
-		// Flash tab if end of first card
-		if(currentYear == 1 && currentCardIndex == 1)
-			supervisorChatTab.animator.Play("ScenarioTabAlert");
-    
-    }
-
-    void DisableSupervisor() {
-
-		// Disable supervisor tab
-		supervisorChatTabAnimator.Play("SupervisorTabOff");
-		supervisorChatTab.enabled = false;
-		supervisorChatTab.interactable = false;
-
-		// Ensure scenario tab enabled
-		scenarioChatTab.animator.Play("SupervisorTabOn");
-		scenarioChatTab.enabled = true;
-		supervisorChatTab.interactable = false;
-
-		supervisorChat.gameObject.SetActive(false);
-		scenarioChat.gameObject.SetActive(true);
-
-    }
-
     /// <summary>
     // Callback for ScenarioEvent, filtering for type of event
     /// </summary>
@@ -545,7 +576,7 @@ public class ScenarioManager : MonoBehaviour {
 
 				DialogManager.instance.RemoveTutorialScreen();
 				
-				EnableSupervisor();
+				EnableSupervisorTab();
 
     			// Resume cooldown
     			if(problemCardCooldown != null) {
