@@ -795,6 +795,11 @@
       "indicator_2": 0,
       "indicator_3": 0
     },
+    "terminate_contract_at_end_of_year_4": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
     "create_new_guidelines_1": {
       "indicator_1": 3,
       "indicator_2": 2,
@@ -1135,45 +1140,60 @@
       "indicator_2": 0,
       "indicator_3": 1
     },
-    "request_payment_without_verification_5": {
-      "indicator_1": -5,
-      "indicator_2": -6,
-      "indicator_3": -7
-    },
-    "introduce_incentives_for_timely_verification": {
-      "indicator_1": 5,
-      "indicator_2": 6,
-      "indicator_3": 7
-    },
-    "grant_autonomy_to_providers_2": {
-      "indicator_1": 6,
-      "indicator_2": 6,
-      "indicator_3": 7
-    },
-    "retrain_staff_on_business_plan": {
-      "indicator_1": -1,
-      "indicator_2": -2,
-      "indicator_3": -4
-    },
-    "improve_guidance_on_approval_processes": {
-      "indicator_1": 2,
-      "indicator_2": 1,
-      "indicator_3": 1
-    },
-    "hold_payment_2": {
+    "warn_verifier_1": {
       "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": -1
+    },
+    "reaffirm_ministry_authority": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "ask_reduce_oversight": {
+      "indicator_1": 1,
       "indicator_2": 0,
       "indicator_3": 1
     },
-    "sanctions_12": {
+    "circulate_memo_reaffirming_ministry_authority": {
       "indicator_1": -1,
       "indicator_2": -1,
-      "indicator_3": -7
+      "indicator_3": 0
+    },
+    "streamline_speed_verification_process": {
+      "indicator_1": 1,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "warning_and_retraining_2": {
+      "indicator_1": 1,
+      "indicator_2": 0,
+      "indicator_3": 1
+    },
+    "sanctions_11": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": -1
+    },
+    "review_business_plan": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "hold_payment_2": {
+      "indicator_1": 1,
+      "indicator_2": 0,
+      "indicator_3": 0
+    },
+    "sanctions_12": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": -2
     },
     "capacity_building_help": {
-      "indicator_1": 2,
-      "indicator_2": 2,
-      "indicator_3": 3
+      "indicator_1": 1,
+      "indicator_2": 0,
+      "indicator_3": 1
     },
     "warn_providers": {
       "indicator_1": -2,
@@ -1220,7 +1240,7 @@
       "indicator_2": 1,
       "indicator_3": 1
     },
-    "retraining_on_use_of_financial_tools_2": {
+    "sanctions_and_retraining_on_use_of_financial_tools_2": {
       "indicator_1": 2,
       "indicator_2": 2,
       "indicator_3": 2
@@ -1297,6 +1317,11 @@
     },
     "sanctions_15": {
       "indicator_1": 0,
+      "indicator_2": -2,
+      "indicator_3": -3
+    },
+    "terminate_contract_at_end_of_year_8": {
+      "indicator_1": 1,
       "indicator_2": -2,
       "indicator_3": -3
     },
@@ -1410,6 +1435,11 @@
       "indicator_2": 1,
       "indicator_3": 2
     },
+    "reorganize_staff_2": {
+      "indicator_1": -1,
+      "indicator_2": -1,
+      "indicator_3": -1
+    },
     "increase_funding_for_ngo_2": {
       "indicator_1": 1,
       "indicator_2": 1,
@@ -1480,6 +1510,11 @@
       "indicator_2": 1,
       "indicator_3": 0
     },
+    "warning_18": {
+      "indicator_1": 0,
+      "indicator_2": 0,
+      "indicator_3": 1
+    },
     "sanctions_16": {
       "indicator_1": -1,
       "indicator_2": 0,
@@ -1520,7 +1555,7 @@
       "indicator_2": 2,
       "indicator_3": 4
     },
-    "unlockable_information_campaign_69": {
+    "unlockable_information_campaign": {
       "indicator_1": 1,
       "indicator_2": 1,
       "indicator_3": 0
@@ -3415,7 +3450,7 @@
         },
         {
           "symbol": "poor_management_1",
-          "name": "Poor Management 1",
+          "name": "Poor Management",
           "priority": 3,
           "year": 1,
           "initiating_npc": "coach",
@@ -4356,7 +4391,7 @@
               "dialogue": "Wow, uh, I'm not really sure what I would do in your shoes. That might be in somebody else's job description, though."
             },
             "hospital_administrator": {
-              "dialogue": "We need to spend money where it's needed, and I know where it is needed. That was the purpose of granting us autonomy in the first place.",
+              "dialogue": "TWe need to spend money where it's needed, and I know where it is needed. That was the purpose of granting us autonomy in the first place.",
               "feedback": {
                 "warning_8": "I will do my best, but I don't see a sustainable path forward with the current plan."
               }
@@ -4578,7 +4613,13 @@
           ],
           "characters": {
             "dep_minister_of_health": {
-              "dialogue": "I'm not sure working with these people was the best idea. Maybe we should seek another partner for next year."
+              "dialogue": "I'm not sure working with these people was the best idea. Maybe we should seek another partner for next year.",
+              "unlocks": [
+                "terminate_contract_at_end_of_year_4"
+              ],
+              "unlocks_affects": [
+                "terminate_contract_at_end_of_year_4"
+              ]
             },
             "director_regional_health_services": {
               "dialogue": "We need to send a clear message that this is unacceptable. Strong sanctions are what I recommend.",
@@ -4623,7 +4664,8 @@
               "dialogue": "I am only doing what you asked, and referring people to the hospitals. What is the problem?",
               "feedback": {
                 "warning_9": "Many apologies! I think I now understand the problem.",
-                "sanctions_4": "Why do I even refer people if you punish me afterwards? This is foolish."
+                "sanctions_4": "Why do I even refer people if you punish me afterwards? This is foolish.",
+                "terminate_contract_at_end_of_year_4": "But we have only just begun! Pray, please reconsider."
               }
             }
           }
@@ -6449,51 +6491,72 @@
           "priority": 1,
           "year": 1,
           "initiating_npc": "dep_minister_of_health",
-          "initiating_dialogue": "The program has just begun and already we're seeing delays in delays in payments. These delays will cause a cascade of failures.",
+          "initiating_dialogue": "The independent verifier and the health providers seem to have built a coalition to box us out of the verification process. This RBF program gives us the authority to verify any and all reports, but they're pushing back.",
           "starting_options": [
-            "request_payment_without_verification_5"
+            "warn_verifier_1"
           ],
           "starting_options_affects": [
-            "request_payment_without_verification_5"
+            "warn_verifier_1"
           ],
           "final_options": [
-            "request_payment_without_verification_5",
-            "introduce_incentives_for_timely_verification"
+            "warn_verifier_1",
+            "ask_reduce_oversight",
+            "circulate_memo_reaffirming_ministry_authority",
+            "streamline_speed_verification_process"
           ],
           "final_options_affects": [
-            "request_payment_without_verification_5",
-            "introduce_incentives_for_timely_verification"
+            "warn_verifier_1",
+            "ask_reduce_oversight",
+            "circulate_memo_reaffirming_ministry_authority",
+            "streamline_speed_verification_process"
           ],
           "characters": {
             "dep_minister_of_health": {
-              "dialogue": "The delay is in our verification, unfortunately. The health team on the ground responsible for the first level of verification has many responsibilities. If it is that important maybe the providers should just be paid."
+              "feedback": {
+                "ask_reduce_oversight": "This isn't what we had in mind when we started the project. I don't see how we can, in good faith, approve costs we haven't verified."
+              }
             },
             "director_regional_health_services": {
-              "dialogue": "The Deputy Minister is correct, the regional team has many responsibilities and looking at figures is not necessarily the priority",
+              "dialogue": "We need the authority to verify like we always have. It seems unethical to OK payments that we haven't verified.",
               "feedback": {
-                "introduce_incentives_for_timely_verification": "This will certainly make it the teams’ priority. The incentives can also be used to strengthen the team with extra resources to help ensure verification is done in time."
+                "streamline_speed_verification_process": "This will put some strain on our office, but I think we can get the extra work done."
               }
             },
             "coach": {
-              "dialogue": "It is important that verification is done prior to payment. A solution may be to Incentivise the regional team to do the first-level verification in a timely manner.",
-              "unlock": [
-                "introduce_incentives_for_timely_verification"
+              "dialogue": "The program spreads authority across multiple stakeholders, including the Ministry of Health. Whether it's a good thing or a bad thing, that's their concern. Let's send a memo gently reminding everyone of that.",
+              "unlocks": [
+                "circulate_memo_reaffirming_ministry_authority"
               ],
-              "unlock_affects": [
-                "introduce_incentives_for_timely_verification"
+              "unlocks_affects": [
+                "circulate_memo_reaffirming_ministry_authority"
               ],
               "feedback": {
-                "request_payment_without_verification_5": "This does not set a good precedent I think but of course it is not my decision."
+                "circulate_memo_reaffirming_ministry_authority": "I'll make sure this gets into everyone's mailbox as a high priority. Don't worry: I won't write the subject in caps lock again."
               }
             },
             "third_party_verifier": {
-              "dialogue": "You understand that if there is no first-level of verification, there is nothing for us to verify, right?"
+              "dialogue": "It's my job to verify reports. Having someone else double everything we're doing is worse than redundant: it's counter-productive.",
+              "unlocks": [
+                "ask_reduce_oversight"
+              ],
+              "unlocks_affects": [
+                "ask_reduce_oversight"
+              ],
+              "feedback": {
+                "warn_verifier_1": "All right. We'll let everyone look over our shoulders all they want. But to say it's inefficient is an understatement."
+              }
             },
             "community_verifier": {
-              "dialogue": "The Ministry takes forever to do anything. They need to be prodded, I think. It is important this is done in a timely manner."
+              "dialogue": "We're tired of submitting our reports in triplicate. We have enough to do without all this paperwork."
             },
             "clinic_manager": {
-              "dialogue": "I like working with the government, I do. But doubling verification doubles the time before I get my money, and my budget is pretty tight as it is."
+              "dialogue": "I like working with the government, I do. But doubling verification doubles the time before I get my money, and my budget is pretty tight as it is.",
+              "unlocks": [
+                "streamline_speed_verification_process"
+              ],
+              "unlocks_affects": [
+                "streamline_speed_verification_process"
+              ]
             },
             "hospital_administrator": {
               "dialogue": "Having three levels of verification sounds like overkill to me. And my staff is confused about who's actually in charge."
@@ -6506,31 +6569,48 @@
           "priority": 2,
           "year": 1,
           "initiating_npc": "coach",
-          "initiating_dialogue": "I have been reviewing the health facilities business plans with the clinic managers, and most of them do not seem to carry out their planned activities. The managers say this is because of delays in getting approval to spend.",
+          "initiating_dialogue": "The hospital administrator and I were reviewing the hospital's business plan and they do not seem to manage funds well. Even with our payments they're operating at a loss.",
           "starting_options": [
-            "improve_guidance_on_approval_processes"
+            "warning_and_retraining_2"
           ],
           "starting_options_affects": [
-            "improve_guidance_on_approval_processes"
+            "warning_and_retraining_2"
           ],
           "final_options": [
-            "grant_autonomy_to_providers_2",
-            "retrain_staff_on_business_plan",
-            "improve_guidance_on_approval_processes"
+            "review_business_plan",
+            "warning_and_retraining_2",
+            "sanctions_11"
           ],
           "final_options_affects": [
-            "grant_autonomy_to_providers_2",
-            "retrain_staff_on_business_plan",
-            "improve_guidance_on_approval_processes"
+            "review_business_plan",
+            "warning_and_retraining_2",
+            "sanctions_11"
           ],
           "characters": {
             "dep_minister_of_health": {
-              "dialogue": "The clinic managers may just be late in their requests. If needs be we can improve the guidance for approval processes to see if it can be faster. New technology could play a role maybe."
+              "dialogue": "There are other health providers in the region we could use. A sanction will remind them.",
+              "unlocks": [
+                "sanctions_11"
+              ],
+              "unlocks_affects": [
+                "sanctions_11"
+              ]
+            },
+            "director_regional_health_services": {
+              "dialogue": "The plan's faltering a bit. Are you sure this is the hospital's administrator's fault and not some issue with the business plan? It might be on us.",
+              "unlocks": [
+                "review_business_plan"
+              ],
+              "unlocks_affects": [
+                "review_business_plan"
+              ],
+              "feedback": {
+                "review_business_plan": "Making a reasonable plan with things we can achieve together will put us on the right path."
+              }
             },
             "coach": {
               "feedback": {
-                "improve_guidance_on_approval_processes": "I will get onto this. Hope it will make a difference. Granting the providers autonomy may be an easier way to fix it.",
-                "retrain_staff_on_business_plan": "I will be happy to have another round of trainings but I think the problem may lie elsewhere."
+                "sanctions_11": "Alright, but I think this is a little much for so early in the game. I'll keep an eye out and maybe we can avoid this happening again."
               }
             },
             "third_party_verifier": {
@@ -6540,25 +6620,13 @@
               "dialogue": "I would talk directly to them if I were you. Maybe they're seeing something we aren't."
             },
             "clinic_manager": {
-              "dialogue": "If only we were able to decide and use the resources as we see fit this would help us being able to carry out the activities and improve performance.",
-              "unlocks": [
-                "grant_autonomy_to_providers_2"
-              ],
-              "unlocks_affects": [
-                "grant_autonomy_to_providers_2"
-              ],
-              "feedback": {
-                "grant_autonomy_to_providers_2": "This will really help. I am so excited as now we can make a real difference to get the people the health services they need."
-              }
+              "dialogue": "I don't know about the hospital, we're trying to meet goals without a lot of supplies or money to buy more."
             },
             "hospital_administrator": {
-              "dialogue": "We're doing our best here. There are many intricacies to the business plan, and not everyone on my staff understands them. Maybe the coach can help retrain them.",
-              "unlocks": [
-                "retrain_staff_on_business_plan"
-              ],
-              "unlocks_affects": [
-                "retrain_staff_on_business_plan"
-              ]
+              "dialogue": "We're doing our best here. The program is complicated, and not all my people have had time to look at it while treating patients, filing their records, that sort of thing. We'll get used to operating within the budget soon.",
+              "feedback": {
+                "warning_and_retraining_2": "We are trying to work with the money we have. We don't need to be chastised for that."
+              }
             }
           }
         },
@@ -7152,18 +7220,26 @@
           "final_options": [
             "warning_16",
             "sanctions_15",
+            "terminate_contract_at_end_of_year_8",
             "tie_incentives_directly_to_protocol",
             "reduce_incentives_for_customer_service"
           ],
           "final_options_affects": [
             "warning_16",
             "sanctions_15",
+            "terminate_contract_at_end_of_year_8",
             "tie_incentives_directly_to_protocol",
             "reduce_incentives_for_customer_service"
           ],
           "characters": {
             "dep_minister_of_health": {
-              "dialogue": "That's unacceptable. I think it's time we looked for someone else to fulfill these duties. There are other health care providers in Zariba. "
+              "dialogue": "That's unacceptable. I think it's time we looked for someone else to fulfill these duties. There are other health care providers in Zariba. ",
+              "unlocks": [
+                "terminate_contract_at_end_of_year_8"
+              ],
+              "unlocks_affects": [
+                "terminate_contract_at_end_of_year_8"
+              ]
             },
             "director_regional_health_services": {
               "dialogue": "We must conduct an investigation right away. Begin by speaking directly with the health providers and find out why this is happening.",
@@ -7171,7 +7247,10 @@
                 "clinic_manager",
                 "hospital_administrator",
                 "coach"
-              ]
+              ],
+              "feedback": {
+                "terminate_contract_at_end_of_year_8": "I understand. I will inform the Clinic Manager of this, and begin the search for a replacement ASAP."
+              }
             },
             "coach": {
               "dialogue": "Maybe we've been incentivising the wrong things. Prescriptions make patients happy, whether or not they're correct. I've prioritized satisfied patients, perhaps to the detriment of best practices.",
@@ -7594,12 +7673,14 @@
             "warn_ngo_5",
             "sanction_ngo_4",
             "increase_customer_service_incentives_2",
+            "reorganize_staff_2",
             "increase_ngo_autonomy_2"
           ],
           "final_options_affects": [
             "warn_ngo_5",
             "sanction_ngo_4",
             "increase_customer_service_incentives_2",
+            "reorganize_staff_2",
             "increase_ngo_autonomy_2"
           ],
           "characters": {
@@ -7641,11 +7722,18 @@
               }
             },
             "third_party_verifier": {
-              "dialogue": "Providers struggle to meet their quality of care milestones. Bad service is half the problem. It might not be my place to say so, but firing staff and hiring new people might be the best way to go."
+              "dialogue": "Providers struggle to meet their quality of care milestones. Bad service is half the problem. It might not be my place to say so, but firing staff and hiring new people might be the best way to go.",
+              "unlocks": [
+                "reorganize_staff_2"
+              ],
+              "unlocks_affects": [
+                "reorganize_staff_2"
+              ]
             },
             "clinic_manager": {
               "dialogue": "I have less control over my staff than you might think. When we struggle to fill demand on a day to day basis, there isn't much time left over for morale-building and discipline.",
               "feedback": {
+                "reorganize_staff_2": "More orders from on high about who can be hired? Just thinking about how long it will take to train all these people to where my current staff is makes me mad. As long as we keep running out of supplies, new staff will get frustrated soon too.",
                 "sanction_ngo_4": "You realize that when you sanction the NGO, the money tends to come out of my budget? You cannot keep doing this to us."
               }
             }
@@ -8016,18 +8104,22 @@
           "initiating_npc": "community_verifier",
           "initiating_dialogue": "I've been interviewing patients, and at least at the clinics there's a serious quality of care issue. People have been leaving with what appears to be completely wrong prescriptions.",
           "starting_options": [
+            "warning_18",
             "sanctions_16"
           ],
           "starting_options_affects": [
+            "warning_18",
             "sanctions_16"
           ],
           "final_options": [
+            "warning_18",
             "sanctions_16",
             "terminate_contract_at_end_of_year_10",
             "tie_incentives_directly_to_protocol_2",
             "reduce_incentives_for_customer_service_2"
           ],
           "final_options_affects": [
+            "warning_18",
             "sanctions_16",
             "terminate_contract_at_end_of_year_10",
             "tie_incentives_directly_to_protocol_2",
@@ -8055,6 +8147,7 @@
             "ngo_manager": {
               "dialogue": "I run the entire health network of Zariba and can't be everywhere at once. In the end, I am responsible, but I'm not being given the support I need.",
               "feedback": {
+                "warning_18": "Everyone who works for me is doing their best. I don't know what I can do without an increase in resources.",
                 "sanctions_16": "I need an increase in resources to deal with this, not a cut! How can I fix this problem if I'm hamstrung by sanctions?"
               }
             },
@@ -8333,7 +8426,7 @@
         "feedback_dialogue": {
           "unlockable_create_robust_referral_system": "If the problem persists, then our providers are not leveling with us. It should fix the problem, though.",
           "unlockable_incentivise_following_set_protocols_rewards": "I get it's annoying to reward people for not breaking the rules, but if they feel the referral process is such a pain, that's what we have to do.",
-          "unlockable_incentivise_referrals": "Sounds like a good way to move forward. I just hope we don't hear about unnecessary referrals next.",
+          "unlockable_incentivise_referrals": "I hope we don't hear about unnecessary referrals next.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
@@ -8398,7 +8491,7 @@
         ],
         "feedback_dialogue": {
           "unlockable_incentivise_best_practices_high_goals": "Just make sure to include patient treatment charts against protocols. We do not want to pay for services below standard.",
-          "unlockable_sanction_providers_performing_unnecessary_procedures": "This is a serious problem. I hope showing the provider we won't stand for this will solve the problem.",
+          "unlockable_sanction_providers_performing_unnecessary_procedures": "This is a serious problem. I hope this will solve it.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
@@ -8485,19 +8578,19 @@
           20
         ],
         "new_options": [
-          "unlockable_information_campaign_69",
+          "unlockable_information_campaign",
           "unlockable_add_travel_vouchers",
           "unlockable_increase_budget_for_outreach"
         ],
         "new_options_affects": [
-          "unlockable_information_campaign_69",
+          "unlockable_information_campaign",
           "unlockable_add_travel_vouchers",
           "unlockable_increase_budget_for_outreach"
         ],
         "feedback_dialogue": {
           "unlockable_add_travel_vouchers": "That's a worthwhile idea, and it should help people reach health facilities.",
-          "unlockable_information_campaign_69": "I'll contact the providers and let them know they must do more to explain their services.",
-          "unlockable_increase_budget_for_outreach": "I will make the arrangements. As long as there are enough nurses available to carry out these outreach activities, this should help.",
+          "unlockable_information_campaign": "I'll contact the providers and let them know they must do more to explain their services.",
+          "unlockable_increase_budget_for_outreach": "I will make the arrangements. As long as there are enough nurses available to carry out these outreach activites, this should help.",
           "observe": "OK, we'll wait and see if anything changes."
         }
       },
@@ -8507,7 +8600,7 @@
         "name": "Wrong Number of Cases",
         "year": 1,
         "initiating_dialogue": "The Verifier just let me know that the number of cases reported for the voucher program appears to be incorrect. This could be a bad sign.",
-        "investigate_dialogue": "I verified this with the providers, and they claim that this was an unintended mistake. We could just issue a nonpayment, or we could issue sanctions.",
+        "investigate_dialogue": "I verified this with the providers, and they claim that this was an unintended mistake. We could just issue a nonpayment, or we could issue sanctions. Alternatively, I could investigate further for evidence of fraud.",
         "investigate_further_dialogue": "My investigation did not turn up any hard evidence of fraud.",
         "investigate_cooldown": [
           5,
@@ -9792,19 +9885,19 @@
       "overlay_location": "Bottom-Right",
       "text": "Click on Rahb, your RBF Plan Supervisor and then choose “learn more” to see what she has to say. To continue the conversation, choose a highlighted topic.",
       "spotlight_position": [
-        -1.12,
+        -1.23,
         -0.04
       ],
       "spotlight_size": [
-        2.38,
+        2.36,
         1
       ],
       "mask_position": [
-        360.41,
+        432,
         -62
       ],
       "mask_size": [
-        154.3,
+        191,
         289.8
       ]
     },
@@ -9859,16 +9952,16 @@
       "overlay_location": "Center",
       "text": "At any time you can access the program creation screen to start forming your RBF proposal. Click here to open this screen.",
       "spotlight_position": [
-        0.29,
-        0.29
+        0.31,
+        0.36
       ],
       "spotlight_size": [
         3.3,
         3.25
       ],
       "mask_position": [
-        5,
-        -537
+        0,
+        -517
       ],
       "mask_size": [
         72,
@@ -9908,12 +10001,12 @@
         3.25
       ],
       "mask_position": [
-        5,
-        -537
+        0,
+        -512
       ],
       "mask_size": [
-        72,
-        82
+        69,
+        71
       ]
     },
     "phase_1_continue_talking": {
@@ -9958,7 +10051,7 @@
       "overlay_location": "Top-Right",
       "text": "Read the description to decide whether you want to travel to this city. Click the visit button, or click cancel and choose another city.",
       "spotlight_position": [
-        -1.36,
+        -1.37,
         -0.85
       ],
       "spotlight_size": [
@@ -9966,14 +10059,13 @@
         4.84
       ],
       "mask_position": [
-        407.5,
-        -427.5
+        382,
+        -395
       ],
       "mask_size": [
         162.73,
         56.7
-      ],
-      "confirm": true
+      ]
     },
     "phase_1_conversation_points": {
       "overlay_location": "Center",
@@ -10620,6 +10712,10 @@
       "title": "Increase Scrutiny"
     },
     {
+      "symbol": "terminate_contract_at_end_of_year_4",
+      "title": "Terminate Contract at End of the Year"
+    },
+    {
       "symbol": "create_new_guidelines_1",
       "title": "Create New Guidelines"
     },
@@ -10892,24 +10988,40 @@
       "title": "Sanction NGO"
     },
     {
-      "symbol": "introduce_incentives_for_timely_verification",
-      "title": "Introduce Incentives for Timely Verification"
+      "symbol": "warn_verifier_1",
+      "title": "Warn Verifier"
     },
     {
-      "symbol": "request_payment_without_verification_5",
-      "title": "Request Payment Without Verification"
+      "symbol": "reaffirm_ministry_authority",
+      "title": "Reaffirm Ministry's Authority"
     },
     {
-      "symbol": "grant_autonomy_to_providers_2",
-      "title": "Grant Autonomy to Providers"
+      "symbol": "ask_reduce_oversight",
+      "title": "Ask to Reduce Regulatory Measure"
     },
     {
-      "symbol": "retrain_staff_on_business_plan",
-      "title": "Retrain Staff on the Business Plan"
+      "symbol": "circulate_memo_reaffirming_ministry_authority",
+      "title": "Circulate Memo Reaffirming Ministry Authority"
     },
     {
-      "symbol": "improve_guidance_on_approval_processes",
-      "title": "Improve Guidance on The Approval Process"
+      "symbol": "streamline_speed_verification_process",
+      "title": "Streamline Ministry Constraints to Speed Verification"
+    },
+    {
+      "symbol": "verification_1",
+      "title": "Verification"
+    },
+    {
+      "symbol": "warning_and_retraining_2",
+      "title": "Warning and Retraining"
+    },
+    {
+      "symbol": "sanctions_11",
+      "title": "Sanctions"
+    },
+    {
+      "symbol": "review_business_plan",
+      "title": "Review Business Plan"
     },
     {
       "symbol": "hold_payment_2",
@@ -11024,6 +11136,10 @@
       "title": "Sanctions"
     },
     {
+      "symbol": "terminate_contract_at_end_of_year_8",
+      "title": "Terminate Contract at End of Year"
+    },
+    {
       "symbol": "tie_incentives_directly_to_protocol",
       "title": "Tie Incentives Directly to Protocol"
     },
@@ -11112,6 +11228,10 @@
       "title": "Increase Patient Satisfaction Incentives"
     },
     {
+      "symbol": "reorganize_staff_2",
+      "title": "Reorganize Staff"
+    },
+    {
       "symbol": "terminate_contract_at_end_of_year_9",
       "title": "Terminate Contract at End of Year"
     },
@@ -11172,6 +11292,10 @@
       "title": "Increase Fee for Indicators at End of Year"
     },
     {
+      "symbol": "warning_18",
+      "title": "Warning"
+    },
+    {
       "symbol": "sanctions_16",
       "title": "Sanctions"
     },
@@ -11204,7 +11328,7 @@
       "title": "Grant Autonomy to Providers"
     },
     {
-      "symbol": "unlockable_information_campaign_69",
+      "symbol": "unlockable_information_campaign",
       "title": "Information Campaign"
     },
     {

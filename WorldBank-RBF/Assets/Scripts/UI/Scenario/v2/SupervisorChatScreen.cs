@@ -28,6 +28,8 @@ public class SupervisorChatScreen : ChatScreen {
 	bool investigateFurther;
 	bool tacticsQueued;
 
+	string optionToConfirm;
+
 	SystemMessage investigateMsg;
 
 	enum SupervisorState {
@@ -53,6 +55,15 @@ public class SupervisorChatScreen : ChatScreen {
 			ShowTactics();
 			tacticsQueued = false;
 		}
+
+		// Re-display feedback if option is queued
+		if(!System.String.IsNullOrEmpty(optionToConfirm)) {
+
+			StartCoroutine(ShowFeedback(optionToConfirm, true));
+	 		optionToConfirm = null;
+		
+		}
+
 	}
 
 	void OnDisable() {
@@ -235,8 +246,10 @@ public class SupervisorChatScreen : ChatScreen {
 
 	}
 
-	IEnumerator ShowFeedback(string option, bool nodelay=false)
-	{
+	IEnumerator ShowFeedback(string option, bool nodelay=false) {
+
+		optionToConfirm = option;
+
 		// Disable scenario chat
 		scenarioChatTab.interactable = false;
 		scenarioChatTab.animator.Play("SupervisorTabOff");

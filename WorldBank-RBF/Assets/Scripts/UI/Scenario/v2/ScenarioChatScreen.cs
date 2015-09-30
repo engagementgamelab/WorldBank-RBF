@@ -258,6 +258,8 @@ public class ScenarioChatScreen : ChatScreen {
 
 	IEnumerator ShowFeedback(string eventSymbol)
 	{
+			
+		Clear();
 
 		// Disable supervisor tab
 		supervisorChatTabAnimator.Play("SupervisorTabOff");
@@ -266,8 +268,6 @@ public class ScenarioChatScreen : ChatScreen {
 	    DialogManager.instance.RemoveTutorialScreen();
 	    
 		yield return new WaitForSeconds(1f);
-			
-		Clear();
 
 		AddSystemMessage(DataManager.GetUIText("copy_waiting_for_feedback"));
 
