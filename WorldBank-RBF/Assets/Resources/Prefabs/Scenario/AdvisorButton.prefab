@@ -83,6 +83,7 @@ GameObject:
   - 114: {fileID: 11485488}
   - 114: {fileID: 11434942}
   - 95: {fileID: 9567548}
+  - 114: {fileID: 11469802}
   m_Layer: 5
   m_Name: AdvisorButton
   m_TagString: Untagged
@@ -202,6 +203,7 @@ MonoBehaviour:
   phaseOne: 0
   npcName: {fileID: 22468546}
   initialNpcName: {fileID: 0}
+  feedbackNpcName: {fileID: 0}
   containerAnimator: {fileID: 9562770}
   animator: {fileID: 9567548}
   container: {fileID: 11434852}
@@ -255,6 +257,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11469802}
+        m_MethodName: OnTriggerAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &11455108
@@ -296,6 +309,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11469802
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 170714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540cdb86879fc474bb7a882c41b478f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipName: buttonpressneutral
+  group: ui
+  type: 1
 --- !u!114 &11485488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -454,7 +481,27 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 11469802}
+    - target: {fileID: 0}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnTriggerAudio
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: clipName
+      value: buttonpressneutral
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 170714}
