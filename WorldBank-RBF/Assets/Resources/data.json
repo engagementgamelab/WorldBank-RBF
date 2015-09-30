@@ -433,7 +433,7 @@
       "enabled": true,
       "npc_interactions": [
         7,
-        4
+        3
       ]
     },
     {
@@ -2090,7 +2090,7 @@
           },
           "Your Expertise": {
             "text": [
-              "We have identified three indicators to address that could improve these numbers: Vaccinations, Facility Births, and Quality of Care. We have pushed facilities to improve on these indicators, but so far the results have been underwhelming. First and foremost, I recommend that you find a way to boost these key services and quality indicators."
+              "We have identified three indicators to address that could improve these numbers: Vaccinations, Facility Births, and Quality of Care. We have pushed facilities to improve on these indicators, but so far the results have been underwhelming. First and foremost, I recommend that you find a way to boost these key services and quality indicators.\""
             ],
             "unlocks": [
               "unlockable_incentivise_providers_to_deliver_services"
@@ -3289,10 +3289,8 @@
             "dep_minister_of_health": {
               "dialogue": "We are very interested in making sure the providers are doing what they say, and we have the staff available to review, so why not?",
               "narrows": [
-                "dep_minister_of_health",
                 "director_regional_health_services",
                 "community_manager",
-                "hospital_administrator",
                 "clinic_manager"
               ],
               "feedback": {
@@ -3327,6 +3325,7 @@
               "dialogue": "Honestly, we've been ignoring the ministry's requests. We've got too much actual work to worry about."
             },
             "hospital_administrator": {
+              "dialogue": "Aren't there other people you can ask about this? One of them might have a better idea.",
               "feedback": {
                 "comply_with_ministry_1": "This seems reasonable and I will make sure we adjust according. We'll do our best."
               }
@@ -3378,7 +3377,6 @@
               "dialogue": "All providers in my region should know the requirements for keeping records. Something must be wrong. I'd talk to them.",
               "narrows": [
                 "dep_minister_of_health",
-                "director_regional_health_services",
                 "community_manager",
                 "third_party_verifier",
                 "coach"
@@ -3388,6 +3386,7 @@
               "dialogue": "I don't know why they aren't keeping records. When I spoke with them last, they said everything was fine and they didn't want my help."
             },
             "third_party_verifier": {
+              "dialogue": "Aren't there other people you can ask about this? One of them might have a better idea.",
               "feedback": {
                 "help_build_capacity_1": "I will strengthen on the spot training during the verification for them to see the mistakes they are making."
               }
@@ -3452,6 +3451,7 @@
               "dialogue": "The staff at the hospital have been slow to adapt to new practices."
             },
             "coach": {
+              "dialogue": "Aren't there other people you can ask about this? One of them might have a better idea.",
               "feedback": {
                 "terminate_contract_effective_end_of_year_1": "It seems early to terminate their contract, but let's review at year's end. In the meantime, I will be observing and offering ways to improve."
               }
@@ -3516,6 +3516,7 @@
               ]
             },
             "coach": {
+              "dialogue": "Aren't there other people you can ask about this? One of them might have a better idea.",
               "feedback": {
                 "take_no_further_action_1": "I'm sure I'll have some time next quarter once our busiest time dies down."
               }
@@ -3586,6 +3587,7 @@
               "dialogue": "Have you considered that there is a flaw in the business plan? If the Hospital Administrator is straying from it so often, it might need to be reevaluated."
             },
             "coach": {
+              "dialogue": "Aren't there other people you can ask about this? One of them might have a better idea.",
               "feedback": {
                 "retraining_on_use_of_financial_tools": "I hope the Hospital Administrator will see its importance. I'll make some time this week for a retraining session and try to drill down on exactly how these tools should be used."
               }
@@ -6421,8 +6423,7 @@
             }
           }
         }
-      ],
-      "year_end": {}
+      ]
     },
     "scenario_3": {
       "path_config": {
@@ -9769,8 +9770,8 @@
       "city1": "crup",
       "city2": "zima",
       "unlocked": false,
-      "speed": 30,
-      "cost": 2,
+      "speed": 15,
+      "cost": 3,
       "transportation_mode": "truck"
     }
   ],
