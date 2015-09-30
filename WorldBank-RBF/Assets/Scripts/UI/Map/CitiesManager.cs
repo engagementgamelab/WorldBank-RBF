@@ -80,10 +80,21 @@ public class CitiesManager : MB {
 	/// <param name="route">The route to move along.</param>
 	/// <param name="onArrive">An action to take when the indicator arrives at the city (optional)</param>
 	public void TravelToCity (CityItem city, RouteItem route, System.Action onArrive=null) {
+		
 		AudioManager.Sfx.Play (route.TransportationMode, "travel");
 		if (PlayerData.CityGroup.CurrentCity != city.Symbol)
 			PlayerData.DayGroup.Remove (route.Cost);
 		PlayerData.CityGroup.CurrentCity = city.Symbol;
+
+		// Special case - if the player runs out of the day but can spend an extra day in the city, re-enter it
+		if (PlayerData.DayGroup.Empty) {
+			if (!city.StayedExtraDay) {
+				onArrive = () => {
+					StayExtraDay (city);
+				};
+			}
+		}
+
 		MoveIndicator (onArrive, route);
 	}
 
@@ -99,7 +110,7 @@ public class CitiesManager : MB {
 			} else {
 				reopenBox = false;
 			}
-		}
+		} 
 
 		if (reopenBox) 
 			TravelToCity (city, route, () => cityInfoBox.Open (Cities[city.Symbol]));
@@ -113,10 +124,10 @@ public class CitiesManager : MB {
 	/// <param name="city">The city to move to.</param>
 	/// <param name="route">The route to move along.</param>
 	public void VisitCity (CityItem city, RouteItem route) {
-		city.Visited = true;
 		if (city.Symbol == "capitol") city.StayedExtraDay = true;
 		PlayerData.InteractionGroup.SetInteractions (city.Symbol);
 		TravelToCity (city, route, OnVisit);
+		city.Visited = true;
 	}
 
 	/// <summary>
