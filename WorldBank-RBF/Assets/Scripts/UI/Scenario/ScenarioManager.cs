@@ -493,7 +493,11 @@ public class ScenarioManager : MonoBehaviour {
 		// Enable supervisor tab
 		supervisorChatTabAnimator.Play("SupervisorTabOn");
 		supervisorChatTab.enabled = true;
-		supervisorChatTab.GetComponent<Button>().interactable = true;
+		supervisorChatTab.interactable = true; 
+
+		// Flash tab if end of first card
+		if(currentYear == 1 && currentCardIndex == 1)
+			supervisorChatTab.animator.Play("ScenarioTabAlert");
     
     }
 

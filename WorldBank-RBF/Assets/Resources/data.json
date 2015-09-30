@@ -432,8 +432,8 @@
       "description": "Located on the sea, Zima is one of the largest and most industrialized cities in Zariba. Its most important landmark is the National Hospital, the most advanced in the country.",
       "enabled": true,
       "npc_interactions": [
-        8,
-        3
+        7,
+        4
       ]
     },
     {
@@ -809,6 +809,11 @@
       "indicator_1": 1,
       "indicator_2": 1,
       "indicator_3": 2
+    },
+    "sanctions_5": {
+      "indicator_1": 3,
+      "indicator_2": 2,
+      "indicator_3": 5
     },
     "hold_meeting_to_retrain_on_reporting_practices_2": {
       "indicator_1": 2,
@@ -1392,38 +1397,33 @@
     },
     "warn_ngo_4": {
       "indicator_1": -2,
-      "indicator_2": -1,
-      "indicator_3": -2
+      "indicator_2": -2,
+      "indicator_3": 0
     },
     "sanction_ngo_3": {
       "indicator_1": 3,
       "indicator_2": 2,
-      "indicator_3": 3
+      "indicator_3": -3
     },
     "increase_supply_budget_2": {
-      "indicator_1": 2,
-      "indicator_2": 1,
-      "indicator_3": 2
-    },
-    "grant_facilities_autonomy_2": {
-      "indicator_1": 1,
+      "indicator_1": 0,
       "indicator_2": 0,
-      "indicator_3": 1
+      "indicator_3": 0
     },
     "increase_ngo_autonomy_1": {
-      "indicator_1": 0,
-      "indicator_2": 0,
-      "indicator_3": -2
+      "indicator_1": 3,
+      "indicator_2": 4,
+      "indicator_3": 7
     },
     "warn_ngo_5": {
-      "indicator_1": -2,
+      "indicator_1": -1,
       "indicator_2": -1,
-      "indicator_3": -2
+      "indicator_3": -1
     },
     "increase_ngo_autonomy_2": {
-      "indicator_1": 0,
-      "indicator_2": 0,
-      "indicator_3": -2
+      "indicator_1": 3,
+      "indicator_2": 5,
+      "indicator_3": 7
     },
     "sanction_ngo_4": {
       "indicator_1": -3,
@@ -1431,49 +1431,39 @@
       "indicator_3": -3
     },
     "increase_customer_service_incentives_2": {
-      "indicator_1": 2,
+      "indicator_1": 1,
       "indicator_2": 1,
-      "indicator_3": 3
+      "indicator_3": 2
     },
     "reorganize_staff_2": {
       "indicator_1": -1,
       "indicator_2": -1,
-      "indicator_3": 2
+      "indicator_3": -1
     },
     "increase_funding_for_ngo_2": {
-      "indicator_1": 0,
-      "indicator_2": 0,
-      "indicator_3": 0
-    },
-    "terminate_contract_at_end_of_year_9": {
       "indicator_1": 1,
       "indicator_2": 1,
       "indicator_3": 1
     },
-    "contract_additional_ngo_2": {
-      "indicator_1": 2,
-      "indicator_2": 2,
-      "indicator_3": 0
-    },
-    "advise_to_follow_budget_restrictions_1": {
+    "terminate_contract_at_end_of_year_9": {
       "indicator_1": -1,
-      "indicator_2": -2,
+      "indicator_2": -1,
       "indicator_3": -1
     },
-    "move_authority_to_ministry_3": {
-      "indicator_1": 0,
-      "indicator_2": 0,
-      "indicator_3": 0
-    },
-    "grant_autonomy_to_providers_2": {
+    "contract_additional_ngo_2": {
       "indicator_1": 3,
       "indicator_2": 3,
-      "indicator_3": 3
+      "indicator_3": 5
     },
-    "clarify_roles_1": {
-      "indicator_1": 0,
-      "indicator_2": 0,
-      "indicator_3": 0
+    "pressure_ngo_to_comply_10": {
+      "indicator_1": -3,
+      "indicator_2": -3,
+      "indicator_3": -5
+    },
+    "cease_counterverification_by_government": {
+      "indicator_1": 3,
+      "indicator_2": 3,
+      "indicator_3": 5
     },
     "request_budget_for_more_midwives_1": {
       "indicator_1": 0,
@@ -1483,27 +1473,27 @@
     "travel_vouchers_1": {
       "indicator_1": 0,
       "indicator_2": 2,
-      "indicator_3": -5
+      "indicator_3": -7
     },
     "grant_autonomy_to_providers_3": {
-      "indicator_1": 0,
+      "indicator_1": 2,
       "indicator_2": 3,
-      "indicator_3": 2
+      "indicator_3": 6
     },
-    "comply_with_ngo_budget_3": {
-      "indicator_1": -1,
-      "indicator_2": -1,
-      "indicator_3": -1
+    "comply_with_ministry_11": {
+      "indicator_1": -4,
+      "indicator_2": -4,
+      "indicator_3": -6
     },
     "rework_business_plan_2": {
       "indicator_1": 0,
       "indicator_2": 0,
-      "indicator_3": 0
+      "indicator_3": 1
     },
     "grant_autonomy_to_providers_6": {
-      "indicator_1": 2,
-      "indicator_2": 1,
-      "indicator_3": 2
+      "indicator_1": 3,
+      "indicator_2": 2,
+      "indicator_3": 6
     },
     "deny_payment_5": {
       "indicator_1": 1,
@@ -4687,7 +4677,7 @@
           "year": 3,
           "twist": 1,
           "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "I have been reviewing the Clinic's records, and they do not check out. These problems with their numbers have been going on for two years now.",
+          "initiating_dialogue": "I have been reviewing the traditional practitioner's records, and they do not check out. These problems with their numbers have been going on for two years now.",
           "starting_options": [
             "warning_7",
             "sanctions_5"
@@ -4733,10 +4723,10 @@
               "dialogue": "I can confirm the numbers do not match up. Very suspicious."
             },
             "hospital_administrator": {
-              "dialogue": "I don't think the clinic should get preferential treatment over my hospital. Treat them just as you would treat us."
+              "dialogue": "I don't think traditional practitioners should get preferential treatment over my hospital. Treat them just as you would treat us."
             },
             "health_provider_3": {
-              "dialogue": "I think my staff is confused about what to report. Frankly, I myself have been confused at times!",
+              "dialogue": "The rest of you have been doing this for two years, but I have only just begun! These forms are not direct enough. Mistakes are easy to make.",
               "unlocks": [
                 "hold_meeting_to_retrain_on_reporting_practices_2"
               ],
@@ -4803,7 +4793,10 @@
               ],
               "unlocks_affects": [
                 "revise_business_plan_4"
-              ]
+              ],
+              "feedback": {
+                "revise_business_plan_4": "It is a little late in the process to be doing this, but it's the only option that makes sense."
+              }
             },
             "coach": {
               "dialogue": "I have found some mismanagement of funds in the past as well, but appropriate actions were taken. We are supposed to be granting autonomy. Also, remember that the providers are paid for the services already provided.",
@@ -4824,10 +4817,7 @@
               "dialogue": "We are verifying the result and ensure that the providers get paid accurately. So why take away their autonomy?"
             },
             "health_provider_3": {
-              "dialogue": "I need to be able to purchase whatever is needed. This is a return to the bad old days, with many delays in receiving supplies from the central level, and I can't agree with it.",
-              "feedback": {
-                "revise_business_plan_4": "I don't believe this will be constructive, but I'm willing to try."
-              }
+              "dialogue": "I do not know what the issue is, but this is making me look bad. I refer my customers to your facilities, and I hear back from them that there were no supplies there! This is what I told you about three years ago. It's why people don't trust you."
             }
           }
         },
@@ -7400,6 +7390,7 @@
           "symbol": "slow_verification",
           "name": "Slow Verification",
           "priority": 1,
+          "year": 1,
           "initiating_npc": "ngo_manager",
           "initiating_dialogue": "I need a little help here. The program has just begun and already we're seeing delays in payments. This does not bode well.",
           "starting_options": [
@@ -7459,6 +7450,7 @@
           "symbol": "process_v_results",
           "name": "Process V. Results",
           "priority": 2,
+          "year": 1,
           "initiating_npc": "ngo_manager",
           "initiating_dialogue": "Look. I know we haven't hit the targets you set in the contract, but we did get a lot of good work done. We can easily hit our targets next quarter if we receive our bonus for this period.",
           "starting_options": [
@@ -7523,6 +7515,7 @@
           "symbol": "government_vs_organization",
           "name": "Government Vs. Organization",
           "priority": 3,
+          "year": 1,
           "initiating_npc": "director_regional_health_services",
           "initiating_dialogue": "I'm getting a different answer from everyone, so I'll ask you to straighten them out. The Ministry, NGO, and health care providers can't agree on who has jurisdiction where and what we're supposed to do for patients.",
           "starting_options": [
@@ -7593,6 +7586,7 @@
           "symbol": "lack_of_supplies",
           "name": "Lack of Supplies",
           "priority": 4,
+          "year": 1,
           "initiating_npc": "community_verifier",
           "initiating_dialogue": "Bad news. We have surveyed many patients from the hospitals and clinics, and at every focus group, someone reports being turned away without services.",
           "starting_options": [
@@ -7605,14 +7599,12 @@
             "warn_ngo_4",
             "sanction_ngo_3",
             "increase_supply_budget_2",
-            "grant_facilities_autonomy_2",
             "increase_ngo_autonomy_1"
           ],
           "final_options_affects": [
             "warn_ngo_4",
             "sanction_ngo_3",
             "increase_supply_budget_2",
-            "grant_facilities_autonomy_2",
             "increase_ngo_autonomy_1"
           ],
           "characters": {
@@ -7641,7 +7633,6 @@
               ],
               "feedback": {
                 "warn_ngo_4": "Warning received. I'll discuss this with our health providers and work on a solution.",
-                "grant_facilities_autonomy_2": "I'll see to this. In addition, we should issue a recommendation to the ministry about the usefulness of autonomy in RBF, as this is clearly not well understood.",
                 "sanction_ngo_3": "How are we supposed to accomplish anything if you keep handicapping us? You understand this is going to affect care outcomes."
               }
             },
@@ -7661,20 +7652,15 @@
               "dialogue": "The numbers are poor, but at least the facilities don't appear to be exaggerating them."
             },
             "hospital_administrator": {
-              "dialogue": "We put in requests for supplies, but they are not filled in a timely way. We get too much of some things, and not enough of others. Maybe the NGO can help, they seem pretty well organized.",
-              "unlocks": [
-                "grant_facilities_autonomy_2"
-              ],
-              "unlocks_affects": [
-                "grant_facilities_autonomy_2"
-              ]
+              "dialogue": "We put in requests for supplies, but they are not filled in a timely way. We get too much of some things, and not enough of others. Maybe the NGO can help, they seem pretty well organized."
             }
           }
         },
         {
           "symbol": "staff_issues",
           "name": "Staff Issues",
-          "priority": 5,
+          "priority": 1,
+          "year": 2,
           "initiating_npc": "community_verifier",
           "initiating_dialogue": "In many of my focus groups, there's an air of mistrust with the hospitals and clinics. People who go there have experienced terrible service, and word's getting around.",
           "starting_options": [
@@ -7720,11 +7706,11 @@
               ],
               "feedback": {
                 "warn_ngo_5": "I'll do what I can, but we're struggling as it is. I don't know how we can improve without being able to hire staff ourselves.",
-                "increase_ngo_autonomy_2": "Thank you! Hopefully we can start to make some progress here!"
+                "increase_ngo_autonomy_2": "This will really help us improve quality and I assure you patients will be treated better when staff are less stressed with the workload."
               }
             },
             "coach": {
-              "dialogue": "Customer service is a huge part of quality of care. If staff aren't doing it now, we need to increase incentives.",
+              "dialogue": "Patient satisfaction is a huge part of quality of care. If staff aren't doing it now, maybe we need to increase incentives.",
               "unlocks": [
                 "increase_customer_service_incentives_2"
               ],
@@ -7744,10 +7730,10 @@
                 "reorganize_staff_2"
               ]
             },
-            "hospital_administrator": {
+            "clinic_manager": {
               "dialogue": "I have less control over my staff than you might think. When we struggle to fill demand on a day to day basis, there isn't much time left over for morale-building and discipline.",
               "feedback": {
-                "reorganize_staff_2": "More orders from on high about who I can hire? Just thinking about how long it will take to train all these people to where my current staff is makes me mad. And that will happen after I fire my people.",
+                "reorganize_staff_2": "More orders from on high about who can be hired? Just thinking about how long it will take to train all these people to where my current staff is makes me mad. As long as we keep running out of supplies, new staff will get frustrated soon too.",
                 "sanction_ngo_4": "You realize that when you sanction the NGO, the money tends to come out of my budget? You cannot keep doing this to us."
               }
             }
@@ -7756,9 +7742,10 @@
         {
           "symbol": "reach",
           "name": "Reach",
-          "priority": 6,
+          "priority": 2,
+          "year": 2,
           "initiating_npc": "dep_minister_of_health",
-          "initiating_dialogue": "We're seeing underserved populations throughout the South. The NGO is falling short of their promises, especially in this one area.",
+          "initiating_dialogue": "We're seeing underserved populations throughout the south. The NGO is falling short of their promises, at least in this area.",
           "starting_options": [
             "terminate_contract_at_end_of_year_9"
           ],
@@ -7820,73 +7807,86 @@
         {
           "symbol": "budget_lines",
           "name": "Budget",
-          "priority": 7,
-          "initiating_npc": "director_regional_health_services",
-          "initiating_dialogue": "The NGOs will not reach their targets unless they hire more staff to work in the hospitals, as otherwise they are not able to provide good quality of care.",
+          "priority": 3,
+          "year": 2,
+          "initiating_npc": "dep_minister_of_health",
+          "initiating_dialogue": "The NGO is giving us the run around when we ask to counter-verify their reports. You need to get them to realize their presence here depends on their transparency.",
           "starting_options": [
-            "clarify_roles_1"
+            "pressure_ngo_to_comply_10"
           ],
           "starting_options_affects": [
-            "clarify_roles_1"
+            "pressure_ngo_to_comply_10"
           ],
           "final_options": [
-            "clarify_roles_1",
-            "move_authority_to_ministry_3",
-            "grant_autonomy_to_providers_2"
+            "pressure_ngo_to_comply_10",
+            "clarification_of_roles_10",
+            "cease_counterverification_by_government"
           ],
           "final_options_affects": [
-            "clarify_roles_1",
-            "move_authority_to_ministry_3",
-            "grant_autonomy_to_providers_2"
+            "pressure_ngo_to_comply_10",
+            "clarification_of_roles_10",
+            "cease_counterverification_by_government"
           ],
           "characters": {
             "dep_minister_of_health": {
-              "dialogue": "We have a pretty good sense of how staffing was working and where we can improve it if you give us back the authority to recruit.",
-              "unlocks": [
-                "move_authority_to_ministry_3"
-              ],
-              "unlocks_affects": [
-                "move_authority_to_ministry_3"
-              ]
+              "feedback": {
+                "cease_counterverification_by_government": "If you think they don't need more looking into, that's fine, I trust you.",
+                "clarification_of_roles_10": "Next time, let's try to avoid this by making everyone's job clear beforehand. Thanks."
+              }
+            },
+            "director_regional_health_services": {
+              "dialogue": "I'm with the Minister on this, I want to know what the NGOs are doing. I would advise speaking to them directly."
             },
             "ngo_manager": {
-              "dialogue": "This is results-based financing. We're responsible for the results, so let us decide on how to use the financing.",
+              "dialogue": "We verify everything I promise. We also give the third party access to verify so there is no need for the government to also verify.",
+              "unlocks": [
+                "cease_counterverification_by_government"
+              ],
+              "unlocks_affects": [
+                "cease_counterverification_by_government"
+              ],
               "feedback": {
-                "grant_autonomy_to_providers_2": "That's fine by me, but let's discuss it at the end of the year. It's a pretty big change.",
-                "move_authority_to_ministry_3": "I really thought we were supposed to handle this, but if the Ministry wants to, that's fine."
+                "pressure_ngo_to_comply_10": "It takes a lot of time for us to comply with all these verifications. I'm worried we won't have time to meet our targets if we're busy with paperwork."
               }
             },
             "coach": {
               "dialogue": "Hate to say it, but the NGO has too much power over the budget. We should alter the program to allow providers to make these decisions at their level.",
-              "unlocks": [
-                "grant_autonomy_to_providers_2"
-              ],
-              "unlocks_affects": [
-                "grant_autonomy_to_providers_2"
-              ]
-            },
-            "third_party_verifier": {
-              "dialogue": "I'm seeing the hospitals struggling, but that might just be growing pains. Missing goals for one quarter isn't the end of the world."
-            },
-            "community_verifier": {
-              "dialogue": "My only concern is people not getting care because the budget keeps getting tied up in arguments."
-            },
-            "hospital_administrator": {
-              "dialogue": "We definitely need more staff, I have already highlighted this to the NGO.",
               "narrows": [
                 "director_regional_health_services",
-                "third_party_verifier",
+                "coach",
                 "community_verifier",
                 "hospital_administrator"
               ]
+            },
+            "third_party_verifier": {
+              "dialogue": "We really don't need the government to counter-verify. We are handling this process just fine.",
+              "unlocks": [
+                "clarification_of_roles_10"
+              ],
+              "unlocks_affects": [
+                "clarification_of_roles_10"
+              ]
+            },
+            "community_verifier": {
+              "dialogue": "I think there's enough oversight. This shouldn't be the role of the Ministry, and we should really let them know that directly.",
+              "unlocks": [
+                "clarification_of_roles_10"
+              ],
+              "unlocks_affects": [
+                "clarification_of_roles_10"
+              ]
+            },
+            "hospital_administrator": {
+              "dialogue": "It wouldn't be a lot more paperwork for us to submit for counter-verification, but I don't know that it's necessary. Is the Third Party not providing a copy to the government?"
             }
           }
         },
         {
           "symbol": "midwives",
           "name": "Midwives",
-          "priority": 8,
-          "initiating_npc": "hospital_administrator",
+          "priority": 4,
+          "year": 2,
+          "initiating_npc": "clinic_manager",
           "initiating_dialogue": "We're having a lot of trouble increasing facility births. We're short-staffed, especially when it comes to midwives.",
           "starting_options": [
             "request_budget_for_more_midwives_1"
@@ -7896,17 +7896,23 @@
           ],
           "final_options": [
             "request_budget_for_more_midwives_1",
-            "allow_outreach_staff_to_act_as_midwives_2",
-            "grant_autonomy_to_providers_3"
+            "grant_autonomy_to_providers_3",
+            "travel_vouchers_1"
           ],
           "final_options_affects": [
             "request_budget_for_more_midwives_1",
-            "allow_outreach_staff_to_act_as_midwives_2",
-            "grant_autonomy_to_providers_3"
+            "grant_autonomy_to_providers_3",
+            "travel_vouchers_1"
           ],
           "characters": {
             "dep_minister_of_health": {
-              "dialogue": "This might be our most important indicator. Our infant mortality rate is abysmal, and if more money gets those numbers down, I'll argue for it."
+              "dialogue": "This might be our most important indicator as our maternal mortality rate is abysmal. If you can explore what is the real problem, we'd be willing to discuss the budget for this to be improved.",
+              "narrows": [
+                "dep_minister_of_health",
+                "director_regional_health_services",
+                "ngo_manager",
+                "third_party_verifier"
+              ]
             },
             "director_regional_health_services": {
               "dialogue": "That would explain the struggling indicators on facility births. An alternative I've considered is giving more assistance for travel, to get people to come to the facilities.",
@@ -7915,26 +7921,10 @@
               ],
               "unlocks_affects": [
                 "travel_vouchers_1"
-              ],
-              "feedback": {
-                "advise_to_follow_budget_restrictions_1": "OK, we'll make do. We always have."
-              }
+              ]
             },
             "ngo_manager": {
-              "dialogue": "If you can verify this, we'd be willing to discuss the budget.",
-              "narrows": [
-                "dep_minister_of_health",
-                "director_regional_health_services",
-                "ngo_manager",
-                "third_party_verifier"
-              ],
-              "feedback": {
-                "grant_autonomy_to_providers_3": "We'll do whatever you think is best, though this is a pretty major change. Let's discuss this at the end of the year.",
-                "request_budget_for_more_midwives_1": "We can allow this, but we'll pay close attention to the results."
-              }
-            },
-            "coach": {
-              "dialogue": "The Hospital Administrator has complained to me in private about not being able to hire staff members without NGO approval. The program is set up that way, but if we granted them autonomy to make hiring choices, things would run more smoothly.",
+              "dialogue": "If the Ministry would give us the money and let us hire midwives, I am sure we can improve this.",
               "unlocks": [
                 "grant_autonomy_to_providers_3"
               ],
@@ -7942,18 +7932,24 @@
                 "grant_autonomy_to_providers_3"
               ],
               "feedback": {
-                "travel_vouchers_1": "This will remove an important barrier, though I still worry that we are short-staffed at facilities."
+                "grant_autonomy_to_providers_3": "We'll do whatever you think is best, though this is a pretty major change. Let's discuss this at the end of the year.",
+                "request_budget_for_more_midwives_1": "I hope this will improve the situation but their recruitment processes are lengthy so I won't hold my breath."
+              }
+            },
+            "coach": {
+              "dialogue": "The Hospital Administrator has complained to me in private about this too, as have many of the clinic managers. The NGO may be better placed to do the hiring than the Ministry but it would be even better if we allow providers to make these decisions at their level. It will provide an extra challenge for the NGO to help implement this but may be worth it.",
+              "unlocks": [
+                "grant_autonomy_to_providers_3"
+              ],
+              "unlocks_affects": [
+                "grant_autonomy_to_providers_3"
+              ],
+              "feedback": {
+                "travel_vouchers_1": "This will remove an important barrier, though I still worry that we are short staffed at facilities."
               }
             },
             "third_party_verifier": {
-              "dialogue": "The RBF Coach has been in regular contact with the Hospital Administrator, they might be able to offer a perspective on things.",
-              "narrows": [
-                "dep_minister_of_health",
-                "director_regional_health_services",
-                "ngo_manager",
-                "third_party_verifier",
-                "community_verifier"
-              ]
+              "dialogue": "Talk to the clinicians. They should have a pretty good idea if the facilities actually need more staff. And whatever they say, keep your coach in the loop; that's what they're here for."
             },
             "community_verifier": {
               "dialogue": "I've heard this complaint from several women in my community. They say there are long waits to meet with midwives. It puts strain on everyone. Pregnancy is trying even in the best of conditions."
@@ -7963,83 +7959,76 @@
         {
           "symbol": "new_budget",
           "name": "New Budget",
-          "priority": 9,
-          "initiating_npc": "hospital_administrator",
-          "initiating_dialogue": "Look, I don't really know what you and the NGO have worked out, but I need to be authorized to purchase supplies at the right costs. Can you tell them to lighten these restrictions some?",
+          "priority": 1,
+          "year": 3,
+          "initiating_npc": "clinic_manager",
+          "initiating_dialogue": "I received a memo today about the new national health budget and policy guidance. The ministry has released new purchasing and ordering guidelines for all providers and the NGO. It takes away even more of our autonomy. This is bad news for us.",
           "starting_options": [
-            "clarification_of_roles_12"
+            "comply_with_ministry_11"
           ],
           "starting_options_affects": [
-            "clarification_of_roles_12"
+            "comply_with_ministry_11"
           ],
           "final_options": [
-            "clarification_of_roles_12",
-            "terminate_ngo_contract_9",
-            "loosen_drug_control_2",
-            "move_authority_to_ministry_4"
+            "comply_with_ministry_11",
+            "rework_business_plan_2",
+            "grant_autonomy_to_providers_6"
           ],
           "final_options_affects": [
-            "clarification_of_roles_12",
-            "terminate_ngo_contract_9",
-            "loosen_drug_control_2",
-            "move_authority_to_ministry_4"
+            "comply_with_ministry_11",
+            "rework_business_plan_2",
+            "grant_autonomy_to_providers_6"
           ],
           "characters": {
             "dep_minister_of_health": {
-              "dialogue": "We've spoken directly with the NGO a number of times on this. We are emphatic when we say we control the drugs, not them. They should focus on delivering services."
+              "dialogue": "Our auditors have found mismanagement of funds. The providers need strict guidelines to provide the necessary services, and use the funds appropriately.",
+              "feedback": {
+                "grant_autonomy_to_providers_6": "This revision to the procurement guideline is within the scope of regulation, which is my role. But if you think it's essential for the providers to keep autonomy, we will step back on this."
+              }
             },
             "director_regional_health_services": {
-              "dialogue": "We've been whittling down whose job is whose throughout this process, so you don't have to tell me this isn't my place, but were it up to me, I'd cancel the NGO contract.",
+              "dialogue": "If the Ministry is claiming this is necessary, I would take it seriously. A compromise might be to re-work the RBF Manual and trainings with Ministry oversight.",
               "unlocks": [
-                "terminate_ngo_contract_9"
+                "rework_business_plan_2"
               ],
               "unlocks_affects": [
-                "terminate_ngo_contract_9"
+                "rework_business_plan_2"
               ]
             },
             "ngo_manager": {
-              "dialogue": "We are doing our best to deliver these services, but the government controls the drugs, not us. We try to treat as many patients as we can, but if the Ministry strangles our supply, it doesn't work.",
-              "unlocks": [
-                "loosen_drug_control_2"
-              ],
-              "unlocks_affects": [
-                "loosen_drug_control_2"
-              ],
-              "feedback": {
-                "terminate_ngo_contract_9": "I don't understand why you brought us on in the first place if you were going to fire us for doing the work.",
-                "loosen_drug_control_2": "That will help a great deal. This way we can ensure the proper medications get where they need to go, and at the right cost.",
-                "clarification_of_roles_12": "OK. I'm just trying to make this work as smoothly and efficiently as possible."
-              }
+              "dialogue": "We are doing our best to deliver these services, but the government controls the drugs, not us. We try to treat as many patients as we can, but if the Ministry strangles our supply, it doesn't work."
             },
             "coach": {
-              "dialogue": "I'll ask, because this seems to be an ongoing problem: is that the NGO's position? They seem to be overstepping their role.",
+              "dialogue": "I have found some mismanagement of funds in the past as well, but appropriate actions were taken. We are supposed to be granting more autonomy, not taking it away! Especially as the NGO and subsequently the providers are paid for the services they have already provided.",
               "unlocks": [
-                "move_authority_to_ministry_4"
+                "grant_autonomy_to_providers_6"
               ],
               "unlocks_affects": [
-                "move_authority_to_ministry_4"
+                "grant_autonomy_to_providers_6"
               ],
               "feedback": {
-                "move_authority_to_ministry_4": "The Ministry already has a lot going on, but I guess they can handle local hospital budgeting too."
+                "comply_with_ministry_11": "I really don't believe this is the best option but if you insist...We'll see how it goes."
               }
             },
             "third_party_verifier": {
-              "dialogue": "If they can't agree on a budget, I'm not going to have any cases to verify. And I like my job."
+              "dialogue": "We are verifying the results and ensure that the NGO and thus the providers get paid accurately. So why take away their autonomy?"
             },
             "community_verifier": {
-              "dialogue": "If I were you, and I'm offering this as someone who lives here, ask the Ministry and your coach what to do. The Ministry gets the last call and the NGO doesn't.",
-              "narrows": [
-                "ngo_manager",
-                "third_party_verifier",
-                "hospital_administrator"
-              ]
+              "dialogue": "I don't understand the need for these new guidelines, but then again, I am not working in the clinic."
+            },
+            "clinic_manager": {
+              "dialogue": "I need to be able to purchase whatever is needed. This is a return to the previous bad situation with a lot of delays in receiving supplies from the central level. I do not agree with this decision.",
+              "feedback": {
+                "rework_business_plan_2": "I don't believe this will be constructive, but I'm willing to try. We'll see how it goes."
+              }
             }
           }
         },
         {
           "symbol": "process_v_results_again",
           "name": "Process V Results Again",
-          "priority": 10,
+          "priority": 2,
+          "year": 3,
           "initiating_npc": "ngo_manager",
           "initiating_dialogue": "Fuel prices went up, so we had to reduce our outreach because of costs, and then we couldn't reach our targets... But if we don't get our bonus, next quarter it'll be even worse...",
           "starting_options": [
@@ -8110,7 +8099,8 @@
         {
           "symbol": "prescriptions",
           "name": "Prescriptions",
-          "priority": 11,
+          "priority": 3,
+          "year": 3,
           "initiating_npc": "community_verifier",
           "initiating_dialogue": "I've been interviewing patients, and at least at the clinics there's a serious quality of care issue. People have been leaving with what appears to be completely wrong prescriptions.",
           "starting_options": [
@@ -8191,9 +8181,10 @@
         {
           "symbol": "missing_goals",
           "name": "Missing Goals",
-          "priority": 12,
+          "priority": 4,
+          "year": 3,
           "initiating_npc": "dep_minister_of_health",
-          "initiating_dialogue": "I hate to say it, but things are not going well. The NGO is underperforming, and our indicators have not risen as predicted. We're thinking about cancelling the program next year, and returning to traditional financing.",
+          "initiating_dialogue": "I hate to say it, but things are not going well. The NGO is under performing, and our indicators have not risen as predicted. We're thinking about canceling the program next year, and returning to traditional financing.",
           "starting_options": [
             "return_to_traditional_financing_2"
           ],
@@ -9894,19 +9885,19 @@
       "overlay_location": "Bottom-Right",
       "text": "Click on Rahb, your RBF Plan Supervisor and then choose “learn more” to see what she has to say. To continue the conversation, choose a highlighted topic.",
       "spotlight_position": [
-        -1.12,
+        -1.23,
         -0.04
       ],
       "spotlight_size": [
-        2.38,
+        2.36,
         1
       ],
       "mask_position": [
-        360.41,
+        432,
         -62
       ],
       "mask_size": [
-        154.3,
+        191,
         289.8
       ]
     },
@@ -9961,16 +9952,16 @@
       "overlay_location": "Center",
       "text": "At any time you can access the program creation screen to start forming your RBF proposal. Click here to open this screen.",
       "spotlight_position": [
-        0.29,
-        0.29
+        0.31,
+        0.36
       ],
       "spotlight_size": [
         3.3,
         3.25
       ],
       "mask_position": [
-        5,
-        -537
+        0,
+        -517
       ],
       "mask_size": [
         72,
@@ -10010,12 +10001,12 @@
         3.25
       ],
       "mask_position": [
-        5,
-        -537
+        0,
+        -512
       ],
       "mask_size": [
-        72,
-        82
+        69,
+        71
       ]
     },
     "phase_1_continue_talking": {
@@ -10060,7 +10051,7 @@
       "overlay_location": "Top-Right",
       "text": "Read the description to decide whether you want to travel to this city. Click the visit button, or click cancel and choose another city.",
       "spotlight_position": [
-        -1.36,
+        -1.37,
         -0.85
       ],
       "spotlight_size": [
@@ -10068,14 +10059,13 @@
         4.84
       ],
       "mask_position": [
-        407.5,
-        -427.5
+        382,
+        -395
       ],
       "mask_size": [
         162.73,
         56.7
-      ],
-      "confirm": true
+      ]
     },
     "phase_1_conversation_points": {
       "overlay_location": "Center",
@@ -11218,7 +11208,7 @@
       "title": "Increase Supply Budget"
     },
     {
-      "symbol": "grant_facilities_autonomy_2",
+      "symbol": "increase_ngo_autonomy_1",
       "title": "Grant NGO Autonomy to Purchase Supplies"
     },
     {
@@ -11235,7 +11225,7 @@
     },
     {
       "symbol": "increase_customer_service_incentives_2",
-      "title": "Increase Incentives for Customer Service"
+      "title": "Increase Patient Satisfaction Incentives"
     },
     {
       "symbol": "reorganize_staff_2",
@@ -11247,35 +11237,27 @@
     },
     {
       "symbol": "increase_funding_for_ngo_2",
-      "title": "Revise Fees for Indicators"
-    },
-    {
-      "symbol": "terminate_contract_at_end_of_year_9",
-      "title": "Terminate Contract at End of Year"
+      "title": "Revise Indicator Fees for NGO At End of Year"
     },
     {
       "symbol": "contract_additional_ngo_2",
       "title": "Contract Additional NGO"
     },
     {
-      "symbol": "advise_to_follow_budget_restrictions_1",
-      "title": "Advise to Follow Budget Restrictions"
+      "symbol": "pressure_ngo_to_comply_10",
+      "title": "Pressure The NGO To Comply"
     },
     {
-      "symbol": "move_authority_to_ministry_3",
-      "title": "Move Authority to Ministry"
+      "symbol": "cease_counterverification_by_government",
+      "title": "Cease Counter-Verification By Government"
     },
     {
-      "symbol": "grant_autonomy_to_providers_2",
-      "title": "Grant Autonomy to Providers"
-    },
-    {
-      "symbol": "clarify_roles_1",
+      "symbol": "clarification_of_roles_10",
       "title": "Clarification of Roles"
     },
     {
       "symbol": "request_budget_for_more_midwives_1",
-      "title": "Request Budget Line for More Midwives"
+      "title": "Request Ministry for More Midwives"
     },
     {
       "symbol": "travel_vouchers_1",
@@ -11286,12 +11268,12 @@
       "title": "Grant Autonomy to Providers"
     },
     {
-      "symbol": "comply_with_ngo_budget_3",
-      "title": "Comply with NGO"
+      "symbol": "comply_with_ministry_11",
+      "title": "Comply With Ministry"
     },
     {
       "symbol": "rework_business_plan_2",
-      "title": "Rework Business Plan"
+      "title": "Rework RBF Manual and Retrain"
     },
     {
       "symbol": "grant_autonomy_to_providers_6",

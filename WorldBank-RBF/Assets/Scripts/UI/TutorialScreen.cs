@@ -249,6 +249,10 @@ public class TutorialScreen : MonoBehaviour {
 	}
 	
 	void OnCloseTutorialEvent (CloseTutorialEvent e) {
+
+		if(transform == null)
+			return;
+
 		ObjectPool.Destroy<TutorialScreen>(transform);
 		Drag = true;
 	}
