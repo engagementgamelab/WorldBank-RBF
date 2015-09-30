@@ -37,10 +37,14 @@ public class NotebookManagerPhaseOne : MonoBehaviour {
 
 	public List<CanvasToggle> toggles;
 
-	void Awake () {
+	void OnEnable () {
 		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
-
 		Events.instance.AddListener<TutorialEvent>(OnTutorialEvent);
+	}
+
+	void OnDisable () {
+		Events.instance.RemoveListener<ArriveInCityEvent> (OnArriveInCityEvent);
+		Events.instance.RemoveListener<TutorialEvent>(OnTutorialEvent);
 	}
 
 	public void CloseCanvases () {
