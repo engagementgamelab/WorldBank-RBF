@@ -15,8 +15,7 @@ public class PhaseSelectionScreen : MonoBehaviour {
 	}
 
 	public void OnPhaseTwo () {
-		AudioManager.StopAll ();
-		StartCoroutine (CoGotoLoad ("plan"));
+		menus.SetScreen ("plan");
 	}
 
 	public void OnBack () {
