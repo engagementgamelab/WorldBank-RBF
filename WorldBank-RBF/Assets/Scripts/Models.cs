@@ -176,6 +176,7 @@ namespace Models {
         public float[] tactic_card_intervals { get; set; }
         public float phase_length_seconds { get; set; }
         public string[] tactics_not_selected { get; set; }
+        public string[] prompt_year_3 { get; set; }
         
     }
 

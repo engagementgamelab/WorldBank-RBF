@@ -48,10 +48,9 @@ public class SupervisorChatScreen : ChatScreen {
             tacticsAvailable = value;
             queuedTactics = value;
 
-            if(!gameObject.activeSelf)
-            	tacticsQueued = true;
-            else
-	            ShowTactics();
+            state = SupervisorState.WaitingForProblem;
+
+            ShowTactics();
         }
     }
 
@@ -64,6 +63,18 @@ public class SupervisorChatScreen : ChatScreen {
     		return supervisor;
     	}
     }
+
+	void ShowTactics () {
+
+		// If supervisor is ready for new problems, open a new card
+		if (state == SupervisorState.WaitingForProblem && queuedTactics.Count > 0) {
+
+			cardIndex = 0;
+			OpenTacticCard ();
+			state = SupervisorState.PresentingProblem;
+			
+		}
+	}
 
  	void OpenTacticCard () {
 			
@@ -107,18 +118,6 @@ public class SupervisorChatScreen : ChatScreen {
 		if (tacticsAvailable.Count == 0) return;
 		
 		ShowTactics ();
-	}
-
-	void ShowTactics () {
-
-		// If supervisor is ready for new problems, open a new card
-		if (state == SupervisorState.WaitingForProblem && queuedTactics.Count > 0) {
-
-			cardIndex = 0;
-			OpenTacticCard ();
-			state = SupervisorState.PresentingProblem;
-			
-		}
 	}
 
 	void Investigate (Models.TacticCard card) {

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -105,6 +106,10 @@ public class PlanSelectionScreen : MonoBehaviour {
 	void SetPlanData(int planIndex) {
 
 		int tactInt = 0;
+
+		string affect1 = plans[planIndex].default_affects[0];
+		string affect2 = plans[planIndex].default_affects[1];
+		string affect3 = plans[planIndex].default_affects[1];
     	
     	foreach(Text label in tacticsLabels) {
 
@@ -113,9 +118,9 @@ public class PlanSelectionScreen : MonoBehaviour {
 
     	}
 
-    	indicatorsLabels[0].text = "Facility Births: " + plans[planIndex].default_affects[0]+"%";
-    	indicatorsLabels[1].text = "Vaccinations: " + plans[planIndex].default_affects[1]+"%";
-    	indicatorsLabels[2].text = "Quality of Care: " + plans[planIndex].default_affects[2]+"%";
+    	indicatorsLabels[0].text = "Facility Births: +" + affect1 +"%";
+    	indicatorsLabels[1].text = "Vaccinations: +" + affect2 +"%";
+    	indicatorsLabels[2].text = "Quality of Care: +" + affect3 +"%";
 
     	header.text = plans[planIndex].name;
     	DataManager.currentPlanId = plans[planIndex]._id;
@@ -132,9 +137,9 @@ public class PlanSelectionScreen : MonoBehaviour {
 
     	SetPlanData(0);
 
-    	yourIndicatorsLabels[0].text = "Facility Births: " + plans[0].default_affects[0]+"%";
-    	yourIndicatorsLabels[1].text = "Vaccinations: " + plans[0].default_affects[1]+"%";
-    	yourIndicatorsLabels[2].text = "Quality of Care: " + plans[0].default_affects[2]+"%";
+    	yourIndicatorsLabels[0].text = "Facility Births: +" + plans[0].default_affects[0]+"%";
+    	yourIndicatorsLabels[1].text = "Vaccinations: +" + plans[0].default_affects[1]+"%";
+    	yourIndicatorsLabels[2].text = "Quality of Care: +" + plans[0].default_affects[2]+"%";
 
     }
 

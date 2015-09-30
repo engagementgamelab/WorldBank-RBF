@@ -306,18 +306,16 @@ public class ScenarioManager : MonoBehaviour {
 		// Update timer text
 		scenarioCardCooldownText.text = "Break - Year " + currentYear;
 
+		indicatorsCanvas.Open();
+
 		Models.ScenarioConfig scenarioConf = DataManager.GetScenarioConfig();
 		indicatorsCanvas.EndYear(scenarioConf, currentYear, scenarioTwistIndex);
-
-		indicatorsCanvas.Open();
 
 		// Tutorial
 		DialogManager.instance.CreateTutorialScreen("phase_2_year_end");
 
 		// Clear all supervisor dialog
-		supervisorChat.gameObject.SetActive(true);
 		supervisorChat.Clear();
-		supervisorChat.gameObject.SetActive(false);
 		
 		// Ensure scenario chat is showing
 		scenarioChatTab.interactable = false;

@@ -221,6 +221,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 
     	string[] yearEndPrompts = (currentYear == 1) ? scenarioConfig.prompt_year_1 : scenarioConfig.prompt_year_2;
 
+
+    	// Twist prompt
     	if(currentYear == 2 && twistIndex == 1) {
 	    	yearEndPrompts = scenarioConfig.prompt_year_2_twist;
     		AddYearEndOptions(scenarioConfig.choices_twist);
@@ -228,23 +230,34 @@ public class IndicatorsCanvas : NotebookCanvas {
     	else
     		AddYearEndOptions(scenarioConfig.choices);
 
-    	string yearEndMessage;
 
-    	// If player has not made any changes, choose first prompt
-    	if(SelectedOptions.Count == 0)
-    		yearEndMessage = yearEndPrompts[0];
+    	if(currentYear < 3) {
 
-    	// If player has made changes, choose prompt based on if indicators are positive
-    	else
-    		yearEndMessage = yearEndPrompts[Convert.ToInt32(indicatorsNegative)+1];;
+	    	string yearEndMessage;
+	    	// If player has not made any changes, choose first prompt
+	    	if(SelectedOptions.Count == 0)
+	    		yearEndMessage = yearEndPrompts[0];
 
-    	if(currentYear == 3)
-    	{
+	    	// If player has made changes, choose prompt based on if indicators are positive
+	    	else
+	    		yearEndMessage = yearEndPrompts[Convert.ToInt32(indicatorsNegative)+1];
+    		
+    		summaryPanel.gameObject.SetActive(false);
+    		decisionPanel.gameObject.SetActive(true);
+    		actionsView.gameObject.SetActive(true);
+
+    		yearEndPromptText.text = yearEndMessage;
+
+    	}
+    	else {
+
+	    	int atGoalCount = atGoal.Where(c => c).Count();
+
     		summaryPanel.gameObject.SetActive(true);
     		decisionPanel.gameObject.SetActive(false);
     		actionsView.gameObject.SetActive(false);
 
-	    	phaseEndPromptText.text = yearEndMessage;
+	    	phaseEndPromptText.text = DataManager.PhaseTwoConfig.prompt_year_3[atGoalCount];
 
 		 	// End of year 3; update user record
 	        Dictionary<string, object> formFields = new Dictionary<string, object>();
@@ -252,14 +265,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 			PlayerManager.Instance.SaveData (formFields, UserSaveCallback);
 
-    	}
-    	else
-    	{
-    		summaryPanel.gameObject.SetActive(false);
-    		decisionPanel.gameObject.SetActive(true);
-    		actionsView.gameObject.SetActive(true);
-
-	    	yearEndPromptText.text = yearEndMessage;
     	}
     }
 
