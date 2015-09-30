@@ -57,8 +57,6 @@ public class IndicatorsCanvas : NotebookCanvas {
         set {
         	if(!SelectedOptions.Keys.Contains(value.Key))
         		SelectedOptions.Add(value.Key, value.Value);
-        	else
-        		throw new Exception("Indicator affects for '" + value.Key + "' added already for this year!");
         }
     }
 
