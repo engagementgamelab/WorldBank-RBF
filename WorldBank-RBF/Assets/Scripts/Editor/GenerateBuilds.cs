@@ -146,6 +146,9 @@ class GenerateBuilds {
         PlayerSettings.showUnitySplashScreen = false;
         PlayerSettings.displayResolutionDialog = ResolutionDialogSetting.Disabled;
 
+        PlayerSettings.productName = "Unlocking Health";
+        PlayerSettings.companyName = "Engagement Lab";
+
         PrepareMaterials();
 
         string name = APP_NAME;
