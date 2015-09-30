@@ -111,8 +111,12 @@ public class TutorialScreen : MonoBehaviour {
 	string tooltipKey;
 	string currentLayout;
 
-	void Awake () {
+	void OnEnable () {
 		Events.instance.AddListener<CloseTutorialEvent> (OnCloseTutorialEvent);
+	}
+
+	void OnDisable() {
+		Events.instance.RemoveListener<CloseTutorialEvent>(OnCloseTutorialEvent);
 	}
 
 	void Start() {
