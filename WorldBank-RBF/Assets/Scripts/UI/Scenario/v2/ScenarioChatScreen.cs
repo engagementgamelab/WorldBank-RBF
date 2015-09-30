@@ -24,6 +24,7 @@ public class ScenarioChatScreen : ChatScreen {
     }
 
     public Transform advisorsContainer;
+    public Transform actionsContainer;
     public Text contactsTitleText;
     public Text debugText;
 
@@ -87,6 +88,8 @@ public class ScenarioChatScreen : ChatScreen {
 		currentCardOptions = new List<string>(_data.starting_options);
 		allCardOptions = currentCardOptions.Concat(new List<string>(_data.final_options)).ToList();
 		allCardAffects = new List<string>(_data.starting_options_affects).Concat(new List<string>(_data.final_options_affects)).ToList();
+
+		actionsContainer.gameObject.SetActive(true);
 
 		// Create buttons for all options if not speaking to advisor
 		AddOptions(currentCardOptions, null, true);

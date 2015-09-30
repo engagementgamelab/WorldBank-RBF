@@ -1220,6 +1220,11 @@
       "indicator_2": 1,
       "indicator_3": 1
     },
+    "sanctions_18": {
+      "indicator_1": -1,
+      "indicator_2": -1,
+      "indicator_3": -2
+    },
     "retraining_on_use_of_financial_tools_2": {
       "indicator_1": 2,
       "indicator_2": 2,
@@ -3517,7 +3522,7 @@
               ]
             },
             "coach": {
-              "dialogue": "I'm really not able to help with this. Maybe someone else would have a better idea of how to address this?",
+              "dialogue": "Maybe you can contact the clinic manager directly as I haven't been able to get in touch.",
               "feedback": {
                 "take_no_further_action_1": "I'm sure I'll have some time next quarter once our busiest time dies down."
               }
@@ -3588,7 +3593,7 @@
               "dialogue": "Have you considered that there is a flaw in the business plan? If the Hospital Administrator is straying from it so often, it might need to be reevaluated."
             },
             "coach": {
-              "dialogue": "Aren't there other people you can ask about this? One of them might have a better idea.",
+              "dialogue": "I'm just not sure how to approach this. Maybe an audit is necessary?",
               "feedback": {
                 "retraining_on_use_of_financial_tools": "I hope the Hospital Administrator will see its importance. I'll make some time this week for a retraining session and try to drill down on exactly how these tools should be used."
               }
@@ -3617,7 +3622,7 @@
           "priority": 2,
           "year": 2,
           "initiating_npc": "third_party_verifier",
-          "initiating_dialogue": "There is an ongoing issue with the Clinic Manager. They are small things, but since they have been having issues with record keeping, I looked more closely and found some forms that seem like exact duplicates of others.",
+          "initiating_dialogue": "There are ongoing issues with the Clinic Manager. They are small things, but since they have been having issues with record keeping, I looked more closely and found some forms that seem like exact duplicates of others.",
           "starting_options": [
             "warning_3",
             "mild_sanctions"
@@ -3662,6 +3667,7 @@
               "dialogue": "This is a big deal. If these records are not accurate, we have no way of measuring progress. We need to send a very clear message. Unvalidated reports cannot be paid."
             },
             "third_party_verifier": {
+              "dialogue": "I'm curious as to what the clinic manager has to say about this. Either way, he should be held responsible.",
               "feedback": {
                 "warning_3": "I'll warn them. Hopefully we will see some improvement next quarter."
               }
@@ -3831,7 +3837,7 @@
               "dialogue": "I don't understand the need for these new guidelines, but then again, I am not working in the hospital."
             },
             "clinic_manager": {
-              "dialogue": "I need to be able to purchase whatever is needed. This is a return to the bad old days, with many delays in receiving supplies from the central level, and I can't agree with it.",
+              "dialogue": "I need to be able to purchase whatever is needed. This is a return to the old days, with many delays in receiving supplies from the central level, and I can't agree with it.",
               "unlocks": [
                 "clarify_separation_of_functions_and_responsibilities_2"
               ],
@@ -3881,6 +3887,9 @@
           "characters": {
             "dep_minister_of_health": {
               "dialogue": "If needed, we could end the contract. Let's do some serious investigation into if this is necessary."
+            },
+            "third_party_verifier": {
+              "dialogue": "It could be possible that the clinic's staff are confused about how to file accurate records, but this has been happening for years now."
             },
             "director_regional_health_services": {
               "dialogue": "I've had some communication issues with the Clinic Manager in the past, but I believe he is honest. You should talk to him directly to see what the problem is.",
@@ -4055,6 +4064,7 @@
               "dialogue": "These are small clinics, with very little operating budget. Denying payment will cause immediate harm to the community."
             },
             "clinic_manager": {
+              "dialogue": "The patients are the most important, and if we do not have payment they will suffer.",
               "feedback": {
                 "revise_business_plan_10": "I would appreciate some support from the coach to figure out how we can improve things here.",
                 "deny_review": "If you aren't going to take me seriously, how can I have faith in this system?"
@@ -4170,6 +4180,9 @@
             "small"
           ],
           "characters": {
+            "dep_minister_of_health": {
+              "dialogue": "Maybe the Director of Regional Health Services might have a better grasp on the situation."
+            },
             "director_regional_health_services": {
               "dialogue": "For some reason people have been taking advantage of this service more than other services. It would be good to investigate this further, perhaps providers are pushing the services too strongly."
             },
@@ -4670,8 +4683,11 @@
             "small"
           ],
           "characters": {
+            "third_party_verifier": {
+              "dialogue": "It could be possible that the clinic's staff are confused about how to file accurate records. Still, I think a warning might be needed."
+            },
             "dep_minister_of_health": {
-              "dialogue": "If needed, we could end the contract, let us do some serious investigation if this is necessary."
+              "dialogue": "If needed, we could impose sanctions. Let us do some serious investigation if this is necessary."
             },
             "director_regional_health_services": {
               "dialogue": "I've had some communication with Mr. Todd in the past, but I believe he is honest. You should talk to him directly to see what the problem is.",
@@ -4815,6 +4831,9 @@
             "medium"
           ],
           "characters": {
+            "dep_minister_of_health": {
+              "dialogue": "I'm not sure I can offer any help in this situation. Best contact someone who is on the ground."
+            },
             "director_regional_health_services": {
               "dialogue": "It might help if they were clearing their movements through my office. Then we would know where they are going, and that they are headed where they're needed.",
               "unlocks": [
@@ -4898,6 +4917,9 @@
             "small"
           ],
           "characters": {
+            "dep_minister_of_health": {
+              "dialogue": "I would suggest asking someone who might be able to verify whether these numbers accurately reflect real world outcomes."
+            },
             "director_regional_health_services": {
               "dialogue": "For some reason people have been taking advantage of this service more than other services. It would be good to investigate this further, perhaps providers are pushing the services too strongly."
             },
@@ -6374,7 +6396,8 @@
             }
           }
         }
-      ]
+      ],
+      "year_end": {}
     },
     "scenario_3": {
       "path_config": {
@@ -8106,7 +8129,7 @@
           "unlockable_word_of_mouth"
         ],
         "feedback_dialogue": {
-          "unlockable_provider_ambassadors": "This can begin next year if we revise the contracts to include it.                 ",
+          "unlockable_provider_ambassadors": "This can begin next year if we revise the contracts to include it. I will make sure that happens.                ",
           "unlockable_invite_community_leaders": "Like it or not, we're still outsiders or working for outsiders. It's a good idea to get some leaders on our side.",
           "unlockable_word_of_mouth": "This will only work if we keep doing good work, but word of mouth campaigns have worked in the past.",
           "observe": "OK, we'll wait and see if anything changes."
