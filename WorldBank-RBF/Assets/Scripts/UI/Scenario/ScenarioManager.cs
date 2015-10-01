@@ -125,7 +125,6 @@ public class ScenarioManager : MonoBehaviour {
 
     		scenarioCardCooldownText.text = String.Format("{0}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
     	}
-
 	}
 
 	void OnApplicationQuit() {
@@ -188,9 +187,14 @@ public class ScenarioManager : MonoBehaviour {
 	}
 
 	public void LoadMainMenu() {
+		AudioManager.StopAll ();
+		StartCoroutine (CoGotoMenus ());
+	}
 
-		Application.LoadLevel("Menus");
-		
+	IEnumerator CoGotoMenus () {
+		yield return new WaitForFixedUpdate ();
+		ObjectPool.Clear ();
+		MenusManager.GotoScreen ("title");
 	}
 
     public void EnableSupervisor() {
