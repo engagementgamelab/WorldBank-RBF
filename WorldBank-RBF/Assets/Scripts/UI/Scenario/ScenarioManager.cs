@@ -27,18 +27,19 @@ public class ScenarioManager : MonoBehaviour {
 
 	public Button scenarioChatTab;
 	public Button supervisorChatTab;
+	public Button debugButton;
 
 	public LayoutElement rightPanel;
+	
+	public Transform loadingPanel;
 
 	public Text scenarioCardCooldownText;
+	public Text debugPanelScenarioText;
+	public Text debugPanelProblemText;
 
 	public float problemCardDurationOverride = 0;
 	public float monthLengthSecondsOverride = 0;
 	public string scenarioOverride;
-
-	public Text debugPanelScenarioText;
-	public Text debugPanelProblemText;
-	public Button debugButton;
 
 	Timers.TimerInstance problemCardCooldown;
 	
@@ -441,6 +442,8 @@ public class ScenarioManager : MonoBehaviour {
 				availableTactics.Add(tactic);
 		}
 		DialogManager.instance.SetAvailableTactics(availableTactics);
+
+		loadingPanel.gameObject.SetActive(false);
 
     }
 

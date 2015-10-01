@@ -67,25 +67,28 @@ public class SupervisorChatScreen : ChatScreen {
 	void ShowTactics () {
 
 		// If supervisor is ready for new problems, open a new card
-		if (state == SupervisorState.WaitingForProblem && queuedTactics.Count > 0) {
+		if (state == SupervisorState.WaitingForProblem) {
+			if(queuedTactics.Count > 0) {
+				cardIndex = 0;
+				OpenTacticCard ();
+				state = SupervisorState.PresentingProblem;
+			}
+			else {
+				Clear();
 
-			cardIndex = 0;
-			OpenTacticCard ();
-			state = SupervisorState.PresentingProblem;
-			
+		 		if(queuedTactics.Count == 0) {
+		 			RemoveOptions();
+		 			AddSystemMessage("No more messages for this year.");
+
+		 			return;
+		 		}
+			}
 		}
 	}
 
  	void OpenTacticCard () {
 			
 		Clear();
-
- 		if(queuedTactics.Count == 0) {
- 			RemoveOptions();
- 			AddSystemMessage("No more messages for this year.");
-
- 			return;
- 		}
 
 		Models.TacticCard card = null;
 		investigateFurther = false;
