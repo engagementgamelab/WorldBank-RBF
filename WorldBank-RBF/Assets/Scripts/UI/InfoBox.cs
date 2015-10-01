@@ -51,6 +51,16 @@ public class InfoBox : MB {
 	void Start () {
 		PlayerData.InteractionGroup.onEmpty += OnNoInteractions;
 		PlayerData.DayGroup.onEmpty += OnNoDays;
+
+		NetworkManager.Instance.onNotLoggedIn += OnNotLoggedIn;
+	}
+
+	void OnDestroy() 
+	{
+		PlayerData.InteractionGroup.onEmpty -= OnNoInteractions;
+		PlayerData.DayGroup.onEmpty -= OnNoDays;
+
+		NetworkManager.Instance.onNotLoggedIn -= OnNotLoggedIn;
 	}
 
 	public void Open (string headerText, string contentText) {
@@ -92,6 +102,11 @@ public class InfoBox : MB {
 
 	void OnNoDays () {
 		StartCoroutine (WaitForTravel ());
+	}
+
+	void OnNotLoggedIn() {
+		buttonText.text = "Ok";
+		Open(DataManager.GetUIText("copy_server_session_lost_header"), DataManager.GetUIText("copy_server_session_lost_body"));
 	}
 
 	void SetActive (bool active) {

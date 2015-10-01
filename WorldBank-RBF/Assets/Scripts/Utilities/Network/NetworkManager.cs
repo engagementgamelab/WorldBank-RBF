@@ -26,6 +26,9 @@ public class NetworkManager : MonoBehaviour {
     private static Action<Dictionary<string, object>> _currentResponseHandler;
     public static string _sessionCookie;
     public static string _userCookie;
+    
+    public delegate void OnServerDown();
+    public delegate void OnNotLoggedIn();
 
     class PostCache {
         
@@ -77,6 +80,16 @@ public class NetworkManager : MonoBehaviour {
         }
 
     }
+
+    /// <summary>
+    /// Called when there is a server error.
+    /// </summary>
+    public OnServerDown onServerDown;
+
+    /// <summary>
+    /// Called when the user has no session.
+    /// </summary>
+    public OnNotLoggedIn onNotLoggedIn;
 
     public void Authenticate(Action<Dictionary<string, object>> responseHandler=null) {
 
@@ -221,11 +234,14 @@ public class NetworkManager : MonoBehaviour {
         // User is not logged in
         if((www.responseHeaders.Count > 0) && www.responseHeaders["STATUS"].ToString().Contains("401"))
         {
-            Debug.LogWarning("User is not logged in. Call to " + url + " rejected.");
+            Debug.LogError("User is not logged in. Call to " + url + " rejected.");
+            
+            onNotLoggedIn();
         }
         // check for errors
         else if (www.error == null) 
         {
+
             if(responseAction != null)
             {
                 responseAction(response);
@@ -233,6 +249,7 @@ public class NetworkManager : MonoBehaviour {
             }
             else
                 Debug.Log("WWW Ok!: " + www.text);
+        
         }
         else
         {
@@ -240,8 +257,14 @@ public class NetworkManager : MonoBehaviour {
 
             if(response == null)
             {
-                exceptionMsg = "General WWW issue: " + www.error;
-                throw new Exception(exceptionMsg);
+                if(www.error.Equals("couldn't connect to host"))
+                    onServerDown();
+
+                // If in editor, always throw so we catch issues
+                #if UNITY_EDITOR
+                    exceptionMsg = "General WWW issue: " + www.error;
+                    throw new Exception(exceptionMsg);
+                #endif
             }
             else if(responseAction != null && response["error"] == null) 
             {

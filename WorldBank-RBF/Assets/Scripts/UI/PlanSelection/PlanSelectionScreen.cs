@@ -135,7 +135,9 @@ public class PlanSelectionScreen : MonoBehaviour {
 
 		plans = JsonReader.Deserialize<Models.PlanRecord[]>(response["plans"].ToString());
 
+		PlanIndex = 0;
     	SetPlanData(0);
+    	ShowPlan(0);
 
     	yourIndicatorsLabels[0].text = "Facility Births: +" + plans[0].default_affects[0]+"%";
     	yourIndicatorsLabels[1].text = "Vaccinations: +" + plans[0].default_affects[1]+"%";

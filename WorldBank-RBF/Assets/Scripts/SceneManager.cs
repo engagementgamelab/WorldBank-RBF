@@ -19,21 +19,6 @@ using UnityEditor;
 
 public class SceneManager : MonoBehaviour {
 
-	/*static SceneManager instance = null;
-	static public SceneManager Instance {
-		get {
-			if (instance == null) {
-				instance = Object.FindObjectOfType (typeof (SceneManager)) as SceneManager;
-				if (instance == null) {
-					GameObject go = new GameObject ("SceneManager");
-					DontDestroyOnLoad (go);
-					instance = go.AddComponent<SceneManager>();
-				}
-			}
-			return instance;
-		}
-	}*/
-
 	public string sceneName;
 
 	[HideInInspector]
@@ -44,11 +29,15 @@ public class SceneManager : MonoBehaviour {
 	[HideInInspector]
 	public bool tutorialEnabled;
 
+	public InfoBox infoBox;
+
 	public delegate void AuthCallbackDelegate();
 
 	private PlayerLoginRegisterUI loginUI;
 
 	void Awake () {
+
+		NetworkManager.Instance.onServerDown += OnServerDown;
 
 		// We need our game config data before calling any remote endpoints
 		LoadGameConfig();
@@ -118,6 +107,14 @@ public class SceneManager : MonoBehaviour {
 		// 	NotebookManager.Instance.OpenMap();
 
 		Debug.Log("Player auth successful? " + success);
+
+	}
+
+	void OnServerDown() {
+
+		Debug.LogError("Server down!");
+
+		infoBox.Open(DataManager.GetUIText("copy_server_down_header"), DataManager.GetUIText("copy_server_down_body"));
 
 	}
 

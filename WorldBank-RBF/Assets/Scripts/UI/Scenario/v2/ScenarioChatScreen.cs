@@ -198,6 +198,10 @@ public class ScenarioChatScreen : ChatScreen {
 
 	IEnumerator AdvisorSelected(string strAdvisorSymbol) {
 
+		// Disable supervisor tab
+		supervisorChatTabAnimator.Play("SupervisorTabOff");
+		supervisorChatTabAnimator.gameObject.GetComponent<Button>().enabled = false;
+
 		DisableAdvisors();
 	    		
 		AddSystemMessage("...");
@@ -255,6 +259,10 @@ public class ScenarioChatScreen : ChatScreen {
 
 		// Tutorial
 		DialogManager.instance.CreateTutorialScreen("phase_2_conference_action");
+
+		// Disable supervisor tab
+		supervisorChatTabAnimator.Play("SupervisorTabOn");
+		supervisorChatTabAnimator.gameObject.GetComponent<Button>().enabled = true;
 	}
 
 	IEnumerator ShowFeedback(string eventSymbol)

@@ -21,11 +21,6 @@ public class IndicatorsMessage : MonoBehaviour {
 		vaccinationsText.text = dictAffect["indicator_1"].ToString();
 		birthsText.text = dictAffect["indicator_2"].ToString();
 		qocText.text = dictAffect["indicator_3"].ToString();
-
-		if(dictAffect["indicator_1"] == 0 && dictAffect["indicator_2"] == 0 && dictAffect["indicator_3"] == 0)
-			gameObject.SetActive(false);
-		else
-			gameObject.SetActive(true);
 			
 	}
 }

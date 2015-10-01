@@ -64,6 +64,12 @@ public class SupervisorChatScreen : ChatScreen {
     	}
     }
 
+    public void StopInvestigation() {
+    	
+    	investigateCooldown.Stop();
+    	
+    }
+
 	void ShowTactics () {
 
 		// If supervisor is ready for new problems, open a new card

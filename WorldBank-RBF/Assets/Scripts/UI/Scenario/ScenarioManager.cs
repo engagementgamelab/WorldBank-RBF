@@ -321,6 +321,10 @@ public class ScenarioManager : MonoBehaviour {
 
 		// Clear all supervisor dialog
 		supervisorChat.Clear();
+		supervisorChat.StopInvestigation();
+
+		DisableSupervisor();
+		DisableSupervisorTab();
 		
 		// Ensure scenario chat is showing
 		scenarioChatTab.interactable = false;

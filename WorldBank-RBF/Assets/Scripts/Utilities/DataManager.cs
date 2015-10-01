@@ -92,6 +92,11 @@ public class DataManager {
 
     static Scenario currentScenario;
 
+    static Dictionary<string, string> localUIText = new Dictionary<string, string>() {
+        {"copy_server_down_header", "Sorry!"},
+        {"copy_server_down_body", "The game's server is currently unreachable. Your internet connection may be having some issues, or the server is offline for regular maintenance.\n\nPlease close the application and try again in a few minutes. Apologies for the inconvenience!"}
+    };
+
     /// <summary>
     /// Set global game config data, such as API endpoints, given a valid input string
     /// </summary>
@@ -174,13 +179,19 @@ public class DataManager {
     /// <returns>Copy associated with the key.</returns>
     public static string GetUIText (string key) {
         
-        if (gameData == null)
-            return DataNotLoaded;
+        if (gameData == null) {
+            try {
+                return localUIText[key];
+            } catch {
+                return DataNotLoaded;
+            }
+        }
 
         string val;
         if (gameData.ui_text.TryGetValue (key, out val)) {
             return val;
-        } 
+        }
+     
         return "";
     }
 
