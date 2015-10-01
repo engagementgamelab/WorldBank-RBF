@@ -610,6 +610,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 22484996}
   - 114: {fileID: 11495188}
+  - 114: {fileID: 11453754}
   m_Layer: 0
   m_Name: CityInfoBox
   m_TagString: Untagged
@@ -7296,7 +7297,7 @@ Camera:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128472}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
@@ -9980,8 +9981,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11459392}
   m_HandleRect: {fileID: 22477212}
   m_Direction: 2
-  m_Value: .999981046
-  m_Size: .994999945
+  m_Value: 1
+  m_Size: .99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12134,7 +12135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: 240
+  m_MinHeight: 239.999985
   m_PreferredWidth: 480
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
@@ -14599,6 +14600,21 @@ MonoBehaviour:
   m_Spacing: 20
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
+--- !u!114 &11453754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70770917ce18e944d99b4d01299d445d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TrackedEvents: 0100000002000000
+  TrackedEventsFoldOut: 1
+  ShowGizmo: 1
+  BreadCrumbTrackInterval: 1
 --- !u!114 &11453772
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -17648,7 +17664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead28a1d9afe348508c442d928ba8b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inEditMode: 1
+  inEditMode: 0
 --- !u!114 &11474142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -20432,7 +20448,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Health Plan
+  m_Text: Program Proposal
 --- !u!114 &11497078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -24058,7 +24074,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 195.263153, y: -30}
-  m_SizeDelta: {x: 350.526306, y: 38.738739}
+  m_SizeDelta: {x: 350.526306, y: 38.3333321}
   m_Pivot: {x: .5, y: 1}
 --- !u!224 &22422764
 RectTransform:
@@ -26294,7 +26310,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 195.263153, y: -68.738739}
+  m_AnchoredPosition: {x: 195.263153, y: -68.3333282}
   m_SizeDelta: {x: 350.526306, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22466132

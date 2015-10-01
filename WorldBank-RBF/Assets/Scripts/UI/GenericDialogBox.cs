@@ -133,19 +133,4 @@ public class GenericDialogBox : MB {
 				new Vector3 (left ? LPercent : RPercent, 0f, 10f)).x
 		);
 	}
-
-	IEnumerator CoRotate () {
-		
-		float startTime = Time.time;
-		float startRotation = 2.5f;
-		float endRotation = 5f;
-
-		yield return null;
-
-/*		while (open) {
-			float eTime = startTime - Time.time;
-			Transform.rotation = Quaternion.Euler (0, startRotation + Mathf.PingPong (eTime, endRotation), 0);
-			yield return null;
-		}*/
-	}
 }

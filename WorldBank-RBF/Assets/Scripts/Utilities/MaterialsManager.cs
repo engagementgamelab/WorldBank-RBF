@@ -119,7 +119,7 @@ public static class MaterialsManager {
 		if (!tex.format.HasAlpha ()) return false;
 		
 		try {
-			Color c = tex.GetPixel (0, 0);
+			tex.GetPixel (0, 0);
 		} catch (UnityException e) {
 			Debug.LogError (e);
 			return false;

@@ -72,7 +72,7 @@ public abstract class ItemGroup {
 	public abstract void Add (InventoryItem item=null);
 	public abstract void Add (List<InventoryItem> newItems);
 	public abstract void Remove (int count);
-	public abstract InventoryItem Remove (InventoryItem item=null);
+	public abstract InventoryItem Remove (InventoryItem item=null, bool sendUpdate=true);
 	public abstract void Clear ();
 	public abstract void Transfer (ItemGroup toGroup, InventoryItem item);
 	public abstract bool Contains (InventoryItem item);
@@ -126,9 +126,11 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	/// </summary>
 	/// <param name="count">The number of items to add.</param>
 	public override void Add (int count) {
+		List<InventoryItem> items = new List<InventoryItem> ();
 		for (int i = 0; i < count; i ++) {
-			Add ();
+			items.Add (new T ());
 		}
+		Add (items);
 	}
 
 	/// <summary>
@@ -166,9 +168,11 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	/// </summary>
 	/// <param name="count">The number of items to remove</param>
 	public override void Remove (int count) {
-		for (int i = 0; i < count; i ++) {
-			Remove ();
+		if (count <= 0) return;
+		for (int i = 0; i < count-1; i ++) {
+			Remove (null, false);
 		}
+		Remove (null, true);
 	}
 
 	/// <summary>
@@ -176,7 +180,7 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 	/// </summary>
 	/// <param name="item">The InventoryItem to remove.</param>
 	/// <returns>The removed InventoryItem (null if the item was not in the group)</returns>
-	public override InventoryItem Remove (InventoryItem item=null) {
+	public override InventoryItem Remove (InventoryItem item=null, bool sendUpdate=true) {
 		
 		if (Empty) return null;
 		InventoryItem removedItem = items[0] ?? item;
@@ -186,7 +190,7 @@ public class ItemGroup<T> : ItemGroup where T : InventoryItem, new () {
 			items.Remove (item);
 		}
 
-		SendUpdateMessage ();
+		if (sendUpdate) SendUpdateMessage ();
 		if (Empty) SendEmptyMessage ();
 		
 		return removedItem;

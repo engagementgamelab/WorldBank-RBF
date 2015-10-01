@@ -132,7 +132,7 @@ public class MyBezier
         }
         int x = Mathf.FloorToInt(t * (float)numToUse);
 
-        float tBetweenZeroAndOne = (t * (float)numToUse) - (float)x;
+        // float tBetweenZeroAndOne = (t * (float)numToUse) - (float)x;
 
         Vector3 nextPoint = waypointList[CheckWithinArray(x + 1, waypointList.Count)].CurrentPosition;
 

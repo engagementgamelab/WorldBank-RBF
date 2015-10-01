@@ -14,7 +14,7 @@ public class PrioritizationManager : NotebookCanvas {
 	public Text scoreText;
 	public Text feedbackText;
 
-	public PilotYearAnimation animation;
+	new public PilotYearAnimation animation;
 	public ResultsScreen results;
 
 	public Dictionary<string, object> Results { get; private set; }

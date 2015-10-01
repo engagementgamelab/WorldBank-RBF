@@ -163,14 +163,16 @@ public class SceneManager : MonoBehaviour {
 			// If in editor, always throw so we catch issues
 			#if UNITY_EDITOR
 				throw new System.Exception("Unable to obtain game data due to error '" + e + "'");
-			#endif
+			#else
  
-	        TextAsset dataJson = (TextAsset)Resources.Load("data", typeof(TextAsset));
-			StringReader strData = new StringReader(dataJson.text);
-	        
-			gameData = strData.ReadToEnd();
+		        TextAsset dataJson = (TextAsset)Resources.Load("data", typeof(TextAsset));
+				StringReader strData = new StringReader(dataJson.text);
+		        
+				gameData = strData.ReadToEnd();
 
-			strData.Close();
+				strData.Close();
+				
+			#endif
 		
 		}
 

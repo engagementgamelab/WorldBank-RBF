@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent (typeof (Light))]
 public class Firefly : MonoBehaviour {
 
-	Light light = null;
+	new Light light = null;
 	Light Light {
 		get {
 			if (light == null) {

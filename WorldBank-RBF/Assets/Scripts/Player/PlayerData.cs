@@ -106,9 +106,6 @@ public class PlayerData {
 	/// <param name="npcContext">Context of the unlockable</param>
 	/// <param name="npcContext">NPC that unlocked this item</param>
 	public static void UnlockItem (string strSymbol, string npcContext="", string npcSymbol="") {
-
-		Models.Unlockable unlockRef = DataManager.GetUnlockableBySymbol(strSymbol);
-		
 		if (strSymbol.StartsWith ("unlockable_route_")) {
 			RouteGroup.UnlockWithContext (strSymbol, npcContext, npcSymbol);
 		} else if (strSymbol.StartsWith ("unlockable_dialogue_")) {
