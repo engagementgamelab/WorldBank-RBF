@@ -16,7 +16,6 @@ using System.Collections.Generic;
 public class TacticCardDialog : ScenarioCardDialog {
 
 	Models.TacticCard _data;
-	int _cardIndex;
 
     /// <summary>
     /// Set the data for this card
@@ -32,12 +31,6 @@ public class TacticCardDialog : ScenarioCardDialog {
         get {
         	return _data;
         }
-    }
-
-    public int Index {
-    	set {
-    		_cardIndex = value;
-    	}
     }
 
 	public Text tooltipTxt;

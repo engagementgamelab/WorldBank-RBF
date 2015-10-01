@@ -98,7 +98,7 @@ public class ParallaxLayerManager : MonoBehaviour {
 	public bool designerScene = false;
 	string texPath = "Command+V to paste file path";
 	bool showOptions = true;
-	TextureLoader textureLoader = new TextureLoader ("", true);
+	TextureLoader textureLoader = new TextureLoader ("");
 	#endif
 
 	void Awake () {

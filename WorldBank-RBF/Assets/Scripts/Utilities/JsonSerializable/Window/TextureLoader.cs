@@ -11,11 +11,9 @@ using System.Text.RegularExpressions;
 public class TextureLoader {
 
 	readonly string path;
-    bool local = false;
 
-	public TextureLoader (string path, bool local=false) {
+	public TextureLoader (string path) {
 		this.path = path;
-        this.local = local;
 	}
 
     public Dictionary<int, List<string>> GetTextureDirectories (string loadPath="") {

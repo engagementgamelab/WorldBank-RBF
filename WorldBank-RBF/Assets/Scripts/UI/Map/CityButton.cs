@@ -25,7 +25,6 @@ public class CityButton : MB {
 	}
 
 	public string symbol;
-	Color visitedColor = new Color (1f, 0.5f, 0f, 1f);
 
 	void Awake () {
 		Button.onClick.AddListener (HandleClick);
@@ -76,7 +75,6 @@ public class CityButton : MB {
 	}
 
 	RouteItem activeRoute = null;
-	bool visitedCapitol = false;
 
 	/// <summary>
 	/// Gets the route that the player is currently on.
@@ -95,7 +93,6 @@ public class CityButton : MB {
 	}
 
 	void OnUpdateCurrentCity (string citySymbol) {
-		if (citySymbol == "capitol") visitedCapitol = true;
 		UpdateInteractableState ();
 	}
 

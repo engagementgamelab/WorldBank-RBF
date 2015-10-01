@@ -117,6 +117,8 @@ public class PlayerManager : MonoBehaviour {
         Models.User user = JsonReader.Deserialize<Models.User>(output.ToString());
 
         _playerId = user._id;
+        GA.API.Design.NewEvent ("player_id: " + _playerId);
+
         _submittedPlan = user.submitted_plan;
         _phaseTwoDone = user.phase_two_done;
         
@@ -145,21 +147,22 @@ public class PlayerManager : MonoBehaviour {
 
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
             return;
+        #else
+
+            var parseFields = new Dictionary<string, string>() {{ "user", _playerId }};
+            Dictionary<string, object> postFields = new Dictionary<string, object>() {{ "eventName", strEventName }, { "eventCategory", strEventCategory }, { "userId", _playerId }};
+
+            // Send to Parse SDK
+            // ParseAnalytics.TrackEventAsync(strEventName, parseFields);
+
+           //Analytics.CustomEvent(strEventName, new Dictionary<string, object>() {{ "eventCategory", strEventCategory }, { "userId", _playerId }});
+
+            // Send analytic event
+            NetworkManager.Instance.PostURL("/analytics/event/", postFields);
+
+            Debug.Log("Track Event: '" + strEventName + "'");
+
         #endif
-
-        var parseFields = new Dictionary<string, string>() {{ "user", _playerId }};
-        Dictionary<string, object> postFields = new Dictionary<string, object>() {{ "eventName", strEventName }, { "eventCategory", strEventCategory }, { "userId", _playerId }};
-
-        // Send to Parse SDK
-        // ParseAnalytics.TrackEventAsync(strEventName, parseFields);
-
-       //Analytics.CustomEvent(strEventName, new Dictionary<string, object>() {{ "eventCategory", strEventCategory }, { "userId", _playerId }});
-
-        // Send analytic event
-        NetworkManager.Instance.PostURL("/analytics/event/", postFields);
-
-        Debug.Log("Track Event: '" + strEventName + "'");
-
     }
 
 }

@@ -64,12 +64,10 @@ public class AnimatedQuadTexture : MB {
 	float xScale;
 	float pauseTime;
 
-	float startPosition = -1f;
-
-	float sortingZPosition = -1f;
-	void OnEnable () {
+	// float sortingZPosition = -1f;
+	/*void OnEnable () {
 		sortingZPosition = -1f;
-	}
+	}*/
 
 	protected virtual void Awake () {
 		SetScale ();

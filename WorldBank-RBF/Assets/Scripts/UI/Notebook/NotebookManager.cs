@@ -81,7 +81,7 @@ public class NotebookManager : MB {
 	public bool openAtStart = true;
 	public bool isPhaseOne = true;
 
-	string activeCanvas = "map";
+	// string activeCanvas = "map";
 
 	void Start () {
 		// Need to find a better way to approach this, but for now
@@ -128,9 +128,7 @@ public class NotebookManager : MB {
 	}
 
 	public void ToggleTabs () {
-	
 		tabGroup.SetActive (!tabGroup.activeSelf);
-
 	}
 	
 	public void Open () {
@@ -191,12 +189,12 @@ public class NotebookManager : MB {
 
 		}
 
-		activeCanvas = id;
+		// activeCanvas = id;
 	}
 
 	void SetActiveCanvasOnOpen () {
-		if (state == State.MakingPlan)
-			activeCanvas = "priorities";
+		/*if (state == State.MakingPlan)
+			activeCanvas = "priorities";*/
 	}
 
 	void UpdateState () {

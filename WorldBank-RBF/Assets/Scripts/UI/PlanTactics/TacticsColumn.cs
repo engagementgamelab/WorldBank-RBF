@@ -10,7 +10,6 @@ public class TacticsColumn : Column {
 	public ScrollRect scrollView;
 
 	List<UITactic> uiTactics = new List<UITactic> ();
-	bool initialized = false;
 
 	LayoutElement contentLayout;
 	float ContentHeight {

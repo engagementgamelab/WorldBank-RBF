@@ -40,7 +40,6 @@ public class UITactic : TacticButton, IBeginDragHandler, IDragHandler, IEndDragH
 
 	ScrollRect scrollParent;
 	TacticItem tactic;
-	UITacticSlot slot = null;
 
 	public void Init (Column column, Transform contentParent, TacticItem tactic) {
 		this.tactic = tactic;

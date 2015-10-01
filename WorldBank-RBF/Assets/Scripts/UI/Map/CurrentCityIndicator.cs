@@ -25,8 +25,6 @@ public class CurrentCityIndicator : MB {
 		get { return moving; }
 	}
 
-	bool pulsing = false;
-
 	public void Move (Transform parent, RouteItem route, System.Action onEnd=null) {
 
 		SetTravelImage (route.TransportationMode);
@@ -51,14 +49,6 @@ public class CurrentCityIndicator : MB {
 		StartCoroutine (CoMoveToRoute (positions[0], 
 			() => StartCoroutine (CoMove (positions, speed, onEnd))
 		));
-	}
-
-	void OnEnable () {
-		pulsing = true;
-	}
-
-	void OnDisable () {
-		pulsing = false;
 	}
 
 	void SetTravelImage (string mode) {

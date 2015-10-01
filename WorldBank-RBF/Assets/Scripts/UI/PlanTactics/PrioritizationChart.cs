@@ -7,7 +7,6 @@ public class PrioritizationChart : MonoBehaviour {
 	public TacticsColumn tacticsColumn;
 	public PrioritiesColumn prioritiesColumn;
 	public Button continuePlanButton;
-	int tacticsAssigned = 0;
 
 	void Awake () {
 		// Listen for TacticSlotEvent

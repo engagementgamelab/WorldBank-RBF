@@ -142,7 +142,7 @@ public class DataManager {
 
         try {
 
-            System.Text.StringBuilder output = new System.Text.StringBuilder();
+            // System.Text.StringBuilder output = new System.Text.StringBuilder();
             // _readerSettings.AddTypeConverter (new GameDataConverter());
 
             JsonReader reader = new JsonReader(data, _readerSettings);
@@ -251,7 +251,7 @@ public class DataManager {
         if(strSelector == null) {
             try {
                 return gameData.phase_one[currentSceneContext];
-            } catch (System.Exception e) {
+            } catch {
                 throw new System.Exception ("No city with the symbol '" + currentSceneContext + "' could be found.");
             }
         } else {
@@ -472,7 +472,7 @@ public class DataManager {
             return gameData.indicator_affects[strSymbol];
 
         } 
-        catch(Exception e) {
+        catch {
 
             throw new Exception("Unable to find Affect with symbol '" + strSymbol + "'! Uh oh.");
      
@@ -514,7 +514,7 @@ public class DataManager {
             return gameData.tutorial[strKey];
 
         } 
-        catch(Exception e) {
+        catch {
 
             throw new Exception("Unable to find tutorial tooltip with key '" + strKey + "'! Poppycock!");
 
@@ -534,7 +534,7 @@ public class DataManager {
             return gameData.ui_text[strKey];
 
         } 
-        catch(Exception e) {
+        catch {
 
             throw new Exception("Unable to find UI text with key '" + strKey + "'! Hogwash!");
      

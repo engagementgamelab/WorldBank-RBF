@@ -43,7 +43,7 @@ public class AmbienceZonesEditor : MyCustomEditor<AmbienceZones> {
 		}
 	}
 
-	void ResetTarget () {
+	new void ResetTarget () {
 		Target.Reset ();
 		SerializedTarget.Update ();
 	}

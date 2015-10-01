@@ -10,7 +10,6 @@ public class PrioritiesColumn : Column {
 	int slotCount = 6;
 	List<UITacticSlot> uiSlots = new List<UITacticSlot> ();
 	List<UITactic> uiTactics = new List<UITactic> ();
-	bool initialized = false;
 
 	void Awake () {
 		// CreateTacticSlots ();

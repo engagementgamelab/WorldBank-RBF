@@ -18,7 +18,7 @@ public class IndicatorPlotLine : MonoBehaviour {
 		set { 
 				xDelta = value;
 
-				animateDelay = (xDelta/positionOffset);
+				// animateDelay = (xDelta/positionOffset);
 		}
 	}
 
@@ -44,8 +44,8 @@ public class IndicatorPlotLine : MonoBehaviour {
 	float xDelta;
 	// float targetWidth;
 
-	float animateDelay;
-	float animateStart;
+	// float animateDelay;
+	// float animateStart;
 	
 	int type;
 
@@ -86,7 +86,7 @@ public class IndicatorPlotLine : MonoBehaviour {
 		foreach(Image img in gameObject.GetComponentsInChildren<Image>(true))		
 			img.color = currentColor;
 
-		animateStart = 0;
+		// animateStart = 0;
 
 	}
 }
