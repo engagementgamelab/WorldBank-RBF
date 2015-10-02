@@ -16,6 +16,11 @@ public class ResultsScreen : MonoBehaviour {
 		description.text = results["description"].ToString ();
 		IndicatorsCanvas.GoalAffects = results["goal"] as int[];
 
+		// Analytics events
+		GA.API.Design.NewEvent ("pilot_vaccinations", indicators[1]);
+		GA.API.Design.NewEvent ("pilot_birth_rate", indicators[0]);
+		GA.API.Design.NewEvent ("pilot_quality_of_care", indicators[2]);
+
 		indicatorsCanvas.UpdateIndicators (indicators[1], indicators[0], indicators[2]);
 		indicatorsCanvas.Open ();
 	}

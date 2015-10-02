@@ -264,6 +264,8 @@ public class IndicatorsCanvas : NotebookCanvas {
 			PlayerManager.Instance.SaveData (formFields, UserSaveCallback);
 
     	}
+
+    	SendAnalyticsData ();
     }
 
     public void ShowPreviousAction() {
@@ -345,6 +347,35 @@ public class IndicatorsCanvas : NotebookCanvas {
 		
 		Debug.Log("Phase two user status updated.");
 	
+	}
+
+	void SendAnalyticsData () {
+		
+		int positiveSupervisor = 0;
+		int negativeSupervisor = 0;
+		int positiveScenario = 0;
+		int negativeScenario = 0;
+
+		foreach (var op in SelectedOptions) {
+			int[] indicators = op.Value;
+			bool supervisor = indicators.Length == 4;
+			if (indicators[0] < 0 || indicators[1] < 0 || indicators[2] < 0) {
+				if (supervisor)
+					negativeSupervisor ++;
+				else
+					negativeScenario ++;
+			} else {
+				if (supervisor)
+					positiveSupervisor ++;
+				else
+					positiveScenario ++;
+			}
+		}
+
+		GA.API.Design.NewEvent ("positive_supervisor_options", positiveSupervisor);
+		GA.API.Design.NewEvent ("negative_supervisor_options", positiveSupervisor);
+		GA.API.Design.NewEvent ("positive_scenario_options", positiveScenario);
+		GA.API.Design.NewEvent ("negative_scenario_options", positiveScenario);
 	}
 	
 	public void DebugIndicators() {

@@ -298,6 +298,11 @@ public class ScenarioManager : MonoBehaviour {
 	void EndYear () {
 
 		CalculateIndicators();
+
+		// Analytics events
+		GA.API.Design.NewEvent ("vaccinations", currentAffectValues[0]);
+		GA.API.Design.NewEvent ("birth_rate", currentAffectValues[1]);
+		GA.API.Design.NewEvent ("quality_of_care", currentAffectValues[2]);
 		
 		// Next year will start at card 0
 		currentCardIndex = -1;

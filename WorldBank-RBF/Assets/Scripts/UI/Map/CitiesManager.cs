@@ -124,7 +124,7 @@ public class CitiesManager : MB {
 	/// <param name="city">The city to move to.</param>
 	/// <param name="route">The route to move along.</param>
 	public void VisitCity (CityItem city, RouteItem route) {
-		GA.API.Design.NewEvent ("Visit city: " + city.Symbol);
+		GA.API.Design.NewEvent ("visit_city: " + city.Symbol);
 		if (city.Symbol == "capitol") city.StayedExtraDay = true;
 		PlayerData.InteractionGroup.SetInteractions (city.Symbol);
 		TravelToCity (city, route, OnVisit);
@@ -136,7 +136,7 @@ public class CitiesManager : MB {
 	/// </summary>
 	/// <param name="city">The city to stay an extra day in.</param>
 	public void StayExtraDay (CityItem city) {
-		GA.API.Design.NewEvent ("Re-enter city: " + city.Symbol);
+		GA.API.Design.NewEvent ("reenter_city: " + city.Symbol);
 		city.StayedExtraDay = true;
 		PlayerData.InteractionGroup.SetExtraInteractions (city.Symbol);
 		PlayerData.DayGroup.Remove ();
