@@ -28,7 +28,7 @@ class GenerateBuilds {
     static string SCENE_PREFIX = "Assets/Scenes/";
     static string SCENE_AFFIX = ".unity";
 
-    static string APP_NAME = "WorldBank";
+    static string APP_NAME = "Unlocking Health";
     static string TARGET_DIR = "Output";
 
 
