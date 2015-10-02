@@ -116,7 +116,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 			float affectValPrev;
 
 			float affectGoal = (float)GoalAffects[ind];
-
 			Single.TryParse(currentAffects[ind], out affectVal);
 			Single.TryParse(previousAffects[ind], out affectValPrev);
 			

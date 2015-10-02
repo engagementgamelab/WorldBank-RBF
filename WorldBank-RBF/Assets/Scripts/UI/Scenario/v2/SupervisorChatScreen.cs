@@ -275,6 +275,8 @@ public class SupervisorChatScreen : ChatScreen {
 			}
 
 			IndicatorsCanvas.SelectedOption = new KeyValuePair<string, int[]>(DataManager.GetUnlockableBySymbol(optionUsed).title, affects);
+			
+			Events.instance.Raise(new ScenarioEvent(ScenarioEvent.AFFECT_USED, optionUsed));
 
 	    	AddResponseSpeech (message, Supervisor, initial, true, dictAffect);
 		}

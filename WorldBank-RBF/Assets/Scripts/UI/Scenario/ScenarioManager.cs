@@ -344,6 +344,7 @@ public class ScenarioManager : MonoBehaviour {
 		currentQueueIndex++;
 
 		// Tutorial
+		// scenarioChatTab.animator.Play("ScenarioTabAlert");
 		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor");
 
 	}
@@ -561,7 +562,8 @@ public class ScenarioManager : MonoBehaviour {
 		else
 			problemCardCooldown.Restart();
 
-		scenarioChatTab.animator.Play("ScenarioTabAlert");
+		if(scenarioChatTab.interactable)
+			scenarioChatTab.animator.Play("ScenarioTabAlert");
 
     }
 
@@ -625,9 +627,14 @@ public class ScenarioManager : MonoBehaviour {
 	   			SetScenarioPath(e.eventSymbol);
     			break;
 
-			case "open_indicators":
+			case "affect_used":
 
-	   			indicatorsCanvas.gameObject.SetActive(true);
+	    		// Add affect for this event to used affects
+	    		if(e.eventSymbol != null) {
+					Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(e.eventSymbol);
+					usedAffects.Add(dictAffect.Values.ToArray());
+				}
+
 	   			break;
 
     	}
