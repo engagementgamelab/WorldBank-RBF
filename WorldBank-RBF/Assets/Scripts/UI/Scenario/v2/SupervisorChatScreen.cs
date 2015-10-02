@@ -65,8 +65,9 @@ public class SupervisorChatScreen : ChatScreen {
     }
 
     public void StopInvestigation() {
-    	
-    	investigateCooldown.Stop();
+
+    	if(investigateCooldown != null && investigateCooldown.Active)
+	    	investigateCooldown.Stop();
     	
     }
 

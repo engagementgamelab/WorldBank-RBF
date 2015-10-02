@@ -571,19 +571,14 @@
       "indicator_3": -1
     },
     "retraining_on_use_of_financial_tools": {
-      "indicator_1": 0,
-      "indicator_2": 0,
-      "indicator_3": -1
+      "indicator_1": 2,
+      "indicator_2": 2,
+      "indicator_3": 3
     },
     "audit_2": {
       "indicator_1": 0,
       "indicator_2": 0,
       "indicator_3": 1
-    },
-    "revise_business_plan_11": {
-      "indicator_1": 1,
-      "indicator_2": 1,
-      "indicator_3": 2
     },
     "warning_3": {
       "indicator_1": 1,
@@ -613,12 +608,7 @@
     "review_indicators_at_end_of_year": {
       "indicator_1": 0,
       "indicator_2": -4,
-      "indicator_3": 4
-    },
-    "broaden_services": {
-      "indicator_1": 0,
-      "indicator_2": -7,
-      "indicator_3": -7
+      "indicator_3": 1
     },
     "comply_with_ministry_request": {
       "indicator_1": -4,
@@ -651,9 +641,9 @@
       "indicator_3": 4
     },
     "warning_4": {
-      "indicator_1": 0,
-      "indicator_2": 0,
-      "indicator_3": -1
+      "indicator_1": 1,
+      "indicator_2": 1,
+      "indicator_3": 1
     },
     "terminate_contract_at_end_of_year_3": {
       "indicator_1": 0,
@@ -3388,11 +3378,9 @@
               ]
             },
             "coach": {
-              "dialogue": "I don't know why they aren't keeping records. When I spoke with them last, they said everything was fine and they didn't want my help."
-            },
-            "third_party_verifier": {
+              "dialogue": "I don't know why they aren't keeping records. When I spoke with them last, they said everything was fine and they didn't want my help.",
               "feedback": {
-                "help_build_capacity_1": "I will strengthen on the spot training during the verification for them to see the mistakes they are making."
+                "help_build_capacity_1": "I will work with the Third Party Verifier to strengthen on the spot training during the verification. This way they can see the mistakes they are making."
               }
             },
             "community_verifier": {
@@ -3527,7 +3515,7 @@
               "dialogue": "Community transparency does not seem to be high on their agenda, so, yes, they are performing low on their quality score."
             },
             "community_verifier": {
-              "dialogue": "This is a little outside of my purview."
+              "dialogue": "This is a little outside of my purview but I know the community is keen to gain a better understanding in what goes on at the clinic."
             },
             "clinic_manager": {
               "dialogue": "I think you underestimate just how busy we have been with outreach and patient care. We are not a large staff, and our time is very precious. Maybe next quarter things will be slower and we can focus on this.",
@@ -3536,7 +3524,7 @@
               }
             },
             "hospital_administrator": {
-              "dialogue": "I've observed the clinics we're talking about a number of times, and there's never enough time and money to go around. They are just not interested. "
+              "dialogue": "I've observed the clinics we're talking about a number of times, and there's never enough time and staff to go around. They are just not interested. "
             }
           }
         },
@@ -3577,7 +3565,7 @@
           ],
           "characters": {
             "dep_minister_of_health": {
-              "dialogue": "It sounds like funds have gone missing.",
+              "dialogue": "It sounds like funds have gone missing. It is important we look into this. ",
               "unlocks": [
                 "audit_2"
               ],
@@ -3659,11 +3647,9 @@
               ]
             },
             "coach": {
-              "dialogue": "This is a big deal. If these records are not accurate, we have no way of measuring progress. We need to send a very clear message. Unvalidated reports cannot be paid."
-            },
-            "third_party_verifier": {
+              "dialogue": "This is a big deal. If these records are not accurate, we have no way of measuring progress. We need to send a very clear message. Unvalidated reports cannot be paid.",
               "feedback": {
-                "warning_3": "I'll warn them. Hopefully we will see some improvement next quarter."
+                "warning_3": "I'll get the purchaser to warn them. Hopefully we will see some improvement next quarter."
               }
             },
             "community_verifier": {
@@ -3700,14 +3686,12 @@
           "final_options": [
             "hire_more_outreach_staff",
             "raise_incentives_for_facility_births",
-            "review_indicators_at_end_of_year",
-            "broaden_services"
+            "review_indicators_at_end_of_year"
           ],
           "final_options_affects": [
             "hire_more_outreach_staff",
             "raise_incentives_for_facility_births",
-            "review_indicators_at_end_of_year",
-            "broaden_services"
+            "review_indicators_at_end_of_year"
           ],
           "final_options_cost": [
             "large",
@@ -3716,7 +3700,7 @@
           ],
           "characters": {
             "director_regional_health_services": {
-              "dialogue": "I suggest hiring more outreach staff to operate in facilities near these settlements.",
+              "dialogue": "I suggest hiring more outreach staff to operate in facilities near these villages.",
               "feedback": {
                 "hire_more_outreach_staff": "This makes a good deal of sense to me."
               }
@@ -3740,16 +3724,7 @@
               "dialogue": "People here are still reluctant to travel to facilities."
             },
             "clinic_manager": {
-              "dialogue": "I admit, we haven't seen as many facility births as we'd like. We're doing everything we can to change that.",
-              "unlocks": [
-                "broaden_services"
-              ],
-              "unlocks_affects": [
-                "broaden_services"
-              ],
-              "feedback": {
-                "broaden_services": "I am sure this will help us meet our goals and raise indicators even though it changes the plan."
-              }
+              "dialogue": "I admit, we haven't seen as many facility births as we'd like. We're doing everything we can to change that."
             },
             "hospital_administrator": {
               "dialogue": "Vaccinations are easier to manage. Births take more planning. More resources are likely required to make this work.",
@@ -3828,7 +3803,7 @@
               "dialogue": "We are verifying the result and ensure that the providers get paid accurately. So why take away their autonomy?"
             },
             "community_verifier": {
-              "dialogue": "I don't understand the need for these new guidelines, but then again, I am not working in the hospital."
+              "dialogue": "I don't understand the need for these new guidelines, but then again, I am not working in the clinic."
             },
             "clinic_manager": {
               "unlocks": [
@@ -3951,7 +3926,7 @@
           ],
           "characters": {
             "dep_minister_of_health": {
-              "dialogue": "I was under the impression that the program required transparency."
+              "dialogue": "I was under the impression that RBF required transparency."
             },
             "director_regional_health_services": {
               "dialogue": "This has gone far enough. I will start looking for other providers.",
@@ -4170,7 +4145,7 @@
           ],
           "characters": {
             "director_regional_health_services": {
-              "dialogue": "For some reason people have been taking advantage of this service more than other services. It would be good to investigate this further, perhaps providers are pushing the services too strongly."
+              "dialogue": "It would be good to investigate this further, perhaps providers are pushing the services too strongly."
             },
             "coach": {
               "dialogue": "We can reduce the fee for this, but we need to think carefully about what other effects that will have on the program.",
@@ -4191,7 +4166,7 @@
               ]
             },
             "clinic_manager": {
-              "dialogue": "What's wrong with people getting outpatient services? It's better than the alternative.",
+              "dialogue": "What's wrong with people getting caesarian sections? It's probably preventing women from dying. I am glad to see that the hospital has been able to provide more cesarean sections because I have been referring a lot of complicated deliveries.",
               "unlocks": [
                 "maintain_current_rates"
               ],
@@ -10343,16 +10318,12 @@
       "title": "Conduct an Audit"
     },
     {
-      "symbol": "revise_business_plan_11",
-      "title": "Revise business plan"
-    },
-    {
       "symbol": "warning_3",
       "title": "Give warning"
     },
     {
       "symbol": "mild_sanctions",
-      "title": "Establish mild sanctions"
+      "title": "Establish Sanctions"
     },
     {
       "symbol": "terminate_contract",
@@ -10369,10 +10340,6 @@
     {
       "symbol": "review_indicators_at_end_of_year",
       "title": "Review indicators and take action at the end of this year"
-    },
-    {
-      "symbol": "broaden_services",
-      "title": "Broaden services"
     },
     {
       "symbol": "comply_with_ministry_request",

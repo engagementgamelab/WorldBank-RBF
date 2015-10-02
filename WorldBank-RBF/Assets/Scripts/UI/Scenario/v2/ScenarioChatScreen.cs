@@ -75,13 +75,12 @@ public class ScenarioChatScreen : ChatScreen {
     	// Get initial character info
 		Models.Character charRef = DataManager.GetDataForCharacter(_data.initiating_npc);
 
-		// Generate advisors
-		previousAdvisorOptions = (previousAdvisorOptions == null)
-			? new List<string> ()
-				: currentAdvisorOptions.ToList ();
-		
+		// Generate advisors		
 		currentAdvisorOptions = _data.characters.Select(x => x.Key).ToList();
-		
+		btnListAdvisors.Clear();
+
+		// Render advisors
+		ObjectPool.DestroyChildren<AdvisorButton>(advisorsContainer);
 		AddAdvisors();
 		
 		// Generate starting options
@@ -106,38 +105,34 @@ public class ScenarioChatScreen : ChatScreen {
 
     }
 
-    public void AddAdvisors() {
+    void RemoveAdvisor(string npcSymbol) {
+    		
+		Models.Character charRef = DataManager.GetDataForCharacter(npcSymbol);
 
-    	List<string> removeAdvisors = previousAdvisorOptions
-    		.Except (currentAdvisorOptions).ToList ();
+		if(btnListAdvisors.FirstOrDefault (x => x.NPCName == charRef.display_name) == null)
+			return;
+		
+		AdvisorButton btnChoice = btnListAdvisors.FirstOrDefault (x => x.NPCName == charRef.display_name);
+
+		btnListAdvisors.Remove (btnChoice);
+
+		currentAdvisorOptions.Remove(npcSymbol);
+
+		btnChoice.Hide ();
+
+    }
+
+    public void AddAdvisors() {
 
     	// Remove initiator from advisors if npc does not have dialogue
     	if(!_data.characters.Keys.Contains(_data.initiating_npc) || !_data.characters[_data.initiating_npc].hasDialogue)
-	    	removeAdvisors.Add(_data.initiating_npc);
+	    	currentAdvisorOptions.Remove(_data.initiating_npc);
 
-    	List<string> newAdvisors = currentAdvisorOptions
-			.Except (previousAdvisorOptions).ToList ();
-
-    	foreach (string characterSymbol in removeAdvisors) {
-    		
-    		Models.Character charRef = DataManager.GetDataForCharacter(characterSymbol);
-
-    		if(btnListAdvisors.FirstOrDefault (x => x.NPCName == charRef.display_name) == null)
-    			continue;
-    		
-    		AdvisorButton btnChoice = btnListAdvisors.FirstOrDefault (x => x.NPCName == charRef.display_name);
-
-    		btnListAdvisors.Remove (btnChoice);
-    		btnChoice.Hide ();
-    	}
-
-    	foreach (string characterSymbol in newAdvisors) {
+    	foreach (string characterSymbol in currentAdvisorOptions) {
     		
     		// Show an advisor option only if they have dialogue (not for feedback only)
-			if(!_data.characters[characterSymbol].hasDialogue) {
-				currentAdvisorOptions.Remove (characterSymbol);
+			if(!_data.characters[characterSymbol].hasDialogue)
 				continue;
-			}
 
 			string npcDialogue = _data.characters[characterSymbol].dialogue;
 
@@ -156,7 +151,9 @@ public class ScenarioChatScreen : ChatScreen {
 			btnListAdvisors.Add(btnChoice);
 
 			AddButton<AdvisorButton> (btnChoice, advisorsContainer);
+
     	}
+
 	}
 
 	public override void Clear () {
@@ -236,10 +233,7 @@ public class ScenarioChatScreen : ChatScreen {
 			AudioManager.Sfx.Play ("recievemessage", "Phase2");
 		}
 
-		currentAdvisorOptions.Remove(strAdvisorSymbol);
-
-		// Create buttons for all advisors
-		AddAdvisors();
+		RemoveAdvisor(strAdvisorSymbol);
 
 		// Create buttons for all options if not speaking to advisor
 		AddOptions(currentCardOptions);

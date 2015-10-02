@@ -556,6 +556,8 @@ public class ScenarioManager : MonoBehaviour {
 		else
 			problemCardCooldown.Restart();
 
+		scenarioChatTab.animator.Play("ScenarioTabAlert");
+
     }
 
     /// <summary>
