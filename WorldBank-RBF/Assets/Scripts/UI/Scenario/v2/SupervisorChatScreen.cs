@@ -264,8 +264,17 @@ public class SupervisorChatScreen : ChatScreen {
     void AddResponseSpeech (string message, bool endOfCard=false, bool initial=false, string optionUsed=null) {
 
     	if(optionUsed != null) {
+			
 			Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(optionUsed);
-			IndicatorsCanvas.SelectedOption = new KeyValuePair<string, int[]>(DataManager.GetUnlockableBySymbol(optionUsed).title, dictAffect.Values.ToArray());
+			
+			// Hack that we use to see if these indicators are from the supervisor
+			int[] affectVals = dictAffect.Values.ToArray();
+			int[] affects = new int[4];
+			for (int i = 0; i < affectVals.Length; i ++) {
+				affects[i] = affectVals[i];
+			}
+
+			IndicatorsCanvas.SelectedOption = new KeyValuePair<string, int[]>(DataManager.GetUnlockableBySymbol(optionUsed).title, affects);
 
 	    	AddResponseSpeech (message, Supervisor, initial, true, dictAffect);
 		}
