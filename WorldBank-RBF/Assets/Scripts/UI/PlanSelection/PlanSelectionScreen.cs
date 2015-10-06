@@ -109,6 +109,10 @@ public class PlanSelectionScreen : MonoBehaviour {
 
 	void SetPlanData(int planIndex) {
 
+		// Failsafe
+		if(planIndex > plans.Length-1 || planIndex < 0)
+			return;
+
 		int tactInt = 0;
 
 		string affect1 = plans[planIndex].default_affects[0];

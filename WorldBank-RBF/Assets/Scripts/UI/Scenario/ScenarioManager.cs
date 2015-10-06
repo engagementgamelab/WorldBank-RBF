@@ -34,6 +34,8 @@ public class ScenarioManager : MonoBehaviour {
 	public Transform loadingPanel;
 
 	public Text scenarioCardCooldownText;
+	public Text scenarioYearText;
+
 	public Text debugPanelScenarioText;
 	public Text debugPanelProblemText;
 
@@ -367,6 +369,9 @@ public class ScenarioManager : MonoBehaviour {
 
 		supervisorChatTabAnimator.Play("SupervisorTabOn");
 		supervisorChatTab.GetComponent<Button>().enabled = true;
+
+		// Update text
+		scenarioYearText.text = "Year " + currentYear; 
 
 		// Close indicators
 		indicatorsCanvas.Close();

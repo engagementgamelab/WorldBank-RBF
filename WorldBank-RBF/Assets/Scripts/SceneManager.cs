@@ -36,6 +36,8 @@ public class SceneManager : MonoBehaviour {
 	private PlayerLoginRegisterUI loginUI;
 
 	void Awake () {
+        
+    Application.RegisterLogCallback(HandleLog);
 
 		NetworkManager.Instance.onServerDown += OnServerDown;
 
@@ -50,7 +52,7 @@ public class SceneManager : MonoBehaviour {
       
 	}
 
-    #if UNITY_EDITOR
+  #if UNITY_EDITOR
 	void OnGUI() {
 		GUIStyle style = new GUIStyle();
 		
@@ -60,8 +62,13 @@ public class SceneManager : MonoBehaviour {
 	    GUI.contentColor = Color.white;
 
         GUI.Label(new Rect(4, 4, 100, 20), "ENVIRONMENT: " + environment, style);
-    }
-    #endif
+   }
+  #endif
+
+
+  void HandleLog(string logString, string stackTrace, LogType type) {
+  	Debug.Log(logString);
+  }
 
 	/// <summary>
 	/// Client was authenticated to API; we can now get game data and ask player to log in
