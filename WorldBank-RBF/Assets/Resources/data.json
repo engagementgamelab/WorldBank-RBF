@@ -76,7 +76,7 @@
       "symbol": "two_women_malcom",
       "display_name": "NGO Managers",
       "description": [
-        "In the middle of the market there are two women in elaborate business-like dress. You notice a logo for one of the more popularl NGO organizations in the region pinned to their front pockets. They are in a heated discussion and you can listen in without interrupting.",
+        "In the middle of the market there are two women in elaborate business-like dress. You notice a logo for one of the more popular NGO organizations in the region pinned to their front pockets. They are in a heated discussion and you can listen in without interrupting.",
         "The two NGO managers are still chatting.",
         "They look in your direction with awkwardness, noticing you overheard their discussion. You feel its best to move on."
       ]
@@ -149,7 +149,7 @@
       "display_name": "Settled Refugee",
       "description": [
         "You see a man in his forties reading a newspaper in the shade, slight perspiration beading along his receding hairline. The newspaper looks like one from the newsstand at the train station, perhaps dropped by a careless traveler some time ago.",
-        "You look at the newpaper. The man's reading an article about fall fashions, probably just to pass the time.",
+        "You look at the newspaper. The man's reading an article about fall fashions, probably just to pass the time.",
         "You want to talk with him some more, but you can't trust yourself not to remind him of what he's lost."
       ]
     },
@@ -194,7 +194,7 @@
       "display_name": "Traveling Merchant",
       "description": [
         "This man is clearly a merchant of some sort, with wares from all over Zariba. He calls out to people on the street, \"Fresh fruit from Mile! Cigars from Crup! Technology from the Capital! I have it all!\"",
-        "While you talk with the merchant you admire his clothes. They aren't especially nice. They're plain, actually. But just fasionable enough to look presentable without evoking any one region of Zariba.",
+        "While you talk with the merchant you admire his clothes. They aren't especially nice. They're plain, actually. But just fashionable enough to look presentable without evoking any one region of Zariba.",
         "You would talk with the merchant more, ask him about travel around Zariba, but he's caught up in haggling with a customer over a Milean vase."
       ]
     },
@@ -294,7 +294,7 @@
       "description": [
         "The tall male nurse towers over everyone. Forehead scrunched in frustrated tension, he wipes a few beads of sweat from his brow.",
         "Though not the most pleasant conversation, You remind yourself it is important to gather as much information as possible. Perhaps he has more to say?",
-        "The nurse seems flustered, but you understand the predictiment he is in and sympathize."
+        "The nurse seems flustered, but you understand the predicament he is in and sympathize."
       ]
     },
     {
@@ -402,8 +402,8 @@
       "description": "Valeria is one of the more affluent cities, and not part of the Highlands region of Zariba. Unlike the rest of the country, the climate here is arid, and wealth and land are consolidated under entrenched “Land Barons.” More recently, it is the center of a growing commercial airship industry.",
       "enabled": true,
       "npc_interactions": [
-        3,
-        2
+        4,
+        1
       ]
     },
     {
@@ -2741,7 +2741,7 @@
           },
           "An Epidemic": {
             "text": [
-              "\"Have you heard? In the Highlands, access to services is limited and people do not value the importance of preventive services like vaccinations. Instead, they only go to the clinic when they are sick.\" The first woman says this with a slight agitation. The second woman chimes in, \"They should be utilizing outreach in this region and detecting epidemic cases. In the north, this has been is crucial to helping the area get back on its feet.\""
+              "\"Have you heard? In the Highlands, access to services is limited and people do not value the importance of preventive services like vaccinations. Instead, they only go to the clinic when they are sick.\" The first woman says this with a slight agitation. The second woman chimes in, \"They should be utilizing outreach in this region and detecting epidemic cases. In the north, this has been crucial in helping the area get back on its feet.\""
             ],
             "unlocks": [
               "unlockable_outreach"
@@ -2978,7 +2978,7 @@
         "dialogue": {
           "Initial": {
             "text": [
-              "The two are having a conversation about where they'd like to go this weekend, and whether to take an airship ride or not. [[Listen]] [[Interrupt]]",
+              "The two are having a conversation about where they'd like to go this weekend, and whether to take an airship ride or not. You can [[Listen]] in on them speak, or [[Interrupt]] to ask them about Zariba.",
               "The twins are still chatting with each other. \"I can't wait to get out of here. This airship dock isn't my idea of fun.\""
             ]
           },
@@ -3162,11 +3162,11 @@
         "dialogue": {
           "Initial": {
             "text": [
-              "She seems surprised when you sit down to talk with her. She explains that it cost her [[a lot of money]] to get here, but it was necessary since her headaches do not go away, and she wanted to get her grandson vaccinated.",
+              "She seems surprised when you sit down to talk with her. She explains that it cost her [[a lot of money]] to get here, but it was necessary since her headaches do not go away, and she wanted to get her grandson [[vaccinated]].",
               "\"Still waiting!\" she says as you approach. \"Did you want to talk about something else?\""
             ]
           },
-          "A Lot Of Money": {
+          "a lot of money": {
             "text": [
               "\"Would you believe it? The train cost me more than the medicine!\""
             ],
@@ -3177,7 +3177,7 @@
               "A patient in Zima complained it is expensive to travel."
             ]
           },
-          "Than Most": {
+          "vaccinated": {
             "text": [
               "\"Most of my neighbors cannot afford even simple health services like vaccinations or doctors appointments.\""
             ],
@@ -3791,12 +3791,6 @@
               "dialogue": "I don't understand the need for these new guidelines, but then again, I am not working in the clinic."
             },
             "clinic_manager": {
-              "unlocks": [
-                "clarify_separation_of_functions_and_responsibilities_2"
-              ],
-              "unlocks_affects": [
-                "clarify_separation_of_functions_and_responsibilities_2"
-              ],
               "feedback": {
                 "rework_rbf_manual_and_retrain": "I don't believe this will be constructive, but I'm willing to try."
               }
@@ -5310,9 +5304,6 @@
             "small"
           ],
           "characters": {
-            "director_regional_health_services": {
-              "dialogue": null
-            },
             "dep_minister_of_health": {
               "dialogue": "Let's get this clear once and for all. It is really important to know who does what.",
               "unlocks": [
@@ -6765,7 +6756,6 @@
                 "warning_14": "I'll get the purchaser to warn them. Hopefully we won't see this again."
               }
             },
-            "third_party_verifier": null,
             "community_verifier": {
               "dialogue": "That's not my department, exactly, but it sounds pretty suspicious. Talk directly to the Clinic Manager if you haven't yet."
             },
@@ -7805,7 +7795,6 @@
               ]
             },
             "ngo_manager": {
-              "dialogue": "I really need some advice on this as this situation might spiral out of control. I really think you should allow this payment to go through this one time.",
               "feedback": {
                 "allow_payments_once_5": "It's good to know we can count on you just like you can count on us in case of emergency.",
                 "deny_payment_5": "We're struggling with these numbers as it is. It hurts patients when we don't have money to work with."
@@ -9807,10 +9796,10 @@
       ],
       "spotlight_size": [
         3.3,
-        -2.5
+        1
       ],
       "mask_position": [
-        700,
+        800,
         -508
       ],
       "mask_size": [
@@ -9881,7 +9870,7 @@
     },
     "phase_2_conference_action": {
       "overlay_location": "Bottom-Right",
-      "text": "This contact has given you new information! Some contacts just provide background context, others give you ideas for new options you can take to solve the problem. You can conference with up to two more before you make your decision.",
+      "text": "This contact has given you new information! Some contacts provide background context, others give you new options you can take to solve the problem. You can conference with up to two more before you make your decision.",
       "spotlight_position": [
         0.09,
         -0.94
@@ -9996,7 +9985,7 @@
     "copy_out_of_days": "You traveled around Zariba and met many interesting people, but you are now out of days. Time to submit your final program proposal!",
     "copy_city_visit": "Click Visit to travel here and enter the city.",
     "copy_city_pass_through": "You've already visited this city, but you can pass through it by clicking Continue.",
-    "copy_city_extra_day": "You've already been here, but you can re-enter the city to talk to people you may have missed. Click Re-enter below to spend an extra day.",
+    "copy_city_extra_day": "You've already been here, but you can re-enter the city to unlock new routes and program options. Click Re-enter to spend an extra day.",
     "copy_city_pass_through_extra_day": "Do you want to go this way? From here, you could re-enter the city, or just continue on to your next destination.",
     "copy_blocked_route": "You return to the train station and learn that bad weather has triggered a landslide to the east. The train tracks between Mile and Zima have been destroyed.\nA young man tugs on your shirt and grins. He says he drives a produce truck and can get you to Kibari, the heart of the Highlands. \"From there,\" he says, \"you can get anywhere!\"",
     "copy_unlock_blocked_route": "Route to Kibari unlocked",
@@ -10149,7 +10138,7 @@
       "description": [
         "This would help improve patient/provider relationships in order to increase use of important services long term."
       ],
-      "priority": 1,
+      "priority": 2,
       "type": "behavior_knowledge_and_professionalism"
     },
     {

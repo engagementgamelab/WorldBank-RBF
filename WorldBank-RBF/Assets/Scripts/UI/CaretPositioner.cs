@@ -18,7 +18,9 @@ public class CaretPositioner : MB, ISelectHandler {
 	}
 
 	public void OnSelect (BaseEventData eventData) {
+		#if UNITY_5_1
 		StartCoroutine (CoSetCaretPosition ());
+		#endif
 	}
 
 	IEnumerator CoSetCaretPosition () {
