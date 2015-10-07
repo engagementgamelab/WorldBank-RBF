@@ -109,11 +109,15 @@ public class PlanSelectionScreen : MonoBehaviour {
 
 	void SetPlanData(int planIndex) {
 
+		// Failsafe
+		if(planIndex > plans.Length-1 || planIndex < 0)
+			return;
+
 		int tactInt = 0;
 
 		string affect1 = plans[planIndex].default_affects[0];
 		string affect2 = plans[planIndex].default_affects[1];
-		string affect3 = plans[planIndex].default_affects[1];
+		string affect3 = plans[planIndex].default_affects[2];
     	
     	foreach(Text label in tacticsLabels) {
 

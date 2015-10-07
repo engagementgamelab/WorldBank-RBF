@@ -82,6 +82,13 @@ class GenerateBuilds {
         PerformPCBuild();
     }
 
+    [MenuItem ("Build/Build Desktop for Production")]
+    static void MakeProductionBuilds()
+    {
+        PerformMacOSXBuild();
+        PerformPCBuild();
+    }
+
     [MenuItem ("Build/Build Staging")]
     static void MakeStagingBuilds()
     {

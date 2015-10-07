@@ -299,8 +299,8 @@ Transform:
   - {fileID: 427928}
   - {fileID: 465572}
   - {fileID: 488436}
-  - {fileID: 484782}
   - {fileID: 22419826}
+  - {fileID: 484782}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &413762
@@ -440,7 +440,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 408534}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!4 &488436
 Transform:
   m_ObjectHideFlags: 1
@@ -481,6 +481,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -681,14 +682,16 @@ MonoBehaviour:
   scenarioAnimator: {fileID: 0}
   scenarioChatTab: {fileID: 0}
   supervisorChatTab: {fileID: 0}
+  debugButton: {fileID: 0}
   rightPanel: {fileID: 0}
+  loadingPanel: {fileID: 0}
   scenarioCardCooldownText: {fileID: 0}
-  problemCardDurationOverride: 20
-  monthLengthSecondsOverride: 0
-  scenarioOverride: scenario_1
+  scenarioYearText: {fileID: 0}
   debugPanelScenarioText: {fileID: 0}
   debugPanelProblemText: {fileID: 0}
-  debugButton: {fileID: 0}
+  problemCardDurationOverride: 5
+  monthLengthSecondsOverride: 0
+  scenarioOverride: scenario_4
 --- !u!114 &11423612
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -761,10 +764,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05dd7a7d11a8047a282938ce1e679724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: scenario_1
+  sceneName: scenario_4
   environmentIndex: 0
   environment: local
   tutorialEnabled: 1
+  infoBox: {fileID: 0}
 --- !u!114 &11448238
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -986,7 +990,7 @@ RectTransform:
   m_Children:
   - {fileID: 22430200}
   m_Father: {fileID: 408534}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}

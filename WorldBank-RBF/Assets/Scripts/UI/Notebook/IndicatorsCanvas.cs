@@ -10,9 +10,11 @@ public class IndicatorsCanvas : NotebookCanvas {
 	public bool phaseOne = false;
 	public Animator scenarioAnimator;
 
+	public Text headerText;
 	public Text yearEndPromptText;
 	public Text phaseEndPromptText;
 	public Text timerText;
+	public Text currentYearText;
 
 	public RectTransform actionsView;
 	public RectTransform actionsColumn;
@@ -100,7 +102,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	}
 
-    IEnumerator RenderIndicators() {
+  IEnumerator RenderIndicators() {
 
 		int ind = 0;
 
@@ -116,7 +118,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 			float affectValPrev;
 
 			float affectGoal = (float)GoalAffects[ind];
-
 			Single.TryParse(currentAffects[ind], out affectVal);
 			Single.TryParse(previousAffects[ind], out affectValPrev);
 			
@@ -155,13 +156,6 @@ public class IndicatorsCanvas : NotebookCanvas {
 		if(SelectedOptions.Count > 0)
 			ShowActionTaken(0);
 
-		// TODO: No options?
-		if(SelectedOptions.Count == 0) {
-
-		   //  strActionsSummary = "<i><b>You did not take any actions this year!</b></i>"
-
-		}
-
     	yield return new WaitForSeconds(1.1f);
 
 		showIndicators = true;
@@ -189,6 +183,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 		if (!phaseOne) {
 			scenarioAnimator.Play("ScenarioClose");
 			timerText.gameObject.SetActive(false);
+			currentYearText.gameObject.SetActive(false);
 		}
 		
 	 	StartCoroutine("RenderIndicators");
@@ -202,6 +197,7 @@ public class IndicatorsCanvas : NotebookCanvas {
 		if (!phaseOne) {
 			scenarioAnimator.Play("ScenarioOpen");
 			timerText.gameObject.SetActive(true);
+			currentYearText.gameObject.SetActive(true);
 		}
 
 		showIndicators = false;
@@ -266,6 +262,10 @@ public class IndicatorsCanvas : NotebookCanvas {
     	}
 
     	SendAnalyticsData ();
+
+    	headerText.text = "Year " + currentYear;
+     	headerText.text += ( (currentYear == 3) ? " Final" : "" ) + " Results";
+	   
     }
 
     public void ShowPreviousAction() {

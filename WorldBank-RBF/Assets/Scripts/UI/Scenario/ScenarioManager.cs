@@ -34,6 +34,8 @@ public class ScenarioManager : MonoBehaviour {
 	public Transform loadingPanel;
 
 	public Text scenarioCardCooldownText;
+	public Text scenarioYearText;
+
 	public Text debugPanelScenarioText;
 	public Text debugPanelProblemText;
 
@@ -344,6 +346,7 @@ public class ScenarioManager : MonoBehaviour {
 		currentQueueIndex++;
 
 		// Tutorial
+		// scenarioChatTab.animator.Play("ScenarioTabAlert");
 		DialogManager.instance.CreateTutorialScreen("phase_2_supervisor");
 
 	}
@@ -366,6 +369,9 @@ public class ScenarioManager : MonoBehaviour {
 
 		supervisorChatTabAnimator.Play("SupervisorTabOn");
 		supervisorChatTab.GetComponent<Button>().enabled = true;
+
+		// Update text
+		scenarioYearText.text = "Year " + currentYear; 
 
 		// Close indicators
 		indicatorsCanvas.Close();
@@ -561,6 +567,9 @@ public class ScenarioManager : MonoBehaviour {
 		else
 			problemCardCooldown.Restart();
 
+		if(scenarioChatTab.interactable)
+			scenarioChatTab.animator.Play("ScenarioTabAlert");
+
     }
 
     /// <summary>
@@ -623,9 +632,14 @@ public class ScenarioManager : MonoBehaviour {
 	   			SetScenarioPath(e.eventSymbol);
     			break;
 
-			case "open_indicators":
+			case "affect_used":
 
-	   			indicatorsCanvas.gameObject.SetActive(true);
+	    		// Add affect for this event to used affects
+	    		if(e.eventSymbol != null) {
+					Dictionary<string, int> dictAffect = DataManager.GetIndicatorBySymbol(e.eventSymbol);
+					usedAffects.Add(dictAffect.Values.ToArray());
+				}
+
 	   			break;
 
     	}

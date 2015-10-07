@@ -25,7 +25,7 @@ PlayerSettings:
   m_MobileMTRendering: 0
   m_Stereoscopic3D: 0
   iosShowActivityIndicatorOnLoading: -1
-  androidShowActivityIndicatorOnLoading: -1
+  androidShowActivityIndicatorOnLoading: 2
   iosAppInBackgroundBehavior: 0
   displayResolutionDialog: 0
   allowedAutorotateToPortrait: 1
@@ -71,12 +71,13 @@ PlayerSettings:
     16:10: 0
     16:9: 0
     Others: 0
-  bundleIdentifier: edu.engagementlab.Highlands
+  bundleIdentifier: edu.engagementlab.UH
   bundleVersion: 1.0
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   metroEnableLowLatencyPresentationAPI: 0
   xboxOneDisableKinectGpuReservation: 0
+  virtualRealitySupported: 0
   productGUID: 846cf88122cb703449f3a3c6eaccbe35
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 9
@@ -85,12 +86,15 @@ PlayerSettings:
   apiCompatibilityLevel: 2
   iPhoneStrippingLevel: 0
   iPhoneScriptCallOptimization: 0
-  ForceInternetPermission: 0
+  ForceInternetPermission: 1
   ForceSDCardPermission: 0
   CreateWallpaper: 0
   APKExpansionFiles: 0
   preloadShaders: 0
   StripUnusedMeshComponents: 0
+  VertexChannelCompressionMask:
+    serializedVersion: 2
+    m_Bits: 238
   iPhoneSdkVersion: 988
   iPhoneTargetOSVersion: 22
   uIPrerenderedIcon: 0
@@ -123,7 +127,7 @@ PlayerSettings:
   AndroidKeystoreName: 
   AndroidKeyaliasName: 
   AndroidTVCompatibility: 1
-  AndroidIsGame: 1
+  AndroidIsGame: 0
   androidEnableBanner: 1
   m_AndroidBanners:
   - width: 320
@@ -211,6 +215,8 @@ PlayerSettings:
   ps4SaveDataImagePath: 
   ps4BGMPath: 
   ps4ShareFilePath: 
+  ps4ShareOverlayImagePath: 
+  ps4PrivacyGuardImagePath: 
   ps4NPtitleDatPath: 
   ps4RemotePlayKeyAssignment: -1
   ps4EnterButtonAssignment: 1
@@ -273,7 +279,6 @@ PlayerSettings:
   psp2InfoBarOnStartup: 0
   psp2InfoBarColor: 0
   psmSplashimage: {fileID: 0}
-  virtualRealitySupported: 0
   spritePackerPolicy: DefaultPackerPolicy
   scriptingDefineSymbols: {}
   metroPackageName: guisystem
@@ -396,6 +401,7 @@ PlayerSettings:
   - WebGL::exceptionSupport
   - WebGL::memorySize
   - iOS::Architecture
+  - iOS::EnableIncrementalBuildSupportForIl2cpp
   - iOS::ScriptingBackend
   Standalone::ScriptingBackend: 0
   WebGL::ScriptingBackend: 1
@@ -403,6 +409,7 @@ PlayerSettings:
   WebGL::exceptionSupport: 2
   WebGL::memorySize: 256
   iOS::Architecture: 0
+  iOS::EnableIncrementalBuildSupportForIl2cpp: 0
   iOS::ScriptingBackend: 0
   boolPropertyNames:
   - WebGL::analyzeBuildSize

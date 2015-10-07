@@ -20,7 +20,7 @@ public class ScenarioEvent : GameEvent {
 	public static readonly string PROBLEM_QUEUE = "problem_queue";
 	public static readonly string MONTH_END = "month_end";
 	public static readonly string DECISION_SELECTED = "decision_selected";
-	public static readonly string OPEN_INDICATORS = "open_indicators";
+	public static readonly string AFFECT_USED = "affect_used";
 
 	public ScenarioEvent (string strType, string strSymbol=null, float[] floatCooldowns=null) {
 		this.eventType = strType;
