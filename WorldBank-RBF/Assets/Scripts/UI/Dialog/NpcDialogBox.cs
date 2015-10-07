@@ -197,7 +197,6 @@ public class NpcDialogBox : MB {
 					b.Button.interactable = false;
 				} else {
 					b.Button.interactable = interactable;
-					Debug.Log (b.Button.interactable);
 				}
 			}
 		}

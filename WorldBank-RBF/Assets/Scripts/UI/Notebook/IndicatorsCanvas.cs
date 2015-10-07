@@ -373,9 +373,9 @@ public class IndicatorsCanvas : NotebookCanvas {
 		}
 
 		GA.API.Design.NewEvent ("positive_supervisor_options", positiveSupervisor);
-		GA.API.Design.NewEvent ("negative_supervisor_options", positiveSupervisor);
+		GA.API.Design.NewEvent ("negative_supervisor_options", negativeSupervisor);
 		GA.API.Design.NewEvent ("positive_scenario_options", positiveScenario);
-		GA.API.Design.NewEvent ("negative_scenario_options", positiveScenario);
+		GA.API.Design.NewEvent ("negative_scenario_options", negativeScenario);
 	}
 	
 	public void DebugIndicators() {
