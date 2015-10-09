@@ -74,7 +74,7 @@ public class DataManager {
     /// <summary>
     /// Set to production mode.
     /// </summary>
-    public bool Production {
+    public static bool Production {
         set {
             isProduction = value;
         }
