@@ -262,7 +262,7 @@ public class NpcDialogBox : MB {
 		buttonImages[index].color = backButton ? backColor : defaultColor;
 		
 		button.Button.onClick.AddListener (action);
-		button.Button.onClick.AddListener (() => { button.Button.interactable = false; });
+		button.Button.onClick.AddListener (() => { SetButtonsInteractable (false); });
 
 		if (DataManager.tutorialEnabled) {
 			if (!tutorialInteractions) {
