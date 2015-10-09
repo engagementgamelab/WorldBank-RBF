@@ -48,10 +48,19 @@ class GenerateBuilds {
         GenericBuild("PC", BuildTarget.StandaloneWindows);
     }
 
-    [MenuItem("File/AutoBuilder/Android")]
     static void PerformAndroidBuild ()
     {
+        // Textures already set in OnPreprocessTexture?
+        EditorUserBuildSettings.androidBuildSubtarget = MobileTextureSubtarget.PVRTC;
+     
         GenericBuild("Android", BuildTarget.Android);
+    }
+
+    static void PerformiOSBuild ()
+    {
+        EditorUserBuildSettings.symlinkLibraries = false;
+     
+        GenericBuild("iOS", BuildTarget.iOS);
     }
 
     [MenuItem ("Build/Build WebGL")]
@@ -82,9 +91,18 @@ class GenerateBuilds {
         PerformPCBuild();
     }
 
+    [MenuItem ("Build/Build Mobile")]
+    static void MakeMobileBuilds()
+    {
+        PerformiOSBuild();
+        PerformAndroidBuild();
+    }
+
     [MenuItem ("Build/Build Desktop for Production")]
     static void MakeProductionBuilds()
     {
+        DataManager.Production = true;
+        
         PerformMacOSXBuild();
         PerformPCBuild();
     }

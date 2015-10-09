@@ -24,7 +24,7 @@ public class GA_AdSupport : MonoBehaviour
 	private bool _adShowing = false;
 	
 	#if UNITY_IPHONE
-	private ADBannerView _iAdBanner = null;
+	private UnityEngine.iOS.ADBannerView _iAdBanner = null;
 	#endif
 	
 	private string _eventTriggerID = "";
@@ -54,18 +54,18 @@ public class GA_AdSupport : MonoBehaviour
 		if (GA.SettingsGA.IAD_enabled)
 		{
 			#if UNITY_IPHONE
-			if (ADBannerView.IsAvailable(ADBannerView.Type.MediumRect) && iPhone.generation.ToString().StartsWith("iPad"))
-				_iAdBanner = new ADBannerView(GA.SettingsGA.IAD_type, GA.SettingsGA.IAD_layout);
+			if (UnityEngine.iOS.ADBannerView.IsAvailable(UnityEngine.iOS.ADBannerView.Type.MediumRect) && UnityEngine.iOS.Device.generation.ToString().StartsWith("iPad"))
+				_iAdBanner = new UnityEngine.iOS.ADBannerView(GA.SettingsGA.IAD_type, GA.SettingsGA.IAD_layout);
 			else
-				_iAdBanner = new ADBannerView(ADBannerView.Type.Banner, GA.SettingsGA.IAD_layout);
+				_iAdBanner = new UnityEngine.iOS.ADBannerView(UnityEngine.iOS.ADBannerView.Type.Banner, GA.SettingsGA.IAD_layout);
 			
-			if (GA.SettingsGA.IAD_layout == ADBannerView.Layout.Manual)
+			if (GA.SettingsGA.IAD_layout == UnityEngine.iOS.ADBannerView.Layout.Manual)
 			{
 				_iAdBanner.position = GA.SettingsGA.IAD_position;
 			}
 			
-			ADBannerView.onBannerWasClicked += OnBannerClicked;
-			ADBannerView.onBannerWasLoaded  += OnBannerLoaded;
+			UnityEngine.iOS.ADBannerView.onBannerWasClicked += OnBannerClicked;
+			UnityEngine.iOS.ADBannerView.onBannerWasLoaded  += OnBannerLoaded;
 			#endif
 		}
 		

@@ -121,11 +121,18 @@ public class TutorialScreen : MonoBehaviour {
 
 	void Start() {
 
+
 		Image maskImg = maskButtonRect.gameObject.GetComponent<Image>();
 
 		Color imgColor = maskImg.color;
-        imgColor.a = 0;
-        maskImg.color = imgColor;
+    
+    #if DEVELOPMENT_BUILD && UNITY_IOS
+	    imgColor.a = 1;
+    #else
+	    imgColor.a = 0;
+    #endif
+
+    maskImg.color = imgColor;
 
 	}
 

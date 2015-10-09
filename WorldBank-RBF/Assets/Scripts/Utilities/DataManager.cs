@@ -70,6 +70,15 @@ public class DataManager {
             return gameData.phase_two.phase_two_config;
         }
     }
+    
+    /// <summary>
+    /// Set to production mode.
+    /// </summary>
+    public bool Production {
+        set {
+            isProduction = value;
+        }
+    }
 
     public static List<string> tacticNames;
     public static List<string> usedTooltips = new List<string>();
@@ -92,6 +101,8 @@ public class DataManager {
 
     static Scenario currentScenario;
 
+    static bool isProduction;
+
     static Dictionary<string, string> localUIText = new Dictionary<string, string>() {
         {"copy_server_down_header", "Sorry!"},
         {"copy_server_down_body", "The game's server is currently unreachable. Your internet connection may be having some issues, or the server is offline for regular maintenance.\n\nPlease close the application and try again in a few minutes. Apologies for the inconvenience!"}
@@ -104,7 +115,6 @@ public class DataManager {
     /// <param name="configTypeOverride">May be used to override config type in editor only (development, staging, production).</param>
     public static void SetGameConfig(string data, string configTypeOverride=null)
     {
-        Debug.Log("SetGameConfig: " + configTypeOverride);
 
         // Set config only if there is none set
         if(config != null) 
@@ -131,8 +141,13 @@ public class DataManager {
         #elif DEVELOPMENT_BUILD
            currentConfig = config.development;
         #else
-           currentConfig = config.staging;
+            if(!isProduction)
+               currentConfig = config.staging;
+            else
+               currentConfig = config.production;
         #endif
+
+        Debug.Log("SetGameConfig: " + currentConfig.root);
     }
 
     /// <summary>
@@ -165,11 +180,20 @@ public class DataManager {
         }
 
         // create/save to file in Assets/Resources/Config/
-        #if !UNITY_WEBPLAYER    
-            using (StreamWriter outfile = new StreamWriter(Application.dataPath + "/Resources/data.json"))
+        #if !UNITY_WEBPLAYER
+
+            string dataPath = Application.persistentDataPath + "/Resources/";
+            DirectoryInfo dirData = new DirectoryInfo(dataPath);
+            dirData.Refresh();
+            
+            if(!dirData.Exists)
+                dirData.Create();
+
+            using (StreamWriter outfile = new StreamWriter(dataPath + "/data.json"))
             {
                 outfile.Write(data);
             }
+
         #endif
     }
 

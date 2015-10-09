@@ -20,6 +20,7 @@ using UnityEditor;
 public class SceneManager : MonoBehaviour {
 
 	public string sceneName;
+	public bool inMenus;
 
 	[HideInInspector]
 	public int environmentIndex = 0;
@@ -36,8 +37,6 @@ public class SceneManager : MonoBehaviour {
 	private PlayerLoginRegisterUI loginUI;
 
 	void Awake () {
-        
-    Application.RegisterLogCallback(HandleLog);
 
 		NetworkManager.Instance.onServerDown += OnServerDown;
 
@@ -45,11 +44,12 @@ public class SceneManager : MonoBehaviour {
 		LoadGameConfig();
 
 		// Authenticate to API
-		NetworkManager.Instance.Authenticate(ClientAuthenticated);
-		
-		// Set global game data if needed
-		SetGameData();
-      
+		// if(inMenus) {
+			NetworkManager.Instance.Authenticate(ClientAuthenticated);
+			
+			// Set global game data if needed
+			SetGameData();
+		// }
 	}
 
   #if UNITY_EDITOR
@@ -64,11 +64,6 @@ public class SceneManager : MonoBehaviour {
         GUI.Label(new Rect(4, 4, 100, 20), "ENVIRONMENT: " + environment, style);
    }
   #endif
-
-
-  void HandleLog(string logString, string stackTrace, LogType type) {
-  	Debug.Log(logString);
-  }
 
 	/// <summary>
 	/// Client was authenticated to API; we can now get game data and ask player to log in
@@ -109,10 +104,6 @@ public class SceneManager : MonoBehaviour {
 		if(!success)
 			return;
 
-		// Open map; this may be something different later
-		// if(phaseOne)
-		// 	NotebookManager.Instance.OpenMap();
-
 		Debug.Log("Player auth successful? " + success);
 
 	}
@@ -138,7 +129,7 @@ public class SceneManager : MonoBehaviour {
 		DataManager.SetGameConfig(strConfigData.ReadToEnd(), environment);
 
 
-	    #if UNITY_EDITOR
+	  #if UNITY_EDITOR
 			DataManager.tutorialEnabled = tutorialEnabled;
 		#else
 			DataManager.tutorialEnabled = true;
@@ -169,7 +160,7 @@ public class SceneManager : MonoBehaviour {
 				throw new System.Exception("Unable to obtain game data due to error '" + e + "'");
 			#else
  
-		        TextAsset dataJson = (TextAsset)Resources.Load("data", typeof(TextAsset));
+		    TextAsset dataJson = (TextAsset)Resources.Load("data", typeof(TextAsset));
 				StringReader strData = new StringReader(dataJson.text);
 		        
 				gameData = strData.ReadToEnd();

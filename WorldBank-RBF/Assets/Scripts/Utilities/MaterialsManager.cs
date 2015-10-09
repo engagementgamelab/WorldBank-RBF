@@ -115,25 +115,30 @@ public static class MaterialsManager {
 
 	public static bool TextureIsBlank (Texture2D tex) {
 		
-		if (tex == null) return true;
-		if (!tex.format.HasAlpha ()) return false;
-		
-		try {
-			tex.GetPixel (0, 0);
-		} catch (UnityException e) {
-			Debug.LogError (e);
+		#if UNITY_IOS
 			return false;
-		}
-		int w = tex.width;
-		int h = tex.height;
-		int resolution = 16;
-		for (int i = 0; i < w; i += resolution) {
-			for (int j = 0; j < h; j += resolution) {
-				if (tex.GetPixel (i, j).a > 0f) {
-					return false;
+		#else
+			if (tex == null) return true;
+			if (!tex.format.HasAlpha ()) return false;
+			
+			try {
+				tex.GetPixel (0, 0);
+			} catch (UnityException e) {
+				Debug.LogError (e);
+				return false;
+			}
+			int w = tex.width;
+			int h = tex.height;
+			int resolution = 2048;
+
+			for (int i = 0; i < w; i += resolution) {
+				for (int j = 0; j < h; j += resolution) {
+					if (tex.GetPixel (i, j).a > 0f) {
+						return false;
+					}
 				}
 			}
-		}
-		return true;
+			return true;
+		#endif
 	}
 }
