@@ -40,16 +40,19 @@ class GenerateBuilds {
     [MenuItem ("Build/Build Mac OS X Universal")]
     static void PerformMacOSXBuild ()
     {
+        
         GenericBuild("Mac", BuildTarget.StandaloneOSXUniversal);
     }
     [MenuItem ("Build/Build PC")]
     static void PerformPCBuild ()
     {
+        
         GenericBuild("PC", BuildTarget.StandaloneWindows);
     }
 
     static void PerformAndroidBuild ()
     {
+        
         // Textures already set in OnPreprocessTexture?
         EditorUserBuildSettings.androidBuildSubtarget = MobileTextureSubtarget.PVRTC;
      
@@ -58,6 +61,7 @@ class GenerateBuilds {
 
     static void PerformiOSBuild ()
     {
+        
         EditorUserBuildSettings.symlinkLibraries = false;
      
         GenericBuild("iOS", BuildTarget.iOS);
@@ -66,18 +70,21 @@ class GenerateBuilds {
     [MenuItem ("Build/Build WebGL")]
     static void PerformWebGLBuild ()
     {
+        
         GenericBuild("WebGL", BuildTarget.WebGL);
     }
 
     [MenuItem ("Build/Build Web")]
     static void PerformWebBuild ()
     {
+        
         GenericBuild("Web", BuildTarget.WebPlayer);
     }
 
     [MenuItem ("Build/Build All")]
     static void MakeAllBuilds()
     {
+
         PerformMacOSXBuild();
         PerformPCBuild();
         PerformWebGLBuild();
@@ -87,6 +94,7 @@ class GenerateBuilds {
     [MenuItem ("Build/Build Desktop")]
     static void MakeDesktopBuilds()
     {
+
         PerformMacOSXBuild();
         PerformPCBuild();
     }
@@ -94,6 +102,7 @@ class GenerateBuilds {
     [MenuItem ("Build/Build Mobile")]
     static void MakeMobileBuilds()
     {
+
         PerformiOSBuild();
         PerformAndroidBuild();
     }
@@ -101,10 +110,11 @@ class GenerateBuilds {
     [MenuItem ("Build/Build Desktop for Production")]
     static void MakeProductionBuilds()
     {
-        DataManager.Production = true;
-        
+        BUILD_OPTIONS = BuildOptions.None;
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "IS_PRODUCTION");
+
         PerformMacOSXBuild();
-        PerformPCBuild();
+        // PerformPCBuild();
     }
 
     [MenuItem ("Build/Build Staging")]
@@ -189,6 +199,9 @@ class GenerateBuilds {
 
         if (res.Length > 0)
             throw new Exception("BuildPlayer failure: " + res);
+
+        // Reset define symbols for all groups
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, null);
 
     }
 
