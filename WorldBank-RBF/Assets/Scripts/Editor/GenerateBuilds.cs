@@ -114,7 +114,7 @@ class GenerateBuilds {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "IS_PRODUCTION");
 
         PerformMacOSXBuild();
-        // PerformPCBuild();
+        PerformPCBuild();
     }
 
     [MenuItem ("Build/Build Staging")]
