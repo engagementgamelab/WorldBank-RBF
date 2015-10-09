@@ -133,7 +133,7 @@ public class ParallaxLayerManager : MonoBehaviour {
     void Clear () {
 		foreach (ParallaxLayer layer in layers)
 			layer.Destroy ();
-			layers.Clear ();
+		layers.Clear ();
     }
 
 	void RefreshLayers () {
