@@ -140,11 +140,10 @@ public class DataManager {
 
         #elif DEVELOPMENT_BUILD
            currentConfig = config.development;
+        #elif IS_PRODUCTION
+           currentConfig = config.production;
         #else
-            if(!isProduction)
-               currentConfig = config.staging;
-            else
-               currentConfig = config.production;
+           currentConfig = config.staging;
         #endif
 
         Debug.Log("SetGameConfig: " + currentConfig.root);
