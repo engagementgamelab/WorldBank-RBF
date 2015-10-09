@@ -19,8 +19,9 @@ public class TexturePostProcessor : AssetPostprocessor {
 	// TextureCompressionQuality _qualityBest = TextureCompressionQuality.Best;
 	// TextureCompressionQuality _qualityGood = TextureCompressionQuality.Normal;
 	// TextureCompressionQuality _qualityFast = TextureCompressionQuality.Fast;
-
-	void OnPreprocessTexture(Texture2D texture) {
+	
+	// Set per-platform texture settings
+	void OnPostprocessTexture(Texture2D texture) {
 	
 		TextureImporter importer = assetImporter as TextureImporter;
 
@@ -45,11 +46,8 @@ public class TexturePostProcessor : AssetPostprocessor {
 			texture.filterMode = FilterMode.Bilinear;
 			texture.wrapMode = TextureWrapMode.Clamp;
 		}
+
 	}
-		
-	
-	// Set per-platform texture settings
-	void OnPostprocessTexture(Texture2D texture) {
-	}
+
 }
 #endif

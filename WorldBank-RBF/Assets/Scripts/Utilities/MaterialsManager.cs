@@ -129,7 +129,7 @@ public static class MaterialsManager {
 			}
 			int w = tex.width;
 			int h = tex.height;
-			int resolution = 2048;
+			int resolution = 16;
 
 			for (int i = 0; i < w; i += resolution) {
 				for (int j = 0; j < h; j += resolution) {
