@@ -99,6 +99,7 @@ public class ParallaxLayer : MB, IEditorPoolable {
 			image.TexturePath = texturePaths[i];
 			AddImage (image);
 		}
+		Resources.UnloadUnusedAssets ();
 	}
 
 	public void AddImage (ParallaxImage image) {
