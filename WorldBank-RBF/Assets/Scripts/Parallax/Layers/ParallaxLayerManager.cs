@@ -131,9 +131,11 @@ public class ParallaxLayerManager : MonoBehaviour {
     }
 
     void Clear () {
-		foreach (ParallaxLayer layer in layers)
-			layer.Destroy ();
-		layers.Clear ();
+    	ObjectPool.DestroyPool<ParallaxImage> ();
+    	ObjectPool.DestroyPool<ParallaxNpc> ();
+    	ObjectPool.DestroyPool<ParallaxLayer> ();
+    	layers.Clear ();
+    	Resources.UnloadUnusedAssets ();
     }
 
 	void RefreshLayers () {

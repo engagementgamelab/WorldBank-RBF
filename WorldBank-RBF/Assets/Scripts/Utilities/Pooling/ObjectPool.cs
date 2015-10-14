@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -269,6 +270,21 @@ public class ObjectPool : MonoBehaviour {
 			DestroyImmediate (poolsToDestroy[i]);
 		}
 		pools.Clear ();
+	}
+
+	public static void DestroyPool<T> () where T : MonoBehaviour {
+		ObjectPool p = GetPool<T> ();
+		List<Transform> instances = p.ActiveInstances;
+		for (int i = 0; i < p.ActiveInstances.Count; i ++) {
+			if (instances[i] != null)
+				DestroyImmediate (instances[i].gameObject);
+		}
+		foreach (Transform t in p.InactiveInstances) {
+			if (t != null)
+				DestroyImmediate (t.gameObject);
+		}
+		pools.Remove (pools.First (x => x.Value == p).Key);
+		DestroyImmediate (p.gameObject);
 	}
 
 	// Destroys all inactive instances and empty pools
