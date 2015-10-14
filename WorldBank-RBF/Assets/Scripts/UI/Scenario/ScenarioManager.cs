@@ -190,8 +190,11 @@ public class ScenarioManager : MonoBehaviour {
 	}
 
 	public void LoadMainMenu() {
+		
 		AudioManager.StopAll ();
-		StartCoroutine (CoGotoMenus ());
+		// StartCoroutine (CoGotoMenus ());
+		Application.Quit();
+
 	}
 
 	IEnumerator CoGotoMenus () {
