@@ -142,6 +142,8 @@ public class TutorialScreen : MonoBehaviour {
 		Drag = KeyCanDrag (strKey);
 		AudioManager.Sfx.Play ("openinfo", "ui");
 
+		tooltipKey = strKey;
+
 		group = gameObject.GetComponent<CanvasGroup>();
 
 		confirmButton = transform.Find("Overlay/Buttons/Confirm button").GetComponent<GenericButton>();
@@ -248,14 +250,21 @@ public class TutorialScreen : MonoBehaviour {
 
 	public void SpotlightPosition() {
 
-		spotlightImage.uvRect = spotlightRect;
+		float widthFactor = gameObject.GetComponent<RectTransform>().rect.width / (800 - spotlightRect.width);
+		
+		Rect factoredRect = spotlightRect;
+		factoredRect.x = spotlightRect.x * widthFactor;
+
+		spotlightImage.uvRect = factoredRect;
 
 	}
 
 	public void MaskPosition() {
 
+		float widthFactor = gameObject.GetComponent<RectTransform>().rect.width / (800 - maskRect.width);
+
 		maskButtonRect.sizeDelta = new Vector2(maskRect.width, maskRect.height);	
-		maskButtonRect.anchoredPosition = new Vector2(maskRect.x, maskRect.y);
+		maskButtonRect.anchoredPosition = new Vector2(maskRect.x * widthFactor, maskRect.y);
 		
 	}
 	
@@ -273,19 +282,4 @@ public class TutorialScreen : MonoBehaviour {
 			return true;
 		return false;
 	}
-
-	/*IEnumerator CoFadeAndDestroy () {
-		
-		float time = 0.33f;
-		float eTime = 0f;
-	
-		while (eTime < time) {
-			eTime += Time.deltaTime;
-			float progress = Mathf.SmoothStep (0, 1, eTime / time);
-			group.alpha = Mathf.Lerp (1f, 0f, progress);
-			yield return null;
-		}
-
-		ObjectPool.Destroy<TutorialScreen>(transform);
-	}*/
 }

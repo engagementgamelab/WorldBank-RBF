@@ -114,7 +114,10 @@ public static class MaterialsManager {
 	}
 
 	public static bool TextureIsBlank (Texture2D tex) {
-		
+			
+			#if UNITY_IOS || UNITY_ANDROID
+				return false;
+			#endif
 		
 			if (tex == null) return true;
 			if (!tex.format.HasAlpha ()) return false;
@@ -128,10 +131,6 @@ public static class MaterialsManager {
 			int w = tex.width;
 			int h = tex.height;
 			int resolution = 16;
-			
-			#if UNITY_IOS || UNITY_ANDROID
-				resolution = 16;
-			#endif
 
 			for (int i = 0; i < w; i += resolution) {
 				for (int j = 0; j < h; j += resolution) {
@@ -140,6 +139,8 @@ public static class MaterialsManager {
 					}
 				}
 			}
+
 			return true;
+
 	}
 }

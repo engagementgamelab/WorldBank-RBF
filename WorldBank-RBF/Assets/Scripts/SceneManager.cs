@@ -110,9 +110,8 @@ public class SceneManager : MonoBehaviour {
 
 	void OnServerDown() {
 
-		Debug.LogError("Server down!");
-
-		infoBox.Open(DataManager.GetUIText("copy_server_down_header"), DataManager.GetUIText("copy_server_down_body"));
+		infoBox.Open("Sorry!", 
+								 "The game's server is currently unreachable. Your internet connection may be having some issues, or the server is offline for regular maintenance.\n\nPlease close the application and try again in a few minutes. Apologies for the inconvenience!");
 
 	}
 
