@@ -100,6 +100,10 @@ public class Tactic : MB {
 			StartCoroutine (CoScale (LocalScale, Vector3.one));
 	}
 
+	void OnDisable () {
+		CloseContext ();
+	}
+
 	public void Init (TacticItem item) {
 		
 		this.item = item;
@@ -180,6 +184,9 @@ public class Tactic : MB {
 	public void SetDropLocation (DragLocation toLocation) {
 		locationChanged = true;
 		DragData.ToLocation = toLocation;
+		if (toLocation.GetType () == typeof (TacticSlot)) {
+			Events.instance.Raise (new DropTacticEvent (this, toLocation));
+		}
 	}
 
 	public void ForceFromSlot (Tactic replacementTactic) {

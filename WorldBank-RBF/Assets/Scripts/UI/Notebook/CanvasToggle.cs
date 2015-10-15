@@ -38,11 +38,14 @@ public class CanvasToggle : MonoBehaviour {
 
 	static NotebookCanvas activeCanvas = null;
 
+	bool tutorialActive = false;
+	
 	void Start () {
 		NPCFocusBehavior.Instance.onSetFocus += OnSetFocus;
 		if (openAtStart) {
 			SetCanvasActive (true);
 		}
+		Events.instance.AddListener<DropTacticEvent> (OnDropTacticEvent);
 	}
 
 	public void Open () {
@@ -71,8 +74,13 @@ public class CanvasToggle : MonoBehaviour {
 		bool hasTactics = ( tactics.Where(i => i.Unlocked).Count() > 0 );
 		
 		// Tactics/plan screen tutorial (player is in capitol and has tactics) 
-		if(thisCanvas.GetType() == typeof(PrioritizationManager) && inCapitol && hasTactics)
+		if(thisCanvas.GetType() == typeof(PrioritizationManager) && inCapitol && hasTactics) {
 			DialogManager.instance.CreateTutorialScreen(open ? "phase_1_tactics" : "phase_1_continue_talking");
+			tutorialActive = true;
+			SetInteractable (false);
+			foreach (CanvasToggle toggle in otherToggles)
+				toggle.SetInteractable (false);
+		}
 		
 		// Map
 		else if(thisCanvas.GetType() == typeof(MapManager2)) {
@@ -111,5 +119,19 @@ public class CanvasToggle : MonoBehaviour {
 
 	void PlaySfx (bool open) {
 		AudioManager.Sfx.Play (open ? openSfx : closeSfx, sfxGroup);
+	}
+
+	public void SetInteractable (bool interactable) {
+		Button.interactable = interactable;
+	}
+
+	void OnDropTacticEvent (DropTacticEvent e) {
+		if (tutorialActive) {
+			SetInteractable (true);
+			foreach (CanvasToggle toggle in otherToggles) {
+				toggle.SetInteractable (true);
+			}
+			Events.instance.RemoveListener<DropTacticEvent> (OnDropTacticEvent);
+		}
 	}
 }
