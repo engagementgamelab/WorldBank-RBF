@@ -23,7 +23,7 @@ public class ParallaxLayerLightController : MonoBehaviour {
 	public Light lighting2;
 	bool fading = false;
 
-	const float FULL_LIGHT = 0.8f;
+	const float FULL_LIGHT = 1.4f;
 	const float LOW_LIGHT = 0f;
 
 	public float Lighting1Intensity {

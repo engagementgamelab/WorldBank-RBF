@@ -17,11 +17,25 @@ public class DebugMenu : MonoBehaviour {
 		if (symbol == "capitol") capitolVisited = true;
 	}
 
+	void AutoResize(int screenWidth, int screenHeight)
+	{
+	}
+
 	void OnGUI () {
 		GUI.color = Color.black;
 		GUILayout.Space (16);
-		showOptions = GUILayout.Toggle (showOptions, "Show debug options");
+
+    Vector2 resizeRatio = new Vector2(1, 1);
+
+    #if UNITY_IPHONE || UNITY_ANDROID
+    	resizeRatio = new Vector2(3, 3);
+    #endif
+
+    GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(resizeRatio.x, resizeRatio.y, 1.0f));
+
+		showOptions = GUILayout.Toggle (showOptions, "Debug options");
 		if (!showOptions) return;
+
 		GUI.color = Color.white;
 		if (!capitolVisited && GUILayout.Button ("visit capitol")) {
 			PlayerData.CityGroup.CurrentCity = "capitol";
@@ -44,25 +58,11 @@ public class DebugMenu : MonoBehaviour {
 		if (!twoTacticsUnlocked && GUILayout.Button ("unlock 2 tactics")) {
     		PlayerData.UnlockItem ("unlockable_incentivise_providers_to_follow_protocols", "Context text");
     		PlayerData.UnlockItem ("unlockable_make_aesthetic_improvements", "plz plz you can't get context if you debug the game like that :(");
-    		// PlayerData.UnlockItem ("unlockable_improve_patient_and_provider_relationship", "Context text");
-    		// PlayerData.UnlockItem ("unlockable_incentivise_providers_to_follow_protocols", "");
-    		// PlayerData.UnlockItem ("unlockable_grant_providers_autonomy", "");
-    		// PlayerData.UnlockItem ("unlockable_outreach", "");
-    			
-			// PlayerData.UnlockItem ("unlockable_vouchers_for_services", "This would provide vouchers to poor people so they can receive necessary services at a greatly reduces price.");
-			// PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system", "naw you can't get context because YOU ARE A DEBUGger");
-			// PlayerData.UnlockItem ("unlockable_incentivise_providers_to_deliver_services", "Context text");
-    		// PlayerData.UnlockItem ("unlockable_information_campaign_to_change_cultural_customs_and_behavior", "Context text");
-    		// PlayerData.UnlockItem ("unlockable_dialogue_mr_todd", "Context text");
     		twoTacticsUnlocked = true;
-    	}
-    	if (GUILayout.Button ("1 day")) {
-    		PlayerData.DayGroup.Set (1);
-    	}
-    	/*if (GUILayout.Button ("skip to phase 2")) {
-    		ObjectPool.Clear();
-			Application.LoadLevel("PhaseTwo");		
-    	}*/
+    }
+  	if (GUILayout.Button ("1 day")) {
+  		PlayerData.DayGroup.Set (1);
+  	}
 	}
 	#endif
 }

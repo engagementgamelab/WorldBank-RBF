@@ -54,7 +54,7 @@ class GenerateBuilds {
     {
         
         // Textures already set in OnPreprocessTexture?
-        EditorUserBuildSettings.androidBuildSubtarget = MobileTextureSubtarget.PVRTC;
+        EditorUserBuildSettings.androidBuildSubtarget = MobileTextureSubtarget.Generic;
      
         GenericBuild("Android", BuildTarget.Android);
     }

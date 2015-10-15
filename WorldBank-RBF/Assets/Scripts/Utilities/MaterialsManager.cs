@@ -114,10 +114,11 @@ public static class MaterialsManager {
 	}
 
 	public static bool TextureIsBlank (Texture2D tex) {
+			
+			#if UNITY_IOS || UNITY_ANDROID
+				return false;
+			#endif
 		
-		#if UNITY_IOS
-			return false;
-		#else
 			if (tex == null) return true;
 			if (!tex.format.HasAlpha ()) return false;
 			
@@ -138,7 +139,8 @@ public static class MaterialsManager {
 					}
 				}
 			}
+
 			return true;
-		#endif
+
 	}
 }
