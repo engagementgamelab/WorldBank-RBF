@@ -161,9 +161,6 @@ public class DataManager {
 
         try {
 
-            // System.Text.StringBuilder output = new System.Text.StringBuilder();
-            // _readerSettings.AddTypeConverter (new GameDataConverter());
-
             JsonReader reader = new JsonReader(data, _readerSettings);
             
             gameData = reader.Deserialize<GameData>();
@@ -178,22 +175,34 @@ public class DataManager {
             throw new Exception("Unable to set game data: " + e.Message);
         }
 
-        // create/save to file in Assets/Resources/Config/
+        // create/save to file in Assets/Resources/
         #if !UNITY_WEBPLAYER
 
-            string dataPath = Application.persistentDataPath + "/Resources/";
-            DirectoryInfo dirData = new DirectoryInfo(dataPath);
-            dirData.Refresh();
-            
-            if(!dirData.Exists)
-                dirData.Create();
-
-            using (StreamWriter outfile = new StreamWriter(dataPath + "/data.json"))
-            {
-                outfile.Write(data);
-            }
+            SaveDataToJson("data", data);
 
         #endif
+    }
+
+    /// <summary>
+    /// Save a string to specified JSON file in /Assets/Resources/ or the persistent data path for the app
+    /// </summary>
+    /// <param name="fileName">The file's name.</param>
+    /// <param name="data">String to be used to save in JSON file.</param>
+    /// <param name="persistentPath">Use the application persistent resource path?</param>
+    public static void SaveDataToJson(string fileName, string data, bool persistentPath=false) {
+
+        string dataPath = (persistentPath ? Application.persistentDataPath : Application.dataPath) + "/Resources/";
+        DirectoryInfo dirData = new DirectoryInfo(dataPath);
+        dirData.Refresh();
+        
+        if(!dirData.Exists)
+            dirData.Create();
+
+        using (StreamWriter outfile = new StreamWriter(dataPath + fileName + ".json"))
+        {
+            outfile.Write(data);
+        }
+
     }
 
     /// <summary>

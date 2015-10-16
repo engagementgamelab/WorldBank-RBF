@@ -425,4 +425,11 @@ namespace Models {
         public string[] options { get; set; }
     
     }
+
+    // Material data structure
+    public class MaterialData {
+
+        public Dictionary<string, bool> blank_textures { get; set; }  
+
+    }
 }

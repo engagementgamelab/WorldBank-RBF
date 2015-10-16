@@ -73,8 +73,9 @@ public class CanvasToggle : MonoBehaviour {
 		bool inCapitol = ( PlayerData.CityGroup.CurrentCity == "capitol" );
 		bool hasTactics = ( tactics.Where(i => i.Unlocked).Count() > 0 );
 		
-		// Tactics/plan screen tutorial (player is in capitol and has tactics) 
-		if(thisCanvas.GetType() == typeof(PrioritizationManager) && inCapitol && hasTactics) {
+		// Tactics/plan screen tutorial (player is in capitol and has tactics and has interaction points) 
+		if(thisCanvas.GetType() == typeof(PrioritizationManager) &&
+			 inCapitol && hasTactics && !PlayerData.InteractionGroup.Empty) {
 			DialogManager.instance.CreateTutorialScreen(open ? "phase_1_tactics" : "phase_1_continue_talking");
 			tutorialActive = true;
 			SetInteractable (false);

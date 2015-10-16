@@ -49,7 +49,9 @@ public class AnimatedQuadTexture : MB {
 				gameObject.SetActive (false);
 			} else {
 				texture = (Texture2D)_Material.mainTexture;
-				gameObject.SetActive (!MaterialsManager.TextureIsBlank (texture));
+
+				
+				gameObject.SetActive (!MaterialsManager.GetTextureIsBlank(texturePath));
 			}
 		}
 	}
@@ -161,40 +163,14 @@ public class AnimatedQuadTexture : MB {
 		pauseTime = Random.Range (intervalMin, intervalMax);
 	}
 
-	/*public void UpdateSortingLayer () {
-		int sortingLayer = 10000 - (int)(Position.z * 100);
-		if (_Material != null) {
-			_Material.renderQueue = sortingLayer;
-			// if (_Material.renderQueue == 9999)
-				// _Material.renderQueue = sortingLayer;
-			sortingZPosition = Position.z;
-		} else {
-			StartCoroutine (SetSortingLayerOnLoad ());
-		}
-	}
-
-	IEnumerator SetSortingLayerOnLoad () {
-		while (_Material == null) {
-			yield return null;
-		}
-		UpdateSortingLayer ();
-	}*/
-
 	protected virtual void Update () {
-		// if (!Mathf.Approximately (Position.z, startPosition)) {
+
 			int sortingLayer = 10000 - (int)(Position.z * 100);
 			if (_Material != null) {
 				_Material.renderQueue = sortingLayer;
 			}
-			// startPosition = Position.z;
-		// }
-	}
 
-	/*void OnGUI () {
-		GUI.color = Color.red;
-		Vector3 position = ScreenPositionHandler.WorldToScreen (Position);
-		GUI.Label (new Rect (position.x, position.y + Position.z*4, 200, 100), _Material.mainTexture.name + ": " + _Material.renderQueue.ToString () + "\nsorting z position: " + sortingZPosition);
-	}*/
+	}
 
 	#if PREVIEW_ANIMATIONS && UNITY_EDITOR
 	float _position = 0f;

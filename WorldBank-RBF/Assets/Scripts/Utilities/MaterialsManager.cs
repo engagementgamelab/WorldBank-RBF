@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using JsonFx.Json;
 #if UNITY_EDITOR && !UNITY_WEBPLAYER
 using UnityEditor;
-using System.IO;
 #endif
 
 /// <summary>
 /// Handles material creation, saving, and loading.
 /// </summary>
 public static class MaterialsManager {
+
+	static Models.MaterialData _materialData;
 
 	public static Material GetMaterialAtPath (string path, AnimatedQuadTexture quadTex) {
 
@@ -20,18 +25,7 @@ public static class MaterialsManager {
 				.Replace ("/Textures", "Materials")
 				.Replace (".png", "");
 
-			#if UNITY_EDITOR && !UNITY_WEBPLAYER
-			if (File.Exists (materialPath + ".png")) {
-				return Resources.Load (materialPath) as Material;
-			} else {
-				string texturePath = path.Replace (Application.dataPath, "")
-					.Replace ("Assets", "")
-					.Replace ("/Textures", "Assets/Textures");
-				return CreateMaterialAndAddToDatabase (texturePath);
-			}
-			#else
 			return Resources.Load (materialPath) as Material;
-			#endif
 		} 
 
 		if (path != "") {
@@ -75,10 +69,16 @@ public static class MaterialsManager {
 	}
 
 	static Material CreateMaterialAndAddToDatabase (string texturePath) {
+
 		Texture2D texture = (Texture2D)AssetDatabase.LoadAssetAtPath (texturePath, typeof (Texture2D));
 		Material m = CreateMaterialFromTexture (texture);
+		
 		if (texture != null) AddMaterialToDatabase (texture, m);
+
+		SetTextureIsBlank(texture, texturePath);
+
 		return m;
+
 	}
 
 	static void AddMaterialToDatabase (Texture2D texture, Material m) {
@@ -101,11 +101,26 @@ public static class MaterialsManager {
 	}
 
 	public static void PrepareMaterialsFromTextures () {
+
+		_materialData = new Models.MaterialData();
+		_materialData.blank_textures = new Dictionary<string, bool>();
+
 		string[] textureFiles = Directory.GetFiles (Application.dataPath + "/Textures", "*.png", SearchOption.AllDirectories);
 		for (int i = 0; i < textureFiles.Length; i ++) {
 			string path = textureFiles[i].Replace (Application.dataPath, "").Replace ("/Textures/", "Assets/Textures/");
 			CreateMaterialAndAddToDatabase (path);
 		}
+
+
+    System.Text.StringBuilder material_output = new System.Text.StringBuilder();
+    
+    JsonWriter writer = new JsonWriter (material_output);
+    writer.Write(_materialData);
+    
+    DataManager.SaveDataToJson("material_data", material_output.ToString(), false);
+
+    Debug.Log("*** MATERIALS CREATED ***");
+
 	}
 	#endif
 
@@ -113,34 +128,55 @@ public static class MaterialsManager {
 		get { return Resources.Load ("Materials/blank") as Material; }
 	}
 
-	public static bool TextureIsBlank (Texture2D tex) {
-			
-			#if UNITY_IOS || UNITY_ANDROID
-				return false;
-			#endif
-		
-			if (tex == null) return true;
-			if (!tex.format.HasAlpha ()) return false;
-			
-			try {
-				tex.GetPixel (0, 0);
-			} catch (UnityException e) {
-				Debug.LogError (e);
-				return false;
-			}
-			int w = tex.width;
-			int h = tex.height;
-			int resolution = 16;
+	public static bool GetTextureIsBlank(string texturePath) {
 
-			for (int i = 0; i < w; i += resolution) {
-				for (int j = 0; j < h; j += resolution) {
-					if (tex.GetPixel (i, j).a > 0f) {
-						return false;
-					}
+		string textureKey = texturePath.Replace("Assets/Textures/Cities/", "").Replace(".png", "");
+
+		if(_materialData == null) {
+		    TextAsset dataJson = (TextAsset)Resources.Load("material_data", typeof(TextAsset));
+				StringReader strData = new StringReader(dataJson.text);
+
+		    JsonReader reader = new JsonReader(strData.ReadToEnd());
+				_materialData = reader.Deserialize<Models.MaterialData>();
+
+				strData.Close();
+		}
+
+    return false;
+
+	}
+
+	static void SetTextureIsBlank (Texture2D tex, string texturePath) {
+
+		bool isBlank = false;
+		string textureKey = texturePath.Replace("Assets/Textures/Cities/", "").Replace(".png", "");
+		
+		#if UNITY_IOS || UNITY_ANDROID
+			isBlank = false;
+		#endif
+	
+		if (tex == null) isBlank = true;
+		if (!tex.format.HasAlpha ()) isBlank = false;
+		
+		try {
+			tex.GetPixel (0, 0);
+		} catch (UnityException e) {
+			Debug.LogError (e);
+			isBlank = false;
+		}
+		int w = tex.width;
+		int h = tex.height;
+		int resolution = 16;
+
+		for (int i = 0; i < w; i += resolution) {
+			for (int j = 0; j < h; j += resolution) {
+				if (tex.GetPixel (i, j).a > 0f) {
+					isBlank = false;
 				}
 			}
+		}
 
-			return true;
+		_materialData.blank_textures.Add(textureKey, isBlank);
 
 	}
 }
