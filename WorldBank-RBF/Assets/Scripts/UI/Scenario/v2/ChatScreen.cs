@@ -120,17 +120,16 @@ public class ChatScreen : GenericDialogBox {
 		
 		ScenarioChatMessage response = ObjectPool.Instantiate<ScenarioChatMessage>("Scenario");
 		
+		// Show indicators for feedback
+		if(feedback && affects != null)
+			response.feedbackIndicators.Display(affects);
+
 		response.Initial = initial;
 		response.Feedback = feedback;
 
 		response.NPCName = npc.display_name;
 		response.Content = strDialogue;
 		response.NPCSymbol = npc.symbol;
-
-
-		// Show indicators for feedback
-		if(feedback && affects != null)
-			response.feedbackIndicators.Display(affects);
 		
 		response.transform.SetParent(messagesContainer);
 		response.transform.localScale = Vector3.one;
