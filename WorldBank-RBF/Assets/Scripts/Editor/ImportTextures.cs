@@ -22,6 +22,8 @@ public class TexturePostProcessor : AssetPostprocessor {
 	
 	// Set per-platform texture settings
 	void OnPostprocessTexture(Texture2D texture) {
+
+		Debug.Log("OnPostprocessTexture");
 	
 		TextureImporter importer = assetImporter as TextureImporter;
 
@@ -32,8 +34,8 @@ public class TexturePostProcessor : AssetPostprocessor {
 		importer.wrapMode = TextureWrapMode.Clamp;
 
 		// Set texture settings
-		importer.SetPlatformTextureSettings( "iPhone", 1024, TextureImporterFormat.PVRTC_RGBA4, 40 );
-		importer.SetPlatformTextureSettings( "Android", 2048, TextureImporterFormat.PVRTC_RGBA4, 40 );
+		importer.SetPlatformTextureSettings( "iPhone", 1024, TextureImporterFormat.PVRTC_RGBA4, (int)TextureCompressionQuality.Normal );
+		importer.SetPlatformTextureSettings( "Android", 256, TextureImporterFormat.PVRTC_RGBA4, (int)TextureCompressionQuality.Fast ); //ATC_RGBA8
 		importer.SetPlatformTextureSettings( "Standalone", 4096, TextureImporterFormat.PVRTC_RGBA4, 100 );
 		importer.SetPlatformTextureSettings( "WebPlayer", 1024, TextureImporterFormat.PVRTC_RGBA4, 100 );
 		importer.SetPlatformTextureSettings( "WebGL", 1024, TextureImporterFormat.PVRTC_RGBA4, 100 );

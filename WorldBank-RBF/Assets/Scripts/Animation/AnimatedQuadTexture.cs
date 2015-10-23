@@ -162,16 +162,7 @@ public class AnimatedQuadTexture : MB {
 	void UpdatePauseTime () {
 		pauseTime = Random.Range (intervalMin, intervalMax);
 	}
-
-	protected virtual void Update () {
-
-			int sortingLayer = 10000 - (int)(Position.z * 100);
-			if (_Material != null) {
-				_Material.renderQueue = sortingLayer;
-			}
-
-	}
-
+	
 	#if PREVIEW_ANIMATIONS && UNITY_EDITOR
 	float _position = 0f;
 	float _pausePosition = 0f;
