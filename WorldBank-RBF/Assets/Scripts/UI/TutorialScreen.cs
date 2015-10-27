@@ -126,11 +126,11 @@ public class TutorialScreen : MonoBehaviour {
 
 		Color imgColor = maskImg.color;
     
-    #if DEVELOPMENT_BUILD && UNITY_IOS
-	    imgColor.a = 1;
-    #else
+    // #if DEVELOPMENT_BUILD && UNITY_IOS
+	   //  imgColor.a = 1;
+    // #else
 	    imgColor.a = 0;
-    #endif
+    // #endif
 
     maskImg.color = imgColor;
 
@@ -170,6 +170,10 @@ public class TutorialScreen : MonoBehaviour {
 		else {
 			spotlightEnabled = true;
 			group.blocksRaycasts = false;
+
+			#if UNITY_ANDROID
+				tooltip.spotlight_position[0] += .4f;
+			#endif
 
 			SpotlightRect = new Rect(tooltip.spotlight_position[0], tooltip.spotlight_position[1], tooltip.spotlight_size[0], tooltip.spotlight_size[1]);
 			MaskRect = new Rect(tooltip.mask_position[0], tooltip.mask_position[1], tooltip.mask_size[0], tooltip.mask_size[1]);

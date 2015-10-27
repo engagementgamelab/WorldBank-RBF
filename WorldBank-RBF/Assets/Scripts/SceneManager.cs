@@ -52,6 +52,12 @@ public class SceneManager : MonoBehaviour {
 		// }
 	}
 
+	void Start() {
+
+		Application.targetFrameRate = 60;
+		
+	}
+
   #if UNITY_EDITOR
 	void OnGUI() {
 		GUIStyle style = new GUIStyle();

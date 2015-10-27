@@ -11,8 +11,12 @@ public class CameraPositioner : MB {
 
 		bool enabled = true;
 		public bool Enabled {
-			get { return enabled; }
-			set { enabled = value; }
+			get { 
+				return enabled; 
+			}
+			set { 
+				enabled = value;
+			}
 		}
 
 		float MouseViewportX {
@@ -67,6 +71,10 @@ public class CameraPositioner : MB {
 		
 		public void OnDragDown () {
 			if (!Enabled || dragging) return;
+
+			// Disallow all dragging if NPC has focus
+			if(NPCFocusBehavior.Instance.FocusLevel != FocusLevel.Default) return;
+
 			dragging = true;
 			dragReleased = false;
 			startDragWorld = PositionerX;

@@ -76,6 +76,15 @@ public class AnimatedQuadTexture : MB {
 		SetOffset ();
 		if (texture != null) _Texture = texture;
 		animating = false;
+	}	
+
+	protected virtual void Update () {
+
+			int sortingLayer = 10000 - (int)(Position.z * 100);
+			if (_Material != null) {
+				_Material.renderQueue = sortingLayer;
+			}
+
 	}
 
 	public void SetScale () {

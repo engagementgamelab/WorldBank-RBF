@@ -80,14 +80,6 @@ public class NPCFocusBehavior : MonoBehaviour {
 		Focus ();
 		FocusLevel = FocusLevel.Default;
 
-		// Tutorial
-		/*if(npc.symbol == "rahb_capitol_city") {
-			if(choicesCount == 1)
-			 	DialogManager.instance.CreateTutorialScreen("phase_1_interactions_counter");
-			else if(choicesCount == 0)
-				DialogManager.instance.CreateTutorialScreen("phase_1_move_around");
-		}*/
-
 	}
 
 	public void PreviewFocus (ParallaxNpc npc) {
