@@ -30,6 +30,17 @@ public class ParallaxLayer : MB, IEditorPoolable {
 		get { return Mathf.Tan (MainCamera.Instance.FOV / 2 * Mathf.Deg2Rad) * Position.z * 2; }
 	}
 
+	/// <summary>
+	/// Return the left-most horizontal position of this layer
+	/// </summary>
+	public float LeftMin {
+		get { 
+			if (images == null || images.Count == 0) return 0;
+			
+			return images[0].Transform.position.x + (Screen.width / 800.0f);
+		}
+	}
+
 	public float RightMax {
 		get { 
 			if (images == null || images.Count == 0) return 0;
@@ -87,11 +98,6 @@ public class ParallaxLayer : MB, IEditorPoolable {
 
 		Transform.SetPositionX (offset);
 	}
-
-	/*public void ClearImages () {
-		EditorObjectPool.Destroy (images);
-		images.Clear ();
-	}*/
 
 	public void CreateImages (List<string> texturePaths) {
 		for (int i = 0; i < texturePaths.Count; i ++) {

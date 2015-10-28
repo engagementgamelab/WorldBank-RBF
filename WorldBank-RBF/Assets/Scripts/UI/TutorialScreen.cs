@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System;
 using System.Collections;
@@ -113,6 +114,11 @@ public class TutorialScreen : MonoBehaviour {
 
 	void OnEnable () {
 		Events.instance.AddListener<CloseTutorialEvent> (OnCloseTutorialEvent);
+
+		// Hack to fix raycasting bug in UI for mobile
+		// See: http://forum.unity3d.com/threads/touch-press-pass-through-all-ui-elements.272892 and
+		// http://hutonggames.com/playmakerforum/index.php?topic=9705.0;wap2
+		Input.simulateMouseWithTouches = true;
 	}
 
 	void OnDisable() {
@@ -121,13 +127,12 @@ public class TutorialScreen : MonoBehaviour {
 
 	void Start() {
 
-
 		Image maskImg = maskButtonRect.gameObject.GetComponent<Image>();
 
 		Color imgColor = maskImg.color;
     
     // #if DEVELOPMENT_BUILD && UNITY_IOS
-	   //  imgColor.a = 1;
+	    // imgColor.a = 1;
     // #else
 	    imgColor.a = 0;
     // #endif
@@ -171,19 +176,26 @@ public class TutorialScreen : MonoBehaviour {
 			spotlightEnabled = true;
 			group.blocksRaycasts = false;
 
-			#if UNITY_ANDROID
-				tooltip.spotlight_position[0] += .4f;
+			float[] spotlightPosition = tooltip.spotlight_position;
+			float[] maskPosition = tooltip.mask_position;
+
+			#if UNITY_ANDROID || UNITY_IOS
+				if(tooltip.spotlight_position_mobile != null)
+					spotlightPosition = tooltip.spotlight_position_mobile;
+				
+				if(tooltip.mask_position_mobile != null)
+					maskPosition = tooltip.mask_position_mobile;
 			#endif
 
-			SpotlightRect = new Rect(tooltip.spotlight_position[0], tooltip.spotlight_position[1], tooltip.spotlight_size[0], tooltip.spotlight_size[1]);
-			MaskRect = new Rect(tooltip.mask_position[0], tooltip.mask_position[1], tooltip.mask_size[0], tooltip.mask_size[1]);
+			SpotlightRect = new Rect(spotlightPosition[0], spotlightPosition[1], tooltip.spotlight_size[0], tooltip.spotlight_size[1]);
+			MaskRect = new Rect(maskPosition[0], maskPosition[1], tooltip.mask_size[0], tooltip.mask_size[1]);
 		}
 
 		confirmButton.gameObject.SetActive(tooltip.confirm);
 
 		confirmButton.Button.onClick.RemoveAllListeners ();
 		confirmButton.AddAudioTriggerListener ();
-		confirmButton.Button.onClick.AddListener(() => Events.instance.Raise (new CloseTutorialEvent ()));//ObjectPool.Destroy<TutorialScreen>(transform));
+		confirmButton.Button.onClick.AddListener(() => Events.instance.Raise (new CloseTutorialEvent ()));
 
 		// Custom action
 		if(confirmAction != null)
@@ -250,12 +262,13 @@ public class TutorialScreen : MonoBehaviour {
 
 		SpotlightRect = new Rect(1, 0, 1, 1);
 		MaskRect = new Rect(0, 0, 0, 0);
+
 	}
 
 	public void SpotlightPosition() {
 
 		float widthFactor = gameObject.GetComponent<RectTransform>().rect.width / (800 - spotlightRect.width);
-		
+
 		Rect factoredRect = spotlightRect;
 		factoredRect.x = spotlightRect.x * widthFactor;
 
@@ -265,10 +278,12 @@ public class TutorialScreen : MonoBehaviour {
 
 	public void MaskPosition() {
 
-		float widthFactor = gameObject.GetComponent<RectTransform>().rect.width / (800 - maskRect.width);
+		float xPosBias = Camera.main.aspect - 1.0f;
+
+		float widthFactor = gameObject.GetComponent<RectTransform>().rect.width / (800 - maskRect.width);// * xPosBias
 
 		maskButtonRect.sizeDelta = new Vector2(maskRect.width, maskRect.height);	
-		maskButtonRect.anchoredPosition = new Vector2(maskRect.x * widthFactor, maskRect.y);
+		maskButtonRect.anchoredPosition = new Vector2((maskRect.x * widthFactor), maskRect.y);
 		
 	}
 	

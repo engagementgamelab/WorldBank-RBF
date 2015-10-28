@@ -1,5 +1,6 @@
 ﻿#undef SHOW_SETTINGS
 using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -72,8 +73,17 @@ public class CameraPositioner : MB {
 		public void OnDragDown () {
 			if (!Enabled || dragging) return;
 
-			// Disallow all dragging if NPC has focus
+			// Disallow all dragging if NPC has focus or any UI is showing (mobile)
 			if(NPCFocusBehavior.Instance.FocusLevel != FocusLevel.Default) return;
+			
+			foreach(Touch t in Input.touches)
+	    {
+			  if(EventSystem.current.IsPointerOverGameObject(t.fingerId))
+	        return;
+	    }
+
+	    if(EventSystem.current.IsPointerOverGameObject())
+	    	return;
 
 			dragging = true;
 			dragReleased = false;

@@ -34,11 +34,11 @@ public class TexturePostProcessor : AssetPostprocessor {
 		importer.wrapMode = TextureWrapMode.Clamp;
 
 		// Set texture settings
-		importer.SetPlatformTextureSettings( "iPhone", 1024, TextureImporterFormat.PVRTC_RGBA4, (int)TextureCompressionQuality.Normal );
-		importer.SetPlatformTextureSettings( "Android", 1024, TextureImporterFormat.ETC2_RGBA8, (int)TextureCompressionQuality.Fast ); //ATC_RGBA8
-		importer.SetPlatformTextureSettings( "Standalone", 4096, TextureImporterFormat.PVRTC_RGBA4, 100 );
-		importer.SetPlatformTextureSettings( "WebPlayer", 1024, TextureImporterFormat.PVRTC_RGBA4, 100 );
-		importer.SetPlatformTextureSettings( "WebGL", 1024, TextureImporterFormat.PVRTC_RGBA4, 100 );
+		importer.SetPlatformTextureSettings( "iPhone", 1024, TextureImporterFormat.PVRTC_RGBA4, (int)TextureCompressionQuality.Normal, false );
+		importer.SetPlatformTextureSettings( "Android", 1024, TextureImporterFormat.ETC2_RGBA8, (int)TextureCompressionQuality.Fast, false ); //ATC_RGBA8
+		importer.SetPlatformTextureSettings( "Standalone", 4096, TextureImporterFormat.PVRTC_RGBA4, 100, false );
+		importer.SetPlatformTextureSettings( "WebPlayer", 1024, TextureImporterFormat.PVRTC_RGBA4, 100, false );
+		importer.SetPlatformTextureSettings( "WebGL", 1024, TextureImporterFormat.PVRTC_RGBA4, 100, false );
 
 		Object asset = AssetDatabase.LoadAssetAtPath(importer.assetPath, typeof(Texture2D));
 		if (asset) {

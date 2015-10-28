@@ -60,10 +60,9 @@ public class ParallaxImage : AnimatedQuadTexture, IEditorPoolable, IEditorRefres
 		// UpdateSortingLayer ();
 	}
 
-	#if !UNITY_ANDROID
 	protected override void Update () {
 		if (Forward) Transform.SetLocalPositionZ (-0.01f);
 		base.Update();
 	}
-	#endif
+	
 }

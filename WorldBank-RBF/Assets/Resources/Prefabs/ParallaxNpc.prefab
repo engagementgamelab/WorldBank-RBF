@@ -12,6 +12,8 @@ GameObject:
   - 23: {fileID: 2352472}
   - 33: {fileID: 3355222}
   - 114: {fileID: 11406534}
+  - 114: {fileID: 11488020}
+  - 114: {fileID: 11496460}
   m_Layer: 0
   m_Name: ParallaxNpc
   m_TagString: Untagged
@@ -26,7 +28,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 153300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -.00999999978}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -85,13 +87,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b30eda6dec5324edca9d25c7c5be11cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 0
   texture: {fileID: 0}
+  frameCount: 1
+  frame: 1
+  speed: 1
+  animating: 0
+  useInterval: 0
+  intervalMin: 0
+  intervalMax: 0
+  index: 0
+  xOffset: 0
   xPosition: 0
   yPosition: 0
-  width: 0
-  height: 0
+  facingLeft: 0
   symbol: 
+  voice: fem1
+  parallaxImage2: {fileID: 0}
+  texture2: {fileID: 0}
+--- !u!114 &11488020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 153300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 5
+--- !u!114 &11496460
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 153300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1077351063, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: .5
+  m_ForceModuleActive: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

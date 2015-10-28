@@ -142,6 +142,8 @@ public class NPCFocusBehavior : MonoBehaviour {
 		endCamPosition = (npc.FacingLeft)
 			? npcPosition - offset
 			: npcPosition + offset;
+
+		endCamPosition = Mathf.Clamp(endCamPosition, 0, endCamPosition);
 	}
 
 	void OnEndFocus () {

@@ -1,5 +1,6 @@
 ﻿#define TEST_STANDALONE_LOAD
 using UnityEngine;
+using UnityEngine.EventSystems;
 // Run only if inside editor
 #if UNITY_EDITOR
 using UnityEditor;
@@ -38,7 +39,6 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 		}
 		set { parallaxImage2 = value; }
 	}
-
 
 	// This second texture is for NPCs who are too big to fit on a single tile
 	// A better way to handle this would be to have a group of ParallaxImages
@@ -87,6 +87,7 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 	}
 
 	public void OnClick (ClickSettings clickSettings) {
+
 		if (Scale > 1f) {
 			SendClickMessage ();
 		} else {
@@ -96,6 +97,17 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 	}
 
 	void SendClickMessage () {
+
+		// Disallow click if NPC any top-level UI is showing (mobile)
+		foreach(Touch t in Input.touches)
+    {
+		  if(EventSystem.current.IsPointerOverGameObject(t.fingerId))
+        return;
+    }
+
+    if(EventSystem.current.IsPointerOverGameObject())
+    	return;
+
 		NPCFocusBehavior.Instance.PreviewFocus (this);
 
 		// Tutorial

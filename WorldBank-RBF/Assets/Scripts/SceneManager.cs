@@ -36,7 +36,7 @@ public class SceneManager : MonoBehaviour {
 
 	private PlayerLoginRegisterUI loginUI;
 
-	void Awake () {
+	void Awake () { 
 
 		NetworkManager.Instance.onServerDown += OnServerDown;
 

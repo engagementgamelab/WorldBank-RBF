@@ -114,22 +114,12 @@ public class MainCamera : MB {
 
 	void Awake () {
 		// ParallaxLayerManager.Instance.onLoad += OnLoadCity;
-		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
 	}
 
 	void Start () {
 		Zoom = 0;
 		TargetZoom = initialZoomLevel;
-	}
-
-	void Update () {
-		/*float delta = Input.GetAxis ("Mouse ScrollWheel");
-		if (delta != 0) {
-			Zoom += delta;
-		}*/
-		/*if (!Mathf.Approximately (Zoom, TargetZoom)) {
-			Zoom = Mathf.Lerp (Zoom, TargetZoom, ZoomVelocity * Time.deltaTime);
-		}*/
+		Events.instance.AddListener<ArriveInCityEvent> (OnArriveInCityEvent);
 	}
 
 	public void ZoomToPercentage (float p, float velocity=-1) {
@@ -142,8 +132,6 @@ public class MainCamera : MB {
 	}
 
 	void OnLoadCity () {
-		// List<ParallaxLayer> layers = ParallaxLayerManager.Instance.Layers;
-		// Positioner.XMax = layers[0].RightMax;
 		Positioner.XMax = ParallaxLayerManager.Instance.NearestLayer.RightMax;
 	}
 
@@ -163,6 +151,8 @@ public class MainCamera : MB {
 		}
 
 		Positioner.XMax = xMax;
+		Positioner.XMin = ParallaxLayerManager.Instance.FurthestLayer.LeftMin;
+
 		Positioner.XPosition = ParallaxLayerManager.Instance.CameraStartPosition;
 	}
 }
