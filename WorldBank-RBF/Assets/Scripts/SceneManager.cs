@@ -55,7 +55,14 @@ public class SceneManager : MonoBehaviour {
 	void Start() {
 
 		Application.targetFrameRate = 60;
-		
+
+		// Set loading indicator styles
+		#if UNITY_IPHONE
+        Handheld.SetActivityIndicatorStyle(iOS.ActivityIndicatorStyle.WhiteLarge);
+    #elif UNITY_ANDROID
+        Handheld.SetActivityIndicatorStyle(AndroidActivityIndicatorStyle.Large);
+    #endif
+	
 	}
 
   #if UNITY_EDITOR

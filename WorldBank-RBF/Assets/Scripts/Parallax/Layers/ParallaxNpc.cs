@@ -88,16 +88,6 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
 
 	public void OnClick (ClickSettings clickSettings) {
 
-		if (Scale > 1f) {
-			SendClickMessage ();
-		} else {
-			// Don't trigger if the player begins dragging the mouse
-			StartCoroutine (CoCheckForDrag ());
-		}
-	}
-
-	void SendClickMessage () {
-
 		// Disallow click if NPC any top-level UI is showing (mobile)
 		foreach(Touch t in Input.touches)
     {
@@ -108,6 +98,15 @@ public class ParallaxNpc : ParallaxElement, IClickable, IDraggable {
     if(EventSystem.current.IsPointerOverGameObject())
     	return;
 
+		if (Scale > 1f) {
+			SendClickMessage ();
+		} else {
+			// Don't trigger if the player begins dragging the mouse
+			StartCoroutine (CoCheckForDrag ());
+		}
+	}
+
+	void SendClickMessage () {
 		NPCFocusBehavior.Instance.PreviewFocus (this);
 
 		// Tutorial

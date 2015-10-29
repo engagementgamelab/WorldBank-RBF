@@ -124,7 +124,11 @@ public class ParallaxLayerManager : MonoBehaviour {
 		ParallaxLayer[] pLayers = GameObject.FindObjectsOfType (typeof (ParallaxLayer)) as ParallaxLayer[];
 		layers = pLayers.ToList ();
 		if (onLoad != null) onLoad ();
-    }
+
+		#if UNITY_IOS || UNITY_ANDROID
+			Handheld.StopActivityIndicator();
+		#endif
+  }
 
     void LoadFromSymbol (string symbol) {
     	Load ("Config/PhaseOne/Cities/" + symbol);

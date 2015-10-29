@@ -164,6 +164,10 @@ public class CitiesManager : MB {
 			else
 				DialogManager.instance.CreateTutorialScreen("phase_1_initial", "phase_1_rahb");
 		}
+
+		#if UNITY_IOS || UNITY_ANDROID
+			Handheld.StartActivityIndicator();
+		#endif
 		
 		Events.instance.Raise (new ArriveInCityEvent (currentCity));
 	}
