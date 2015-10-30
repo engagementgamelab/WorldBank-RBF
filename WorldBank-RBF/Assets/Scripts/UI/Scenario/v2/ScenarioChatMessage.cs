@@ -27,23 +27,12 @@ public class ScenarioChatMessage : PortraitTextBox {
 
 	HorizontalLayoutGroup layout;
 
-	void Start() {
-
-		layout = transform.GetChild(0).gameObject.GetComponent<HorizontalLayoutGroup>();
-
-	}
-
-	void Update() {
-
-		currentPadding += 4;
-		layout.padding = new RectOffset(0, 0,  Mathf.Clamp(currentPadding, initPadding, 0), 0);
- 
-	}
-
 	public string Content {
 
 		get { return responseText.text; }
 		set { 
+			
+			layout = transform.GetChild(0).gameObject.GetComponent<HorizontalLayoutGroup>();
 
 			currentPadding = initPadding;
 
@@ -76,6 +65,8 @@ public class ScenarioChatMessage : PortraitTextBox {
 			
 			responseText.text = value;
 
+			StartCoroutine(CoShow());
+
 		}
 	}
 	
@@ -102,6 +93,20 @@ public class ScenarioChatMessage : PortraitTextBox {
 		set {
 			leftSide = false;
 			rightSide = true;
+		}
+	}
+
+	IEnumerator CoShow () {
+
+		float eTime =  0f;
+		float time = 0.8f;
+
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float top = Mathf.Lerp (initPadding, 0, eTime / time);
+
+			layout.padding = new RectOffset(0, 0, System.Convert.ToInt32(top), 0);
+			yield return null;
 		}
 	}
 }

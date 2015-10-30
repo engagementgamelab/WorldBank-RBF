@@ -58,7 +58,7 @@ public class SceneManager : MonoBehaviour {
 
 		// Set loading indicator styles
 		#if UNITY_IPHONE
-        Handheld.SetActivityIndicatorStyle(iOS.ActivityIndicatorStyle.WhiteLarge);
+        Handheld.SetActivityIndicatorStyle(UnityEngine.iOS.ActivityIndicatorStyle.WhiteLarge);
     #elif UNITY_ANDROID
         Handheld.SetActivityIndicatorStyle(AndroidActivityIndicatorStyle.Large);
     #endif
