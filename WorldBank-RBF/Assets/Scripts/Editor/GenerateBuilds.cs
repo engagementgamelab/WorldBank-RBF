@@ -20,6 +20,7 @@ class GenerateBuilds {
 
     // These are the scenes that the build server is going to use
     static string[] SCENES = new string[] { "ScreenSizeSetup", "Menus", "PhaseOne", "PhaseTwo"};
+    static string[] SCENES_MOBILE = new string[] { "Menus", "PhaseOne", "PhaseTwo"};
 
     // Options for all builds
     static BuildOptions BUILD_OPTIONS = BuildOptions.Development | BuildOptions.AllowDebugging;
@@ -84,8 +85,12 @@ class GenerateBuilds {
 
         PerformMacOSXBuild();
         PerformPCBuild();
-        PerformWebGLBuild();
+        
         PerformWebBuild();
+
+        PerformiOSBuild();
+        PerformAndroidBuild();
+        // PerformWebGLBuild();
     }
 
     [MenuItem ("Build/Build Desktop")]
@@ -146,11 +151,13 @@ class GenerateBuilds {
         }
     }
 
-    static string[] FindEnabledScenes() {
+    static string[] FindEnabledScenes(string platform) {
+
+        string[] sceneList = (platform == "iOS" || platform == "Android") ? SCENES_MOBILE : SCENES;
 
         List<string> EditorScenes = new List<string>();
 
-        foreach (string sceneName in SCENES)
+        foreach (string sceneName in sceneList)
             EditorScenes.Add(SCENE_PREFIX + sceneName + SCENE_AFFIX);
 
         return EditorScenes.ToArray();
@@ -192,7 +199,7 @@ class GenerateBuilds {
 
         SetIcons (buildTarget);
 
-        string res = BuildPipeline.BuildPlayer(FindEnabledScenes(), TARGET_DIR + "/" + platform + "/" + name, buildTarget, BUILD_OPTIONS);
+        string res = BuildPipeline.BuildPlayer(FindEnabledScenes(platform), TARGET_DIR + "/" + platform + "/" + name, buildTarget, BUILD_OPTIONS);
 
         if (res.Length > 0)
             throw new Exception("BuildPlayer failure: " + res);
