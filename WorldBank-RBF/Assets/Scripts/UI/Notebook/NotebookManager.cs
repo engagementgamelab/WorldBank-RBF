@@ -134,12 +134,6 @@ public class NotebookManager : MB {
 	public void Open () {
 		if (open) return;
 		UpdateState ();
-		/*SetActiveCanvasOnOpen ();
-		OpenCanvas (activeCanvas);
-		tabGroup.SetActive (true);
-		notebookCollider.SetActive (true);
-		CameraPositioner.Drag.Enabled = false;
-		open = true;*/
 	}
 
 	public void Close () {

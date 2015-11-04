@@ -406,15 +406,18 @@ namespace Models {
     public class Tooltip {
 
         public float[] spotlight_position { get; set; }
-        public float[] spotlight_position_mobile { get; set; }
+        public float[] spotlight_position_4x3 { get; set; }
+        public float[] spotlight_position_16x9 { get; set; }
         public float[] spotlight_size { get; set; }
         
         public float[] mask_position { get; set; }
-        public float[] mask_position_mobile { get; set; }
+        public float[] mask_position_4x3 { get; set; }
+        public float[] mask_position_16x9 { get; set; }
         public float[] mask_size { get; set; }
         
         public string overlay_location { get; set; }
         public string text { get; set; }
+        public string text_mobile { get; set; }
   
         public bool confirm { get; set; }
         public bool yes_no { get; set; }

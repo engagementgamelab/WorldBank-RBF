@@ -50,6 +50,8 @@ public class SceneManager : MonoBehaviour {
 			// Set global game data if needed
 			SetGameData();
 		// }
+
+			Debug.Log("ASPECT: " + Camera.main.aspect);
 	}
 
 	void Start() {

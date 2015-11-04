@@ -50,25 +50,7 @@ public class PrioritizationManager : NotebookCanvas {
 		PlayerManager.Instance.SaveData (formFields, SubmitPlanCallback);
 
 	}
-
-	// TODO: this is not being called - OnPressNext () in ResultsScreen is moving us to the Menus scene
-	// Continues to phase  two
-	// Also, skips to phase two via "skip tab" button (won't be in test or final game)
-	public void Continue() {
-		/*
-		// Clear all Object Pool objects and pools before loading new scene
-		ObjectPool.Clear();
-
-		// Stop all audio before going to next scene
-		AudioManager.StopAll ();
-
-		// Re-enable tutorial for now
-		DataManager.tutorialEnabled = false;
-
-		Application.LoadLevel("PhaseTwo");*/
-
-	}
-
+	
 	void OnUpdatePriorities () {
 
 		continueButton.interactable = PlayerData.TacticPriorityGroup.Count == 6;

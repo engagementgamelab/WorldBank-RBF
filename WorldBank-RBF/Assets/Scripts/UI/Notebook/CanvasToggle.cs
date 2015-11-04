@@ -76,9 +76,12 @@ public class CanvasToggle : MonoBehaviour {
 		// Tactics/plan screen tutorial (player is in capitol and has tactics and has interaction points) 
 		if(thisCanvas.GetType() == typeof(PrioritizationManager) &&
 			 inCapitol && hasTactics && !PlayerData.InteractionGroup.Empty) {
+			
 			DialogManager.instance.CreateTutorialScreen(open ? "phase_1_tactics" : "phase_1_continue_talking");
+			
 			tutorialActive = true;
-			SetInteractable (false);
+			SetInteractable (PlayerData.TacticPriorityGroup.Tactics.Length > 0);
+			
 			foreach (CanvasToggle toggle in otherToggles)
 				toggle.SetInteractable (false);
 		}

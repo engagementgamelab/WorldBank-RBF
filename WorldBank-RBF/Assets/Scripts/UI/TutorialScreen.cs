@@ -158,8 +158,15 @@ public class TutorialScreen : MonoBehaviour {
 		Models.Tooltip tooltip = DataManager.GetTooltipByKey(strKey);
 		OverlayPosition(tooltip.overlay_location);
 
-		overlayPanel.GetComponentInChildren<Text>().text = tooltip.text;
 		overlayText = tooltip.text;
+
+		// Get mobile text if on mobile and defined
+		#if UNITY_IOS || UNITY_ANDROID
+			if(tooltip.text_mobile != null)
+				overlayText = tooltip.text_mobile;
+		#endif
+
+		overlayPanel.GetComponentInChildren<Text>().text = overlayText;
 
 		if(tooltip.confirm_next != null)
 			strNextKey = tooltip.confirm_next;
@@ -179,13 +186,24 @@ public class TutorialScreen : MonoBehaviour {
 			float[] spotlightPosition = tooltip.spotlight_position;
 			float[] maskPosition = tooltip.mask_position;
 
-			#if UNITY_ANDROID || UNITY_IOS
-				if(tooltip.spotlight_position_mobile != null)
-					spotlightPosition = tooltip.spotlight_position_mobile;
+			if(Camera.main.aspect > 1.6f && tooltip.spotlight_position_16x9 != null) {
+
+				Debug.Log("Using spotlight_position_16x9: " + tooltip.spotlight_position_16x9[0]);
+				spotlightPosition = tooltip.spotlight_position_16x9;
 				
-				if(tooltip.mask_position_mobile != null)
-					maskPosition = tooltip.mask_position_mobile;
-			#endif
+				if(tooltip.mask_position_16x9 != null)
+					maskPosition = tooltip.mask_position_16x9;
+
+			}
+			else if(Camera.main.aspect > 1.3f && tooltip.spotlight_position_4x3 != null) {
+
+				Debug.Log("Using spotlight_position_4x3");
+				spotlightPosition = tooltip.spotlight_position_4x3;
+				
+				if(tooltip.mask_position_4x3 != null)
+					maskPosition = tooltip.mask_position_4x3;
+
+			}
 
 			SpotlightRect = new Rect(spotlightPosition[0], spotlightPosition[1], tooltip.spotlight_size[0], tooltip.spotlight_size[1]);
 			MaskRect = new Rect(maskPosition[0], maskPosition[1], tooltip.mask_size[0], tooltip.mask_size[1]);
@@ -267,23 +285,23 @@ public class TutorialScreen : MonoBehaviour {
 
 	public void SpotlightPosition() {
 
-		float widthFactor = gameObject.GetComponent<RectTransform>().rect.width / (800 - spotlightRect.width);
+		// float widthFactor = gameObject.GetComponent<RectTransform>().rect.width / (800 - spotlightRect.width);
 
-		Rect factoredRect = spotlightRect;
-		factoredRect.x = spotlightRect.x * widthFactor;
+		// Rect factoredRect = spotlightRect;
+		// factoredRect.x = spotlightRect.x * widthFactor;
 
-		spotlightImage.uvRect = factoredRect;
+		spotlightImage.uvRect = spotlightRect;
 
 	}
 
 	public void MaskPosition() {
 
-		float xPosBias = Camera.main.aspect - 1.0f;
+		// float xPosBias = Camera.main.aspect - 1.0f;
 
-		float widthFactor = gameObject.GetComponent<RectTransform>().rect.width / (800 - maskRect.width);// * xPosBias
+		// float widthFactor = gameObject.GetComponent<RectTransform>().rect.width / (800 - maskRect.width);// * xPosBias
 
 		maskButtonRect.sizeDelta = new Vector2(maskRect.width, maskRect.height);	
-		maskButtonRect.anchoredPosition = new Vector2((maskRect.x * widthFactor), maskRect.y);
+		maskButtonRect.anchoredPosition = new Vector2(maskRect.x, maskRect.y);
 		
 	}
 	

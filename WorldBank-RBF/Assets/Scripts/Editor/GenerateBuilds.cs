@@ -86,7 +86,7 @@ class GenerateBuilds {
         PerformMacOSXBuild();
         PerformPCBuild();
         
-        PerformWebBuild();
+        // PerformWebBuild();
 
         PerformiOSBuild();
         PerformAndroidBuild();

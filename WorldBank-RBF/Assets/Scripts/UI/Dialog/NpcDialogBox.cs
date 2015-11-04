@@ -271,14 +271,14 @@ public class NpcDialogBox : MB {
 					return;
 				} else if (content != "Learn More") {
 					button.Button.onClick.AddListener (() => {
-						DialogManager.instance.CreateTutorialScreen("phase_1_interactions_counter");
+						// DialogManager.instance.CreateTutorialScreen("phase_1_interactions_counter");
 						tutorialInteractions = true;
 					});
 				}
 			} else if (!tutorialBack) {
 				if (backButton) {
 					button.Button.onClick.AddListener (() => {
-						DialogManager.instance.CreateTutorialScreen("phase_1_move_around");
+						DialogManager.instance.CreateTutorialScreen("phase_1_interactions_counter");
 						tutorialBack = true;
 					});
 				}
