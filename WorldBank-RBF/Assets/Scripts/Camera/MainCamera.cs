@@ -6,6 +6,7 @@ public class MainCamera : MB {
 
 	// Inspector Vars
 	public float initialZoomLevel;
+	public Transform bufferQuad;
 
 	static MainCamera instance = null;
 	static public MainCamera Instance {
@@ -139,20 +140,25 @@ public class MainCamera : MB {
 
 		string city = e.City;
 		float xMax = 0f;
+		float xBufferOffset = 100f;
 
 		switch (city) {
 			case "malcom": xMax = 71f; break;
-			case "mile": xMax = 57f; break;
+			case "mile": xMax = 57f; xBufferOffset = 3; break;
 			case "kibari": xMax = 70f; break;
 			case "crup": xMax = 69f; break; 
-			case "zima": xMax = 46f; break;
+			case "zima": xMax = 46f; xBufferOffset = 2.7f; break;
 			case "capitol": xMax = 31f; break;
 			case "valeria": xMax = 33f; break;
 		}
 
-		Positioner.XMax = xMax;
+		Positioner.XMax = xMax - Camera.main.aspect;
 		Positioner.XMin = ParallaxLayerManager.Instance.FurthestLayer.LeftMin;
 
 		Positioner.XPosition = ParallaxLayerManager.Instance.CameraStartPosition;
+
+		float bufferStart = ParallaxLayerManager.Instance.NearestLayer.RightMax - bufferQuad.GetComponent<Renderer>().bounds.size.x;
+		bufferQuad.position = new Vector3(bufferStart + xBufferOffset, bufferQuad.position.y, bufferQuad.position.z);
+
 	}
 }

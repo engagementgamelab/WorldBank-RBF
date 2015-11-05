@@ -113,6 +113,9 @@ public class ScenarioManager : MonoBehaviour {
 			debugButton.gameObject.SetActive(false);
 			debugPanelProblemText.transform.parent.gameObject.SetActive(false);
 		#endif
+ 
+		// Show loading
+		loadingPanel.gameObject.SetActive(true);
 	}
 
 	void Update () {

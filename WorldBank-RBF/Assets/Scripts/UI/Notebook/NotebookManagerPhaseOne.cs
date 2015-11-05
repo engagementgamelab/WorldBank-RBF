@@ -57,39 +57,39 @@ public class NotebookManagerPhaseOne : MonoBehaviour {
 		CloseCanvases ();
 	}
 
-    /// <summary>
-    // Callback for TutorialEvent, filtering for type of event
-    /// </summary>
-    void OnTutorialEvent(TutorialEvent e) {
+  /// <summary>
+  // Callback for TutorialEvent, filtering for type of event
+  /// </summary>
+  void OnTutorialEvent(TutorialEvent e) {
 
-    	switch(e.eventType) {
+  	switch(e.eventType) {
 
-    		case "skip_tutorial":
+  		case "skip_tutorial":
 
-	    		DataManager.tutorialEnabled = false;
+    		DataManager.tutorialEnabled = false;
 
-	    		DialogManager.instance.RemoveTutorialScreen();
+    		DialogManager.instance.RemoveTutorialScreen();
 
-	    		// Unlock tutorial tactics
-				PlayerData.UnlockItem ("unlockable_grant_providers_autonomy", DataManager.GetUITextByKey("copy_unlockable_grant_providers_autonomy"), "finance_minister_capitol_city");
-				PlayerData.UnlockItem ("unlockable_incentivise_providers_to_deliver_services", DataManager.GetUITextByKey("copy_unlockable_incentivise_providers_to_deliver_services"), "dep_minister_of_health_capitol_city");
-				PlayerData.UnlockItem ("unlockable_vouchers_for_services", DataManager.GetUITextByKey("copy_unlockable_vouchers_for_services"), "regional_director_of_health_services_capitol_city");
-				PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system", DataManager.GetUITextByKey("copy_unlockable_information_campaign_to_explain_changes_to_system"), "regional_director_of_health_services_capitol_city");
-	    		
-	    		// Reset interactions
-				PlayerData.InteractionGroup.ClearTutorial();
+    		// Unlock tutorial tactics
+			PlayerData.UnlockItem ("unlockable_grant_providers_autonomy", DataManager.GetUITextByKey("copy_unlockable_grant_providers_autonomy"), "finance_minister_capitol_city");
+			PlayerData.UnlockItem ("unlockable_incentivise_providers_to_deliver_services", DataManager.GetUITextByKey("copy_unlockable_incentivise_providers_to_deliver_services"), "dep_minister_of_health_capitol_city");
+			PlayerData.UnlockItem ("unlockable_vouchers_for_services", DataManager.GetUITextByKey("copy_unlockable_vouchers_for_services"), "regional_director_of_health_services_capitol_city");
+			PlayerData.UnlockItem ("unlockable_information_campaign_to_explain_changes_to_system", DataManager.GetUITextByKey("copy_unlockable_information_campaign_to_explain_changes_to_system"), "regional_director_of_health_services_capitol_city");
+    		
+    		// Reset interactions
+			PlayerData.InteractionGroup.ClearTutorial();
 
-				// Open map
-				toggles[1].OnClick();
-				
-    			break;
+			// Open map
+			toggles[1].OnClick();
+			
+  			break;
 
-    		default:
+  		default:
 
-    			DialogManager.instance.CreateTutorialScreen(e.eventType);	    		
-    			break;
+  			DialogManager.instance.CreateTutorialScreen(e.eventType);	    		
+  			break;
 
-    	}
-    }
+  	}
+  }
 
 }

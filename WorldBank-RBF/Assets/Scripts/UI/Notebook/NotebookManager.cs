@@ -87,19 +87,9 @@ public class NotebookManager : MB {
 		// Need to find a better way to approach this, but for now
 		if (openAtStart) {
 			
-			// open = false;
-			// Open ();
-
-			// Hide indicators tab and show interactions counter in phase one
-			/*if(isPhaseOne)
-				tabGroup.transform.GetChild(3).gameObject.SetActive(false);
-			else*/
 			if (!isPhaseOne)
 				GameObject.Find("PhaseOne/UI/InteractionsCounter").gameObject.SetActive(false);
 
-		} else {
-			// open = true;
-			// Close ();
 		}
 	}
 
@@ -183,7 +173,6 @@ public class NotebookManager : MB {
 
 		}
 
-		// activeCanvas = id;
 	}
 
 	void SetActiveCanvasOnOpen () {

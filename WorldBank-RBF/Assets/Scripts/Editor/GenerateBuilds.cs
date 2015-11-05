@@ -88,8 +88,8 @@ class GenerateBuilds {
         
         // PerformWebBuild();
 
-        PerformiOSBuild();
-        PerformAndroidBuild();
+        // PerformiOSBuild();
+        // PerformAndroidBuild();
         // PerformWebGLBuild();
     }
 

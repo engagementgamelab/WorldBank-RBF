@@ -6,12 +6,13 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: layer2-8
+  m_Name: BufferMaterial
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _ALPHABLEND_ON
   m_LightmapFlags: 5
-  m_CustomRenderQueue: 8000
-  stringTagMap: {}
+  m_CustomRenderQueue: 8027
+  stringTagMap:
+    RenderType: Transparent
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -19,9 +20,9 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 394f47225df4e4e5b92455d20e4e0bd8, type: 3}
+          m_Texture: {fileID: 2800000, guid: 8948a32c69fef4045949eeb29279b85b, type: 3}
           m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
+          m_Offset: {x: -.310000002, y: 0}
       data:
         first:
           name: _BumpMap
@@ -56,7 +57,7 @@ Material:
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
+          m_Offset: {x: -.310000002, y: 0}
       data:
         first:
           name: _DetailMask
@@ -91,6 +92,10 @@ Material:
         first:
           name: _Cutoff
         second: .5
+      data:
+        first:
+          name: PixelSnap
+        second: 0
       data:
         first:
           name: _Parallax
@@ -135,4 +140,4 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
+        second: {r: 0, g: 0, b: 0, a: 1}

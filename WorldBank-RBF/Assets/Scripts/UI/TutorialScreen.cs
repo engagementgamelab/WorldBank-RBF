@@ -186,7 +186,7 @@ public class TutorialScreen : MonoBehaviour {
 			float[] spotlightPosition = tooltip.spotlight_position;
 			float[] maskPosition = tooltip.mask_position;
 
-			if(Camera.main.aspect > 1.6f && tooltip.spotlight_position_16x9 != null) {
+			if(Camera.main.aspect >= 1.6f && tooltip.spotlight_position_16x9 != null) {
 
 				Debug.Log("Using spotlight_position_16x9: " + tooltip.spotlight_position_16x9[0]);
 				spotlightPosition = tooltip.spotlight_position_16x9;
