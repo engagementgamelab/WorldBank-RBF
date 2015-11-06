@@ -228,11 +228,12 @@ public class NetworkManager : MonoBehaviour {
         
         yield return www;
 
+        Debug.Log(www.text);
+
         // Deserialize the response and handle it below
         Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
-
         // User is not logged in
-        if((www.responseHeaders.Count > 0) && www.responseHeaders["STATUS"].ToString().Contains("401"))
+        if((www.responseHeaders.Count > 0) && www.responseHeaders.ContainsKey("STATUS") && www.responseHeaders["STATUS"].ToString().Contains("401"))
         {
             Debug.LogError("User is not logged in. Call to " + url + " rejected.");
             
@@ -268,14 +269,14 @@ public class NetworkManager : MonoBehaviour {
             }
             else if(responseAction != null && response["error"] == null) 
             {
+                Debug.Log(response);
                 responseAction(response);
                 yield return null;
             }
-            else 
+            else
             {
+                Debug.Log(response);
                 responseAction (response);
-               // exceptionMsg = "API Request Error: " + response["error"];
-               //  throw new Exception(exceptionMsg);
             }
             
         }

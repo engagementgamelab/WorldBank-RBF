@@ -39,7 +39,7 @@ public class TexturePostProcessor : AssetPostprocessor {
 		/*if(assetPath.ToLower().IndexOf("/layer4") != -1)
 			importer.SetPlatformTextureSettings( "Android", 1024, TextureImporterFormat.ETC_RGB4, (int)TextureCompressionQuality.Fast, false ); //ATC_RGBA8 \\ ETC2_RGBA8 || PVRTC_RGBA4
 		else*/
-		importer.SetPlatformTextureSettings( "Android", 1024, TextureImporterFormat.PVRTC_RGBA4, (int)TextureCompressionQuality.Fast, false ); //ATC_RGBA8 \\ ETC2_RGBA8 || PVRTC_RGBA4
+		importer.SetPlatformTextureSettings( "Android", 1024, TextureImporterFormat.ATC_RGBA8, (int)TextureCompressionQuality.Fast, false ); //ATC_RGBA8 \\ ETC2_RGBA8 || PVRTC_RGBA4
 	
 		importer.SetPlatformTextureSettings( "Standalone", 4096, TextureImporterFormat.PVRTC_RGBA4, 100, false );
 		importer.SetPlatformTextureSettings( "WebPlayer", 1024, TextureImporterFormat.PVRTC_RGBA4, 100, false );

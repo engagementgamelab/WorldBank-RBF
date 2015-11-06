@@ -77,11 +77,9 @@ public class PlayerManager : MonoBehaviour {
 
     public void Authenticate(string email, string pass="") {
 
-        Dictionary<string, object> authFields = new Dictionary<string, object>();
-
-        authFields.Add("email", email);
-
-        NetworkManager.Instance.PostURL("/user/auth/", authFields, AuthCallback);
+        NetworkManager.Instance.PostURL("/user/auth/", 
+                                        new Dictionary<string, object>() {{ "email", email }},
+                                        AuthCallback);
         
     }
 
@@ -98,6 +96,8 @@ public class PlayerManager : MonoBehaviour {
     }
 
     public void AuthCallback(Dictionary<string, object> response) {
+
+        Debug.Log("*** AUTH");
 
         if(response.ContainsKey("error"))  
         {          

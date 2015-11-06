@@ -11,6 +11,8 @@ public class InfoBox : MB {
 	public Text body;
 	public Text buttonText;
 
+	public bool mainMenu;
+
 	string currentKey;
 	bool noDays = false;
 
@@ -49,9 +51,11 @@ public class InfoBox : MB {
 	}
 
 	void Start () {
-		PlayerData.InteractionGroup.onEmpty += OnNoInteractions;
-		PlayerData.DayGroup.onEmpty += OnNoDays;
-
+		if(!mainMenu) {
+				PlayerData.InteractionGroup.onEmpty += OnNoInteractions;
+				PlayerData.DayGroup.onEmpty += OnNoDays;
+		}
+		
 		NetworkManager.Instance.onNotLoggedIn += OnNotLoggedIn;
 	}
 

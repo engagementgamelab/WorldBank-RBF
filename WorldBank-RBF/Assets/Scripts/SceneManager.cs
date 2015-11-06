@@ -43,12 +43,12 @@ public class SceneManager : MonoBehaviour {
 		// We need our game config data before calling any remote endpoints
 		LoadGameConfig();
 
-		// Authenticate to API
-		// if(inMenus) {
-			NetworkManager.Instance.Authenticate(ClientAuthenticated);
+		// // Authenticate to API
+		// // if(inMenus) {
+		NetworkManager.Instance.Authenticate(ClientAuthenticated);
 			
-			// Set global game data if needed
-			SetGameData();
+		// 	// Set global game data if needed
+		SetGameData();
 		// }
 
 			Debug.Log("ASPECT: " + Camera.main.aspect);
@@ -163,7 +163,16 @@ public class SceneManager : MonoBehaviour {
 		// Try to get data from API remote
 		try {
 
-			gameData = NetworkManager.Instance.DownloadDataFromURL("/gameData");
+      #if UNITY_WEBGL
+
+	      // Get gamedata for webgl
+	      NetworkManager.Instance.GetURL("/gameData", GameDataResponse);
+
+      #else
+
+				gameData = NetworkManager.Instance.DownloadDataFromURL("/gameData");
+
+      #endif
 
 		}
 		// Fallback: load game data from local config
@@ -185,9 +194,15 @@ public class SceneManager : MonoBehaviour {
 		
 		}
 
+		GameDataResponse(gameData);
+
+	}
+
+	void GameDataResponse(string data) {
+
 		// Set global game data
-		if(gameData != null && gameData.Length > 0)	
-			DataManager.SetGameData(gameData);
+		if(data != null && data.Length > 0)	
+			DataManager.SetGameData(data);
 
 	}
 	
