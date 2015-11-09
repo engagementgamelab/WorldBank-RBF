@@ -218,6 +218,8 @@ public class NetworkManager : MonoBehaviour {
         
             if(_sessionCookie != null)
                 postHeader.Add("x-sessionID", _sessionCookie);
+
+            Debug.Log("PostURL: " + System.Text.Encoding.UTF8.GetString(formData));
         
            www = new WWW(url, formData, postHeader);
         }
@@ -232,6 +234,8 @@ public class NetworkManager : MonoBehaviour {
 
         // Deserialize the response and handle it below
         Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
+
+        Debug.Log(response);
         // User is not logged in
         if((www.responseHeaders.Count > 0) && www.responseHeaders.ContainsKey("STATUS") && www.responseHeaders["STATUS"].ToString().Contains("401"))
         {
@@ -267,7 +271,7 @@ public class NetworkManager : MonoBehaviour {
                     throw new Exception(exceptionMsg);
                 #endif
             }
-            else if(responseAction != null && response["error"] == null) 
+            else if(responseAction != null && !response.ContainsKey("error")) 
             {
                 Debug.Log(response);
                 responseAction(response);

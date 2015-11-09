@@ -143,7 +143,12 @@ public class DataManager {
         #elif IS_PRODUCTION
            currentConfig = config.production;
         #else
-           currentConfig = config.staging;
+           #if !UNITY_WEBGL
+               currentConfig = config.staging;
+           #else
+               // Hack
+               currentConfig = config.development;
+           #endif
         #endif
 
         Debug.Log("SetGameConfig: " + currentConfig.root);
