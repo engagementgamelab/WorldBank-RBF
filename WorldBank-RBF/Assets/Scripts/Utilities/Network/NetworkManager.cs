@@ -59,8 +59,6 @@ public class NetworkManager : MonoBehaviour {
         set {
             _sessionCookie = value;
 
-            Debug.Log("Set cookie to " + _sessionCookie);
-
             // Client was authenticated -- call any requests that were waiting
             foreach(PostCache req in _cachedRequests)
                 PostURL(req.url, req.fields, req.responseHandler);
@@ -178,10 +176,7 @@ public class NetworkManager : MonoBehaviour {
     }
 
     IEnumerator WaitForRequest(string url, Action<string> responseAction=null)
-     {
-        Debug.Log("Requesting: " + url);
-
-        WWW www = new WWW(url);
+     {        WWW www = new WWW(url);
 
         yield return www;
 
@@ -194,8 +189,6 @@ public class NetworkManager : MonoBehaviour {
                 responseAction(www.text);
                 yield return null;
             }
-            else
-                Debug.Log("WWW Ok!: " + www.text);
         }
         else
         {
@@ -218,8 +211,6 @@ public class NetworkManager : MonoBehaviour {
         
             if(_sessionCookie != null)
                 postHeader.Add("x-sessionID", _sessionCookie);
-
-            Debug.Log("PostURL: " + System.Text.Encoding.UTF8.GetString(formData));
         
            www = new WWW(url, formData, postHeader);
         }
@@ -230,19 +221,12 @@ public class NetworkManager : MonoBehaviour {
         
         yield return www;
 
-        Debug.Log(www.text);
-
         // Deserialize the response and handle it below
         Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
 
-        Debug.Log(response);
         // User is not logged in
-        if((www.responseHeaders.Count > 0) && www.responseHeaders.ContainsKey("STATUS") && www.responseHeaders["STATUS"].ToString().Contains("401"))
-        {
-            Debug.LogError("User is not logged in. Call to " + url + " rejected.");
-            
+        if((www.responseHeaders.Count > 0) && www.responseHeaders.ContainsKey("STATUS") && www.responseHeaders["STATUS"].ToString().Contains("401"))  
             onNotLoggedIn();
-        }
         // check for errors
         else if (www.error == null) 
         {
@@ -252,8 +236,6 @@ public class NetworkManager : MonoBehaviour {
                 responseAction(response);
                 yield return null;
             }
-            else
-                Debug.Log("WWW Ok!: " + www.text);
         
         }
         else
@@ -273,13 +255,11 @@ public class NetworkManager : MonoBehaviour {
             }
             else if(responseAction != null && !response.ContainsKey("error")) 
             {
-                Debug.Log(response);
                 responseAction(response);
                 yield return null;
             }
             else
             {
-                Debug.Log(response);
                 responseAction (response);
             }
             

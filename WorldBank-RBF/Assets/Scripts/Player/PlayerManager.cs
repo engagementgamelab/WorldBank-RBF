@@ -2,11 +2,9 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using JsonFx.Json;
-using Parse;
  
 // TODO: This needs lots of cleanup
 public class PlayerManager : MonoBehaviour {
@@ -96,8 +94,6 @@ public class PlayerManager : MonoBehaviour {
     }
 
     public void AuthCallback(Dictionary<string, object> response) {
-
-        Debug.Log("*** AUTH");
 
         if(response.ContainsKey("error"))  
         {          

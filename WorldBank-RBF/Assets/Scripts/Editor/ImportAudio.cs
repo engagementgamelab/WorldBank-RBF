@@ -24,7 +24,7 @@ public class AudioPostProcessor : AssetPostprocessor {
 		AudioImporterSampleSettings settings = new AudioImporterSampleSettings();
 		settings.compressionFormat = AudioCompressionFormat.AAC;
 		settings.loadType = AudioClipLoadType.DecompressOnLoad;
-		settings.sampleRateOverride = 22050;
+		settings.sampleRateOverride = 11025;
 		settings.sampleRateSetting = AudioSampleRateSetting.OverrideSampleRate;
 
 		importer.SetOverrideSampleSettings( "WebGL", settings );

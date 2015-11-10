@@ -195,8 +195,8 @@ public class ScenarioManager : MonoBehaviour {
 	public void LoadMainMenu() {
 		
 		AudioManager.StopAll ();
-		// StartCoroutine (CoGotoMenus ());
-		Application.Quit();
+		StartCoroutine (CoGotoMenus ());
+		// Application.Quit();
 
 	}
 

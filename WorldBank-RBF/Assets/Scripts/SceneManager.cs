@@ -12,7 +12,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Parse;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -50,8 +49,6 @@ public class SceneManager : MonoBehaviour {
 		// 	// Set global game data if needed
 		SetGameData();
 		// }
-
-			Debug.Log("ASPECT: " + Camera.main.aspect);
 	}
 
 	void Start() {

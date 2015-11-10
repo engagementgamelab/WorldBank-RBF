@@ -256,12 +256,13 @@ public class NpcDialogBox : MB {
 		
 		bool backButton = content == "Back";
 		button.gameObject.SetActive (true);
+
 		button.Text.Text.text = content.Replace ("~", "");
 		button.Icon.gameObject.SetActive (!backButton && content != "Learn More");
+		
 		buttonTexts[index].color = backButton ? backColor : defaultColor;
 		buttonImages[index].color = backButton ? backColor : defaultColor;
-		
-		button.Button.onClick.AddListener (action);
+
 		button.Button.onClick.AddListener (() => { SetButtonsInteractable (false); });
 
 		if (DataManager.tutorialEnabled) {
@@ -289,8 +290,18 @@ public class NpcDialogBox : MB {
 			buttonTexts[index].color = unlockColor;
 			buttonImages[index].color = unlockColor;
 		}
-
+		
 		button.Button.interactable = true;
+		
+		// WebGL workaround
+		if(backButton) {
+			button.Button.onClick.AddListener (() => {
+				NPCFocusBehavior.Instance.DefaultFocus ();
+				Close ();
+			});
+		}
+		else
+			button.Button.onClick.AddListener (action);
 	}
 
 	void ResetScroll () {

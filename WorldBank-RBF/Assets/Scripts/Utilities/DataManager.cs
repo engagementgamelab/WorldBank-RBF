@@ -151,7 +151,6 @@ public class DataManager {
            #endif
         #endif
 
-        Debug.Log("SetGameConfig: " + currentConfig.root);
     }
 
     /// <summary>
