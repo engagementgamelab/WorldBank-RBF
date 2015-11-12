@@ -109,14 +109,18 @@ class GenerateBuilds {
         PerformAndroidBuild();
     }
 
-    [MenuItem ("Build/Build Desktop for Production")]
+    [MenuItem ("Build/Build for Production")]
     static void MakeProductionBuilds()
     {
         BUILD_OPTIONS = BuildOptions.None;
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "IS_PRODUCTION");
 
-        PerformMacOSXBuild();
-        PerformPCBuild();
+        // Production stripping
+        EditorUserBuildSettings.webGLOptimizationLevel = 3;
+
+        // PerformMacOSXBuild();
+        // PerformPCBuild();
+        PerformWebGLBuild();
     }
 
     [MenuItem ("Build/Build Staging")]
@@ -153,7 +157,7 @@ class GenerateBuilds {
 
     static string[] FindEnabledScenes(string platform) {
 
-        string[] sceneList = (platform == "iOS" || platform == "Android") ? SCENES_MOBILE : SCENES;
+        string[] sceneList = (platform == "iOS" || platform == "Android" || platform == "WebGL") ? SCENES_MOBILE : SCENES;
 
         List<string> EditorScenes = new List<string>();
 
@@ -195,7 +199,9 @@ class GenerateBuilds {
         if(platform == "Mac")
             name = APP_NAME + ".app";
         else if(platform == "PC") 
-            name = APP_NAME + ".exe";         
+            name = APP_NAME + ".exe"; 
+        else if(platform == "WebGL") 
+            name = APP_NAME.ToLower().Replace(" ", "_");         
 
         SetIcons (buildTarget);
 
