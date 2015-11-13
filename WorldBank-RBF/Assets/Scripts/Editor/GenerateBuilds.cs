@@ -114,6 +114,7 @@ class GenerateBuilds {
     {
         BUILD_OPTIONS = BuildOptions.None;
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "IS_PRODUCTION");
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.WebGL, "IS_PRODUCTION");
 
         // Production stripping
         EditorUserBuildSettings.webGLOptimizationLevel = 3;

@@ -16,9 +16,9 @@ using UnityEditor;
 
 public class TexturePostProcessor : AssetPostprocessor {
 	// Texture import setting vars
-	// TextureCompressionQuality _qualityBest = TextureCompressionQuality.Best;
-	// TextureCompressionQuality _qualityGood = TextureCompressionQuality.Normal;
-	// TextureCompressionQuality _qualityFast = TextureCompressionQuality.Fast;
+	int _qualityBest = (int)TextureCompressionQuality.Best;
+	int _qualityGood = (int)TextureCompressionQuality.Normal;
+	int _qualityFast = (int)TextureCompressionQuality.Fast;
 	
 	// Set per-platform texture settings
 	void OnPostprocessTexture(Texture2D texture) {
@@ -34,16 +34,16 @@ public class TexturePostProcessor : AssetPostprocessor {
 		importer.wrapMode = TextureWrapMode.Clamp;
 
 		// Set texture settings
-		importer.SetPlatformTextureSettings( "iPhone", 1024, TextureImporterFormat.PVRTC_RGBA4, (int)TextureCompressionQuality.Normal, false );
+		importer.SetPlatformTextureSettings( "iPhone", 1024, TextureImporterFormat.PVRTC_RGBA4, _qualityGood, false );
 
 		/*if(assetPath.ToLower().IndexOf("/layer4") != -1)
 			importer.SetPlatformTextureSettings( "Android", 1024, TextureImporterFormat.ETC_RGB4, (int)TextureCompressionQuality.Fast, false ); //ATC_RGBA8 \\ ETC2_RGBA8 || PVRTC_RGBA4
 		else*/
-		importer.SetPlatformTextureSettings( "Android", 1024, TextureImporterFormat.ATC_RGBA8, (int)TextureCompressionQuality.Fast, false ); //ATC_RGBA8 \\ ETC2_RGBA8 || PVRTC_RGBA4
+		importer.SetPlatformTextureSettings( "Android", 1024, TextureImporterFormat.ATC_RGBA8, _qualityFast, false ); //ATC_RGBA8 \\ ETC2_RGBA8 || PVRTC_RGBA4
 	
-		importer.SetPlatformTextureSettings( "Standalone", 4096, TextureImporterFormat.PVRTC_RGBA4, 100, false );
-		importer.SetPlatformTextureSettings( "WebPlayer", 1024, TextureImporterFormat.PVRTC_RGBA4, 100, false );
-		importer.SetPlatformTextureSettings( "WebGL", 1024, TextureImporterFormat.PVRTC_RGBA4, 100, false );
+		importer.SetPlatformTextureSettings( "Standalone", 4096, TextureImporterFormat.PVRTC_RGBA4, _qualityBest, false );
+		importer.SetPlatformTextureSettings( "WebPlayer", 1024, TextureImporterFormat.PVRTC_RGBA4, _qualityBest, false );
+		importer.SetPlatformTextureSettings( "WebGL", 1024, TextureImporterFormat.AutomaticCrunched, _qualityBest, false );
 
 		Object asset = AssetDatabase.LoadAssetAtPath(importer.assetPath, typeof(Texture2D));
 		if (asset) {
