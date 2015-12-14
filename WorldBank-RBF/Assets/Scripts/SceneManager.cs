@@ -53,7 +53,9 @@ public class SceneManager : MonoBehaviour {
 
 	void Start() {
 
-		Application.targetFrameRate = 60;
+		#if !UNITY_WEBGL
+			Application.targetFrameRate = 60;
+		#endif
 
 		// Set loading indicator styles
 		#if UNITY_IPHONE

@@ -148,6 +148,8 @@ public static class MaterialsManager {
 
 	static void SetTextureIsBlank (Texture2D tex, string texturePath) {
 
+		Debug.Log(texturePath);
+
 		bool isBlank = false;
 		string textureKey = texturePath.Replace("Assets/Textures/Cities/", "").Replace(".png", "");
 		

@@ -43,7 +43,7 @@ public class TexturePostProcessor : AssetPostprocessor {
 	
 		importer.SetPlatformTextureSettings( "Standalone", 4096, TextureImporterFormat.PVRTC_RGBA4, _qualityBest, false );
 		importer.SetPlatformTextureSettings( "WebPlayer", 1024, TextureImporterFormat.PVRTC_RGBA4, _qualityBest, false );
-		importer.SetPlatformTextureSettings( "WebGL", 1024, TextureImporterFormat.AutomaticCrunched, _qualityBest, false );
+		importer.SetPlatformTextureSettings( "WebGL", 512, TextureImporterFormat.PVRTC_RGBA4, _qualityFast, false );
 
 		Object asset = AssetDatabase.LoadAssetAtPath(importer.assetPath, typeof(Texture2D));
 		if (asset) {
