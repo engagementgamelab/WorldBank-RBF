@@ -46,7 +46,7 @@ public class TitleScreen : MonoBehaviour {
 	}
 
 	public void OnCredits () {
-		menus.SetScreen ("credits");
+		menus.SetScreen ("credits1");
 	}
 
 	void OnFormEvent (PlayerLoginEvent e) {

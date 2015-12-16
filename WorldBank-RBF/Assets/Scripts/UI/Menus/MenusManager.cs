@@ -12,7 +12,8 @@ public class MenusManager : MonoBehaviour {
 	public Transform phaseSelection;
 	public Transform planSelection;
 	public Transform loading;
-	public Transform credits;
+	public Transform credits1;
+	public Transform credits2;
 
 	Transform currentScreen;
 	Transform previousScreen;
@@ -53,7 +54,8 @@ public class MenusManager : MonoBehaviour {
 				screens.Add ("phase", phaseSelection);
 				screens.Add ("plan", planSelection);
 				screens.Add ("loading", loading);
-				screens.Add ("credits", credits);
+				screens.Add ("credits1", credits1);
+				screens.Add ("credits2", credits2);
 			}
 			return screens;
 		}
