@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using System.IO;
 using JsonFx.Json;
  
@@ -10,7 +11,9 @@ using JsonFx.Json;
 public class PlayerManager : MonoBehaviour {
     
     protected PlayerManager() {}
-    private static PlayerManager _instance = null;
+    static PlayerManager _instance = null;
+
+    Models.PlanRecord plan;
         
     public static PlayerManager Instance {
         get {
@@ -135,8 +138,27 @@ public class PlayerManager : MonoBehaviour {
         // Insert user ID
         saveFields.Add("user_id", _playerId);
 
+        // Save form as raw byte array
+        System.Text.StringBuilder output = new System.Text.StringBuilder();
+        JsonWriter writer = new JsonWriter (output);
+
+        Models.Plan p = saveFields["plan"] as Models.Plan;
+		Models.PlanRecord planData = new Models.PlanRecord();
+		
+        planData.name = p.name;
+		planData.tactics = p.tactics;
+
+        planData.score = 10;
+        planData.default_affects = new string[] { "7", "10", "15" };
+
+        writer.Write(planData);
+
+        PlayerPrefs.SetString("current plan", output.ToString());
+        PlayerPrefs.Save();
+
         // Save user info
         NetworkManager.Instance.PostURL("/user/save/", saveFields, response);
+
     }
 
     public void TrackEvent(string strEventName, string strEventCategory) {

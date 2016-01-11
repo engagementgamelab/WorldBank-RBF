@@ -29,6 +29,17 @@ public class NetworkManager : MonoBehaviour {
     
     public delegate void OnServerDown();
     public delegate void OnNotLoggedIn();
+    public delegate void OnNoNetwork();
+
+    float elapsedTime = 0.0f;
+    float timeoutTime = .0001f;
+    
+    bool isDownloading;
+    bool _ignoreNetwork;
+
+    IEnumerator _currentRoutine;
+
+    WWW www;
 
     class PostCache {
         
@@ -89,6 +100,11 @@ public class NetworkManager : MonoBehaviour {
     /// </summary>
     public OnNotLoggedIn onNotLoggedIn;
 
+    /// <summary>
+    /// Called when the user has no network connection.
+    /// </summary>
+    public OnNoNetwork onNoNetwork;
+
     public void Authenticate(Action<Dictionary<string, object>> responseHandler=null) {
 
         PostURL(
@@ -123,6 +139,11 @@ public class NetworkManager : MonoBehaviour {
     /// <param name="responseHandler">An Action that handles the response (optional).</param>
     public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> responseHandler=null) {
 
+        if(_ignoreNetwork) {
+            responseHandler(new Dictionary<string, object>(){{ "local", true }});
+            return;
+        }
+
         string absoluteURL = DataManager.RemoteURL + url;
 
         // Send form as raw byte array
@@ -147,7 +168,8 @@ public class NetworkManager : MonoBehaviour {
         writer.Write(fields);
      
         // Encode output as UTF8 bytes
-        StartCoroutine(WaitForForm(absoluteURL, Encoding.UTF8.GetBytes(output.ToString()), responseHandler));
+        _currentRoutine = WaitForForm(absoluteURL, Encoding.UTF8.GetBytes(output.ToString()), responseHandler);
+        StartCoroutine(_currentRoutine);
     
     }
 
@@ -200,8 +222,6 @@ public class NetworkManager : MonoBehaviour {
 
     IEnumerator WaitForForm(string url, byte[] formData=null, Action<Dictionary<string, object>> responseAction=null, WWWForm form=null)
      {
-        WWW www;
-
         // Specified raw form as JSON
         Dictionary<string, string> postHeader = new Dictionary<string, string>();
         postHeader.Add("Content-Type", "application/json");
@@ -212,58 +232,91 @@ public class NetworkManager : MonoBehaviour {
             if(_sessionCookie != null)
                 postHeader.Add("x-sessionID", _sessionCookie);
         
-           www = new WWW(url, formData, postHeader);
+            using(www = new WWW(url, formData, postHeader)) {
+            
+                isDownloading = true;
+                elapsedTime = 0;
+
+                yield return www;
+
+                isDownloading = false;
+
+                if(www == null)
+                    yield return null;
+
+                // Deserialize the response and handle it below
+                Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
+
+                // User is not logged in
+                if((www.responseHeaders.Count > 0) && www.responseHeaders.ContainsKey("STATUS") && www.responseHeaders["STATUS"].ToString().Contains("401"))  
+                    onNotLoggedIn();
+
+                // check for errors
+                else if (www.error == null) 
+                {
+
+                    if(responseAction != null)
+                    {
+                        responseAction(response);
+                        yield return null;
+                    }
+
+                }
+
+                else
+                {
+                    string exceptionMsg = "WaitForForm unknown error. No response to parse and no registered callback.";
+
+                    if(response == null)
+                    {
+                        if(www.error.Equals("couldn't connect to host"))
+                            onServerDown();
+
+                        // If in editor, always throw so we catch issues
+                        #if UNITY_EDITOR || DEVELOPMENT_BUILD
+                            exceptionMsg = "General WWW issue: " + www.error;
+                            throw new Exception(exceptionMsg);
+                        #endif
+                    }
+                    else if(responseAction != null && !response.ContainsKey("error")) 
+                    {
+                        responseAction(response);
+                        yield return null;
+                    }
+                    else
+                    {
+                        responseAction (response);
+                    }
+                    
+                }
+            }
         }
         
         // Bail out!
         else
             throw new Exception("WaitForForm: both form and form byte data not specified.");
-        
-        yield return www;
 
-        // Deserialize the response and handle it below
-        Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
-
-        // User is not logged in
-        if((www.responseHeaders.Count > 0) && www.responseHeaders.ContainsKey("STATUS") && www.responseHeaders["STATUS"].ToString().Contains("401"))  
-            onNotLoggedIn();
-        // check for errors
-        else if (www.error == null) 
-        {
-
-            if(responseAction != null)
-            {
-                responseAction(response);
-                yield return null;
-            }
-        
-        }
-        else
-        {
-            string exceptionMsg = "WaitForForm unknown error. No response to parse and no registered callback.";
-
-            if(response == null)
-            {
-                if(www.error.Equals("couldn't connect to host"))
-                    onServerDown();
-
-                // If in editor, always throw so we catch issues
-                #if UNITY_EDITOR
-                    exceptionMsg = "General WWW issue: " + www.error;
-                    throw new Exception(exceptionMsg);
-                #endif
-            }
-            else if(responseAction != null && !response.ContainsKey("error")) 
-            {
-                responseAction(response);
-                yield return null;
-            }
-            else
-            {
-                responseAction (response);
-            }
-            
-        }
      }
+
+    #if !UNITY_WEBGL
+    void Update () {
+        
+        elapsedTime += Time.deltaTime;
+
+        if(elapsedTime >= timeoutTime && isDownloading){
+            StopCoroutine(_currentRoutine);
+        
+            Debug.Log("KILL NETWORK");
+            www.Dispose();
+
+            if(!_ignoreNetwork)
+                onNoNetwork();
+
+            _ignoreNetwork = true;
+            isDownloading = false;
+        }
+    
+    }
+    #endif
 
 }

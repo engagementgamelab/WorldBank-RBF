@@ -4,6 +4,8 @@ using System.Collections;
 
 public class InfoBox : MB {
 
+  public delegate void ButtonClicked();
+
 	public CanvasToggle mapToggle;
 	public CanvasToggle planToggle;
 
@@ -15,6 +17,8 @@ public class InfoBox : MB {
 
 	string currentKey;
 	bool noDays = false;
+
+  public ButtonClicked onButtonClicked;
 
 	GameObject panel = null;
 	GameObject Panel {
@@ -56,7 +60,10 @@ public class InfoBox : MB {
 				PlayerData.DayGroup.onEmpty += OnNoDays;
 		}
 		
+		NetworkManager.Instance.onNoNetwork += OnNoNetwork;
 		NetworkManager.Instance.onNotLoggedIn += OnNotLoggedIn;
+		
+		onButtonClicked += Hide;
 	}
 
 	void OnDestroy() 
@@ -64,7 +71,10 @@ public class InfoBox : MB {
 		PlayerData.InteractionGroup.onEmpty -= OnNoInteractions;
 		PlayerData.DayGroup.onEmpty -= OnNoDays;
 
+		NetworkManager.Instance.onNoNetwork -= OnNoNetwork;
 		NetworkManager.Instance.onNotLoggedIn -= OnNotLoggedIn;
+		
+		onButtonClicked -= Hide;
 	}
 
 	public void Open (string headerText, string contentText) {
@@ -93,11 +103,20 @@ public class InfoBox : MB {
 	}
 
 	public void OnButtonPress () {
+
 		if (currentKey == "copy_out_of_days")
 			planToggle.OnClick ();
 		else if (currentKey == "copy_out_of_interactions")
 			mapToggle.OnClick ();
+
+		onButtonClicked();
+
+	}
+
+	void Hide() {
+
 		SetActive (false);
+
 	}
 
 	void OnNoInteractions () {
@@ -111,6 +130,12 @@ public class InfoBox : MB {
 	void OnNotLoggedIn() {
 		buttonText.text = "Ok";
 		Open(DataManager.GetUIText("copy_server_session_lost_header"), DataManager.GetUIText("copy_server_session_lost_body"));
+	}
+
+	void OnNoNetwork() {
+		buttonText.text = "Ok";
+		currentKey = "connection_lost";
+		Open(DataManager.GetUIText("copy_connection_lost_header"), DataManager.GetUIText("copy_connection_lost_body"));
 	}
 
 	void SetActive (bool active) {

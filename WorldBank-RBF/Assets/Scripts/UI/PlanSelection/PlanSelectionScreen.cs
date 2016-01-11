@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -25,10 +26,10 @@ public class PlanSelectionScreen : MonoBehaviour {
 
 	Animator planAnimator;
 
-	Models.PlanRecord[] plans;
+	List<Models.PlanRecord> plans;
 
 	int PlanCount {
-		get { return plans.Length-1; }
+		get { return plans.Count-1; }
 	}
 	
 	int planIndex;
@@ -110,7 +111,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 	void SetPlanData(int planIndex) {
 
 		// Failsafe
-		if(planIndex > plans.Length-1 || planIndex < 0)
+		if(planIndex > plans.Count-1 || planIndex < 0)
 			return;
 
 		int tactInt = 0;
@@ -140,10 +141,26 @@ public class PlanSelectionScreen : MonoBehaviour {
     /// </summary>
     /// <param name="response">Textual response from /plan/all/ endpoint.</param>
     void PlansRetrieved(Dictionary<string, object> response) {
+			
+			plans = new List<Models.PlanRecord>();
 
-		plans = JsonReader.Deserialize<Models.PlanRecord[]>(response["plans"].ToString());
+    	// Local fallback
+    	if(response.ContainsKey("local"))
+    	{
 
-		PlanIndex = 0;
+				// Open stream to plans JSON config file
+				TextAsset plansJson = (TextAsset)Resources.Load("plans", typeof(TextAsset) );
+				StringReader strPlansData = new StringReader(plansJson.text);
+
+        plans.Add(JsonReader.Deserialize<Models.PlanRecord>(PlayerPrefs.GetString("current plan")));
+				plans.AddRange(JsonReader.Deserialize<Models.PlanRecord[]>(strPlansData.ReadToEnd()));
+	    	
+    	}
+    	// Network response
+    	else
+				plans.AddRange(JsonReader.Deserialize<Models.PlanRecord[]>(response["plans"].ToString()));
+
+			PlanIndex = 0;
     	SetPlanData(0);
     	ShowPlan(0);
 

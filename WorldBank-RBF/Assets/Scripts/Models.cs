@@ -307,16 +307,18 @@ namespace Models {
 
     }
     
-    // Used for retrieval only
-    public class PlanRecord {
+    // Used for retrieval and local fallback only
+    public class PlanRecord : Plan {
 
+        [JsonMember]
         public string _id { get; set; }
-        public string name { get; set; }
+        [JsonMember]
         public int score { get; set; }
-        public string[] tactics { get; set; }
+        [JsonMember]
         public string[] default_affects { get; set; }
-
+        [JsonMember]
         public bool pbc { get; set; }
+        [JsonMember]
         public bool autonomy { get; set; }
 
     }

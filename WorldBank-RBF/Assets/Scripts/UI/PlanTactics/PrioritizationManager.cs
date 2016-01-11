@@ -37,15 +37,15 @@ public class PrioritizationManager : NotebookCanvas {
 		AudioManager.Music.StopAll ();
 		AudioManager.Ambience.StopAll ();
 
-        Dictionary<string, object> formFields = new Dictionary<string, object>();
+    Dictionary<string, object> formFields = new Dictionary<string, object>();
 
-        Models.Plan plan = new Models.Plan();
+    Models.Plan plan = new Models.Plan();
 
-        plan.name = planNameInput.text;
-        plan.tactics = PlayerData.TacticPriorityGroup.Tactics;
+    plan.name = planNameInput.text;
+    plan.tactics = PlayerData.TacticPriorityGroup.Tactics;
 
-        formFields.Add("plan", plan);
-        formFields.Add("save_plan", true);
+    formFields.Add("plan", plan);
+    formFields.Add("save_plan", true);
 
 		PlayerManager.Instance.SaveData (formFields, SubmitPlanCallback);
 

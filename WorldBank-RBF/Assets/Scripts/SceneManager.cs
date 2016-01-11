@@ -21,6 +21,8 @@ public class SceneManager : MonoBehaviour {
 	public string sceneName;
 	public bool inMenus;
 
+	public MenusManager menus;
+
 	[HideInInspector]
 	public int environmentIndex = 0;
 	[HideInInspector]
@@ -38,6 +40,9 @@ public class SceneManager : MonoBehaviour {
 	void Awake () { 
 
 		NetworkManager.Instance.onServerDown += OnServerDown;
+
+		if(infoBox != null)
+			infoBox.onButtonClicked += SkipLogin;
 
 		// We need our game config data before calling any remote endpoints
 		LoadGameConfig();
@@ -126,6 +131,19 @@ public class SceneManager : MonoBehaviour {
 
 		infoBox.Open("Sorry!", 
 								 "The game's server is currently unreachable. Your internet connection may be having some issues, or the server is offline for regular maintenance.\n\nPlease close the application and try again in a few minutes. Apologies for the inconvenience!");
+
+	}
+
+	void OnNoNetwork() {
+
+		infoBox.Open("Sorry!", 
+								 "The game's server is currently unreachable. Your internet connection may be having some issues, or the server is offline for regular maintenance.\n\nPlease close the application and try again in a few minutes. Apologies for the inconvenience!");
+
+	}
+
+	void SkipLogin() {
+
+		menus.SetScreen ("phase");
 
 	}
 
