@@ -32,7 +32,7 @@ public class NetworkManager : MonoBehaviour {
     public delegate void OnNoNetwork();
 
     float elapsedTime = 0.0f;
-    float timeoutTime = .0001f;
+    float timeoutTime = 5;
     
     bool isDownloading;
     bool _ignoreNetwork;
@@ -107,6 +107,10 @@ public class NetworkManager : MonoBehaviour {
 
     public void Authenticate(Action<Dictionary<string, object>> responseHandler=null) {
 
+        // Bail if network not used
+        if(_ignoreNetwork) 
+            return;
+
         PostURL(
             "/auth/",
             new Dictionary<string, object>() {{ "key", DataManager.APIKey }},
@@ -140,7 +144,8 @@ public class NetworkManager : MonoBehaviour {
     public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> responseHandler=null) {
 
         if(_ignoreNetwork) {
-            responseHandler(new Dictionary<string, object>(){{ "local", true }});
+            fields.Add("local", true);
+            responseHandler(fields);
             return;
         }
 
@@ -275,8 +280,13 @@ public class NetworkManager : MonoBehaviour {
                         // If in editor, always throw so we catch issues
                         #if UNITY_EDITOR || DEVELOPMENT_BUILD
                             exceptionMsg = "General WWW issue: " + www.error;
-                            throw new Exception(exceptionMsg);
+                            Debug.Log(exceptionMsg);
+
+                            onServerDown();
                         #endif
+
+                        // Kill all networking
+                        _ignoreNetwork = true;
                     }
                     else if(responseAction != null && !response.ContainsKey("error")) 
                     {

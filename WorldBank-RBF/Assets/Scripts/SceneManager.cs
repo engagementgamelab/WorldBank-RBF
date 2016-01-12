@@ -87,8 +87,8 @@ public class SceneManager : MonoBehaviour {
 	/// <summary>
 	/// Client was authenticated to API; we can now get game data and ask player to log in
 	/// </summary>
-    /// <param name="response">Dictionary containing "authed" key telling us if API auth </param>
-    public void ClientAuthenticated(Dictionary<string, object> response) {
+  /// <param name="response">Dictionary containing "authed" key telling us if API auth </param>
+  public void ClientAuthenticated(Dictionary<string, object> response) {
 
 		Debug.Log("Client API auth successful? " + response["authed"]);
 
@@ -112,7 +112,7 @@ public class SceneManager : MonoBehaviour {
 
 		DataManager.SceneContext = sceneName;
 
-    }
+  }
 	
 	/// <summary>
 	/// User attempted authentication; return/show error if failed
@@ -129,15 +129,8 @@ public class SceneManager : MonoBehaviour {
 
 	void OnServerDown() {
 
-		infoBox.Open("Sorry!", 
-								 "The game's server is currently unreachable. Your internet connection may be having some issues, or the server is offline for regular maintenance.\n\nPlease close the application and try again in a few minutes. Apologies for the inconvenience!");
-
-	}
-
-	void OnNoNetwork() {
-
-		infoBox.Open("Sorry!", 
-								 "The game's server is currently unreachable. Your internet connection may be having some issues, or the server is offline for regular maintenance.\n\nPlease close the application and try again in a few minutes. Apologies for the inconvenience!");
+		infoBox.buttonText.text = "Ok";
+		infoBox.Open(DataManager.GetUIText("copy_connection_lost_header"), DataManager.GetUIText("copy_connection_lost_body"));
 
 	}
 
@@ -196,9 +189,9 @@ public class SceneManager : MonoBehaviour {
 		catch(System.Exception e) {
 
 			// If in editor, always throw so we catch issues
-			#if UNITY_EDITOR
-				throw new System.Exception("Unable to obtain game data due to error '" + e + "'");
-			#else
+			// #if UNITY_EDITOR
+			// 	throw new System.Exception("Unable to obtain game data due to error '" + e + "'");
+			// #else
  
 		    TextAsset dataJson = (TextAsset)Resources.Load("data", typeof(TextAsset));
 				StringReader strData = new StringReader(dataJson.text);
@@ -207,7 +200,7 @@ public class SceneManager : MonoBehaviour {
 
 				strData.Close();
 				
-			#endif
+			// #endif
 		
 		}
 

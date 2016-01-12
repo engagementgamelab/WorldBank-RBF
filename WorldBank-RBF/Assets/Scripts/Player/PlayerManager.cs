@@ -138,23 +138,29 @@ public class PlayerManager : MonoBehaviour {
         // Insert user ID
         saveFields.Add("user_id", _playerId);
 
-        // Save form as raw byte array
-        System.Text.StringBuilder output = new System.Text.StringBuilder();
-        JsonWriter writer = new JsonWriter (output);
+        #region Local Plan Fallback
+            // Save form as raw byte array as local fallback
+            System.Text.StringBuilder output = new System.Text.StringBuilder();
+            JsonWriter writer = new JsonWriter (output);
 
-        Models.Plan p = saveFields["plan"] as Models.Plan;
-		Models.PlanRecord planData = new Models.PlanRecord();
-		
-        planData.name = p.name;
-		planData.tactics = p.tactics;
+            Models.Plan p = saveFields["plan"] as Models.Plan;
+    		Models.PlanRecord planData = new Models.PlanRecord();
+    		
+            // User's local plan is always id 0
+            planData._id = "0";
 
-        planData.score = 10;
-        planData.default_affects = new string[] { "7", "10", "15" };
+            planData.name = p.name;
+    		planData.tactics = p.tactics;
 
-        writer.Write(planData);
+            planData.score = 10;
+            planData.default_affects = new string[] { "7", "10", "15" };
+            planData.affects_goal = new int[] { 30, 35, 40 };
 
-        PlayerPrefs.SetString("current plan", output.ToString());
-        PlayerPrefs.Save();
+            writer.Write(planData);
+
+            PlayerPrefs.SetString("current plan", output.ToString());
+            PlayerPrefs.Save();
+        #endregion
 
         // Save user info
         NetworkManager.Instance.PostURL("/user/save/", saveFields, response);

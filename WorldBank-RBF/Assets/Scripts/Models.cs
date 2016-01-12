@@ -321,6 +321,11 @@ namespace Models {
         [JsonMember]
         public bool autonomy { get; set; }
 
+        /* Local plan only */
+        [JsonMember]
+        public string current_scenario { get; set; }
+        [JsonMember]
+        public int[] affects_goal { get; set; }
     }
 
 

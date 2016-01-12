@@ -14,6 +14,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using JsonFx.Json;
 using Models;
 
@@ -586,6 +587,30 @@ public class DataManager {
             throw new Exception("Unable to find UI text with key '" + strKey + "'! Hogwash!");
      
         }
+
+    }
+
+    public static Dictionary<string, object> GetLocalPlanById(string planId) {
+
+        PlanRecord planRetrieved;
+
+        // If zero plan (user's), load from prefs
+        if(planId == "0")
+            planRetrieved = JsonReader.Deserialize<Models.PlanRecord>(PlayerPrefs.GetString("current plan"));
+        else
+        {
+            // Open stream to plans JSON config file
+            TextAsset plansJson = (TextAsset)Resources.Load("plans", typeof(TextAsset) );
+            StringReader strPlansData = new StringReader(plansJson.text);
+
+            PlanRecord[] plans = JsonReader.Deserialize<Models.PlanRecord[]>(strPlansData.ReadToEnd());
+
+            planRetrieved = plans.FirstOrDefault(plan => plan._id == planId);
+        }
+
+        return planRetrieved.GetType()
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .ToDictionary(prop => prop.Name, prop => prop.GetValue(planRetrieved, null));
 
     }
 }

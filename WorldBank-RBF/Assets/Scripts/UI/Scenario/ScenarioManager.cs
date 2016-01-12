@@ -411,9 +411,14 @@ public class ScenarioManager : MonoBehaviour {
     /// <param name="response">Dictionary response from /user/scenario/ endpoint.</param>
     void UserScenarioResponse(Dictionary<string, object> response) {
 
-    	// Get config values
-		// monthLengthSeconds = DataManager.PhaseTwoConfig.month_length_seconds;
-		
+    	Dictionary<string, object> plan;
+
+    	// Local fallback -- no network
+    	if(response.ContainsKey("local"))
+    		plan = DataManager.GetLocalPlanById(response["plan_id"].ToString());
+    	else
+    		plan = response;
+
 		phaseLength = DataManager.PhaseTwoConfig.phase_length_seconds;
 		monthLengthSeconds = (phaseLength / 36);
 
@@ -433,9 +438,6 @@ public class ScenarioManager : MonoBehaviour {
     	// Set initial/goal values and calc the base affect values for the plan
     	currentAffectValues = response["default_affects"] as int[];
     	IndicatorsCanvas.GoalAffects = response["affects_goal"] as int[];
-
-    	// Add defaults to used affects and calc indicators
-    	// usedAffects.Add(response["default_affects"] as int[]);
 
     	OpenScenarioCard(0);
 

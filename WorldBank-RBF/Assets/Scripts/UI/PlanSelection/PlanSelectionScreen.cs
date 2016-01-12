@@ -144,7 +144,7 @@ public class PlanSelectionScreen : MonoBehaviour {
 			
 			plans = new List<Models.PlanRecord>();
 
-    	// Local fallback
+    	// Local fallback -- no network
     	if(response.ContainsKey("local"))
     	{
 
