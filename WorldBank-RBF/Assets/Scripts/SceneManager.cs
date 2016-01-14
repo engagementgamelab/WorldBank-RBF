@@ -65,8 +65,10 @@ public class SceneManager : MonoBehaviour {
     #endif
 
 		// Authenticate to API
-    if(!NetworkManager.Instance.Authenticated)
+    if(!NetworkManager.Instance.Authenticated) {
+    	Debug.Log("Authenticate to API");
 			NetworkManager.Instance.Authenticate(ClientAuthenticated);
+    }
 	
 	}
 
@@ -141,6 +143,8 @@ public class SceneManager : MonoBehaviour {
 	}
 
 	void OnServerDown() {
+
+		Debug.Log("Show on server down");
 
 		infoBox.buttonText.text = "Ok";
 		infoBox.Open(DataManager.GetUIText("copy_connection_lost_header"), DataManager.GetUIText("copy_connection_lost_body"));

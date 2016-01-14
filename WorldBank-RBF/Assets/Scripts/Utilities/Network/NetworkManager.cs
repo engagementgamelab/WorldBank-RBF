@@ -117,6 +117,16 @@ public class NetworkManager : MonoBehaviour {
             _isAuthenticated = value;
         }
     }
+    
+    /// <summary>
+    /// Is network down?
+    /// </summary>
+    /// <returns>Yes or no.</returns>
+    public bool Offline {
+        get {
+            return _ignoreNetwork;
+        }
+    }
 
     public void Authenticate(Action<Dictionary<string, object>> responseHandler=null) {
 
@@ -282,7 +292,7 @@ public class NetworkManager : MonoBehaviour {
 
                     if(responseAction != null)
                     {
-                        responseAction(response);
+	                        responseAction(response);
                         yield return null;
                     }
 

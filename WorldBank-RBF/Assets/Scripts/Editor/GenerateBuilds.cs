@@ -51,12 +51,14 @@ class GenerateBuilds {
         GenericBuild("PC", BuildTarget.StandaloneWindows);
     }
 
+    [MenuItem ("Build/Mobile/Android")]
     static void PerformAndroidBuild ()
     {
      
         GenericBuild("Android", BuildTarget.Android);
     }
 
+    [MenuItem ("Build/Mobile/iOS")]
     static void PerformiOSBuild ()
     {
         
@@ -88,9 +90,9 @@ class GenerateBuilds {
         
         // PerformWebBuild();
 
-        // PerformiOSBuild();
-        // PerformAndroidBuild();
-        // PerformWebGLBuild();
+        PerformiOSBuild();
+        PerformAndroidBuild();
+        PerformWebGLBuild();
     }
 
     [MenuItem ("Build/Build Desktop")]
@@ -121,8 +123,8 @@ class GenerateBuilds {
         EditorUserBuildSettings.webGLOptimizationLevel = 3;
         #endif
         
-        PerformMacOSXBuild();
-        // PerformPCBuild();
+        // PerformMacOSXBuild();
+        PerformPCBuild();
         // PerformWebGLBuild();
     }
 

@@ -49,11 +49,11 @@ public class PlanSelectionScreen : MonoBehaviour {
 
 	void OnEnable () {
 
-        // Insert user ID
+    // Insert user ID
 		Dictionary<string, object> userField = new Dictionary<string, object> {{ "user_id", PlayerManager.Instance.ID }};
 
-	    // Get plans
-        NetworkManager.Instance.PostURL("/plan/all/", userField, PlansRetrieved);
+    // Get plans
+    NetworkManager.Instance.PostURL("/plan/all/", userField, PlansRetrieved);
 
 	}
 
@@ -93,7 +93,8 @@ public class PlanSelectionScreen : MonoBehaviour {
 	}
 
 	public void GoBack () {
-		menus.SetScreen ("title");
+		// menus.SetScreen ("title");
+		menus.SetScreen ("phase");
 	}
 
 	IEnumerator ShowPlan(int planIndex, bool prev=false) {

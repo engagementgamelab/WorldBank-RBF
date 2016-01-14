@@ -1,9 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PhaseSelectionScreen : MonoBehaviour {
 
 	public MenusManager menus;
+	public Button backButton;
+
+	void OnEnable() {
+
+		backButton.gameObject.SetActive(!NetworkManager.Instance.Offline);
+
+	}
 
 	public void OnPhaseOne () {
 		AudioManager.Music.FadeOut ("title_theme", 0.5f, () => {

@@ -99,6 +99,13 @@ public class PlayerManager : MonoBehaviour {
 
     public void AuthCallback(Dictionary<string, object> response) {
 
+        // Local version
+        if(response.ContainsKey("local")) 
+        {
+            Events.instance.Raise(new PlayerLoginEvent(true));
+            return;
+        }
+
         if(response.ContainsKey("error"))  
         {          
             Events.instance.Raise(new PlayerLoginEvent(false, response["error"].ToString()));

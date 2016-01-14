@@ -152,6 +152,10 @@ public class DataManager {
            #endif
         #endif
 
+        Debug.Log(">>>>>>>>>");
+        Debug.Log("Using server at " + currentConfig.root);
+        Debug.Log("<<<<<<<<<");
+
     }
 
     /// <summary>
