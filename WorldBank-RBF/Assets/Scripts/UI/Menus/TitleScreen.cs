@@ -51,11 +51,11 @@ public class TitleScreen : MonoBehaviour {
 
 	void OnFormEvent (PlayerLoginEvent e) {
 
-    	if (!e.success) {
-    		ShowError (e.error);
-	    } else {
+    	if (!e.success)
+	    		ShowError (e.error);
+	    
+	    else {
 	    	returningPlayer = PlayerManager.Instance.PlanSubmitted;
-	    	Debug.Log("returningPlayer: " + returningPlayer);
 	    	OnAuthenticate ();
 	    }
     }

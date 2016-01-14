@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.IO;
+using System.Linq;
 using JsonFx.Json;
  
 // TODO: This needs lots of cleanup
@@ -55,7 +56,7 @@ public class PlayerManager : MonoBehaviour {
     /// </summary>
     public bool PlanSubmitted {
         get {
-            return _submittedPlan;
+            return _submittedPlan || PlayerPrefs.HasKey("current plan");
         }
     }
 
@@ -64,7 +65,7 @@ public class PlayerManager : MonoBehaviour {
     /// </summary>
     public bool PhaseTwoDone {
         get {
-            return _phaseTwoDone;
+            return _phaseTwoDone || PlayerPrefs.HasKey("phase 2 done");
         }
     }
 
@@ -104,8 +105,6 @@ public class PlayerManager : MonoBehaviour {
             return;
         }
 
-        // NetworkManager._userCookie = response["user_cookie"].ToString();
-
         System.Text.StringBuilder output = new System.Text.StringBuilder();
         
         JsonWriter writer = new JsonWriter (output);
@@ -138,28 +137,34 @@ public class PlayerManager : MonoBehaviour {
         // Insert user ID
         saveFields.Add("user_id", _playerId);
 
-        #region Local Plan Fallback
-            // Save form as raw byte array as local fallback
-            System.Text.StringBuilder output = new System.Text.StringBuilder();
-            JsonWriter writer = new JsonWriter (output);
+        #region Local Data Fallback
+            
+            // Saving plan
+            if(!saveFields.ContainsKey("save_phase_2")) {
 
-            Models.Plan p = saveFields["plan"] as Models.Plan;
-    		Models.PlanRecord planData = new Models.PlanRecord();
-    		
-            // User's local plan is always id 0
-            planData._id = "0";
+                // Save form as raw byte array as local fallback
+                System.Text.StringBuilder output = new System.Text.StringBuilder();
+                JsonWriter writer = new JsonWriter (output);
 
-            planData.name = p.name;
-    		planData.tactics = p.tactics;
+                Models.Plan p = saveFields["plan"] as Models.Plan;
+        		Models.PlanRecord planData = new Models.PlanRecord();
+        		
+                planData.name = p.name;
+        		planData.tactics = p.tactics;
 
-            planData.score = 10;
-            planData.default_affects = new string[] { "7", "10", "15" };
-            planData.affects_goal = new int[] { 30, 35, 40 };
+                planData.affects_goal = new int[] { 30, 35, 40 };
 
-            writer.Write(planData);
+                writer.Write( GradePlan(planData) );
 
-            PlayerPrefs.SetString("current plan", output.ToString());
+                PlayerPrefs.SetString("current plan", output.ToString());
+
+            }
+            // Saving phase 2 state
+            else
+                PlayerPrefs.SetInt("phase 2 done", 1);
+
             PlayerPrefs.Save();
+
         #endregion
 
         // Save user info
@@ -187,6 +192,69 @@ public class PlayerManager : MonoBehaviour {
             Debug.Log("Track Event: '" + strEventName + "'");
 
         #endif
+
     }
+
+    Models.PlanRecord GradePlan(Models.PlanRecord planInput) {
+
+        int[] planKeysConfig = { 3, 3, 3, 2, 2, 1 };
+
+        string[][] assignmentMatrix = { new string[] {"scenario_2", "scenario_4"}, new string[] {"scenario_1", "scenario_3"} };
+
+        // Obtain scenario filtering flags 
+        Dictionary<string, string> scenarioFilters = new Dictionary<string, string>() {
+           { "autonomy", "unlockable_grant_providers_autonomy" },
+           { "pbc", "unlockable_contract_outside_organization_to_administer_plan" }
+        };
+
+        int planScore = 14;
+        int optionIndex = 0;
+
+        while(optionIndex < planInput.tactics.Length) {
+
+            // Get the priority of this tactic
+            int tacticPriority = DataManager.GetUnlockableBySymbol(planInput.tactics[optionIndex]).priority;
+
+            // If no priority, default to 0
+            if(tacticPriority == null)
+              tacticPriority = 0;
+
+            // Calculate reduction for total score
+            int scoreReduction = Mathf.Abs(tacticPriority - planKeysConfig[optionIndex]);
+
+            planScore -= scoreReduction;
+
+            optionIndex++;
+
+        }
+
+		planInput.score = planScore;
+
+        // Get the grading info for the plan score
+        // Score is within range of grading block?
+        Models.Grade gradeInfo = DataManager.GetGradeForPlan(planInput); 
+
+        // Determine which filtering flags the plan meets
+        bool hasPbc = Array.Exists(planInput.tactics, el => el.Equals(scenarioFilters["pbc"]));
+        bool hasAutonomy = Array.Exists(planInput.tactics, el => el.Equals(scenarioFilters["autonomy"]));
+
+        Models.PlanRecord planOutput = new Models.PlanRecord();
+
+        // Output plan
+        // User's local plan is always id 0
+        planOutput._id = "0";
+        planOutput.name = planInput.name;
+        planOutput.tactics = planInput.tactics;
+        planOutput.affects_goal = planInput.affects_goal;
+        planOutput.score = planScore;
+        planOutput.default_affects = gradeInfo.default_affects;
+        planOutput.pbc = hasPbc;
+        planOutput.autonomy = hasAutonomy;
+        planOutput.current_scenario = assignmentMatrix[hasPbc ? 1 : 0][hasAutonomy ? 1 : 0];
+
+        return planOutput;
+
+    }
+
 
 }

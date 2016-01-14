@@ -55,6 +55,7 @@ namespace Models {
         public Dictionary<string, Dictionary<string, int>> indicator_affects { get; set; }
         public Route[] routes { get; set; }
         public Unlockable[] unlockables { get; set; }
+        public Grade[] grading { get; set; }
         public Dictionary<string, NPC[]> phase_one { get; set; }
         public PhaseTwo phase_two { get; set; }
         public Dictionary<string, Tooltip> tutorial { get; set; }
@@ -125,6 +126,16 @@ namespace Models {
         public float speed { get; set; }
         public int cost { get; set; }
         public string transportation_mode { get; set; }
+
+    }
+
+    public class Grade {
+
+        public string score { get; set; }
+        public string grade { get; set; }
+        public string description { get; set; }
+        public int[] default_affects { get; set; }
+        public int[] affects_bias { get; set; }
 
     }
 
@@ -315,7 +326,7 @@ namespace Models {
         [JsonMember]
         public int score { get; set; }
         [JsonMember]
-        public string[] default_affects { get; set; }
+        public int[] default_affects { get; set; }
         [JsonMember]
         public bool pbc { get; set; }
         [JsonMember]

@@ -253,11 +253,11 @@ public class IndicatorsCanvas : NotebookCanvas {
 
 	    	phaseEndPromptText.text = DataManager.PhaseTwoConfig.prompt_year_3[atGoalCount];
 
-		 	// End of year 3; update user record
-	        Dictionary<string, object> formFields = new Dictionary<string, object>();
-	        formFields.Add("save_phase_2", true);
+			 	// End of year 3; update user record
+				Dictionary<string, object> formFields = new Dictionary<string, object>();
+				formFields.Add("save_phase_2", true);
 
-			PlayerManager.Instance.SaveData (formFields, UserSaveCallback);
+				PlayerManager.Instance.SaveData (formFields, UserSaveCallback);
 
     	}
 

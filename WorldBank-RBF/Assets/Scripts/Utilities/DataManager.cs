@@ -161,8 +161,8 @@ public class DataManager {
     public static void SetGameData(string data)
     {
         // Set global data only if there is none
-        if(gameData != null) 
-            return;
+//        if(gameData != null) 
+//            return;
 
         try {
 
@@ -613,4 +613,20 @@ public class DataManager {
             .ToDictionary(prop => prop.Name, prop => prop.GetValue(planRetrieved, null));
 
     }
+
+    public static Grade[] GetGrading() {
+
+        return gameData.grading;
+
+    }
+
+    public static Grade GetGradeForPlan(PlanRecord plan) {
+
+        return gameData.grading.FirstOrDefault(grade =>
+                                  (plan.score <= int.Parse(grade.score.Split('-')[0]) && 
+                                    plan.score >= int.Parse(grade.score.Split('-')[1])
+                              ));
+
+    }
+
 }

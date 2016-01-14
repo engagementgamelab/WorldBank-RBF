@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-#if !UNITY_5_3
+#if !UNITY_5_3 && !UNITY_5_4
 [NotConverted]
 #endif
 

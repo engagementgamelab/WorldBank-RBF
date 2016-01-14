@@ -29,11 +29,13 @@ public class CityInfoBox : MB {
 		set { body.text = value; }
 	}
 
-	Image backgroundImage = null;
-	Image BackgroundImage {
+	MaskableGraphic backgroundImage = null;
+	MaskableGraphic BackgroundImage {
 		get {
 			if (backgroundImage == null) {
 				backgroundImage = background.GetComponent<Image> ();
+				if(backgroundImage == null)
+					backgroundImage = background.GetComponent<RawImage> ();
 			}
 			return backgroundImage;
 		}

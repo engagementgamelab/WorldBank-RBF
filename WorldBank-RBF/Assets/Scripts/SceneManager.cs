@@ -46,14 +46,9 @@ public class SceneManager : MonoBehaviour {
 
 		// We need our game config data before calling any remote endpoints
 		LoadGameConfig();
-
-		// // Authenticate to API
-		// // if(inMenus) {
-		NetworkManager.Instance.Authenticate(ClientAuthenticated);
 			
-		// 	// Set global game data if needed
-		SetGameData();
-		// }
+		// Set global game data local fallback in case of no connection
+		SetGameData(true);
 	}
 
 	void Start() {
@@ -68,6 +63,10 @@ public class SceneManager : MonoBehaviour {
     #elif UNITY_ANDROID
         Handheld.SetActivityIndicatorStyle(AndroidActivityIndicatorStyle.Large);
     #endif
+
+		// Authenticate to API
+    if(!NetworkManager.Instance.Authenticated)
+			NetworkManager.Instance.Authenticate(ClientAuthenticated);
 	
 	}
 
@@ -89,11 +88,19 @@ public class SceneManager : MonoBehaviour {
 	/// </summary>
   /// <param name="response">Dictionary containing "authed" key telling us if API auth </param>
   public void ClientAuthenticated(Dictionary<string, object> response) {
-
-		Debug.Log("Client API auth successful? " + response["authed"]);
-
-		if(!System.Convert.ToBoolean(response["authed"]))
+		// If failed (bad auth or local)
+		if(response.ContainsKey("local")) {
+		
+			Debug.Log("Unable to contact API endpoint.");
 			return;
+		
+		}
+		else if(!System.Convert.ToBoolean(response["authed"])) {
+
+			Debug.Log(">>> API authentication failed!");
+			return;	
+		
+		}
 
 		NetworkManager.Instance.Cookie = response["session_cookie"].ToString();
 
@@ -110,7 +117,13 @@ public class SceneManager : MonoBehaviour {
 			
 		}
 
+		// Set as authenticated
+		NetworkManager.Instance.Authenticated = true;
+
 		DataManager.SceneContext = sceneName;
+			
+		// Set global game data if needed
+		SetGameData();
 
   }
 	
@@ -136,7 +149,8 @@ public class SceneManager : MonoBehaviour {
 
 	void SkipLogin() {
 
-		menus.SetScreen ("phase");
+		Events.instance.Raise(new PlayerLoginEvent(true));
+		// menus.SetScreen ("phase");
 
 	}
 
@@ -165,46 +179,55 @@ public class SceneManager : MonoBehaviour {
 	/// <summary>
 	/// Obtains and sets global game data
 	/// </summary>
-	void SetGameData() {
+	void SetGameData(bool fallback=false) {
 
-		string gameData = null;
+		string gameData;
 
-		// This should live in a static global dictionary somewhere
-		// Try to get data from API remote
-		try {
-
-      #if UNITY_WEBGL
-
-	      // Get gamedata for webgl
-	      NetworkManager.Instance.GetURL("/gameData", GameDataResponse);
-
-      #else
-
-				gameData = NetworkManager.Instance.DownloadDataFromURL("/gameData");
-
-      #endif
-
-		}
-		// Fallback: load game data from local config
-		catch(System.Exception e) {
-
-			// If in editor, always throw so we catch issues
-			// #if UNITY_EDITOR
-			// 	throw new System.Exception("Unable to obtain game data due to error '" + e + "'");
-			// #else
- 
-		    TextAsset dataJson = (TextAsset)Resources.Load("data", typeof(TextAsset));
-				StringReader strData = new StringReader(dataJson.text);
-		        
-				gameData = strData.ReadToEnd();
-
-				strData.Close();
-				
-			// #endif
+		if(fallback)
+			gameData = GameDataLoadFallback();
 		
+		else
+		{
+			// This should live in a static global dictionary somewhere
+			// Try to get data from API remote
+			try {
+
+	      #if UNITY_WEBGL
+
+		      // Get gamedata for webgl
+		      NetworkManager.Instance.GetURL("/gameData", GameDataResponse);
+
+	      #else
+
+					gameData = NetworkManager.Instance.DownloadDataFromURL("/gameData");
+
+	      #endif
+
+			}
+			// Fallback: load game data from local config
+			catch(System.Exception e) {
+						
+				gameData = GameDataLoadFallback();
+
+			}
 		}
 
 		GameDataResponse(gameData);
+
+	}
+
+	string GameDataLoadFallback() {
+
+		string localData;
+
+	  TextAsset dataJson = (TextAsset)Resources.Load("data", typeof(TextAsset));
+		StringReader strData = new StringReader(dataJson.text);
+	      
+		localData = strData.ReadToEnd();
+
+		strData.Close();
+
+		return localData;
 
 	}
 
@@ -216,4 +239,9 @@ public class SceneManager : MonoBehaviour {
 
 	}
 	
+	// experimental: re-routes all logging
+  void HandleLog(string logString, string stackTrace, LogType type) {
+      Debug.Log(logString);
+      Debug.Log(stackTrace);
+  }
 }

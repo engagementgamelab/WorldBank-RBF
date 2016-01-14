@@ -40,11 +40,14 @@ public class InfoBox : MB {
 		}
 	}
 
-	Image backgroundImage = null;
-	Image BackgroundImage {
+	MaskableGraphic backgroundImage = null;
+	MaskableGraphic BackgroundImage {
 		get {
 			if (backgroundImage == null) {
 				backgroundImage = Background.GetComponent<Image> ();
+				if(backgroundImage == null)
+					backgroundImage = Background.GetComponent<RawImage> ();
+
 			}
 			return backgroundImage;
 		}
@@ -54,14 +57,18 @@ public class InfoBox : MB {
 		get { return PlayerData.DayGroup.Empty; }
 	}
 
+	void Awake() {
+		
+		NetworkManager.Instance.onNoNetwork += OnNoNetwork;
+		NetworkManager.Instance.onNotLoggedIn += OnNotLoggedIn;
+
+	}
+
 	void Start () {
 		if(!mainMenu) {
 				PlayerData.InteractionGroup.onEmpty += OnNoInteractions;
 				PlayerData.DayGroup.onEmpty += OnNoDays;
 		}
-		
-		NetworkManager.Instance.onNoNetwork += OnNoNetwork;
-		NetworkManager.Instance.onNotLoggedIn += OnNotLoggedIn;
 		
 		onButtonClicked += Hide;
 	}
@@ -132,10 +139,10 @@ public class InfoBox : MB {
 		Open(DataManager.GetUIText("copy_server_session_lost_header"), DataManager.GetUIText("copy_server_session_lost_body"));
 	}
 
-	void OnNoNetwork() {
+	void OnNoNetwork(bool connectionNotFound) {
 		buttonText.text = "Ok";
 		currentKey = "connection_lost";
-		Open(DataManager.GetUIText("copy_connection_lost_header"), DataManager.GetUIText("copy_connection_lost_body"));
+		Open(DataManager.GetUIText("copy_connection_lost_header"), DataManager.GetUIText(connectionNotFound ? "copy_no_connection_body" : "copy_connection_lost_body"));
 	}
 
 	void SetActive (bool active) {

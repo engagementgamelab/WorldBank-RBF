@@ -64,6 +64,7 @@ public class ScenarioManager : MonoBehaviour {
 	bool openYearEnd;
 	bool inYearEnd;
 	bool cardDismissed;
+	bool scenarioLoaded;
 
 	int scenarioTwistIndex;
 	int currentCardIndex;
@@ -115,7 +116,8 @@ public class ScenarioManager : MonoBehaviour {
 		#endif
  
 		// Show loading
-		loadingPanel.gameObject.SetActive(true);
+		if(!scenarioLoaded)
+			loadingPanel.gameObject.SetActive(true);
 	}
 
 	void Update () {
@@ -411,62 +413,61 @@ public class ScenarioManager : MonoBehaviour {
     /// <param name="response">Dictionary response from /user/scenario/ endpoint.</param>
     void UserScenarioResponse(Dictionary<string, object> response) {
 
-    	Dictionary<string, object> plan;
+			Dictionary<string, object> plan;
 
-    	// Local fallback -- no network
-    	if(response.ContainsKey("local"))
-    		plan = DataManager.GetLocalPlanById(response["plan_id"].ToString());
-    	else
-    		plan = response;
+			// Local fallback -- no network
+			if(response.ContainsKey("local"))
+				plan = DataManager.GetLocalPlanById(response["plan_id"].ToString());
+			else
+				plan = response;
 
-		phaseLength = DataManager.PhaseTwoConfig.phase_length_seconds;
-		monthLengthSeconds = (phaseLength / 36);
+			phaseLength = DataManager.PhaseTwoConfig.phase_length_seconds;
+			monthLengthSeconds = (phaseLength / 36);
 
-		// Allow override in Unity
-		#if UNITY_EDITOR
+			// Allow override in Unity
+			#if UNITY_EDITOR
 			monthLengthSeconds = (monthLengthSecondsOverride == 0) ? (phaseLength / 36) : monthLengthSecondsOverride;
-		#endif
+			#endif
 
-		Debug.Log("Scenario: " + response["current_scenario"].ToString());
+			// Set scene context from current scenario
+			AssignScenario(plan["current_scenario"].ToString());
 
-    	// Set scene context from current scenario
-    	AssignScenario(response["current_scenario"].ToString());
+			// Save tactics that are a part of this plan
+			tacticsAvailable = plan["tactics"];
 
-    	// Save tactics that are a part of this plan
-    	tacticsAvailable = response["tactics"];
+			// Set initial/goal values and calc the base affect values for the plan
+			currentAffectValues = plan["default_affects"] as int[];
+			IndicatorsCanvas.GoalAffects = plan["affects_goal"] as int[];
 
-    	// Set initial/goal values and calc the base affect values for the plan
-    	currentAffectValues = response["default_affects"] as int[];
-    	IndicatorsCanvas.GoalAffects = response["affects_goal"] as int[];
+			OpenScenarioCard(0);
 
-    	OpenScenarioCard(0);
+			PlayerManager.Instance.TrackEvent("Scenario Assigned", "Phase Two");
 
-		PlayerManager.Instance.TrackEvent("Scenario Assigned", "Phase Two");
+			// SFX
+			AudioManager.Sfx.Play ("login", "Phase2");
 
-		// SFX
-		AudioManager.Sfx.Play ("login", "Phase2");
-   
-    	// This is the only time we won't show notification
-    	CalculateIndicators();
+			// This is the only time we won't show notification
+			CalculateIndicators();
 
-		// Allow skipping only if player has already finished phase two before shooby doopy
-		if(PlayerManager.Instance.PhaseTwoDone)
+			// Allow skipping only if player has already finished phase two before shooby doopy
+			if(PlayerManager.Instance.PhaseTwoDone)
 			DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_skip");
-		else
+			else
 			DialogManager.instance.CreateTutorialScreen("phase_2_start", "phase_2_first_problem");
 
-		// Tactics setup
-		availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
-		
-		// Also add tactics that show only if they are not part of player's selected plan
-		foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
-		{
+			// Tactics setup
+			availableTactics = ((IEnumerable)tacticsAvailable).Cast<object>().Select(obj => obj.ToString()).ToList<string>();
+
+			// Also add tactics that show only if they are not part of player's selected plan
+			foreach(string tactic in DataManager.PhaseTwoConfig.tactics_not_selected.ToList<string>())
+			{
 			if(!availableTactics.Contains(tactic))
 				availableTactics.Add(tactic);
-		}
-		DialogManager.instance.SetAvailableTactics(availableTactics);
+			}
+			DialogManager.instance.SetAvailableTactics(availableTactics);
 
-		loadingPanel.gameObject.SetActive(false);
+			loadingPanel.gameObject.SetActive(false);
+			scenarioLoaded = true;
 
     }
 

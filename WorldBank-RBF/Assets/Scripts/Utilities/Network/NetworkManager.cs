@@ -29,17 +29,17 @@ public class NetworkManager : MonoBehaviour {
     
     public delegate void OnServerDown();
     public delegate void OnNotLoggedIn();
-    public delegate void OnNoNetwork();
+    public delegate void OnNoNetwork(bool connectionNotFound);
 
-    float elapsedTime = 0.0f;
-    float timeoutTime = 5;
+    float _elapsedRequestTime = 0;
+    float _timeoutCap = 5;
     
-    bool isDownloading;
+    bool _hasRequest;
     bool _ignoreNetwork;
+    bool _isAuthenticated;
 
     IEnumerator _currentRoutine;
-
-    WWW www;
+    WWW _wwwRequest;
 
     class PostCache {
         
@@ -105,6 +105,19 @@ public class NetworkManager : MonoBehaviour {
     /// </summary>
     public OnNoNetwork onNoNetwork;
 
+    /// <summary>
+    /// Is API authenticated?
+    /// </summary>
+    /// <returns>Yes or no.</returns>
+    public bool Authenticated {
+        get {
+            return _isAuthenticated;
+        }
+        set {
+            _isAuthenticated = value;
+        }
+    }
+
     public void Authenticate(Action<Dictionary<string, object>> responseHandler=null) {
 
         // Bail if network not used
@@ -142,6 +155,10 @@ public class NetworkManager : MonoBehaviour {
     /// <param name="url">The URL to post to.</param>
     /// <param name="responseHandler">An Action that handles the response (optional).</param>
     public void PostURL(string url, Dictionary<string, object> fields, Action<Dictionary<string, object>> responseHandler=null) {
+
+        // Kill networking immediately if no connection
+        // if(Application.internetReachability == NetworkReachability.NotReachable)
+        //     KillNetwork(true);
 
         if(_ignoreNetwork) {
             fields.Add("local", true);
@@ -203,23 +220,24 @@ public class NetworkManager : MonoBehaviour {
     }
 
     IEnumerator WaitForRequest(string url, Action<string> responseAction=null)
-     {        WWW www = new WWW(url);
+     {        
+        WWW wwwGet = new WWW(url);
 
-        yield return www;
+        yield return wwwGet;
 
         // Check for errors
-        if (www.error == null) 
+        if (wwwGet.error == null) 
         {
             if(responseAction != null)
             {
                 // Respond w/ error text
-                responseAction(www.text);
+                responseAction(wwwGet.text);
                 yield return null;
             }
         }
         else
         {
-            string exceptionMsg = "WaitForRequest error: " + www.error;
+            string exceptionMsg = "WaitForRequest error: " + wwwGet.error;
             
             throw new Exception(exceptionMsg);
         }
@@ -237,27 +255,29 @@ public class NetworkManager : MonoBehaviour {
             if(_sessionCookie != null)
                 postHeader.Add("x-sessionID", _sessionCookie);
         
-            using(www = new WWW(url, formData, postHeader)) {
+            using(_wwwRequest = new WWW(url, formData, postHeader)) {
             
-                isDownloading = true;
-                elapsedTime = 0;
+                _hasRequest = true;
+                _elapsedRequestTime = 0;
 
-                yield return www;
+                yield return _wwwRequest;
 
-                isDownloading = false;
+                _hasRequest = false;
 
-                if(www == null)
+                if(_wwwRequest == null)
                     yield return null;
 
+                Debug.Log(_wwwRequest.text);
+
                 // Deserialize the response and handle it below
-                Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
+                Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(_wwwRequest.text);
 
                 // User is not logged in
-                if((www.responseHeaders.Count > 0) && www.responseHeaders.ContainsKey("STATUS") && www.responseHeaders["STATUS"].ToString().Contains("401"))  
+                if((_wwwRequest.responseHeaders.Count > 0) && _wwwRequest.responseHeaders.ContainsKey("STATUS") && _wwwRequest.responseHeaders["STATUS"].ToString().Contains("401"))  
                     onNotLoggedIn();
 
                 // check for errors
-                else if (www.error == null) 
+                else if (_wwwRequest.error == null) 
                 {
 
                     if(responseAction != null)
@@ -274,19 +294,29 @@ public class NetworkManager : MonoBehaviour {
 
                     if(response == null)
                     {
-                        if(www.error.Equals("couldn't connect to host"))
-                            onServerDown();
 
                         // If in editor, always throw so we catch issues
                         #if UNITY_EDITOR || DEVELOPMENT_BUILD
-                            exceptionMsg = "General WWW issue: " + www.error;
+                            exceptionMsg = "General _wwwRequest issue: " + _wwwRequest.error;
                             Debug.Log(exceptionMsg);
-
-                            onServerDown();
+                            
+                            // Kill all networking
+                            KillNetwork(false);
                         #endif
+                        
+                        if(!_ignoreNetwork) {
+                        
+                            if(_wwwRequest.error.Equals("couldn't connect to host")) {
+                                // Kill all networking
+                                KillNetwork(false);
+                            }
+                            else if(_wwwRequest.error.StartsWith("Connection timed out") || _wwwRequest.error.StartsWith("Couldn't resolve host")) {
+                                // Timed out, kill due to slow connection
+                                KillNetwork(true);
+                            }
 
-                        // Kill all networking
-                        _ignoreNetwork = true;
+                        }
+
                     }
                     else if(responseAction != null && !response.ContainsKey("error")) 
                     {
@@ -311,22 +341,38 @@ public class NetworkManager : MonoBehaviour {
     #if !UNITY_WEBGL
     void Update () {
         
-        elapsedTime += Time.deltaTime;
+        if(_hasRequest) {
+            _elapsedRequestTime += Time.deltaTime;
+            Debug.Log(_elapsedRequestTime);
+        }
 
-        if(elapsedTime >= timeoutTime && isDownloading){
+        // Cease any request if takes too long and murder networking
+        if(_elapsedRequestTime >= _timeoutCap && _hasRequest){
             StopCoroutine(_currentRoutine);
         
-            Debug.Log("KILL NETWORK");
-            www.Dispose();
-
-            if(!_ignoreNetwork)
-                onNoNetwork();
-
-            _ignoreNetwork = true;
-            isDownloading = false;
+            KillNetwork(false);
         }
     
     }
     #endif
+
+    void KillNetwork(bool noConnection) {
+
+        if(_ignoreNetwork)
+            return;
+        
+        Debug.Log(">>>> Networking has been disabled. <<<<");
+
+        // Toss the request
+        if(_wwwRequest != null)     
+            _wwwRequest.Dispose();
+
+        // Call delegate
+        onNoNetwork(noConnection);
+
+        _ignoreNetwork = true;
+        _hasRequest = false;
+
+    }
 
 }

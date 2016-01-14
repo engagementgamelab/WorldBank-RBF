@@ -117,11 +117,13 @@ class GenerateBuilds {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.WebGL, "IS_PRODUCTION");
 
         // Production stripping
+        #if !UNITY_5_4
         EditorUserBuildSettings.webGLOptimizationLevel = 3;
-
-        // PerformMacOSXBuild();
+        #endif
+        
+        PerformMacOSXBuild();
         // PerformPCBuild();
-        PerformWebGLBuild();
+        // PerformWebGLBuild();
     }
 
     [MenuItem ("Build/Build Staging")]

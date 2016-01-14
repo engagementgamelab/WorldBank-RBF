@@ -60,7 +60,26 @@ public class PrioritizationManager : NotebookCanvas {
 	// Get response from submitting a plan
 	void SubmitPlanCallback(Dictionary<string, object> response) {
 
-	 	Results = response;
+		// If no response, plan is local
+		if(response.ContainsKey("local"))
+		{
+
+			Models.PlanRecord localPlan = JsonFx.Json.JsonReader.Deserialize<Models.PlanRecord>(PlayerPrefs.GetString("current plan"));
+      Models.Grade gradeInfo = DataManager.GetGradeForPlan(localPlan); 
+
+      Dictionary<string, object> planResults = new Dictionary<string, object>() {
+         { "score", localPlan.score },
+         { "indicators", localPlan.default_affects },
+         { "goal", localPlan.affects_goal },
+         { "grade", gradeInfo.grade },
+         { "description", gradeInfo.description }
+      };
+
+			Results = planResults;
+
+		}
+		else
+		 	Results = response;
 
 	 	namingPanel.gameObject.SetActive (false);
 	 	animation.gameObject.SetActive (true);
