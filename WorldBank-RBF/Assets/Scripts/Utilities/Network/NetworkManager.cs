@@ -172,7 +172,10 @@ public class NetworkManager : MonoBehaviour {
 
         if(_ignoreNetwork) {
             fields.Add("local", true);
-            responseHandler(fields);
+
+            if(responseHandler != null && fields != null)
+                responseHandler(fields);
+
             return;
         }
 
@@ -265,80 +268,81 @@ public class NetworkManager : MonoBehaviour {
             if(_sessionCookie != null)
                 postHeader.Add("x-sessionID", _sessionCookie);
         
-            using(_wwwRequest = new WWW(url, formData, postHeader)) {
+            _wwwRequest = new WWW(url, formData, postHeader);
             
-                _hasRequest = true;
-                _elapsedRequestTime = 0;
+            _hasRequest = true;
+            _elapsedRequestTime = 0;
 
-                yield return _wwwRequest;
+            yield return _wwwRequest;
 
-                _hasRequest = false;
+            _hasRequest = false;
 
-                if(_wwwRequest == null)
-                    yield return null;
+            if(_wwwRequest == null)
+                yield return null;
 
-                Debug.Log(_wwwRequest.text);
+            Debug.Log("URL: " + _wwwRequest.url);
+            Debug.Log("Text response: " + _wwwRequest.text);
 
-                // Deserialize the response and handle it below
-                Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(_wwwRequest.text);
+            // Deserialize the response and handle it below
+            Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(_wwwRequest.text);
 
-                // User is not logged in
-                if((_wwwRequest.responseHeaders.Count > 0) && _wwwRequest.responseHeaders.ContainsKey("STATUS") && _wwwRequest.responseHeaders["STATUS"].ToString().Contains("401"))  
-                    onNotLoggedIn();
+            // User is not logged in
+            if((_wwwRequest.responseHeaders.Count > 0) && _wwwRequest.responseHeaders.ContainsKey("STATUS") && _wwwRequest.responseHeaders["STATUS"].ToString().Contains("401"))  
+                onNotLoggedIn();
 
-                // check for errors
-                else if (_wwwRequest.error == null) 
+            // check for errors
+            else if (_wwwRequest.error == null) 
+            {
+
+                if(responseAction != null)
                 {
-
-                    if(responseAction != null)
-                    {
-	                        responseAction(response);
-                        yield return null;
-                    }
-
+                    Debug.Log("response length: " + response.Count);
+                	responseAction(response);
+                    yield return null;
                 }
 
-                else
+            }
+
+            else
+            {
+                string exceptionMsg = "WaitForForm unknown error. No response to parse and no registered callback.";
+
+                if(response == null)
                 {
-                    string exceptionMsg = "WaitForForm unknown error. No response to parse and no registered callback.";
 
-                    if(response == null)
-                    {
-
-                        // If in editor, always throw so we catch issues
-                        #if UNITY_EDITOR || DEVELOPMENT_BUILD
-                            exceptionMsg = "General _wwwRequest issue: " + _wwwRequest.error;
-                            Debug.Log(exceptionMsg);
-                            
+                    // If in editor, always throw so we catch issues
+                    #if UNITY_EDITOR || DEVELOPMENT_BUILD
+                        exceptionMsg = "General _wwwRequest issue: " + _wwwRequest.error;
+                        Debug.Log(exceptionMsg);
+                        
+                        // Kill all networking
+                        KillNetwork(false);
+                    #endif
+                    
+                    if(!_ignoreNetwork) {
+                    
+                        if(_wwwRequest.error.Equals("couldn't connect to host")) {
                             // Kill all networking
                             KillNetwork(false);
-                        #endif
-                        
-                        if(!_ignoreNetwork) {
-                        
-                            if(_wwwRequest.error.Equals("couldn't connect to host")) {
-                                // Kill all networking
-                                KillNetwork(false);
-                            }
-                            else if(_wwwRequest.error.StartsWith("Connection timed out") || _wwwRequest.error.StartsWith("Couldn't resolve host")) {
-                                // Timed out, kill due to slow connection
-                                KillNetwork(true);
-                            }
-
+                        }
+                        else if(_wwwRequest.error.StartsWith("Connection timed out") || _wwwRequest.error.StartsWith("Couldn't resolve host")) {
+                            // Timed out, kill due to slow connection
+                            KillNetwork(true);
                         }
 
                     }
-                    else if(responseAction != null && !response.ContainsKey("error")) 
-                    {
-                        responseAction(response);
-                        yield return null;
-                    }
-                    else
-                    {
-                        responseAction (response);
-                    }
-                    
+
                 }
+                else if(responseAction != null && !response.ContainsKey("error")) 
+                {
+                    responseAction(response);
+                    yield return null;
+                }
+                else
+                {
+                    responseAction (response);
+                }
+                
             }
         }
         
@@ -353,11 +357,12 @@ public class NetworkManager : MonoBehaviour {
         
         if(_hasRequest) {
             _elapsedRequestTime += Time.deltaTime;
-            Debug.Log(_elapsedRequestTime);
+            Debug.Log("Request time: " + _elapsedRequestTime);
         }
 
         // Cease any request if takes too long and murder networking
-        if(_elapsedRequestTime >= _timeoutCap && _hasRequest){
+        if(_elapsedRequestTime >= _timeoutCap && _hasRequest) {
+            Debug.Log("Cease networking operation.");
             StopCoroutine(_currentRoutine);
         
             KillNetwork(false);

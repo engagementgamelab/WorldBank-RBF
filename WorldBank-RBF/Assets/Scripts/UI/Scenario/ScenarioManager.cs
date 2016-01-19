@@ -403,8 +403,6 @@ public class ScenarioManager : MonoBehaviour {
         // Save user info
         NetworkManager.Instance.PostURL("/user/scenario/", saveFields, UserScenarioResponse);
 
-		PlayerManager.Instance.TrackEvent("Plan ID " + planId + " Selected", "Phase Two");
-
     }
 
     /// <summary>

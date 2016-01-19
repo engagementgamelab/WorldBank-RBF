@@ -102,6 +102,7 @@ public class PlayerManager : MonoBehaviour {
         // Local version
         if(response.ContainsKey("local")) 
         {
+            _playerId = "local";
             Events.instance.Raise(new PlayerLoginEvent(true));
             return;
         }

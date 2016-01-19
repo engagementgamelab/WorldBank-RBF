@@ -163,13 +163,15 @@ public class SceneManager : MonoBehaviour {
 	/// </summary>
 	void LoadGameConfig()
 	{
+
+		Debug.Log("Loading game config");
+
 		// Open stream to API JSON config file
 		TextAsset apiJson = (TextAsset)Resources.Load("api", typeof(TextAsset));
 		StringReader strConfigData = new StringReader(apiJson.text);
 
 		// Set in data manager class with chosen environment config
 		DataManager.SetGameConfig(strConfigData.ReadToEnd(), environment);
-
 
 	  #if UNITY_EDITOR
 			DataManager.tutorialEnabled = tutorialEnabled;

@@ -124,8 +124,11 @@ public class DataManager {
         // Set global config
         config = JsonReader.Deserialize<GameConfig>(data);
         
+        Debug.Log(">>>>>>>>>");
+
         // Set the current game config based on the environment
         #if UNITY_EDITOR
+        
            currentConfig = config.local;
 
             // If override set, use that
@@ -144,6 +147,7 @@ public class DataManager {
         #elif IS_PRODUCTION
            currentConfig = config.production;
         #else
+           Debug.Log("NOT production or development build");
            #if !UNITY_WEBGL
                currentConfig = config.staging;
            #else
@@ -152,7 +156,6 @@ public class DataManager {
            #endif
         #endif
 
-        Debug.Log(">>>>>>>>>");
         Debug.Log("Using server at " + currentConfig.root);
         Debug.Log("<<<<<<<<<");
 
@@ -187,7 +190,7 @@ public class DataManager {
         // create/save to file in Assets/Resources/
         #if !UNITY_WEBPLAYER
 
-            SaveDataToJson("data", data);
+            SaveDataToJson("data", data, true);
 
         #endif
     }
@@ -201,6 +204,9 @@ public class DataManager {
     public static void SaveDataToJson(string fileName, string data, bool persistentPath=false) {
 
         string dataPath = (persistentPath ? Application.persistentDataPath : Application.dataPath) + "/Resources/";
+
+        Debug.Log("Saving data to " + dataPath);
+
         DirectoryInfo dirData = new DirectoryInfo(dataPath);
         dirData.Refresh();
         
