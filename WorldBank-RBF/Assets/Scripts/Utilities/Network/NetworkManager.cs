@@ -283,6 +283,13 @@ public class NetworkManager : MonoBehaviour {
             Debug.Log("URL: " + _wwwRequest.url);
             Debug.Log("Text response: " + _wwwRequest.text);
 
+            if(_wwwRequest.text.Length == 0)
+            {
+                Debug.Log("blank response");
+                // Kill all networking
+                KillNetwork(false);
+            }
+
             // Deserialize the response and handle it below
             Dictionary<string, object> response = JsonReader.Deserialize<Dictionary<string, object>>(_wwwRequest.text);
 
@@ -296,7 +303,6 @@ public class NetworkManager : MonoBehaviour {
 
                 if(responseAction != null)
                 {
-                    Debug.Log("response length: " + response.Count);
                 	responseAction(response);
                     yield return null;
                 }
