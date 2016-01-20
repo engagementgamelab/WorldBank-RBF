@@ -280,14 +280,12 @@ public class NetworkManager : MonoBehaviour {
             if(_wwwRequest == null)
                 yield return null;
 
-            Debug.Log("URL: " + _wwwRequest.url);
-            Debug.Log("Text response: " + _wwwRequest.text);
-
-            if(_wwwRequest.text.Length == 0)
-            {
-                Debug.Log("blank response");
+			if(_wwwRequest.error != null && _wwwRequest.error.Length > 0 && 
+                _wwwRequest.error.Equals("couldn't connect to host") && !_ignoreNetwork)
+			   {
                 // Kill all networking
                 KillNetwork(false);
+                StopCoroutine(_currentRoutine);
             }
 
             // Deserialize the response and handle it below
