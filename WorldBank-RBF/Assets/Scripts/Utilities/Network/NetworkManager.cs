@@ -269,6 +269,8 @@ public class NetworkManager : MonoBehaviour {
                 postHeader.Add("x-sessionID", _sessionCookie);
         
             _wwwRequest = new WWW(url, formData, postHeader);
+
+            Debug.Log("Requesting for: " + _wwwRequest.url);
             
             _hasRequest = true;
             _elapsedRequestTime = 0;
@@ -280,12 +282,13 @@ public class NetworkManager : MonoBehaviour {
             if(_wwwRequest == null)
                 yield return null;
 
-			if(_wwwRequest.error != null && _wwwRequest.error.Length > 0 && 
-                _wwwRequest.error.Equals("couldn't connect to host") && !_ignoreNetwork)
-			   {
+			if(RequestHasFailed(_wwwRequest.error) && !_ignoreNetwork)
+			{
                 // Kill all networking
                 KillNetwork(false);
                 StopCoroutine(_currentRoutine);
+             
+                yield return null;
             }
 
             // Deserialize the response and handle it below
@@ -374,6 +377,19 @@ public class NetworkManager : MonoBehaviour {
     
     }
     #endif
+
+    bool RequestHasFailed(string errorMsg) {
+     
+        return 
+        errorMsg != null && errorMsg.Length > 0 && 
+        (
+            errorMsg.Equals("couldn't connect to host") ||
+            errorMsg.StartsWith("Connection timed out") || 
+            errorMsg.StartsWith("Couldn't resolve host") ||
+            errorMsg.StartsWith("Could not resolve host")
+        );
+    
+    }
 
     void KillNetwork(bool noConnection) {
 
