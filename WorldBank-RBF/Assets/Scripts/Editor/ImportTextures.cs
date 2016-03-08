@@ -37,7 +37,7 @@ public class TexturePostProcessor : AssetPostprocessor {
 		importer.SetPlatformTextureSettings( "iPhone", 1024, TextureImporterFormat.PVRTC_RGBA4, _qualityGood, false );
 		importer.SetPlatformTextureSettings( "Android", 512, TextureImporterFormat.ETC2_RGBA8, _qualityFast, false ); //ATC_RGBA8 \\ ETC2_RGBA8 || PVRTC_RGBA4
 	
-		importer.SetPlatformTextureSettings( "Standalone", 4096, TextureImporterFormat.PVRTC_RGBA4, _qualityBest, false );
+		importer.SetPlatformTextureSettings( "Standalone", 512, TextureImporterFormat.PVRTC_RGBA4, _qualityFast, false );
 		importer.SetPlatformTextureSettings( "WebPlayer", 1024, TextureImporterFormat.PVRTC_RGBA4, _qualityBest, false );
 		importer.SetPlatformTextureSettings( "WebGL", 512, TextureImporterFormat.PVRTC_RGBA4, _qualityFast, false );
 

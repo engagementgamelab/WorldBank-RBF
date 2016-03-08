@@ -121,7 +121,7 @@ class GenerateBuilds {
         // Production stripping
         EditorUserBuildSettings.webGLOptimizationLevel = 3;
         
-        PerformMacOSXBuild();
+        // PerformMacOSXBuild();
         PerformPCBuild();
         // PerformWebGLBuild();
     }
