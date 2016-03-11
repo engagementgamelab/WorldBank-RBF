@@ -18,7 +18,8 @@ public class TestOnInspector : Editor
 	string[] environments = new string[] { "local", 
 									       "development",
 									       "staging",
-									       "production"
+									       "production",
+									       "production_webgl"
 									     };
 
 	// Display game environments dropdown and pass choice to SceneManager

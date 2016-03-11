@@ -187,7 +187,7 @@ public class SceneManager : MonoBehaviour {
 	/// </summary>
 	void SetGameData(bool fallback=false) {
 
-		string gameData;
+		string gameData = null;
 
 		if(fallback)
 			gameData = GameDataLoadFallback();

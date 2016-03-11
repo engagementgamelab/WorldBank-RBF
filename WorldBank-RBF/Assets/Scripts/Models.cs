@@ -29,6 +29,7 @@ namespace Models {
         public GameEnvironment development { get; set; }
         public GameEnvironment staging { get; set; }
         public GameEnvironment production { get; set; }
+        public GameEnvironment production_webgl { get; set; }
 
         public string parseAppId { get; set; }
         public string parseKey { get; set; }

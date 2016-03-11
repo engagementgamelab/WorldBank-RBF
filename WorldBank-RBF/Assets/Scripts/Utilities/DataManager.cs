@@ -139,13 +139,21 @@ public class DataManager {
                     currentConfig = config.staging;
                 else if(configTypeOverride == "production")
                     currentConfig = config.production;
+                else if(configTypeOverride == "production_webgl")
+                    currentConfig = config.production_webgl;
             }
 
 
         #elif DEVELOPMENT_BUILD
            currentConfig = config.development;
+
         #elif IS_PRODUCTION
-           currentConfig = config.production;
+           #if UNITY_WEBGL
+               currentConfig = config.production_webgl;
+           #else
+               currentConfig = config.production;
+            #endif
+        
         #else
            Debug.Log("NOT production or development build");
            #if !UNITY_WEBGL

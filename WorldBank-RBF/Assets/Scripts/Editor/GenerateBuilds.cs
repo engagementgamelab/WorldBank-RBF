@@ -88,7 +88,7 @@ class GenerateBuilds {
         PerformMacOSXBuild();
         PerformPCBuild();
         
-        // PerformWebBuild();
+        PerformWebBuild();
 
         PerformiOSBuild();
         PerformAndroidBuild();
@@ -122,8 +122,8 @@ class GenerateBuilds {
         EditorUserBuildSettings.webGLOptimizationLevel = 3;
         
         // PerformMacOSXBuild();
-        PerformPCBuild();
-        // PerformWebGLBuild();
+        // PerformPCBuild();
+        PerformWebGLBuild();
     }
 
     [MenuItem ("Build/Build Staging")]
