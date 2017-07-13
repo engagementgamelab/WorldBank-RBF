@@ -123,7 +123,6 @@ public class PlayerManager : MonoBehaviour {
         Models.User user = JsonReader.Deserialize<Models.User>(output.ToString());
 
         _playerId = user._id;
-        GA.API.Design.NewEvent ("player_id: " + _playerId);
 
         _submittedPlan = user.submitted_plan;
         _phaseTwoDone = user.phase_two_done;

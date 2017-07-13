@@ -60,8 +60,8 @@ public class NPCResponse : PortraitTextBox {
 			// Obtain portrait image and load corresponding sprite
 			portrait.sprite = Resources.Load<Sprite>("Portraits/PhaseTwo/" + value);
 
-			GetComponent<Transform>().FindChild("LeftArrow").gameObject.SetActive(leftSide);
-			GetComponent<Transform>().FindChild("RightArrow").gameObject.SetActive(rightSide);
+			GetComponent<Transform>().Find("LeftArrow").gameObject.SetActive(leftSide);
+			GetComponent<Transform>().Find("RightArrow").gameObject.SetActive(rightSide);
 
 		}
 

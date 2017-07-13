@@ -33,7 +33,7 @@ public class PortraitTextBox : GenericButton {
 		set {
 
 			if (npcName == null)
-				npcName = GetComponent<Transform>().FindChild("NPCName");
+				npcName = GetComponent<Transform>().Find("NPCName");
 
 			// if(value.Length > 25)
 			// 	value = value.Substring(0, 22) + "...";

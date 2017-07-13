@@ -36,11 +36,11 @@ public class GenericButton : MonoBehaviour {
 
 		get {
 
-			return GetComponent<Transform>().FindChild("Text").GetComponent<Text>().text;
+			return GetComponent<Transform>().Find("Text").GetComponent<Text>().text;
 		}
 		set {
 
-			GetComponent<Transform>().FindChild("Text").GetComponent<Text>().text = value;
+			GetComponent<Transform>().Find("Text").GetComponent<Text>().text = value;
 
 		}
 

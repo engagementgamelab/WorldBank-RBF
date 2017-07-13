@@ -3,7 +3,7 @@ World Bank RBF
 Created by Engagement Lab, 2015
 ==============
  ImportAudio.cs
- Unity audio asset import settings.
+ Unity audio asset import settingsWebGL.
 
  Created by Johnny Richardson on 11/09/15.
 ==============
@@ -16,18 +16,26 @@ using UnityEditor;
 
 public class AudioPostProcessor : AssetPostprocessor {
 	
-	// Set per-platform audio settings
+	// Set per-platform audio settingsWebGL
 	void OnPostprocessAudio(AudioClip clip) {
 	
 		AudioImporter importer = assetImporter as AudioImporter;
 
-		AudioImporterSampleSettings settings = new AudioImporterSampleSettings();
-		settings.compressionFormat = AudioCompressionFormat.AAC;
-		settings.loadType = AudioClipLoadType.DecompressOnLoad;
-		settings.sampleRateOverride = 11025;
-		settings.sampleRateSetting = AudioSampleRateSetting.OverrideSampleRate;
+		AudioImporterSampleSettings settingsWebGL = new AudioImporterSampleSettings();
+		settingsWebGL.compressionFormat = AudioCompressionFormat.AAC;
+		settingsWebGL.loadType = AudioClipLoadType.DecompressOnLoad;
+		settingsWebGL.sampleRateOverride = 11025;
+		settingsWebGL.sampleRateSetting = AudioSampleRateSetting.OverrideSampleRate;
 
-		importer.SetOverrideSampleSettings( "WebGL", settings );
+		AudioImporterSampleSettings settingsStandalone = new AudioImporterSampleSettings();
+		settingsStandalone.compressionFormat = AudioCompressionFormat.AAC;
+		settingsStandalone.loadType = AudioClipLoadType.DecompressOnLoad;
+		settingsStandalone.quality = 0.1f;
+		settingsStandalone.sampleRateOverride = 11025;
+		settingsStandalone.sampleRateSetting = AudioSampleRateSetting.OverrideSampleRate;
+
+		importer.SetOverrideSampleSettings( "WebGL", settingsWebGL );
+		importer.SetOverrideSampleSettings( "Standalone", settingsStandalone );
 
 	}
 

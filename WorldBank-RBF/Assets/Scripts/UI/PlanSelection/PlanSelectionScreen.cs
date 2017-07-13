@@ -79,10 +79,6 @@ public class PlanSelectionScreen : MonoBehaviour {
 
 	public void Continue () {
 		
-		// Analytics events
-		GA.API.Design.NewEvent ("own_plan", PlanIndex == 0 ? 1 : 0);
-		GA.API.Design.NewEvent ("plan_score", plans[planIndex].score);
-		
 		AudioManager.Music.FadeOut ("title_theme", 0.5f, () => {
 				MenusManager.gotoSceneOnLoad = "PhaseTwo";
 				AudioManager.StopAll ();

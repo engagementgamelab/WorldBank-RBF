@@ -24,6 +24,7 @@ function UnityProgress (dom) {
   }
   this.Clear = function() {
     document.getElementById("loadingBox").style.display = "none";
+    document.getElementById("tips-slideshow").style.display = "none";
   }
   this.Update = function() {
     var length = 200 * Math.min(this.progress, 1);

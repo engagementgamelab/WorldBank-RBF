@@ -119,7 +119,7 @@ class GenerateBuilds {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.WebGL, "IS_PRODUCTION");
 
         // Production stripping
-        EditorUserBuildSettings.webGLOptimizationLevel = 3;
+        // EditorUserBuildSettings.webGLOptimizationLevel = 3;
         
         // PerformMacOSXBuild();
         // PerformPCBuild();

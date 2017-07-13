@@ -6,23 +6,58 @@
     <title>%UNITY_WEB_NAME%</title>
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="shortcut icon" href="TemplateData/favicon.ico" /> 
+    
+    <!-- Include the jQuery library (local or CDN) -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <!-- Include the plugin *after* the jQuery library -->
+    <script src="bjqs.min.js"></script>
+
+    <!-- Include the basic styles -->
+    <link type="text/css" rel="Stylesheet" href="bjqs.css" />
+
     <script type="text/javascript" src="https://code.createjs.com/tweenjs-0.6.0.min.js"></script>
     <script src="TemplateData/UnityProgress.js"></script>
     <script type="text/javascript" src="TemplateData/CSSPlugin.js"></script>
   </head>
   <body class="template">
+    
+    <div id="tips-slideshow">
+      <ul class="bjqs">
+        <li><img src="TemplateData/slides/1.jpg"></li>
+        <li><img src="TemplateData/slides/2.jpg"></li>
+        <li><img src="TemplateData/slides/3s.jpg"></li>
+      </ul>
+      Game loading...
+    </div>
+
     <p class="header">%UNITY_WEB_NAME%</p>
     <div class="template-wrap clear">
     <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="%UNITY_HEIGHT%px" width="%UNITY_WIDTH%px"></canvas>
       <div id="loadingBox">
-        <div id="bgBar"></div>
-        <div id="progressBar"></div>
-        <p id="loadingInfo">Loading...</p>
+        <!--<div id="bgBar"></div>
+        <div id="progressBar"></div> 
+        <p id="loadingInfo">Loading...</p> -->
         <img id="spinner" src="TemplateData/spinner.gif" style="display: none; margin: 0 auto; width: 31px; height: 31px" />
       </div>
       
-      <div class="fullscreen"><a href="#" id="fullscreen_button"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" /></a></div>
+      <div class="fullscreen" style="display:none"><a href="#" id="fullscreen_button"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" /></a></div>
     </div>
     %UNITY_WEBGL_LOADER_GLUE%
+    <script type="text/javascript">
+      $(document).ready(function($) {
+        $('#tips-slideshow').bjqs({
+          width: 980,
+          height: 660,
+          animtype : 'fade', // accepts 'fade' or 'slide'
+          animduration : 450, // how fast the animation are
+          animspeed : 4000, // the delay between each slide
+          automatic : true, // automatic
+          showcontrols : false,
+          showmarkers : false,
+          responsive : true
+        });
+      });
+    </script>
   </body>
 </html>

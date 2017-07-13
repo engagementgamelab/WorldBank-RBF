@@ -63,8 +63,11 @@ public class AudioObject : MB, IEditorPoolable {
 	}
 
 	IEnumerator StopOnEndPlay () {
-		while (gameObject.activeSelf && Source.isPlaying)
-			yield return null;
-		Stop ();
+		if (Source != null && gameObject != null) {
+			while (gameObject.activeSelf && Source.isPlaying)
+				yield return null;
+			Stop ();
+		}
 	}
+
 }

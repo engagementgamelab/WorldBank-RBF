@@ -183,8 +183,6 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="left">If true, the dialog box will appear on the left side of the screen</param>
 	public void OpenNpcDescription (Models.NPC currNpc, bool left) {
 		
-		GA.API.Design.NewEvent ("npc_description: " + currNpc.symbol);
-
 		CharacterItem character = PlayerData.CharacterGroup[currNpc.symbol];
 		string description = character.GetDescription ();
 
@@ -196,7 +194,7 @@ public class DialogManager : MonoBehaviour {
 				NPCFocusBehavior.Instance.DialogFocus ();
 			});
 		}
-		btnChoices.Add ("Back", CloseAndUnfocus);
+		btnChoices.Add ("Back", () => {CloseAndUnfocus(); });
 
 		npcDialogBox.Open (character.DisplayName, description, btnChoices, left);
 	}
@@ -208,8 +206,6 @@ public class DialogManager : MonoBehaviour {
 	/// <param name="left">If true, the dialogue box will appear on the left side of the screen</param>
 	/// <param name="initial">If true, will check for choices the player can select to further the dialogue</param>
 	public void OpenNpcDialog (Models.NPC currNpc, string voice, bool left, bool initial=true) {
-
-		GA.API.Design.NewEvent ("npc_dialog: " + currNpc.symbol);
 
 		CharacterItem character = PlayerData.CharacterGroup[currNpc.symbol];
 		string dialog = (initial) 
