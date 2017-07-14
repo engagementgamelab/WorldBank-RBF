@@ -175,16 +175,11 @@ public class DataManager {
     /// <param name="data">String to be used to set game data; must conform to GameData model.</param>
     public static void SetGameData(string data)
     {
-        // Set global data only if there is none
-//        if(gameData != null) 
-//            return;
-
         try {
 
             JsonReader reader = new JsonReader(data, _readerSettings);
             
             gameData = reader.Deserialize<GameData>();
-            // gameDataTest = reader.Deserialize<GameDataTest>();
 
             // Store current tactic names in a list
             if(gameData.phase_two.tactics != null && gameData.phase_two.tactics.Length > 0)
@@ -213,7 +208,7 @@ public class DataManager {
 
         string dataPath = (persistentPath ? Application.persistentDataPath : Application.dataPath) + "/Resources/";
 
-        Debug.Log("Saving data to " + dataPath);
+        Debug.Log("Saving data to " + dataPath + "/" + fileName);
 
         DirectoryInfo dirData = new DirectoryInfo(dataPath);
         dirData.Refresh();
