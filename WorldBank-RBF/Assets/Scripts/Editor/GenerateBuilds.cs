@@ -42,7 +42,7 @@ class GenerateBuilds {
     static void PerformMacOSXBuild ()
     {
         
-        GenericBuild("Mac", BuildTarget.StandaloneOSXUniversal);
+        GenericBuild("Mac", BuildTarget.StandaloneOSX);
     }
     [MenuItem ("Build/Build PC")]
     static void PerformPCBuild ()
@@ -74,13 +74,6 @@ class GenerateBuilds {
         GenericBuild("WebGL", BuildTarget.WebGL);
     }
 
-    [MenuItem ("Build/Build Web")]
-    static void PerformWebBuild ()
-    {
-        
-        GenericBuild("Web", BuildTarget.WebPlayer);
-    }
-
     [MenuItem ("Build/Build All")]
     static void MakeAllBuilds()
     {
@@ -88,7 +81,7 @@ class GenerateBuilds {
         PerformMacOSXBuild();
         PerformPCBuild();
         
-        PerformWebBuild();
+        // PerformWebBuild();
 
         PerformiOSBuild();
         PerformAndroidBuild();
@@ -138,7 +131,7 @@ class GenerateBuilds {
     [MenuItem ("Build/Set Icons")]
     static void SetIcons ()
     {
-        SetIcons (BuildTarget.StandaloneOSXUniversal);
+        SetIcons (BuildTarget.StandaloneOSX);
     }
 
     static void SetIcons(BuildTarget buildTarget)
@@ -208,7 +201,11 @@ class GenerateBuilds {
 
         SetIcons (buildTarget);
 
-        string res = BuildPipeline.BuildPlayer(FindEnabledScenes(platform), TARGET_DIR + "/" + platform + "/" + name, buildTarget, BUILD_OPTIONS);
+        string res = BuildPipeline.BuildPlayer(
+            FindEnabledScenes(platform), 
+            TARGET_DIR + "/" + platform + "/" + name, 
+            buildTarget, 
+            BUILD_OPTIONS).ToString();
 
         if (res.Length > 0)
             throw new Exception("BuildPlayer failure: " + res);

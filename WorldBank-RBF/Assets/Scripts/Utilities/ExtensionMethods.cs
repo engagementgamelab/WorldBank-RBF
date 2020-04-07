@@ -297,7 +297,7 @@ public static class ExtensionMethods {
 
 	#if UNITY_EDITOR
 	public static BuildTargetGroup GetBuildTargetGroup (this BuildTarget target) {
-		if (target == BuildTarget.StandaloneOSXUniversal ||
+		if (target == BuildTarget.StandaloneOSX ||
 			target == BuildTarget.StandaloneOSXIntel ||
 			target == BuildTarget.StandaloneWindows ||
 			target == BuildTarget.StandaloneLinux ||
